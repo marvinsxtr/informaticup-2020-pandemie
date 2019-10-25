@@ -1,5 +1,12 @@
+import os
+
 from pandemie.tester import AbstractStrategy
 from pandemie.web import start_server
+
+if os.name == "nt":
+    executable_name = "ic20_windows.exe"
+else:
+    executable_name = "ic20_linux"
 
 
 class Tester:
@@ -7,6 +14,7 @@ class Tester:
         if not isinstance(strategy, AbstractStrategy):
             raise ValueError("Strategy is not valid.")
 
+        os.system("start ../../test/{0}".format(executable_name))
         start_server(strategy)
 
 
