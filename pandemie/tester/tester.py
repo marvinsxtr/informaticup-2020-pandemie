@@ -16,7 +16,7 @@ class Tester:
             raise ValueError("Strategy is not valid.")
 
         #os.system(tool_cmd)
-        os.chdir("/home/master206/PycharmProjects/project-pandemie-03/test")
+        os.chdir("../../test/")
         subprocess.call("./ic20_linux", shell=True)
         start_server(strategy)
 
