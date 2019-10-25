@@ -1,12 +1,13 @@
 import os
-
+import subprocess
 from pandemie.tester import AbstractStrategy
 from pandemie.web import start_server
 
 if os.name == "nt":
     tool_cmd = "start ../../test/ic20_windows.exe"
 else:
-    tool_cmd = "./../../ic20_linux"
+    #tool_cmd = "../.././ic20_linux"
+    pass
 
 
 class Tester:
@@ -14,7 +15,9 @@ class Tester:
         if not isinstance(strategy, AbstractStrategy):
             raise ValueError("Strategy is not valid.")
 
-        os.system(tool_cmd)
+        #os.system(tool_cmd)
+        os.chdir("/home/master206/PycharmProjects/project-pandemie-03/test")
+        subprocess.call("./ic20_linux", shell=True)
         start_server(strategy)
 
 
