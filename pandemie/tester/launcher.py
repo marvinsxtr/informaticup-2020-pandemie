@@ -1,4 +1,4 @@
-from pandemie.tester.strategy import AbstractStrategy
+from pandemie.tester import AbstractStrategy
 
 
 class Beispiel(AbstractStrategy):
