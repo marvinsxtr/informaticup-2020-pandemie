@@ -2,7 +2,6 @@
 
 from bottle import post, request, run, BaseRequest
 
-
 @post("/")
 def index():
     game = request.json
