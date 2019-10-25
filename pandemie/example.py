@@ -8,8 +8,6 @@ from EventChecker import EventChecker
 @post("/")
 def index():
     game = request.json
-    a = EventChecker()
-    a.check_all_events(game)
     print(f'round: {game["round"]}, outcome: {game["outcome"]}')
     return {"type": "endRound"}
 
