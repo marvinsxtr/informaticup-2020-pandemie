@@ -1,0 +1,35 @@
+outbreak	, local
+{'type': 'outbreak', 'pathogen': {'name': 'N5-10', 'infectivity': '+', 'mobility': '++', 'duration': 'o', 'lethality': '+'}, 'prevalence': 0.6456536164565362, 'sinceRound': 1}
+
+pathogenEncountered	, global
+{'type': 'pathogenEncountered', 'pathogen': {'name': 'Phagum vidiianum', 'infectivity': 'o', 'mobility': 'o', 'duration': '+', 'lethality': '+'}, 'round': 1}
+
+bioTerrorism	, local
+{'type': 'bioTerrorism', 'round': 16, 'pathogen': {'name': 'Endoictus', 'infectivity': '-', 'mobility': 'o', 'duration': '+', 'lethality': '--'}}
+
+antiVaccinationism	, local
+{'type': 'antiVaccinationism', 'sinceRound': 18}
+
+largeScalePanic	, global
+{'type': 'largeScalePanic', 'sinceRound': 71}
+
+medicationInDevelopment	, global
+{'type': 'medicationInDevelopment', 'pathogen': {'name': 'Xenomonocythemia', 'infectivity': '-', 'mobility': '--', 'duration': 'o', 'lethality': '++'}, 'sinceRound': 1, 'untilRound': 4}
+
+medicationAvailable	, global
+{'type': 'medicationAvailable', 'pathogen': {'name': 'Endoictus', 'infectivity': '-', 'mobility': 'o', 'duration': '+', 'lethality': '--'}, 'sinceRound': 4}
+
+vaccineInDevelopment	, global
+{'type': 'vaccineInDevelopment', 'pathogen': {'name': 'Procrastinalgia', 'infectivity': '-', 'mobility': '--', 'duration': '++', 'lethality': '--'}, 'sinceRound': 1, 'untilRound': 7}
+
+economicCrisis	, global
+{'type': 'economicCrisis', 'sinceRound': 2}
+
+vaccineAvailable	, global
+{'type': 'vaccineAvailable', 'pathogen': {'name': 'Methanobrevibacter colferi', 'infectivity': 'o', 'mobility': '++', 'duration': '--', 'lethality': '-'}, 'sinceRound': 7}
+
+medicationDeployed	, local
+{'type': 'medicationDeployed', 'pathogen': {'name': 'Coccus innocuus', 'infectivity': 'o', 'mobility': '--', 'duration': 'o', 'lethality': '--'}, 'round': 5}
+
+vaccineDeployed	, local
+{'type': 'vaccineDeployed', 'pathogen': {'name': 'Coccus innocuus', 'infectivity': 'o', 'mobility': '--', 'duration': 'o', 'lethality': '--'}, 'round': 7}
