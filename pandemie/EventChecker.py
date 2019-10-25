@@ -31,7 +31,7 @@ class EventChecker:
 
     # Function to go through all data to check for events
     def check_all_events(self, data):
-        for city in data["cities"]:  # Check for loacl events
+        for city in data["cities"]:  # Check for local events
             if "events" in data["cities"][city]:
                 self.check_events(data["cities"][city]["events"], "local")  # Event detected -> check if it's known
 
