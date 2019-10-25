@@ -8,7 +8,8 @@ class EventChecker:
     def load_known_events(self):
         with open("event_names.dat", "r") as f:  # Load known events from data file
             data = f.read()
-            names = data.split("\n")  # Split the lines -> extract all diffrent events
+            # Split the lines -> extract all diffrent events
+            names = data.split("\n")
         self.events = names
 
     # Function to check if new events occurred
@@ -24,7 +25,8 @@ class EventChecker:
             f.write("\n" + event["type"])
 
         with open("event_data.dat", "a") as f:  # Update the data file
-            data = "\n\n" + event["type"] + "\t, " + addition + "\n"  # Name and local/global
+            data = "\n\n" + event["type"] + "\t, " + \
+                addition + "\n"  # Name and local/global
             data += str(event)  # Example for the structure
             # print(data)
             f.write(data)
@@ -33,7 +35,9 @@ class EventChecker:
     def check_all_events(self, data):
         for city in data["cities"]:  # Check for local events
             if "events" in data["cities"][city]:
-                self.check_events(data["cities"][city]["events"], "local")  # Event detected -> check if it's known
+                # Event detected -> check if it's known
+                self.check_events(data["cities"][city]["events"], "local")
 
         if "events" in data:  # Check for global events
-            self.check_events(data["events"], "global")  # Events detected -> check if it's known
+            # Events detected -> check if it's known
+            self.check_events(data["events"], "global")
