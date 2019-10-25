@@ -12,13 +12,6 @@ This method is then run for the complete games with the seeds 1 to 100.
 
 ## Scoring
 
-After each completed simulation for a game, the score is calculated in the following way:
-
-```Code
-n := steps until the game ends
-p := 1 if the game is won else -1
-
-score(game) = p*n
-```
+After each completed simulation of a game, the score is calculated as a linear score from "short and lost" to "short and won" by mapping it to a [-1,1] intervall using a sigmoid function
 
 The overall score is now calculated by taking the average of the game simulations with the seeds 1 to 100.
