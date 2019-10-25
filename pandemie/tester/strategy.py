@@ -3,8 +3,8 @@ from abc import ABC, abstractmethod
 
 class AbstractStrategy(ABC):
     def __init__(self):
-        super(AbstractStrategy, self).__init__()
+        super().__init__()
 
     @abstractmethod
-    def example(self):
+    def solve(self, json_data):
         pass
