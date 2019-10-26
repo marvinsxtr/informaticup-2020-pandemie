@@ -17,7 +17,7 @@ class MyServer(WSGIRefServer):
         super().__init__()
 
         # overwrite the values in the ServerAdapter.__init__ method because we cannot call it directly
-        # due to a parameter mismatch in the WSGIRefServer class
+        # due to a parameter mismatch in the WSGIRefServer class constructor
         self.host = host
         self.port = port
 
@@ -25,7 +25,7 @@ class MyServer(WSGIRefServer):
         self.stopped = False
 
         # patch the WSGTRefServer.run function at runtime by adding the line "self.srv = srv" at the end of the routine
-        # this is necessary to shut down the server after we have
+        # this is necessary to shut down the server after we have completed the simulation
         code = WSGIRefServer.run.__code__
         WSGIRefServer.run.__code__ = CodeType(code.co_argcount, code.co_kwonlyargcount, code.co_nlocals,
                                               code.co_stacksize, code.co_flags,
@@ -50,10 +50,16 @@ class MyServer(WSGIRefServer):
 
 
 def start_server(handler, port=50123, quiet=True):
+    """
+    Starts a WSGI Server listening on the provided port.
+    It passes the json it gets from the post request to the handler.
+    :param handler: handler function that performs the simulation, should return a valid json answer
+    :param port: port for the server to listen on
+    :param quiet: whether the server should show debug output
+    :return: None
+    """
     def begin():
-        run(server=server, port=port, quiet=quiet)
-
-    server = MyServer(host="localhost", port=port)
+        run(server=server, quiet=quiet)
 
     @post("/")
     def index():
@@ -65,9 +71,13 @@ def start_server(handler, port=50123, quiet=True):
 
         # warning, we actually do not send a last response after the game finished
         # todo: check the unknown behaviour of the ic20 tool
+        # maybe make the handler close the server to avoid this
 
         return handler.solve(game)
 
+    server = MyServer(host="localhost", port=port)
+
+    # start server thread
     server_thread = Thread(target=begin)
     server_thread.daemon = True
     server_thread.start()
