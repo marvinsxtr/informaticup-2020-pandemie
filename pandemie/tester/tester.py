@@ -5,16 +5,16 @@ from pandemie.web import start_server
 
 
 class Tester:
-    def __init__(self, strategy):
+    def __init__(self, strategy, random_seed=0):
         if not isinstance(strategy, AbstractStrategy):
             raise ValueError("Strategy is not valid.")
 
         if os.name == "nt":
-            os.system("start ../../test/ic20_windows.exe")
+            os.system("start ../../test/ic20_windows.exe --random-seed {0}".format(random_seed))
 
         else:
             os.chdir("../../test/")
-            subprocess.call("./ic20_linux", shell=True)
+            subprocess.call("./ic20_linux --random-seed {0}".format(random_seed), shell=True)
 
         start_server(strategy)
 
