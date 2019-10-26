@@ -27,14 +27,13 @@ class MyServer(WSGIRefServer):
         # patch the WSGTRefServer.run function at runtime by adding the line "self.srv = srv" at the end of the routine
         # this is necessary to shut down the server after we have
         code = WSGIRefServer.run.__code__
-        WSGIRefServer.run.__code__ = CodeType(code.co_argcount, code.co_kwonlyargcount, code.co_nlocals, code.co_stacksize,
-                                          code.co_flags,
-                                          code.co_code[:154] + b'\x88\x01_\x0b|\x07j\x0c' + code.co_code[156:],
-                                          code.co_consts,
-                                          code.co_names[:-1] + ('srv', 'serve_forever'),
-                                          code.co_varnames, code.co_filename, code.co_name, code.co_firstlineno,
-                                          code.co_lnotab, code.co_freevars, code.co_cellvars,
-                                          )
+        WSGIRefServer.run.__code__ = CodeType(code.co_argcount, code.co_kwonlyargcount, code.co_nlocals,
+                                              code.co_stacksize, code.co_flags,
+                                              code.co_code[:154] + b'\x88\x01_\x0b|\x07j\x0c' + code.co_code[156:],
+                                              code.co_consts, code.co_names[:-1] + ('srv', 'serve_forever'),
+                                              code.co_varnames, code.co_filename, code.co_name, code.co_firstlineno,
+                                              code.co_lnotab, code.co_freevars, code.co_cellvars,
+                                              )
 
     def shutdown(self):
         self.stopped = True  # set the stop flag
