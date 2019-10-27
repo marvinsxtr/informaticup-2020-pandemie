@@ -12,7 +12,7 @@ class Tester:
         self.strategy = strategy
         self.random_seed = random_seed
 
-    def run_strategy(self):
+    def _run_strategy(self):
         if os.name == "nt":
             os.system(
                 "start ../../test/ic20_windows.exe --random-seed {0}".format(self.random_seed))
@@ -25,6 +25,12 @@ class Tester:
         start_server(self.strategy)
 
         return self.strategy.get_result()
+
+    def evaluate(self, times=1):
+        results = [self._run_strategy() for _ in range(times)]
+        weighted_sum = 0
+
+        # todo: add a evaluation loop that somehow calculates a weighted average
 
 
 class ExampleStrategy(AbstractStrategy):
@@ -40,5 +46,5 @@ class ExampleStrategy(AbstractStrategy):
 
 if __name__ == "__main__":
     my_tester = Tester(ExampleStrategy())
-    result = my_tester.run_strategy()
+    result = my_tester._run_strategy()
     print(result)
