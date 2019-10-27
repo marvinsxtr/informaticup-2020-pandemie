@@ -64,16 +64,9 @@ def start_server(handler, port=50123, quiet=True):
     @post("/")
     def index():
         game = request.json
-        print(f'round: {game["round"]}, outcome: {game["outcome"]}')
+        # print(f'round: {game["round"]}, outcome: {game["outcome"]}')
 
-        if game["outcome"] == "loss" or game["outcome"] == "win":
-            server.shutdown()
-
-        # warning, we actually do not send a last response after the game finished
-        # todo: check the unknown behaviour of the ic20 tool
-        # maybe make the handler close the server to avoid this
-
-        return handler.solve(game)
+        return handler.solve(game, server)
 
     server = MyServer(host="localhost", port=port)
 

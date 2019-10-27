@@ -6,5 +6,9 @@ class AbstractStrategy(ABC):
         super().__init__()
 
     @abstractmethod
-    def solve(self, json_data):
+    def solve(self, json_data, server):
+        pass
+
+    @abstractmethod
+    def get_result(self):
         pass
