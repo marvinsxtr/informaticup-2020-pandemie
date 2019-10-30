@@ -31,11 +31,19 @@ class Tester:
 
         return self.strategy.get_result()
 
-    def evaluate(self, times=1):
+    def evaluate(self, times=10):
         results = [self._run_strategy() for _ in range(times)]
         weighted_sum = 0
 
-        # todo: add a evaluation loop that somehow calculates a weighted average
+        for r in results:
+            if r[0] == "win":
+                weighted_sum += self.win_weight(r[1])
+            elif r[0] == "loss":
+                weighted_sum += self.loss_weight(r[1])
+            else:
+                raise ValueError("Unknown result type {0}".format(r[0]))
+
+        return weighted_sum
 
     @staticmethod
     def win_weight(rounds):
@@ -59,5 +67,6 @@ class ExampleStrategy(AbstractStrategy):
 
 if __name__ == "__main__":
     my_tester = Tester(ExampleStrategy())
+    result = my_tester._run_strategy()
     result = my_tester._run_strategy()
     print(result)
