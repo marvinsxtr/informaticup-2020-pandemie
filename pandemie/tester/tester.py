@@ -19,14 +19,12 @@ class Tester:
 
     def _run_strategy(self):
         if os.name == "nt":
-            subprocess.call(
-                "start ../../test/ic20_windows.exe --random-seed {0}".format(self.random_seed), shell=True)
+            subprocess.call("start ../../test/ic20_windows.exe --random-seed {0}".format(self.random_seed), shell=True)
 
         else:
-            dirpath = os.getcwd()
-            os.chdir(dirpath + "/test/")
-            subprocess.call(
-                "./ic20_linux --random-seed {0}".format(self.random_seed), shell=True)
+            dir_path = os.getcwd()
+            os.chdir(dir_path + "/test/")
+            subprocess.call("./ic20_linux --random-seed {0}".format(self.random_seed), shell=True)
 
         start_server(self.strategy)
 
