@@ -67,7 +67,7 @@ def start_server(handler, port=50123, quiet=True):
     @post("/")
     def index():
         game = request.json
-        print(f'round: {game["round"]}, outcome: {game["outcome"]}')
+        #print(f'round: {game["round"]}, outcome: {game["outcome"]}')
 
         return handler.solve(game, server)
 
