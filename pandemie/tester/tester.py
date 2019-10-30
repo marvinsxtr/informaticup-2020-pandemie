@@ -43,7 +43,7 @@ class Tester:
             else:
                 raise ValueError("Unknown result type {0}".format(r[0]))
 
-        return weighted_sum
+        return weighted_sum / len(results)
 
     @staticmethod
     def win_weight(rounds):
