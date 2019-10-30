@@ -24,19 +24,35 @@ class MyServer(WSGIRefServer):
         # flag to indicate whether we have closed the server
         self.stopped = False
 
-        # patch the WSGTRefServer.run function at runtime by adding the line "self.srv = srv" at the end of the routine
-        # this is necessary to shut down the server after we have completed the simulation
-        code = WSGIRefServer.run.__code__
+    # override the WSGTRefServer.run function
+    # we added the line "self.srv = srv" at the end of the routine to be able to shut down the server after
+    # we have completed the simulation
 
-        # make sure to not patch twice
-        if len(code.co_code) == 164:
-            WSGIRefServer.run.__code__ = CodeType(code.co_argcount, code.co_kwonlyargcount, code.co_nlocals,
-                                                  code.co_stacksize, code.co_flags,
-                                                  code.co_code[:154] + b'\x88\x01_\x0b|\x07j\x0c' + code.co_code[156:],
-                                                  code.co_consts, code.co_names[:-1] + ('srv', 'serve_forever'),
-                                                  code.co_varnames, code.co_filename, code.co_name, code.co_firstlineno,
-                                                  code.co_lnotab, code.co_freevars, code.co_cellvars,
-                                                  )
+    def run(self, app):
+        from wsgiref.simple_server import WSGIRequestHandler, WSGIServer
+        from wsgiref.simple_server import make_server
+        import socket
+
+        class FixedHandler(WSGIRequestHandler):
+            def address_string(self):  # Prevent reverse DNS lookups please.
+                return self.client_address[0]
+
+            def log_request(*args, **kw):
+                if not self.quiet:
+                    return WSGIRequestHandler.log_request(*args, **kw)
+
+        handler_cls = self.options.get('handler_class', FixedHandler)
+        server_cls = self.options.get('server_class', WSGIServer)
+
+        if ':' in self.host:  # Fix wsgiref for IPv6 addresses.
+            if getattr(server_cls, 'address_family') == socket.AF_INET:
+                class server_cls(server_cls):
+                    address_family = socket.AF_INET6
+
+        srv = make_server(self.host, self.port, app, server_cls, handler_cls)
+        self.srv = srv  # we added this line to be able to access the former local var srv
+        srv.serve_forever()
+
 
     def shutdown(self):
         self.stopped = True  # set the stop flag
@@ -61,13 +77,14 @@ def start_server(handler, port=50123, quiet=True):
     :param quiet: whether the server should show debug output
     :return: None
     """
+
     def begin():
         run(server=server, quiet=quiet)
 
     @post("/")
     def index():
         game = request.json
-        #print(f'round: {game["round"]}, outcome: {game["outcome"]}')
+        # print(f'round: {game["round"]}, outcome: {game["outcome"]}')
 
         return handler.solve(game, server)
 
