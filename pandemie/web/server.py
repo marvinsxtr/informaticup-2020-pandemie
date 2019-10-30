@@ -42,8 +42,8 @@ class MyServer(WSGIRefServer):
         self.stopped = True  # set the stop flag
 
         if hasattr(self, "srv"):
-            self.srv.shutdown()
             self.srv.server_close()
+            self.srv.shutdown()
 
         else:
             raise RuntimeError("Could not patch WSGIRefServer.run!")
