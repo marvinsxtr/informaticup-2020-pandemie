@@ -16,7 +16,7 @@ class AbstractStrategy(ABC):
             server.shutdown()
 
         elif json_data["outcome"] == "win":
-            self.result = ("win", None)
+            self.result = ("win", json_data["round"])
             server.shutdown()
 
         return self._solve(json_data, server)

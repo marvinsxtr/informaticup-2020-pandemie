@@ -1,8 +1,13 @@
+import math
 import os
 import subprocess
 from pandemie.tester import AbstractStrategy
 from pandemie.web import start_server
 from pandemie import operations
+
+# consts used to shift the sigmoid curve
+WIN_RATE_HALVED = 25
+LOSS_RATE_HALVED = 25
 
 
 class Tester:
@@ -31,6 +36,14 @@ class Tester:
         weighted_sum = 0
 
         # todo: add a evaluation loop that somehow calculates a weighted average
+
+    @staticmethod
+    def win_weight(rounds):
+        return math.exp(-rounds + WIN_RATE_HALVED) / (1 + math.exp(-rounds + WIN_RATE_HALVED))
+
+    @staticmethod
+    def loss_weight(rounds):
+        return math.exp(rounds - WIN_RATE_HALVED) / (1 + math.exp(rounds - WIN_RATE_HALVED)) - 1
 
 
 class ExampleStrategy(AbstractStrategy):
