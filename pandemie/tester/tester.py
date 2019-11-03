@@ -22,8 +22,7 @@ class Tester:
             subprocess.call("start ../../test/ic20_windows.exe --random-seed {0}".format(self.random_seed), shell=True)
 
         else:
-            dir_path = os.getcwd()
-            os.chdir(dir_path + "/test/")
+            os.chdir("../../test")
             subprocess.call("./ic20_linux --random-seed {0}".format(self.random_seed), shell=True)
 
         start_server(self.strategy)
