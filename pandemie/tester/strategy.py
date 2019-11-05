@@ -2,9 +2,10 @@ from abc import ABC, abstractmethod
 
 
 class AbstractStrategy(ABC):
-    def __init__(self):
+    def __init__(self, name):
         super().__init__()
         self.result = None
+        self.name = name
 
     def solve(self, json_data, server):
 

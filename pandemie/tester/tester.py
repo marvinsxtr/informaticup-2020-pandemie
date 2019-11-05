@@ -53,8 +53,8 @@ class Tester:
 
 
 class ExampleStrategy(AbstractStrategy):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, name):
+        super().__init__(name)
 
     def _solve(self, json_data, server):
         return operations.end_round()
@@ -64,6 +64,6 @@ class ExampleStrategy(AbstractStrategy):
 
 
 if __name__ == "__main__":
-    my_tester = Tester(ExampleStrategy())
+    my_tester = Tester(ExampleStrategy("example"))
     result = my_tester.evaluate(times=2)
     print(result)
