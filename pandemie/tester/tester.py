@@ -15,6 +15,7 @@ class Tester:
     def __init__(self, strategy, random_seed=0):
         if not isinstance(strategy, AbstractStrategy):
             raise ValueError("Strategy is not valid.")
+        open("results/" + strategy.name + ".dat", "w")
         self.strategy = strategy
         self.random_seed = random_seed
 
