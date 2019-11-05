@@ -1,0 +1,12 @@
+loss:	27
+{'name': 'Phagum vidiianum', 'infectivity': 'o', 'mobility': 'o', 'duration': '+', 'lethality': '+'}
+{'name': 'Moricillus ', 'infectivity': '-', 'mobility': 'o', 'duration': '-', 'lethality': '+'}
+{'name': 'Xenomonocythemia', 'infectivity': '-', 'mobility': '--', 'duration': 'o', 'lethality': '++'}
+
+loss:	89
+{'name': 'Xenomonocythemia', 'infectivity': '-', 'mobility': '--', 'duration': 'o', 'lethality': '++'}
+{'name': 'Neurodermantotitis', 'infectivity': '+', 'mobility': 'o', 'duration': 'o', 'lethality': 'o'}
+{'name': 'Endoictus', 'infectivity': '-', 'mobility': 'o', 'duration': '+', 'lethality': '--'}
+{'name': 'Hexapox', 'infectivity': 'o', 'mobility': '+', 'duration': 'o', 'lethality': 'o'}
+{'name': 'Influenza iutiubensis', 'infectivity': '++', 'mobility': '++', 'duration': '--', 'lethality': '--'}
+
