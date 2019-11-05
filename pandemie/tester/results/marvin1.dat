@@ -1,6 +1,0 @@
-loss:	54
-{'name': 'Methanobrevibacter colferi', 'infectivity': 'o', 'mobility': '++', 'duration': '--', 'lethality': '-'}
-{'name': 'Xenomonocythemia', 'infectivity': '-', 'mobility': '--', 'duration': 'o', 'lethality': '++'}
-{'name': 'Plorps', 'infectivity': 'o', 'mobility': 'o', 'duration': '+', 'lethality': '-'}
-{'name': 'Saccharomyces cerevisiae mutans', 'infectivity': 'o', 'mobility': 'o', 'duration': 'o', 'lethality': '-'}
-

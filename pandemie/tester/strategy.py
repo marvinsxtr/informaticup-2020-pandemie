@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+import string
 
 
 class AbstractStrategy(ABC):
@@ -15,15 +16,15 @@ class AbstractStrategy(ABC):
         if not json_data["outcome"] == "pending":
             self.result = (json_data["outcome"], json_data["round"])
             with open("results/" + self.name + ".dat", "a") as file:
-                string = json_data["outcome"] + ":\t" + str(json_data["round"]) + "\n"
+                data = json_data["outcome"] + ":\t" + str(json_data["round"]) + "\n"
                 if "events" in json_data:
                     for event in json_data["events"]:
                         if event["type"] == "pathogenEncountered":
-                            string += str(event["pathogen"]) + "\n"
+                            data += str(event["pathogen"]) + "\n"
 
-                string += "\n"
-                string = bytes(string, 'utf-8').decode('utf-8', 'ignore')
-                file.write(string)
+                data += "\n"
+                data = "".join(x for x in data if x in string.printable)
+                file.write(data)
             server.shutdown()
 
         return self._solve(json_data, server)
