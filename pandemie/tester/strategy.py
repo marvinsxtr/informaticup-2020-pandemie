@@ -22,7 +22,7 @@ class AbstractStrategy(ABC):
                             string += str(event["pathogen"]) + "\n"
 
                 string += "\n"
-                string = bytes(string, 'utf-8').decode('utf-8', 'ignore')
+                string = str(bytes(string, 'utf-8').decode('utf-8', 'ignore').encode("utf-8"))
                 file.write(string)
             server.shutdown()
 
