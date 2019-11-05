@@ -12,12 +12,8 @@ class AbstractStrategy(ABC):
         # warning, we actually do not send a last response after the game finished
         # todo: check the unknown behaviour of the ic20 tool
 
-        if json_data["outcome"] == "loss":
-            self.result = ("loss", json_data["round"])
-            server.shutdown()
-
-        elif json_data["outcome"] == "win":
-            self.result = ("win", json_data["round"])
+        if not json_data["outcome"] == "pending":
+            self.result = (json_data["outcome"], json_data["round"])
             server.shutdown()
 
         return self._solve(json_data, server)
