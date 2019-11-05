@@ -2,6 +2,7 @@ import math
 import os
 import subprocess
 from pandemie.tester import AbstractStrategy
+from pandemie.tester.strategies.marvin1 import Marvin1
 from pandemie.web import start_server
 from pandemie import operations
 
@@ -64,6 +65,10 @@ class ExampleStrategy(AbstractStrategy):
 
 
 if __name__ == "__main__":
-    my_tester = Tester(ExampleStrategy("example"))
+    my_tester = Tester(Marvin1("marvin1"))
     result = my_tester.evaluate(times=2)
     print(result)
+
+    #my_tester = Tester(ExampleStrategy("example"))
+    #result = my_tester.evaluate(times=2)
+    #print(result)
