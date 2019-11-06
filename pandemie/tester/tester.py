@@ -96,7 +96,7 @@ class Tester:
 
 
 if __name__ == "__main__":
-    strategy_name = input("Enter the full name of the strategy you want to test:\t")
+    strategy_name = input("Enter the full name of the strategy you want to test (no .py):\t")
 
     do_output = input("Should a log be created? (y/n, default=n)\t")
     do_output = do_output.startswith("y") or do_output.startswith("j")
