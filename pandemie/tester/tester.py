@@ -4,8 +4,6 @@ import subprocess
 import datetime
 import random
 from pandemie.tester import AbstractStrategy
-from pandemie.tester.strategies.marvin1 import Marvin1
-from pandemie.tester.strategies.ruwen1 import Ruwen1
 from pandemie.web import start_server
 from pandemie import operations
 
@@ -93,29 +91,41 @@ class ExampleStrategy(AbstractStrategy):
 
 
 if __name__ == "__main__":
-    strategy_name = input("Welche Strategie soll ausgeführt werden? (ohne.py)\t")
-    do_output = input("Soll ein log-output erzeugt werden? (j/n, default:n)\t")
-    count = input("Wie viele runden sollen simuliert werden? (default:5\t")
-    if count == "":
-        count = 5
-    else:
-        try:
-            count = int(count)
-        except ValueError:
-            print("Du musst eine Zahl eingeben!")
-            quit()
+    strategy_name = input("Enter the full name of the strategy you want to test:\t")
 
-    do_output = not ("y" in do_output.lower() or "j" in do_output.lower())
+    do_output = input("Should a log be created? (y/n, default=n)\t")
+    do_output = do_output.startswith("y") or do_output.startswith("j")
 
-    all_strategies = {
-        "marvin1": Marvin1("marvin1", silent=do_output),
-        "ruwen1": Ruwen1("ruwen1", silent=do_output),
-        "example": ExampleStrategy("example", silent=do_output)
-    }
+    while True:
+        count = input("How many rounds should the simulation last? (default=5)\t")
 
-    if strategy_name in all_strategies:
-        my_tester = Tester(all_strategies[strategy_name], random_seed=1)
-        result = my_tester.evaluate(times=count)
-        print(result)
-    else:
-        print("Der Name konnte nicht gefunden werden!")
+        if not count:
+            count = 5
+            break
+
+        elif not count.isdigit():
+            print("You need to enter a valid round number!")
+
+        else:
+            break
+
+    # try to dynamically import he
+    #from pandemie.tester.strategies.marvin1 import Marvin1
+    #from pandemie.tester.strategies.ruwen1 import Ruwen1
+
+    try:
+        strategy_module = __import__("pandemie.tester.strategies." + strategy_name, fromlist=strategy_name.capitalize())
+        strategy = getattr(strategy_module, strategy_name.capitalize())
+
+    except ModuleNotFoundError:
+        print("StrategyModule {0} not found! Exiting...".format(strategy_name))
+        exit()
+
+    except AttributeError:
+        print("Strategy not found! Make sure it has the same name as the file. Exiting...")
+        exit()
+
+    my_tester = Tester(strategy("placeholder", silent=do_output), random_seed=1)
+    result = my_tester.evaluate(times=count)
+    print(result)
+
