@@ -13,6 +13,10 @@ LOSS_RATE_HALVED = 25
 DEVNULL = subprocess.DEVNULL
 
 
+def to_camel_case(name):
+    return name.title().replace("_", "")
+
+
 class Tester:
     def __init__(self, strategy, random_seed=None):
         if not isinstance(strategy, AbstractStrategy):
@@ -112,8 +116,8 @@ if __name__ == "__main__":
             break
 
     try:
-        strategy_module = __import__("pandemie.tester.strategies." + strategy_name, fromlist=strategy_name.capitalize())
-        strategy = getattr(strategy_module, strategy_name.capitalize())
+        strategy_module = __import__("pandemie.tester.strategies." + strategy_name, fromlist=to_camel_case(strategy_name))
+        strategy = getattr(strategy_module, to_camel_case(strategy_name))
 
     except ModuleNotFoundError:
         print("StrategyModule {0} not found! Exiting...".format(strategy_name))
