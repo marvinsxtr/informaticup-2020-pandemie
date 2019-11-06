@@ -3576,3 +3576,12 @@ Moricillus
 
 Moricillus 
 {'name': 'Moricillus ', 'infectivity': '-', 'mobility': 'o', 'duration': '-', 'lethality': '+'}
+
+Neurodermantotitis
+{'name': 'Neurodermantotitis', 'infectivity': '+', 'mobility': 'o', 'duration': 'o', 'lethality': 'o'}
+
+N5-10
+{'name': 'N5-10', 'infectivity': '+', 'mobility': '++', 'duration': 'o', 'lethality': '+'}
+
+Methanobrevibacter colferi
+{'name': 'Methanobrevibacter colferi', 'infectivity': 'o', 'mobility': '++', 'duration': '--', 'lethality': '-'}

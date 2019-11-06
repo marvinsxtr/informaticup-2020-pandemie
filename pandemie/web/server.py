@@ -15,7 +15,7 @@ SLEEP_TIME = 0.01
 monkey.patch_all()
 
 
-def start_server(handler, port=50123, quiet=True):
+def start_server(handler, port=50123, log=None):
     """
     Starts a WSGI Server listening on the provided port.
     It passes the json it gets from the post request to the handler.
@@ -37,7 +37,7 @@ def start_server(handler, port=50123, quiet=True):
 
         return handler.solve(game, server)
 
-    server = WSGIServer(('127.0.0.1', 50123), app, log=None)
+    server = WSGIServer(('127.0.0.1', 50123), app, log=log)
 
     # start server thread
     server_thread = Thread(target=begin)
