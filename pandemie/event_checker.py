@@ -41,7 +41,7 @@ class EventChecker:
             f.write("\n" + event["type"])
 
         # Update the data file
-        with open(self.pathogen_path, "a") as f:
+        with open("data/event_data.dat", "a") as f:
             f.write("\n\n{0}\t, {1}\n{2}".format(event["type"], addition, str(event)))
 
     # Function to save pathogens to a file

@@ -21,9 +21,9 @@ class Ruwen1(AbstractStrategy):
             for event in data["events"]:
                 if event["type"] == "pathogenEncountered" and event["round"] == data["round"]:
                     self.pathogen.append(event["pathogen"]["name"])
-                if event["type"] == "developMedication" and event["pathogen"]["name"] not in self.develop:
+                if event["type"] == "medicationInDevelopment" and event["pathogen"]["name"] not in self.develop:
                     self.develop.append(event["pathogen"]["name"])
-                if event["type"] == "MedicationAvailable" and event["pathogen"]["name"] not in self.available:
+                if event["type"] == "medicationAvailable" and event["pathogen"]["name"] not in self.available:
                     if event["pathogen"]["name"] in self.develop:
                         self.develop.remove(event["pathogen"]["name"])
                     self.available.append(event["pathogen"]["name"])
@@ -31,7 +31,9 @@ class Ruwen1(AbstractStrategy):
         if len(self.pathogen) > 0 and points >= operations.PRICES["develop_medication"]["initial"]:
             if (len(self.develop) == 0 and len(self.available) == 0) or random.random() > 0.6:
                 spend += operations.PRICES["develop_medication"]["initial"]
-                return operations.develop_medication(random.choice(self.pathogen))
+                op = operations.develop_medication(random.choice(self.pathogen))
+                print(op)
+                return op
         pathogen = ""
         if len(self.available) > 0:
             pathogen = random.choice(self.available)
@@ -45,6 +47,9 @@ class Ruwen1(AbstractStrategy):
                             break
 
         if points - spend >= operations.PRICES["deploy_medication"]["initial"] and len(possible) > 0:
-            return operations.deploy_medication(pathogen, random.choice(possible))
+            op = operations.deploy_medication(pathogen, random.choice(possible))
+            print(op)
+            return op
 
+        print("endRound")
         return operations.end_round()
