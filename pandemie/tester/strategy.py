@@ -46,3 +46,6 @@ class AbstractStrategy(ABC):
 
     def get_result(self):
         return self.result
+
+    def get_file_path(self):
+        return "results/" + self.name + "/" + self.file

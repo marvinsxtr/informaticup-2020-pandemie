@@ -59,9 +59,9 @@ class Tester:
             else:
                 raise ValueError("Unknown result type {0}".format(r[0]))
 
-        if not self.strategy.silent:  # If there should be an output
-            with open("results/" + self.strategy.name + "/" + self.strategy.file, "a") as file:  # Open the save-file
-                file.write(str(weighted_sum / len(results)))  # Append the score to the file
+        if not self.strategy.silent:
+            with open(self.strategy.get_file_path(), "a") as file:
+                file.write(str(weighted_sum / len(results)))
 
         return weighted_sum / len(results)
 
