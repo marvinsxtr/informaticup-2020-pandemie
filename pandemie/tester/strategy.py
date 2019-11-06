@@ -35,7 +35,7 @@ class AbstractStrategy(ABC):
                     data += "\n"
                     data = "".join(x for x in data if x in string.printable)
                     file.write(data)
-            server.shutdown()
+            server.stop()
 
         return self._solve(json_data, server)
 
