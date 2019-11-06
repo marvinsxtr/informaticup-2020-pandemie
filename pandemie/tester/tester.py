@@ -18,13 +18,15 @@ class Tester:
         if not isinstance(strategy, AbstractStrategy):
             raise ValueError("Strategy is not valid.")
 
-        if not strategy.silent:  # Check if there should be an output
-            if not os.path.exists("results/" + strategy.name):  # Check if the directory already exists
-                os.mkdir("results/" + strategy.name)  # Create a new directory for the strategy
+        if not strategy.silent:
+            strategy_dir = "results/" + strategy.name
 
-            file = strategy.name + "-" + str(datetime.datetime.today().strftime('%Y-%m-%d--%H.%M.%S')) + ".dat"  # Create the name for the save-file
-            strategy.set_file(file)  # Transfer file-name to the strategy
-            open("results/" + strategy.name + "/" + file, "w")  # Create the file
+            # Create a directory for the strategy if it doesn't exists
+            if not os.path.exists(strategy_dir):
+                os.mkdir(strategy_dir)
+
+            # Create the name for the log file and pass it to the strategy
+            strategy.set_file("{0}-{1}.dat".format(strategy.name, self.now()))
 
         self.strategy = strategy
         self.random_seed = random.randint(0, 1000)
@@ -66,6 +68,10 @@ class Tester:
     @staticmethod
     def loss_weight(rounds):
         return math.exp(rounds - WIN_RATE_HALVED) / (1 + math.exp(rounds - WIN_RATE_HALVED)) - 1
+
+    @staticmethod
+    def now():
+        return str(datetime.datetime.today().strftime('%Y-%m-%d--%H.%M.%S'))
 
 
 class ExampleStrategy(AbstractStrategy):
