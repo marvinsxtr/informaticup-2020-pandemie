@@ -11,6 +11,7 @@ from pandemie import operations
 WIN_RATE_HALVED = 25
 LOSS_RATE_HALVED = 25
 
+DEVNULL = subprocess.DEVNULL
 
 class Tester:
     def __init__(self, strategy, random_seed=None):
@@ -37,17 +38,24 @@ class Tester:
     def _run_strategy(self):
         print("================== NEW SEED: %s ==================" % str(self.random_seed))
 
-        # TODO Kein eigenes Fenster erstellen für das testtool
+        # store cwd for later usage
+        cwd = os.getcwd()
+        os.chdir("../../test")
+
         if os.name == "nt":
-            subprocess.call("start ../../test/ic20_windows.exe --random-seed {0}".format(self.random_seed), shell=True,
-                            creationflags=0x08000000)
-
+            subprocess.Popen("ic20_windows.exe --random-seed {0}".format(self.random_seed), stdout=DEVNULL,
+                             stderr=DEVNULL)
         else:
-            os.chdir("../../test")
-            subprocess.call("./ic20_linux --random-seed {0}".format(self.random_seed), shell=True)
+            subprocess.Popen("./ic20_linux --random-seed {0}".format(self.random_seed), stdout=DEVNULL,
+                             stderr=DEVNULL)
 
+        # restore cwd
+        os.chdir(cwd)
+
+        # increment seed
         self.random_seed += 1
 
+        # start server and wait for round to end
         start_server(self.strategy)
 
         return self.strategy.get_result()
