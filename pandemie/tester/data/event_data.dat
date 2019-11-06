@@ -1,0 +1,17 @@
+outbreak	, local
+{'type': 'outbreak', 'pathogen': {'name': 'Rhinonitis', 'infectivity': 'o', 'mobility': '-', 'duration': '-', 'lethality': '--'}, 'prevalence': 0.5288582183186951, 'sinceRound': 1}
+
+largeScalePanic	, global
+{'type': 'largeScalePanic', 'sinceRound': 3}
+
+antiVaccinationism	, local
+{'type': 'antiVaccinationism', 'sinceRound': 3}
+
+economicCrisis	, global
+{'type': 'economicCrisis', 'sinceRound': 15}
+
+medicationDeployed	, local
+{'type': 'medicationDeployed', 'pathogen': {'name': 'Neurodermantotitis', 'infectivity': '+', 'mobility': 'o', 'duration': 'o', 'lethality': 'o'}, 'round': 4}
+
+bioTerrorism	, local
+{'type': 'bioTerrorism', 'round': 15, 'pathogen': {'name': 'Neurodermantotitis', 'infectivity': '+', 'mobility': 'o', 'duration': 'o', 'lethality': 'o'}}
