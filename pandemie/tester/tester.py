@@ -37,6 +37,9 @@ class Tester:
             self.random_seed = random_seed
 
     def _run_strategy(self):
+        print("================== NEW SEED: %s ==================" % str(self.random_seed))
+
+        # TODO Kein eigenes Fenster erstellen für das testtool
         if os.name == "nt":
             subprocess.call("start ../../test/ic20_windows.exe --random-seed {0}".format(self.random_seed), shell=True)
 
@@ -95,7 +98,7 @@ class ExampleStrategy(AbstractStrategy):
 if __name__ == "__main__":
     strategy_name = input("Welche Strategie soll ausgeführt werden? (ohne.py)\t")
     do_output = input("Soll ein log-output erzeugt werden? (j/n, default:n)\t")
-    count = input("Wie viele runden sollen simuliert werden? (default:5\t")
+    count = input("Wie viele runden sollen simuliert werden? (default:5)\t")
     if count == "":
         count = 5
     else:
