@@ -115,6 +115,8 @@ if __name__ == "__main__":
             count = int(count)
             break
 
+    strategy = ""
+
     try:
         strategy_module = __import__("pandemie.tester.strategies." + strategy_name, fromlist=to_camel_case(strategy_name))
         strategy = getattr(strategy_module, to_camel_case(strategy_name))
