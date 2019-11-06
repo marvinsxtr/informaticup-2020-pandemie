@@ -73,7 +73,7 @@ class ExampleStrategy(AbstractStrategy):
 
 
 if __name__ == "__main__":
-    my_tester = Tester(Marvin1("marvin1"))
+    my_tester = Tester(Marvin1("marvin1", silent=True))
     result = my_tester.evaluate(times=2)
     print(result)
 

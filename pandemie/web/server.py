@@ -53,7 +53,6 @@ class MyServer(WSGIRefServer):
         self.srv = srv  # we added this line to be able to access the former local var srv
         srv.serve_forever()
 
-
     def shutdown(self):
         self.stopped = True  # set the stop flag
 
