@@ -4,8 +4,8 @@ import random
 
 
 class Ruwen1(AbstractStrategy):
-    def __init__(self, name, silent=False):
-        super().__init__(name, silent=silent)
+    def __init__(self, silent=False):
+        super().__init__(silent=silent)
 
     def _solve(self, data, server):
         pathogen = []

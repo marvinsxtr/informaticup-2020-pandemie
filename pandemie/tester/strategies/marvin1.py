@@ -3,8 +3,8 @@ from pandemie import operations
 
 
 class Marvin1(AbstractStrategy):
-    def __init__(self, name, silent=False):
-        super().__init__(name, silent=silent)
+    def __init__(self, silent=False):
+        super().__init__(silent=silent)
 
     def _solve(self, json_data, server):
         if "error" in json_data:

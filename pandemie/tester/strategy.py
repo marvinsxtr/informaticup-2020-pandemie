@@ -4,10 +4,9 @@ from pandemie.event_checker import EventChecker
 
 
 class AbstractStrategy(ABC):
-    def __init__(self, name, silent=False):
+    def __init__(self, silent=False):
         super().__init__()
         self.result = None
-        self.name = name  # Name of the strategy
         self.file = ""
         self.silent = silent  # If False -> Output result and pathogens of each round into a file
         self.data_gatherer = EventChecker()
@@ -26,6 +25,7 @@ class AbstractStrategy(ABC):
             self.result = (json_data["outcome"], json_data["round"])  # Set the result
 
             if not self.silent:  # If there should be an output
+                print("SAVING STUFF...")
                 with open("results/" + self.name + "/" + self.file, "a") as file:  # Open the save-file
                     data = json_data["outcome"] + ":\t" + str(json_data["round"]) + "\n"  # Outcome + played rounds
                     if "events" in json_data:  # Get all pathogens which occurred during the round
@@ -49,3 +49,7 @@ class AbstractStrategy(ABC):
 
     def get_file_path(self):
         return "results/" + self.name + "/" + self.file
+
+    @property
+    def name(self):
+        return self.__class__.__name__
