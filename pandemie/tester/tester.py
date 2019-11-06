@@ -14,7 +14,7 @@ LOSS_RATE_HALVED = 25
 
 
 class Tester:
-    def __init__(self, strategy, random_seed=0):
+    def __init__(self, strategy, random_seed=None):
         if not isinstance(strategy, AbstractStrategy):
             raise ValueError("Strategy is not valid.")
 
@@ -29,7 +29,11 @@ class Tester:
             strategy.set_file("{0}-{1}.dat".format(strategy.name, self.now()))
 
         self.strategy = strategy
-        self.random_seed = random.randint(0, 1000)
+
+        if not random_seed:
+            self.random_seed = random.randint(0, 1000)
+        else:
+            self.random_seed = random_seed
 
     def _run_strategy(self):
         if os.name == "nt":
