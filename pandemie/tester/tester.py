@@ -90,10 +90,22 @@ class ExampleStrategy(AbstractStrategy):
 
 
 if __name__ == "__main__":
-    my_tester = Tester(Marvin1("marvin1", silent=False))
-    result = my_tester.evaluate(times=1)
-    print(result)
+    strategy_name = input("Welche Strategie soll ausgeführt werden? (ohne.py)\t")
+    do_output = input("Soll ein log-output erzeugt werden? (j/n)\t")
 
+    do_output = not ("y" in do_output.lower() or "j" in do_output.lower())
+
+    all_strategies = {
+        "marvin1": Marvin1("marvin", silent=do_output),
+        "example": ExampleStrategy("example", silent=do_output)
+    }
+
+    if strategy_name in all_strategies:
+        my_tester = Tester(all_strategies[strategy_name], random_seed=0)
+        result = my_tester.evaluate(times=1)
+        print(result)
+    else:
+        print("Der Name konnte nicht gefunden werden!")
     #my_tester = Tester(ExampleStrategy("example"))
     #result = my_tester.evaluate(times=2)
     #print(result)
