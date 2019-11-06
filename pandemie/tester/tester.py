@@ -35,6 +35,9 @@ class Tester:
             self.random_seed = random_seed
 
     def _run_strategy(self):
+        print("================== NEW SEED: %s ==================" % str(self.random_seed))
+
+        # TODO Kein eigenes Fenster erstellen für das testtool
         if os.name == "nt":
             subprocess.call("start ../../test/ic20_windows.exe --random-seed {0}".format(self.random_seed), shell=True)
 
@@ -108,10 +111,6 @@ if __name__ == "__main__":
 
         else:
             break
-
-    # try to dynamically import he
-    #from pandemie.tester.strategies.marvin1 import Marvin1
-    #from pandemie.tester.strategies.ruwen1 import Ruwen1
 
     try:
         strategy_module = __import__("pandemie.tester.strategies." + strategy_name, fromlist=strategy_name.capitalize())
