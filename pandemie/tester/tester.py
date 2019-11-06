@@ -105,7 +105,7 @@ if __name__ == "__main__":
     }
 
     if strategy_name in all_strategies:
-        my_tester = Tester(all_strategies[strategy_name], random_seed=0)
+        my_tester = Tester(all_strategies[strategy_name], random_seed=1)
         result = my_tester.evaluate(times=10)
         print(result)
     else:
