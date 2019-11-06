@@ -1,6 +1,5 @@
 import os.path
-import string
-
+from pandemie.util.encoding import filter_unicode
 # todo: maybe use pickle to store the data on disk
 
 
@@ -42,17 +41,17 @@ class EventChecker:
 
         # Update the data file
         with open("data/event_data.dat", "a") as f:
-            f.write("\n\n{0}\t, {1}\n{2}".format(event["type"], addition, self.filter_unicode(event)))
+            f.write("\n\n{0}\t, {1}\n{2}".format(event["type"], addition, filter_unicode(event)))
 
     # Function to save pathogens to a file
     def save_pathogen(self, pathogen):
         self.pathogens.append(pathogen["name"])
 
         with open(self.pathogen_path, "a") as f:
-            f.write("\n" + self.filter_unicode(pathogen["name"]))
+            f.write("\n" + filter_unicode(pathogen["name"]))
 
         with open("data/pathogen_data.dat", "a") as f:
-            f.write(self.filter_unicode("\n\n{0}\n{1}".format(pathogen["name"], str(pathogen))))
+            f.write(filter_unicode("\n\n{0}\n{1}".format(pathogen["name"], str(pathogen))))
 
     # TODO: recognize known pathogens, compare not only by name but by attributes
     # Function to check for new pathogens
@@ -62,13 +61,13 @@ class EventChecker:
 
                 # Check if pathogen is known
                 for pathogen in self.pathogens:
-                    if self.filter_unicode(event["pathogen"]["name"]) == self.filter_unicode(pathogen):
+                    if filter_unicode(event["pathogen"]["name"]) == filter_unicode(pathogen):
                         break
                 else:
                     # todo(Ruwen): fix this
                     # Need to be here -> sometimes doesn't detect correct  (Still not correct!)
                     if not event["pathogen"]["name"] in self.pathogens and not \
-                                    self.filter_unicode(event["pathogen"]["name"]) in self.pathogens:
+                                    filter_unicode(event["pathogen"]["name"]) in self.pathogens:
                         self.save_pathogen(event["pathogen"])
 
     # Function to go through all data to check for events
@@ -81,7 +80,3 @@ class EventChecker:
         if "events" in data:
             self.check_events(data["events"], "global")
             self.check_for_pathogen(data["events"])
-
-    @staticmethod
-    def filter_unicode(data):
-        return "".join(c for c in str(data) if c in string.printable)

@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
-import string
 from pandemie.event_checker import EventChecker
+from pandemie.util.encoding import filter_unicode
 
 
 class AbstractStrategy(ABC):
@@ -39,7 +39,7 @@ class AbstractStrategy(ABC):
                                 data += str(event["pathogen"]) + "\n"  # Add the data of the pathogen
 
                     data += "\n"
-                    data = "".join(x for x in data if x in string.printable)  # Remove all non UTF-8 characters
+                    data = filter_unicode(data)  # Remove all non UTF-8 characters
                     file.write(data)
 
             # shutdown server
