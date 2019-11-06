@@ -95,6 +95,15 @@ class ExampleStrategy(AbstractStrategy):
 if __name__ == "__main__":
     strategy_name = input("Welche Strategie soll ausgeführt werden? (ohne.py)\t")
     do_output = input("Soll ein log-output erzeugt werden? (j/n, default:n)\t")
+    count = input("Wie viele runden sollen simuliert werden? (default:5\t")
+    if count == "":
+        count = 5
+    else:
+        try:
+            count = int(count)
+        except ValueError:
+            print("Du musst eine Zahl eingeben!")
+            quit()
 
     do_output = not ("y" in do_output.lower() or "j" in do_output.lower())
 
@@ -106,7 +115,7 @@ if __name__ == "__main__":
 
     if strategy_name in all_strategies:
         my_tester = Tester(all_strategies[strategy_name], random_seed=1)
-        result = my_tester.evaluate(times=10)
+        result = my_tester.evaluate(times=count)
         print(result)
     else:
         print("Der Name konnte nicht gefunden werden!")
