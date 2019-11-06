@@ -18,21 +18,21 @@ def to_camel_case(name):
 
 
 class Tester:
-    def __init__(self, strategy, random_seed=None):
-        if not isinstance(strategy, AbstractStrategy):
+    def __init__(self, test_strategy, random_seed=None):
+        if not isinstance(test_strategy, AbstractStrategy):
             raise ValueError("Strategy is not valid.")
 
-        if not strategy.silent:
-            strategy_dir = "results/" + strategy.name
+        if not test_strategy.silent:
+            strategy_dir = "results/" + test_strategy.name
 
             # Create a directory for the strategy if it doesn't exists
             if not os.path.exists(strategy_dir):
                 os.makedirs(strategy_dir)
 
             # Create the name for the log file and pass it to the strategy
-            strategy.set_file("{0}-{1}.dat".format(strategy.name, self.now()))
+            test_strategy.set_file("{0}-{1}.dat".format(test_strategy.name, self.now()))
 
-        self.strategy = strategy
+        self.strategy = test_strategy
 
         if not random_seed:
             self.random_seed = random.randint(0, 1000)
@@ -118,8 +118,8 @@ if __name__ == "__main__":
     strategy = ""
 
     try:
-        strategy_module = __import__("pandemie.tester.strategies." + strategy_name, fromlist=to_camel_case(strategy_name))
-        strategy = getattr(strategy_module, to_camel_case(strategy_name))
+        strategy_mod = __import__("pandemie.tester.strategies." + strategy_name, fromlist=to_camel_case(strategy_name))
+        strategy = getattr(strategy_mod, to_camel_case(strategy_name))
 
     except ModuleNotFoundError:
         print("StrategyModule {0} not found! Exiting...".format(strategy_name))
@@ -132,4 +132,3 @@ if __name__ == "__main__":
     my_tester = Tester(strategy(silent=not do_output), random_seed=1)
     result = my_tester.evaluate(times=count)
     print(result)
-
