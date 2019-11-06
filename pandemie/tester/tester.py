@@ -2,6 +2,7 @@ import math
 import os
 import subprocess
 import datetime
+import random
 from pandemie.tester import AbstractStrategy
 from pandemie.tester.strategies.marvin1 import Marvin1
 from pandemie.web import start_server
@@ -26,7 +27,7 @@ class Tester:
             open("results/" + strategy.name + "/" + file, "w")  # Create the file
 
         self.strategy = strategy
-        self.random_seed = random_seed
+        self.random_seed = random.randint(0, 1000)
 
     def _run_strategy(self):
         if os.name == "nt":
@@ -79,7 +80,7 @@ class ExampleStrategy(AbstractStrategy):
 
 
 if __name__ == "__main__":
-    my_tester = Tester(Marvin1("marvin1", silent=True))
+    my_tester = Tester(Marvin1("marvin1", silent=False))
     result = my_tester.evaluate(times=1)
     print(result)
 

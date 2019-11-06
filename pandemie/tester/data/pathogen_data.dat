@@ -1,25 +1,41 @@
-
-
-Moricillus 
-{'name': 'Moricillus ', 'infectivity': '-', 'mobility': 'o', 'duration': '-', 'lethality': '+'}
-
-Influenza iutiubensis
-{'name': 'Influenza iutiubensis', 'infectivity': '++', 'mobility': '++', 'duration': '--', 'lethality': '--'}
-
-Moricillus 
-{'name': 'Moricillus ', 'infectivity': '-', 'mobility': 'o', 'duration': '-', 'lethality': '+'}
-
-Rhinonitis
-{'name': 'Rhinonitis', 'infectivity': 'o', 'mobility': '-', 'duration': '-', 'lethality': '--'}
-
 Coccus innocuus
 {'name': 'Coccus innocuus', 'infectivity': 'o', 'mobility': '--', 'duration': 'o', 'lethality': '--'}
 
-Saccharomyces cerevisiae mutans
-{'name': 'Saccharomyces cerevisiae mutans', 'infectivity': 'o', 'mobility': 'o', 'duration': 'o', 'lethality': '-'}
+Admiral Trips
+{'name': 'Admiral Trips', 'infectivity': '++', 'mobility': '+', 'duration': '-', 'lethality': '++'}
 
-Moricillus 
-{'name': 'Moricillus ', 'infectivity': '-', 'mobility': 'o', 'duration': '-', 'lethality': '+'}
+Procrastinalgia
+{'name': 'Procrastinalgia', 'infectivity': '-', 'mobility': '--', 'duration': '++', 'lethality': '--'}
+
+Methanobrevibacter colferi
+{'name': 'Methanobrevibacter colferi', 'infectivity': 'o', 'mobility': '++', 'duration': '--', 'lethality': '-'}
+
+Procrastinalgia
+{'name': 'Procrastinalgia', 'infectivity': '-', 'mobility': '--', 'duration': '++', 'lethality': '--'}
+
+N5-10
+{'name': 'N5-10', 'infectivity': '+', 'mobility': '++', 'duration': 'o', 'lethality': '+'}
 
 Hexapox
 {'name': 'Hexapox', 'infectivity': 'o', 'mobility': '+', 'duration': 'o', 'lethality': 'o'}
+
+thisis
+{'name': 'thisis', 'infectivity': 'o', 'mobility': 'o', 'duration': 'o', 'lethality': 'o'}
+
+N5-10
+{'name': 'N5-10', 'infectivity': '+', 'mobility': '++', 'duration': 'o', 'lethality': '+'}
+
+Admiral Trips
+{'name': 'Admiral Trips', 'infectivity': '++', 'mobility': '+', 'duration': '-', 'lethality': '++'}
+
+Hexapox
+{'name': 'Hexapox', 'infectivity': 'o', 'mobility': '+', 'duration': 'o', 'lethality': 'o'}
+
+Methanobrevibacter colferi
+{'name': 'Methanobrevibacter colferi', 'infectivity': 'o', 'mobility': '++', 'duration': '--', 'lethality': '-'}
+
+Endoictus
+{'name': 'Endoictus', 'infectivity': '-', 'mobility': 'o', 'duration': '+', 'lethality': '--'}
+
+N5-10
+{'name': 'N5-10', 'infectivity': '+', 'mobility': '++', 'duration': 'o', 'lethality': '+'}
