@@ -1,3 +1,6 @@
+import string
+
+
 class EventChecker:
     def __init__(self):
         # Init known events
@@ -44,17 +47,18 @@ class EventChecker:
     def save_pathogen(self, pathogen):
         self.pathogens.append(pathogen["name"])
         with open("data/pathogen_names.dat", "a") as f:
-            f.write("\n" + pathogen["name"])
+            f.write("\n" + "".join(x for x in pathogen["name"] if x in string.printable))
 
         with open("data/pathogen_data.dat", "a") as f:
             data = "\n\n" + pathogen["name"] + "\n"  # Name
             data += str(pathogen)  # Example for the structure
+            data = "".join(x for x in data if x in string.printable)
             f.write(data)
 
     def check_for_pathogen(self, events):
         for event in events:
             if event["type"] == "pathogenEncountered":
-                if not event["pathogen"]["name"] in self.pathogens:
+                if not "".join(x for x in event["pathogen"]["name"] if x in string.printable) in self.pathogens:
                     self.save_pathogen(event["pathogen"])
 
     # Function to go through all data to check for events

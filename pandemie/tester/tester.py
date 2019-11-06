@@ -18,7 +18,7 @@ class Tester:
             raise ValueError("Strategy is not valid.")
         if not os.path.exists("results/" + strategy.name):
             os.mkdir("results/" + strategy.name)
-        file = strategy.name + "-" + str(datetime.datetime.today().strftime('%Y-%m-%d--%H.%M.%S.%f')) + ".dat"
+        file = strategy.name + "-" + str(datetime.datetime.today().strftime('%Y-%m-%d--%H.%M.%S')) + ".dat"
         strategy.set_file(file)
         open("results/" + strategy.name + "/" + file, "w")
         self.strategy = strategy

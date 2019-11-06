@@ -1,5 +1,3 @@
-
-
 N5-10
 {'name': 'N5-10', 'infectivity': '+', 'mobility': '++', 'duration': 'o', 'lethality': '+'}
 
@@ -11,3 +9,90 @@ Methanobrevibacter colferi
 
 Procrastinalgia
 {'name': 'Procrastinalgia', 'infectivity': '-', 'mobility': '--', 'duration': '++', 'lethality': '--'}
+
+Azmodeus
+{'name': 'Azmodeus', 'infectivity': 'o', 'mobility': 'o', 'duration': 'o', 'lethality': 'o'}
+
+Phagum vidiianum
+{'name': 'Phagum vidiianum', 'infectivity': 'o', 'mobility': 'o', 'duration': '+', 'lethality': '+'}
+
+N5-10
+{'name': 'N5-10', 'infectivity': '+', 'mobility': '++', 'duration': 'o', 'lethality': '+'}
+
+Moricillus 
+{'name': 'Moricillus ', 'infectivity': '-', 'mobility': 'o', 'duration': '-', 'lethality': '+'}
+
+Hexapox
+{'name': 'Hexapox', 'infectivity': 'o', 'mobility': '+', 'duration': 'o', 'lethality': 'o'}
+
+Moricillus 
+{'name': 'Moricillus ', 'infectivity': '-', 'mobility': 'o', 'duration': '-', 'lethality': '+'}
+
+Moricillus 
+{'name': 'Moricillus ', 'infectivity': '-', 'mobility': 'o', 'duration': '-', 'lethality': '+'}
+
+Moricillus 
+{'name': 'Moricillus ', 'infectivity': '-', 'mobility': 'o', 'duration': '-', 'lethality': '+'}
+
+Moricillus 
+{'name': 'Moricillus ', 'infectivity': '-', 'mobility': 'o', 'duration': '-', 'lethality': '+'}
+
+Moricillus 
+{'name': 'Moricillus ', 'infectivity': '-', 'mobility': 'o', 'duration': '-', 'lethality': '+'}
+
+Moricillus 
+{'name': 'Moricillus ', 'infectivity': '-', 'mobility': 'o', 'duration': '-', 'lethality': '+'}
+
+Moricillus 
+{'name': 'Moricillus ', 'infectivity': '-', 'mobility': 'o', 'duration': '-', 'lethality': '+'}
+
+Moricillus 
+{'name': 'Moricillus ', 'infectivity': '-', 'mobility': 'o', 'duration': '-', 'lethality': '+'}
+
+Moricillus 
+{'name': 'Moricillus ', 'infectivity': '-', 'mobility': 'o', 'duration': '-', 'lethality': '+'}
+
+Moricillus 
+{'name': 'Moricillus ', 'infectivity': '-', 'mobility': 'o', 'duration': '-', 'lethality': '+'}
+
+Moricillus 
+{'name': 'Moricillus ', 'infectivity': '-', 'mobility': 'o', 'duration': '-', 'lethality': '+'}
+
+Moricillus 
+{'name': 'Moricillus ', 'infectivity': '-', 'mobility': 'o', 'duration': '-', 'lethality': '+'}
+
+Moricillus 
+{'name': 'Moricillus ', 'infectivity': '-', 'mobility': 'o', 'duration': '-', 'lethality': '+'}
+
+Moricillus 
+{'name': 'Moricillus ', 'infectivity': '-', 'mobility': 'o', 'duration': '-', 'lethality': '+'}
+
+Moricillus 
+{'name': 'Moricillus ', 'infectivity': '-', 'mobility': 'o', 'duration': '-', 'lethality': '+'}
+
+Moricillus 
+{'name': 'Moricillus ', 'infectivity': '-', 'mobility': 'o', 'duration': '-', 'lethality': '+'}
+
+Moricillus 
+{'name': 'Moricillus ', 'infectivity': '-', 'mobility': 'o', 'duration': '-', 'lethality': '+'}
+
+Moricillus 
+{'name': 'Moricillus ', 'infectivity': '-', 'mobility': 'o', 'duration': '-', 'lethality': '+'}
+
+Moricillus 
+{'name': 'Moricillus ', 'infectivity': '-', 'mobility': 'o', 'duration': '-', 'lethality': '+'}
+
+Moricillus 
+{'name': 'Moricillus ', 'infectivity': '-', 'mobility': 'o', 'duration': '-', 'lethality': '+'}
+
+Moricillus 
+{'name': 'Moricillus ', 'infectivity': '-', 'mobility': 'o', 'duration': '-', 'lethality': '+'}
+
+Moricillus 
+{'name': 'Moricillus ', 'infectivity': '-', 'mobility': 'o', 'duration': '-', 'lethality': '+'}
+
+Moricillus 
+{'name': 'Moricillus ', 'infectivity': '-', 'mobility': 'o', 'duration': '-', 'lethality': '+'}
+
+Moricillus 
+{'name': 'Moricillus ', 'infectivity': '-', 'mobility': 'o', 'duration': '-', 'lethality': '+'}
