@@ -7,7 +7,7 @@
 
 # User-specific stuff
 .idea
-.idea/results
+pandemie/tester/results
 .idea/**/workspace.xml
 .idea/**/tasks.xml
 .idea/**/usage.statistics.xml
