@@ -39,7 +39,8 @@ class Tester:
 
         # TODO Kein eigenes Fenster erstellen für das testtool
         if os.name == "nt":
-            subprocess.call("start ../../test/ic20_windows.exe --random-seed {0}".format(self.random_seed), shell=True)
+            subprocess.call("start ../../test/ic20_windows.exe --random-seed {0}".format(self.random_seed), shell=True,
+                            creationflags=0x08000000)
 
         else:
             os.chdir("../../test")
@@ -110,6 +111,7 @@ if __name__ == "__main__":
             print("You need to enter a valid round number!")
 
         else:
+            count = int(count)
             break
 
     try:
