@@ -37,7 +37,7 @@ def start_server(handler, port=50123, log=None):
 
         return handler.solve(game, server)
 
-    server = WSGIServer(('127.0.0.1', 50123), app, log=log)
+    server = WSGIServer(('127.0.0.1', port), app, log=log)
 
     # start server thread
     server_thread = Thread(target=begin)
