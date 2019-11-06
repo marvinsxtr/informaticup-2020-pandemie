@@ -66,7 +66,7 @@ class EventChecker:
                 else:
                     # todo(Ruwen): fix this
                     # Need to be here -> sometimes doesn't detect correct  (Still not correct!)
-                    if not event["pathogen"]["name"] in self.pathogens and not \
+                    if not filter_unicode(event["pathogen"]["name"]) in self.pathogens and not \
                                     filter_unicode(event["pathogen"]["name"]) in self.pathogens:
                         self.save_pathogen(event["pathogen"])
 

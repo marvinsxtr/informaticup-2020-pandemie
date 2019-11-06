@@ -1,6 +1,3 @@
-Moricillus
-{'name': 'Moricillus ', 'infectivity': '-', 'mobility': 'o', 'duration': '-', 'lethality': '+'}
-
 N5-10
 {'name': 'N5-10', 'infectivity': '+', 'mobility': '++', 'duration': 'o', 'lethality': '+'}
 
@@ -51,9 +48,6 @@ Hexapox
 
 Coccus innocuus
 {'name': 'Coccus innocuus', 'infectivity': 'o', 'mobility': '--', 'duration': 'o', 'lethality': '--'}
-
-Moricillus 
-{'name': 'Moricillus ', 'infectivity': '-', 'mobility': 'o', 'duration': '-', 'lethality': '+'}
 
 Moricillus 
 {'name': 'Moricillus ', 'infectivity': '-', 'mobility': 'o', 'duration': '-', 'lethality': '+'}
