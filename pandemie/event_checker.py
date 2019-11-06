@@ -42,7 +42,7 @@ class EventChecker:
 
         # Update the data file
         with open("data/event_data.dat", "a") as f:
-            f.write("\n\n{0}\t, {1}\n{2}".format(event["type"], addition, str(event)))
+            f.write("\n\n{0}\t, {1}\n{2}".format(event["type"], addition, self.filter_unicode(event)))
 
     # Function to save pathogens to a file
     def save_pathogen(self, pathogen):
@@ -84,4 +84,4 @@ class EventChecker:
 
     @staticmethod
     def filter_unicode(data):
-        return "".join(c for c in data if c in string.printable)
+        return "".join(c for c in str(data) if c in string.printable)
