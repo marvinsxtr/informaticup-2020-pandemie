@@ -24,11 +24,16 @@ class AbstractStrategy(ABC):
         if not json_data["outcome"] == "pending":  # Round ended
             self.result = (json_data["outcome"], json_data["round"])  # Set the result
 
-            if not self.silent:  # If there should be an output
-                print("SAVING STUFF...")
-                with open("results/" + self.name + "/" + self.file, "a") as file:  # Open the save-file
-                    data = json_data["outcome"] + ":\t" + str(json_data["round"]) + "\n"  # Outcome + played rounds
-                    if "events" in json_data:  # Get all pathogens which occurred during the round
+            if not self.silent:
+
+                # Save strategy data
+                with open(self.get_file_path(), "a") as file:
+
+                    # Dump outcome and played rounds
+                    data = "{0}:\t{1}\n".format(json_data["outcome"], str(json_data["round"]))
+
+                    # Append all pathogens which occurred during the round
+                    if "events" in json_data:
                         for event in json_data["events"]:
                             if event["type"] == "pathogenEncountered":
                                 data += str(event["pathogen"]) + "\n"  # Add the data of the pathogen
@@ -36,6 +41,8 @@ class AbstractStrategy(ABC):
                     data += "\n"
                     data = "".join(x for x in data if x in string.printable)  # Remove all non UTF-8 characters
                     file.write(data)
+
+            # shutdown server
             server.stop()
 
         return self._solve(json_data, server)
