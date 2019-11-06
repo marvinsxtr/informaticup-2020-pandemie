@@ -1,6 +1,7 @@
 import math
 import os
 import subprocess
+import datetime
 from pandemie.tester import AbstractStrategy
 from pandemie.tester.strategies.marvin1 import Marvin1
 from pandemie.web import start_server
@@ -15,7 +16,10 @@ class Tester:
     def __init__(self, strategy, random_seed=0):
         if not isinstance(strategy, AbstractStrategy):
             raise ValueError("Strategy is not valid.")
-        open("results/" + strategy.name + ".dat", "w")
+        if not os.path.exists("results/" + strategy.name):
+            os.mkdir("results/" + strategy.name)
+        open("results/" + strategy.name + "/" + strategy.name + "-" +
+             str(datetime.datetime.today().strftime('%Y-%m-%d')) + ".dat", "w")
         self.strategy = strategy
         self.random_seed = random_seed
 
