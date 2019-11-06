@@ -18,8 +18,9 @@ class Tester:
             raise ValueError("Strategy is not valid.")
         if not os.path.exists("results/" + strategy.name):
             os.mkdir("results/" + strategy.name)
-        open("results/" + strategy.name + "/" + strategy.name + "-" +
-             str(datetime.datetime.today().strftime('%Y-%m-%d')) + ".dat", "w")
+        file = strategy.name + "-" + str(datetime.datetime.today().strftime('%Y-%m-%d--%H.%M.%S.%f')) + ".dat"
+        strategy.set_file(file)
+        open("results/" + strategy.name + "/" + file, "w")
         self.strategy = strategy
         self.random_seed = random_seed
 
@@ -47,6 +48,8 @@ class Tester:
             else:
                 raise ValueError("Unknown result type {0}".format(r[0]))
 
+        with open("results/" + self.strategy.name + "/" + self.strategy.file, "a") as file:
+            file.write(str(weighted_sum / len(results)))
         return weighted_sum / len(results)
 
     @staticmethod

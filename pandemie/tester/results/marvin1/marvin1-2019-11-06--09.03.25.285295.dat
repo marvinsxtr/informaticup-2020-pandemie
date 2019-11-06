@@ -1,0 +1,12 @@
+win:	32
+{'name': 'Rhinonitis', 'infectivity': 'o', 'mobility': '-', 'duration': '-', 'lethality': '--'}
+{'name': 'Coccus innocuus', 'infectivity': 'o', 'mobility': '--', 'duration': 'o', 'lethality': '--'}
+{'name': 'N5-10', 'infectivity': '+', 'mobility': '++', 'duration': 'o', 'lethality': '+'}
+
+loss:	74
+{'name': 'Xenomonocythemia', 'infectivity': '-', 'mobility': '--', 'duration': 'o', 'lethality': '++'}
+{'name': 'Plorps', 'infectivity': 'o', 'mobility': 'o', 'duration': '+', 'lethality': '-'}
+{'name': 'Saccharomyces cerevisiae mutans', 'infectivity': 'o', 'mobility': 'o', 'duration': 'o', 'lethality': '-'}
+{'name': 'Rhinonitis', 'infectivity': 'o', 'mobility': '-', 'duration': '-', 'lethality': '--'}
+
+0.0004555255972003227

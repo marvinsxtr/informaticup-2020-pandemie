@@ -3,10 +3,14 @@ import string
 
 
 class AbstractStrategy(ABC):
-    def __init__(self, name):
+    def __init__(self, name, file=""):
         super().__init__()
         self.result = None
         self.name = name
+        self.file = file
+
+    def set_file(self, file):
+        self.file = file
 
     def solve(self, json_data, server):
 
@@ -15,7 +19,7 @@ class AbstractStrategy(ABC):
 
         if not json_data["outcome"] == "pending":
             self.result = (json_data["outcome"], json_data["round"])
-            with open("results/" + self.name + ".dat", "a") as file:
+            with open("results/" + self.name + "/" + self.file, "a") as file:
                 data = json_data["outcome"] + ":\t" + str(json_data["round"]) + "\n"
                 if "events" in json_data:
                     for event in json_data["events"]:
@@ -33,6 +37,5 @@ class AbstractStrategy(ABC):
     def _solve(self, json_data, server):
         pass
 
-    @abstractmethod
     def get_result(self):
-        pass
+        return self.result

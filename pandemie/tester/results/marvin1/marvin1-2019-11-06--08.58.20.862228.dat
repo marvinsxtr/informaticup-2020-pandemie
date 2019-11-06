@@ -1,0 +1,9 @@
+loss:	49
+{'name': 'Hexapox', 'infectivity': 'o', 'mobility': '+', 'duration': 'o', 'lethality': 'o'}
+{'name': 'Xenomonocythemia', 'infectivity': '-', 'mobility': '--', 'duration': 'o', 'lethality': '++'}
+
+loss:	28
+{'name': 'Saccharomyces cerevisiae mutans', 'infectivity': 'o', 'mobility': 'o', 'duration': 'o', 'lethality': '-'}
+{'name': 'Phagum vidiianum', 'infectivity': 'o', 'mobility': 'o', 'duration': '+', 'lethality': '+'}
+{'name': 'Procrastinalgia', 'infectivity': '-', 'mobility': '--', 'duration': '++', 'lethality': '--'}
+

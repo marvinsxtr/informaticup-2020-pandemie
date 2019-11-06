@@ -37,9 +37,6 @@ class Marvin1(AbstractStrategy):
 
         return operations.end_round()
 
-    def get_result(self):
-        return self.result
-
 
 def get_single_score(symbols):
     if symbols == "--":
