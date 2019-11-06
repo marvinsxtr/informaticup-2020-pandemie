@@ -5,6 +5,7 @@ import datetime
 import random
 from pandemie.tester import AbstractStrategy
 from pandemie.tester.strategies.marvin1 import Marvin1
+from pandemie.tester.strategies.ruwen1 import Ruwen1
 from pandemie.web import start_server
 from pandemie import operations
 
@@ -96,7 +97,8 @@ if __name__ == "__main__":
     do_output = not ("y" in do_output.lower() or "j" in do_output.lower())
 
     all_strategies = {
-        "marvin1": Marvin1("marvin", silent=do_output),
+        "marvin1": Marvin1("marvin1", silent=do_output),
+        "ruwen1": Ruwen1("ruwen1", silent=do_output),
         "example": ExampleStrategy("example", silent=do_output)
     }
 

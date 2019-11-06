@@ -9,8 +9,8 @@ class EventChecker:
     pathogen_path = "data/pathogen_names.dat"
 
     def __init__(self):
-        self.events = None
-        self.pathogens = None
+        self.events = []
+        self.pathogens = []
         self.load_known_events()
         self.load_known_pathogens()
 
