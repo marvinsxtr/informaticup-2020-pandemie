@@ -5,13 +5,13 @@ import datetime
 import random
 from pandemie.tester import AbstractStrategy
 from pandemie.web import start_server
-from pandemie import operations
 
 # consts used to shift the sigmoid curve
 WIN_RATE_HALVED = 25
 LOSS_RATE_HALVED = 25
 
 DEVNULL = subprocess.DEVNULL
+
 
 class Tester:
     def __init__(self, strategy, random_seed=None):
@@ -89,17 +89,6 @@ class Tester:
     @staticmethod
     def now():
         return str(datetime.datetime.today().strftime('%Y-%m-%d--%H.%M.%S'))
-
-
-class ExampleStrategy(AbstractStrategy):
-    def __init__(self, name, silent=False):
-        super().__init__(name, silent=silent)
-
-    def _solve(self, json_data, server):
-        return operations.end_round()
-
-    def get_result(self):
-        return self.result
 
 
 if __name__ == "__main__":
