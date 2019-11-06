@@ -1,9 +1,14 @@
+import os.path
 import string
+
+# todo: maybe use pickle to store the data on disk
 
 
 class EventChecker:
+    name_path = "data/event_names.dat"
+    pathogen_path = "data/pathogen_names.dat"
+
     def __init__(self):
-        # Init known events
         self.events = None
         self.pathogens = None
         self.load_known_events()
@@ -11,74 +16,72 @@ class EventChecker:
 
     # Function to load all known event-types
     def load_known_events(self):
-        with open("data/event_names.dat", "r") as f:  # Load known events from data file
-            data = f.read()
-            # Split the lines -> extract all different events
-            names = data.split("\n")
-        self.events = names
+        if os.path.exists(self.name_path):
+            with open(self.name_path, "r") as f:
+                self.events = f.read().split("\n")
 
     # Function to load all known pathogens
     def load_known_pathogens(self):
-        with open("data/event_names.dat", "r") as f:  # Load known pathogens from data file
-            data = f.read()
-            # Split the lines -> extract all different pathogens
-            names = data.split("\n")
-        self.pathogens = names
+        if os.path.exists(self.pathogen_path):
+            with open(self.pathogen_path, "r") as f:
+                self.pathogens = f.read().split("\n")
 
     # Function to check if new events occurred
     def check_events(self, events, local):
         for event in events:
-            if not event["type"] in self.events:  # Check for unknown events
-                self.save_event(event, local)  # New event -> save it
+            if not event["type"] in self.events:
+                self.save_event(event, local)
 
     # Function to save new events to the data-files
     def save_event(self, event, addition):
         self.events.append(event["type"])
-        with open("data/event_names.dat", "a") as f:  # Update the names file
+
+        # Update the names file
+        with open(self.name_path, "a") as f:
             f.write("\n" + event["type"])
 
-        with open("data/event_data.dat", "a") as f:  # Update the data file
-            data = "\n\n" + event["type"] + "\t, " + \
-                addition + "\n"  # Name and local/global
-            data += str(event)  # Example for the structure
-            f.write(data)
+        # Update the data file
+        with open(self.pathogen_path, "a") as f:
+            f.write("\n\n{0}\t, {1}\n{2}".format(event["type"], addition, str(event)))
 
-    # FUnction to save pathogens to a file
+    # Function to save pathogens to a file
     def save_pathogen(self, pathogen):
         self.pathogens.append(pathogen["name"])
-        with open("data/pathogen_names.dat", "a") as f:
-            f.write("\n" + "".join(x for x in pathogen["name"] if x in string.printable))  # Write name to file
+
+        with open(self.pathogen_path, "a") as f:
+            f.write("\n" + self.filter_unicode(pathogen["name"]))
 
         with open("data/pathogen_data.dat", "a") as f:
-            data = "\n\n" + pathogen["name"] + "\n"  # Name
-            data += str(pathogen)  # Example for the structure
-            data = "".join(x for x in data if x in string.printable)
-            f.write(data)
+            f.write(self.filter_unicode("\n\n{0}\n{1}".format(pathogen["name"], str(pathogen))))
 
+    # TODO: recognize known pathogens, compare not only by name but by attributes
     # Function to check for new pathogens
-    def check_for_pathogen(self, events):  # TODO Überarbeite: bekannte pathogene erkennen, Nicht anhand des namens sondern auch anhand der eigenschaften vergleichen
+    def check_for_pathogen(self, events):
         for event in events:
             if event["type"] == "pathogenEncountered":
-                inside = False
-                for pathogen in self.pathogens:  # Check if pathogen is known
-                    if "".join(x for x in event["pathogen"]["name"] if x in string.printable) == "".join(x for x in pathogen if x in string.printable):
-                        inside = True
+
+                # Check if pathogen is known
+                for pathogen in self.pathogens:
+                    if self.filter_unicode(event["pathogen"]["name"]) == self.filter_unicode(pathogen):
                         break
-                if not inside:
+                else:
+                    # todo(Ruwen): fix this
                     # Need to be here -> sometimes doesn't detect correct  (Still not correct!)
-                    if not event["pathogen"]["name"] in self.pathogens and not "".join(x for x in event["pathogen"]["name"] if x in string.printable) in self.pathogens:
+                    if not event["pathogen"]["name"] in self.pathogens and not \
+                                    self.filter_unicode(event["pathogen"]["name"]) in self.pathogens:
                         self.save_pathogen(event["pathogen"])
-                # if not "".join(x for x in event["pathogen"]["name"] if x in string.printable) in self.pathogens:
-                #     self.save_pathogen(event["pathogen"])
 
     # Function to go through all data to check for events
     def check_all_events(self, data):
-        for city in data["cities"]:  # Check for local events
+        for city in data["cities"]:
             if "events" in data["cities"][city]:
-                # Event detected -> check if it's known
                 self.check_events(data["cities"][city]["events"], "local")
 
-        if "events" in data:  # Check for global events
-            # Events detected -> check if it's known
-            self.check_events(data["events"], "global")  # Global Event
-            self.check_for_pathogen(data["events"])  # Check for pathogens
+        # Check for global events
+        if "events" in data:
+            self.check_events(data["events"], "global")
+            self.check_for_pathogen(data["events"])
+
+    @staticmethod
+    def filter_unicode(data):
+        return "".join(c for c in data if c in string.printable)
