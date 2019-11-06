@@ -106,6 +106,3 @@ if __name__ == "__main__":
         print(result)
     else:
         print("Der Name konnte nicht gefunden werden!")
-    #my_tester = Tester(ExampleStrategy("example"))
-    #result = my_tester.evaluate(times=2)
-    #print(result)
