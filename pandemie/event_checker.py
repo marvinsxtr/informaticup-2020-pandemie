@@ -41,13 +41,13 @@ class EventChecker:
             data = "\n\n" + event["type"] + "\t, " + \
                 addition + "\n"  # Name and local/global
             data += str(event)  # Example for the structure
-            # print(data)
             f.write(data)
 
+    # FUnction to save pathogens to a file
     def save_pathogen(self, pathogen):
         self.pathogens.append(pathogen["name"])
         with open("data/pathogen_names.dat", "a") as f:
-            f.write("\n" + "".join(x for x in pathogen["name"] if x in string.printable))
+            f.write("\n" + "".join(x for x in pathogen["name"] if x in string.printable))  # Write name to file
 
         with open("data/pathogen_data.dat", "a") as f:
             data = "\n\n" + pathogen["name"] + "\n"  # Name
@@ -55,11 +55,21 @@ class EventChecker:
             data = "".join(x for x in data if x in string.printable)
             f.write(data)
 
-    def check_for_pathogen(self, events):
+    # Function to check for new pathogens
+    def check_for_pathogen(self, events):  # TODO Überarbeite: bekannte pathogene erkennen, Nicht anhand des namens sondern auch anhand der eigenschaften vergleichen
         for event in events:
             if event["type"] == "pathogenEncountered":
-                if not "".join(x for x in event["pathogen"]["name"] if x in string.printable) in self.pathogens:
-                    self.save_pathogen(event["pathogen"])
+                inside = False
+                for pathogen in self.pathogens:  # Check if pathogen is known
+                    if "".join(x for x in event["pathogen"]["name"] if x in string.printable) == "".join(x for x in pathogen if x in string.printable):
+                        inside = True
+                        break
+                if not inside:
+                    # Need to be here -> sometimes doesn't detect correct  (Still not correct!)
+                    if not event["pathogen"]["name"] in self.pathogens and not "".join(x for x in event["pathogen"]["name"] if x in string.printable) in self.pathogens:
+                        self.save_pathogen(event["pathogen"])
+                # if not "".join(x for x in event["pathogen"]["name"] if x in string.printable) in self.pathogens:
+                #     self.save_pathogen(event["pathogen"])
 
     # Function to go through all data to check for events
     def check_all_events(self, data):

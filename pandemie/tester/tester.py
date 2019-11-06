@@ -2,6 +2,7 @@ import math
 import os
 import subprocess
 import datetime
+import random
 from pandemie.tester import AbstractStrategy
 from pandemie.tester.strategies.marvin1 import Marvin1
 from pandemie.web import start_server
@@ -16,13 +17,17 @@ class Tester:
     def __init__(self, strategy, random_seed=0):
         if not isinstance(strategy, AbstractStrategy):
             raise ValueError("Strategy is not valid.")
-        if not os.path.exists("results/" + strategy.name):
-            os.mkdir("results/" + strategy.name)
-        file = strategy.name + "-" + str(datetime.datetime.today().strftime('%Y-%m-%d--%H.%M.%S')) + ".dat"
-        strategy.set_file(file)
-        open("results/" + strategy.name + "/" + file, "w")
+
+        if not strategy.silent:  # Check if there should be an output
+            if not os.path.exists("results/" + strategy.name):  # Check if the directory already exists
+                os.mkdir("results/" + strategy.name)  # Create a new directory for the strategy
+
+            file = strategy.name + "-" + str(datetime.datetime.today().strftime('%Y-%m-%d--%H.%M.%S')) + ".dat"  # Create the name for the save-file
+            strategy.set_file(file)  # Transfer file-name to the strategy
+            open("results/" + strategy.name + "/" + file, "w")  # Create the file
+
         self.strategy = strategy
-        self.random_seed = random_seed
+        self.random_seed = random.randint(0, 1000)
 
     def _run_strategy(self):
         if os.name == "nt":
@@ -48,8 +53,10 @@ class Tester:
             else:
                 raise ValueError("Unknown result type {0}".format(r[0]))
 
-        with open("results/" + self.strategy.name + "/" + self.strategy.file, "a") as file:
-            file.write(str(weighted_sum / len(results)))
+        if not self.strategy.silent:  # If there should be an output
+            with open("results/" + self.strategy.name + "/" + self.strategy.file, "a") as file:  # Open the save-file
+                file.write(str(weighted_sum / len(results)))  # Append the score to the file
+
         return weighted_sum / len(results)
 
     @staticmethod
@@ -62,8 +69,8 @@ class Tester:
 
 
 class ExampleStrategy(AbstractStrategy):
-    def __init__(self, name):
-        super().__init__(name)
+    def __init__(self, name, silent=False):
+        super().__init__(name, silent=silent)
 
     def _solve(self, json_data, server):
         return operations.end_round()
@@ -73,8 +80,8 @@ class ExampleStrategy(AbstractStrategy):
 
 
 if __name__ == "__main__":
-    my_tester = Tester(Marvin1("marvin1", silent=True))
-    result = my_tester.evaluate(times=2)
+    my_tester = Tester(Marvin1("marvin1", silent=False))
+    result = my_tester.evaluate(times=1)
     print(result)
 
     #my_tester = Tester(ExampleStrategy("example"))
