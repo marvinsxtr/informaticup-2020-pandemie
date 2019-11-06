@@ -24,7 +24,7 @@ class Tester:
 
             # Create a directory for the strategy if it doesn't exists
             if not os.path.exists(strategy_dir):
-                os.mkdir(strategy_dir)
+                os.makedirs(strategy_dir)
 
             # Create the name for the log file and pass it to the strategy
             strategy.set_file("{0}-{1}.dat".format(strategy.name, self.now()))
@@ -92,7 +92,7 @@ class ExampleStrategy(AbstractStrategy):
 
 if __name__ == "__main__":
     strategy_name = input("Welche Strategie soll ausgeführt werden? (ohne.py)\t")
-    do_output = input("Soll ein log-output erzeugt werden? (j/n)\t")
+    do_output = input("Soll ein log-output erzeugt werden? (j/n, default:n)\t")
 
     do_output = not ("y" in do_output.lower() or "j" in do_output.lower())
 
@@ -104,7 +104,7 @@ if __name__ == "__main__":
 
     if strategy_name in all_strategies:
         my_tester = Tester(all_strategies[strategy_name], random_seed=0)
-        result = my_tester.evaluate(times=1)
+        result = my_tester.evaluate(times=10)
         print(result)
     else:
         print("Der Name konnte nicht gefunden werden!")
