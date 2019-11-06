@@ -58,8 +58,15 @@ class EventChecker:
     def check_for_pathogen(self, events):
         for event in events:
             if event["type"] == "pathogenEncountered":
-                if not "".join(x for x in event["pathogen"]["name"] if x in string.printable) in self.pathogens:
+                inside = False
+                for pathogen in self.pathogens:
+                    if "".join(x for x in event["pathogen"]["name"] if x in string.printable) == "".join(x for x in pathogen if x in string.printable):
+                        inside = True
+                        break
+                if not inside:
                     self.save_pathogen(event["pathogen"])
+                # if not "".join(x for x in event["pathogen"]["name"] if x in string.printable) in self.pathogens:
+                #     self.save_pathogen(event["pathogen"])
 
     # Function to go through all data to check for events
     def check_all_events(self, data):
