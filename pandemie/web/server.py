@@ -8,7 +8,6 @@ from gevent.pywsgi import WSGIServer
 from threading import Thread
 
 import time
-import logging
 
 BaseRequest.MEMFILE_MAX = 1024 * 1024
 SLEEP_TIME = 0.01
