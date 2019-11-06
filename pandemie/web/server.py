@@ -21,7 +21,7 @@ def start_server(handler, port=50123, log=None):
     It passes the json it gets from the post request to the handler.
     :param handler: handler function that performs the simulation, should return a valid json answer
     :param port: port for the server to listen on
-    :param quiet: whether the server should show debug output
+    :param log: whether the server should show debug output
     :return: None
     """
 
