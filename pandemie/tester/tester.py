@@ -44,6 +44,8 @@ class Tester:
             os.chdir("../../test")
             subprocess.call("./ic20_linux --random-seed {0}".format(self.random_seed), shell=True)
 
+        self.random_seed += 1
+
         start_server(self.strategy)
 
         return self.strategy.get_result()
