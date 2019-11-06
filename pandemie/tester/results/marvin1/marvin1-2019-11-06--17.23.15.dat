@@ -1,6 +1,0 @@
-win:	22
-{'name': 'Neurodermantotitis', 'infectivity': '+', 'mobility': 'o', 'duration': 'o', 'lethality': 'o'}
-{'name': 'N5-10', 'infectivity': '+', 'mobility': '++', 'duration': 'o', 'lethality': '+'}
-{'name': 'Methanobrevibacter colferi', 'infectivity': 'o', 'mobility': '++', 'duration': '--', 'lethality': '-'}
-
-0.9525741268224333
