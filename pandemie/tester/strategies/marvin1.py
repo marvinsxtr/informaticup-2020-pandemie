@@ -26,19 +26,32 @@ class Marvin1(AbstractStrategy):
             if event["type"] == "pathogenEncountered":
                 pathogens.append(event["pathogen"])
 
-        pathogens_sorted = sorted(pathogens, key=lambda p: (0.3 * score(p["infectivity"]), 0.2 * score(p["mobility"]),
-                                                            0.2 * score(p["duration"]), 0.3 * score(p["lethality"])),
+        pathogens_sorted = sorted(pathogens, key=lambda p: (1.2 * score(p["infectivity"]),
+                                                            1.0 * score(p["mobility"]),
+                                                            1.0 * score(p["duration"]),
+                                                            1.2 * score(p["lethality"])),
                                   reverse=True)
+
+        cities_sorted_tmp = sorted(cities.items(), key=lambda c: (1.0 * score(c[1]["economy"]),
+                                                              1.2 * score(c[1]["hygiene"]),
+                                                              1.0 * score(c[1]["government"]),
+                                                              1.2 * score(c[1]["awareness"])),
+                                   reverse=False)
+
+        cities_sorted = []
+
+        for city in cities_sorted_tmp:
+            cities_sorted.append(city[0])
 
         for event in events:
             if event["type"] == "medicationInDevelopment":
                 pathogens_med_developing.append(event["pathogen"]["name"])
-                print("available", event["pathogen"]["name"])
+                #print("developing", event["pathogen"]["name"])
 
         for event in events:
             if event["type"] == "medicationAvailable":
                 pathogens_med_available.append(event["pathogen"]["name"])
-                print("available", event["pathogen"]["name"])
+                #print("available", event["pathogen"]["name"])
 
         for event in events:
             if event["type"] == "pathogenEncountered":
@@ -53,16 +66,21 @@ class Marvin1(AbstractStrategy):
 
         for city in cities.items():
             city_pathogens[city[0]] = []
-            for event in city[1]["events"]:
-                if event["type"] == "outbreak":
-                    city_pathogens[city[0]].append(event["pathogen"]["name"])
-
-        print(city_pathogens)
+            if "events" in city[1]:
+                for event in city[1]["events"]:
+                    if event["type"] == "outbreak":
+                        city_pathogens[city[0]].append(event["pathogen"]["name"])
 
         for pathogen in pathogens_med_available:
-            print("deploy", pathogen)
-            #todo
-            #return operations.deploy_medication(pathogen, )
+            possible_cities = []
+            for city, pathogens in city_pathogens.items():
+                if pathogen in pathogens:
+                    possible_cities.append(city)
+            for city in cities_sorted:
+                if city in possible_cities:
+                    if operations.PRICES["deploy_medication"]["initial"] <= points:
+                        print("deploy", pathogen)
+                        return operations.deploy_medication(pathogen, city)
 
         print("round:", round, "points:", points, "outcome:", outcome)
 
