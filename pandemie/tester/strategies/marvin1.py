@@ -49,6 +49,21 @@ class Marvin1(AbstractStrategy):
                                 print("develop", event["pathogen"]["name"])
                                 return operations.develop_medication(event["pathogen"]["name"])
 
+        city_pathogens = {}
+
+        for city in cities.items():
+            city_pathogens[city[0]] = []
+            for event in city[1]["events"]:
+                if event["type"] == "outbreak":
+                    city_pathogens[city[0]].append(event["pathogen"]["name"])
+
+        print(city_pathogens)
+
+        for pathogen in pathogens_med_available:
+            print("deploy", pathogen)
+            #todo
+            #return operations.deploy_medication(pathogen, )
+
         print("round:", round, "points:", points, "outcome:", outcome)
 
         stats = False
