@@ -50,7 +50,7 @@ class Tester:
             subprocess.Popen("ic20_windows.exe --random-seed {0}".format(self.random_seed), stdout=DEVNULL,
                              stderr=DEVNULL)
         else:
-            subprocess.Popen("./ic20_linux --random-seed {0}".format(self.random_seed), stdout=DEVNULL,
+            subprocess.Popen(["./ic20_linux", "--random-seed",  str(self.random_seed)], stdout=DEVNULL,
                              stderr=DEVNULL)
 
         # restore cwd
