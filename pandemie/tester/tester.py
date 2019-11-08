@@ -9,6 +9,7 @@ from pandemie.web import start_server
 # consts used to shift the sigmoid curve
 WIN_RATE_HALVED = 25
 LOSS_RATE_HALVED = 25
+EVALUATION_SLOPE = 0.1
 
 DEVNULL = subprocess.DEVNULL
 
@@ -83,12 +84,12 @@ class Tester:
         return weighted_sum / len(results)
 
     @staticmethod
-    def win_weight(rounds):
-        return math.exp(-rounds + WIN_RATE_HALVED) / (1 + math.exp(-rounds + WIN_RATE_HALVED))
+    def win_weight(rounds, k=EVALUATION_SLOPE):
+        return math.exp(k*(-rounds + WIN_RATE_HALVED)) / (1 + math.exp(k*(-rounds + WIN_RATE_HALVED)))
 
     @staticmethod
     def loss_weight(rounds):
-        return math.exp(rounds - LOSS_RATE_HALVED) / (1 + math.exp(rounds - LOSS_RATE_HALVED)) - 1
+        return Tester.win_weight(rounds, k=-EVALUATION_SLOPE) - 1
 
     @staticmethod
     def now():
