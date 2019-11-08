@@ -124,7 +124,6 @@ if __name__ == "__main__":
 
     rand_seed = input("Do you want a random seed? (y/n, default=y)").lower()
     rand_seed = rand_seed.startswith("y") or rand_seed.startswith("j") or rand_seed == ""
-    print(rand_seed)
 
     strategy = ""
 
