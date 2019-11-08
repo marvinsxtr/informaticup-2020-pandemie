@@ -18,6 +18,7 @@ class Marvin1(AbstractStrategy):
         outcome = json_data["outcome"]
 
         pathogens = []
+        pathogens_names = []
 
         pathogens_med_developing = []
         pathogens_med_available = []
@@ -26,41 +27,16 @@ class Marvin1(AbstractStrategy):
             if event["type"] == "pathogenEncountered":
                 pathogens.append(event["pathogen"])
 
-        pathogens_sorted = sorted(pathogens, key=lambda p: (1.2 * score(p["infectivity"]),
-                                                            1.0 * score(p["mobility"]),
-                                                            1.0 * score(p["duration"]),
-                                                            1.2 * score(p["lethality"])),
-                                  reverse=True)
-
-        cities_sorted_tmp = sorted(cities.items(), key=lambda c: (1.0 * score(c[1]["economy"]),
-                                                              1.2 * score(c[1]["hygiene"]),
-                                                              1.0 * score(c[1]["government"]),
-                                                              1.2 * score(c[1]["awareness"])),
-                                   reverse=False)
-
-        cities_sorted = []
-
-        for city in cities_sorted_tmp:
-            cities_sorted.append(city[0])
+        for pathogen in pathogens:
+            pathogens_names.append(pathogen["name"])
 
         for event in events:
             if event["type"] == "medicationInDevelopment":
                 pathogens_med_developing.append(event["pathogen"]["name"])
-                #print("developing", event["pathogen"]["name"])
 
         for event in events:
             if event["type"] == "medicationAvailable":
                 pathogens_med_available.append(event["pathogen"]["name"])
-                #print("available", event["pathogen"]["name"])
-
-        for event in events:
-            if event["type"] == "pathogenEncountered":
-                if event["pathogen"]["name"] not in pathogens_med_developing:
-                    if event["pathogen"]["name"] not in pathogens_med_available:
-                        if event["pathogen"]["name"] == pathogens_sorted[0]["name"]:
-                            if operations.PRICES["develop_medication"]["initial"] <= points:
-                                print("develop", event["pathogen"]["name"])
-                                return operations.develop_medication(event["pathogen"]["name"])
 
         city_pathogens = {}
 
@@ -71,11 +47,41 @@ class Marvin1(AbstractStrategy):
                     if event["type"] == "outbreak":
                         city_pathogens[city[0]].append(event["pathogen"]["name"])
 
+        pathogens_sorted = sorted(pathogens, key=lambda p: (1.2 * score(p["infectivity"]),
+                                                            1.0 * score(p["mobility"]),
+                                                            1.0 * score(p["duration"]),
+                                                            1.2 * score(p["lethality"]),
+                                                            count_infected_cities(p["name"], city_pathogens)),
+                                  reverse=True)
+
+        cities_sorted_tmp = sorted(cities.items(), key=lambda c: (1.0 * score(c[1]["economy"]),
+                                                                  1.2 * score(c[1]["hygiene"]),
+                                                                  1.0 * score(c[1]["government"]),
+                                                                  1.2 * score(c[1]["awareness"])),
+                                   reverse=False)
+
+        cities_sorted = []
+
+        for city in cities_sorted_tmp:
+            cities_sorted.append(city[0])
+
+        for event in events:
+            if event["type"] == "pathogenEncountered":
+                if event["pathogen"]["name"] not in pathogens_med_developing:
+                    if event["pathogen"]["name"] not in pathogens_med_available:
+                        if event["pathogen"]["name"] == pathogens_sorted[0]["name"]:
+                            if operations.PRICES["develop_medication"]["initial"] <= points:
+                                print("develop", event["pathogen"]["name"])
+                                return operations.develop_medication(event["pathogen"]["name"])
+
         for pathogen in pathogens_med_available:
             possible_cities = []
-            for city, pathogens in city_pathogens.items():
-                if pathogen in pathogens:
-                    possible_cities.append(city)
+            for pathogen_tmp in pathogens_med_available:
+                for city, pathogens in city_pathogens.items():
+                    if pathogen_tmp in pathogens:
+                        possible_cities.append(city)
+            if "Neurodermantotitis" in pathogens_names:
+                print(events)
             for city in cities_sorted:
                 if city in possible_cities:
                     if operations.PRICES["deploy_medication"]["initial"] <= points:
@@ -84,8 +90,11 @@ class Marvin1(AbstractStrategy):
 
         print("round:", round, "points:", points, "outcome:", outcome)
 
+        print(count_infected_cities("Neurodermantotitis", city_pathogens))
+
         stats = False
         if stats:
+            print(pathogens_med_available)
             count_events = 0
             outbreak_events = 0
             other_events = 0
@@ -108,10 +117,6 @@ class Marvin1(AbstractStrategy):
         if points < 3:
             return operations.end_round()
 
-        for key, value in sorted(cities.items(), key=lambda item: score(item[1]["hygiene"])):
-            if score(value["hygiene"]) == 1:
-                return operations.apply_hygienic_measures(key)
-
         for key, value in sorted(cities.items(), key=lambda item: score(item[1]["awareness"])):
             if score(value["awareness"]) == 1:
                 return operations.launch_campaign(key)
@@ -119,6 +124,10 @@ class Marvin1(AbstractStrategy):
         for key, value in sorted(cities.items(), key=lambda item: score(item[1]["government"])):
             if score(value["government"]) == 1:
                 return operations.call_elections(key)
+
+        for key, value in sorted(cities.items(), key=lambda item: score(item[1]["hygiene"])):
+            if score(value["hygiene"]) == 1:
+                return operations.apply_hygienic_measures(key)
 
         for key, value in sorted(cities.items(), key=lambda item: score(item[1]["economy"])):
             if score(value["economy"]) == 1:
@@ -139,3 +148,11 @@ def score(symbols):
     if symbols == "++":
         return 5
     print("wrong symbols")
+
+
+def count_infected_cities(pathogen_name, city_pathogens):
+    count = 0
+    for city, pathogens in city_pathogens.items():
+        if pathogen_name in pathogens:
+            count += 1
+    return count
