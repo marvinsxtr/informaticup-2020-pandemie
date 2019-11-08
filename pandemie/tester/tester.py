@@ -88,7 +88,7 @@ class Tester:
 
     @staticmethod
     def loss_weight(rounds):
-        return math.exp(rounds - WIN_RATE_HALVED) / (1 + math.exp(rounds - WIN_RATE_HALVED)) - 1
+        return math.exp(rounds - LOSS_RATE_HALVED) / (1 + math.exp(rounds - LOSS_RATE_HALVED)) - 1
 
     @staticmethod
     def now():
