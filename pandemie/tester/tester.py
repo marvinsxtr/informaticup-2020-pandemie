@@ -19,7 +19,7 @@ def to_camel_case(name):
 
 
 class Tester:
-    def __init__(self, test_strategy, random_seed=None):
+    def __init__(self, test_strategy, random_seed=True):
         if not isinstance(test_strategy, AbstractStrategy):
             raise ValueError("Strategy is not valid.")
 
@@ -35,10 +35,10 @@ class Tester:
 
         self.strategy = test_strategy
 
-        if not random_seed:
-            self.random_seed = random.randint(0, 1000)
-        else:
-            self.random_seed = random_seed
+        self.random_seed = rand_seed
+
+        self.seed = 0
+        self.new_seed()
 
     def _run_strategy(self):
         print("================== NEW SEED: %s ==================" % str(self.random_seed))
@@ -58,7 +58,7 @@ class Tester:
         os.chdir(cwd)
 
         # increment seed
-        self.random_seed += 1
+        self.new_seed()
 
         # start server and wait for round to end
         start_server(self.strategy)
@@ -95,11 +95,17 @@ class Tester:
     def now():
         return str(datetime.datetime.today().strftime('%Y-%m-%d--%H.%M.%S'))
 
+    def new_seed(self):
+        if self.random_seed:
+            self.seed = random.randint(1, 10000000000)
+        else:
+            self.seed += 1
+
 
 if __name__ == "__main__":
     strategy_name = input("Enter the full name of the strategy you want to test (no .py):\t")
 
-    do_output = input("Should a log be created? (y/n, default=n)\t")
+    do_output = input("Should a log be created? (y/n, default=n)\t").lower()
     do_output = do_output.startswith("y") or do_output.startswith("j")
 
     while True:
@@ -116,6 +122,9 @@ if __name__ == "__main__":
             count = int(count)
             break
 
+    rand_seed = input("Do you want a random seed? (y/n, default=y)").lower()
+    rand_seed = rand_seed.startswith("y") or rand_seed.startswith("j")
+
     strategy = ""
 
     try:
@@ -130,6 +139,6 @@ if __name__ == "__main__":
         print("Strategy not found! Make sure it has the same name as the file. Exiting...")
         exit()
 
-    my_tester = Tester(strategy(silent=not do_output), random_seed=1)
+    my_tester = Tester(strategy(silent=not do_output), random_seed=rand_seed)
     result = my_tester.evaluate(times=count)
     print(result)
