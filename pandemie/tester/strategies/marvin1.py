@@ -121,22 +121,19 @@ class Marvin1(AbstractStrategy):
         if points < 3:
             return operations.end_round()
 
+        for key, value in sorted(cities.items(), key=lambda item: score(item[1]["hygiene"])):
+            return operations.apply_hygienic_measures(key)
+
         for key, value in sorted(cities.items(), key=lambda item: score(item[1]["awareness"])):
-            if score(value["awareness"]) == 1:
-                return operations.launch_campaign(key)
+            return operations.launch_campaign(key)
 
         for key, value in sorted(cities.items(), key=lambda item: score(item[1]["government"])):
-            if score(value["government"]) == 1:
-                return operations.call_elections(key)
-
-        for key, value in sorted(cities.items(), key=lambda item: score(item[1]["hygiene"])):
-            if score(value["hygiene"]) == 1:
-                return operations.apply_hygienic_measures(key)
+            return operations.call_elections(key)
 
         for key, value in sorted(cities.items(), key=lambda item: score(item[1]["economy"])):
-            if score(value["economy"]) == 1:
-                return operations.exert_influence(key)
+            return operations.exert_influence(key)
 
+        print("end round")
         return operations.end_round()
 
 
