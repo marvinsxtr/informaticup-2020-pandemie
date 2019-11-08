@@ -65,14 +65,22 @@ class Marvin1(AbstractStrategy):
         for city in cities_sorted_tmp:
             cities_sorted.append(city[0])
 
-        for event in events:
-            if event["type"] == "pathogenEncountered":
-                if event["pathogen"]["name"] not in pathogens_med_developing:
-                    if event["pathogen"]["name"] not in pathogens_med_available:
-                        if event["pathogen"]["name"] == pathogens_sorted[0]["name"]:
-                            if operations.PRICES["develop_medication"]["initial"] <= points:
-                                print("develop", event["pathogen"]["name"])
-                                return operations.develop_medication(event["pathogen"]["name"])
+        pathogens_sorted_names = []
+
+        for pathogen in pathogens_sorted:
+            pathogens_sorted_names.append(pathogen["name"])
+
+        possible_pathogens = []
+        for pathogen in pathogens_names:
+            if pathogen not in pathogens_med_developing:
+                if pathogen not in pathogens_med_available:
+                    possible_pathogens.append(pathogen)
+
+        for pathogen in pathogens_sorted_names:
+            if pathogen in possible_pathogens:
+                if operations.PRICES["develop_medication"]["initial"] <= points:
+                    print("develop", pathogen)
+                    return operations.develop_medication(pathogen)
 
         for pathogen in pathogens_med_available:
             possible_cities = []
@@ -80,8 +88,6 @@ class Marvin1(AbstractStrategy):
                 for city, pathogens in city_pathogens.items():
                     if pathogen_tmp in pathogens:
                         possible_cities.append(city)
-            if "Neurodermantotitis" in pathogens_names:
-                print(events)
             for city in cities_sorted:
                 if city in possible_cities:
                     if operations.PRICES["deploy_medication"]["initial"] <= points:
@@ -89,8 +95,6 @@ class Marvin1(AbstractStrategy):
                         return operations.deploy_medication(pathogen, city)
 
         print("round:", round, "points:", points, "outcome:", outcome)
-
-        print(count_infected_cities("Neurodermantotitis", city_pathogens))
 
         stats = False
         if stats:
