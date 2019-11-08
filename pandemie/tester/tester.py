@@ -41,17 +41,17 @@ class Tester:
         self.new_seed()
 
     def _run_strategy(self):
-        print("================== NEW SEED: %s ==================" % str(self.random_seed))
+        print("================== NEW SEED: %s ==================" % str(self.seed))
 
         # store cwd for later usage
         cwd = os.getcwd()
         os.chdir("../../test")
 
         if os.name == "nt":
-            subprocess.Popen("ic20_windows.exe --random-seed {0}".format(self.random_seed), stdout=DEVNULL,
+            subprocess.Popen("ic20_windows.exe --random-seed {0}".format(self.seed), stdout=DEVNULL,
                              stderr=DEVNULL)
         else:
-            subprocess.Popen(["./ic20_linux", "--random-seed",  str(self.random_seed)], stdout=DEVNULL,
+            subprocess.Popen(["./ic20_linux", "--random-seed",  str(self.seed)], stdout=DEVNULL,
                              stderr=DEVNULL)
 
         # restore cwd
@@ -123,7 +123,8 @@ if __name__ == "__main__":
             break
 
     rand_seed = input("Do you want a random seed? (y/n, default=y)").lower()
-    rand_seed = rand_seed.startswith("y") or rand_seed.startswith("j")
+    rand_seed = rand_seed.startswith("y") or rand_seed.startswith("j") or rand_seed == ""
+    print(rand_seed)
 
     strategy = ""
 

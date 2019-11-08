@@ -51,3 +51,6 @@ Coccus innocuus
 
 Moricillus 
 {'name': 'Moricillus ', 'infectivity': '-', 'mobility': 'o', 'duration': '-', 'lethality': '+'}
+
+Moricillus 
+{'name': 'Moricillus ', 'infectivity': '-', 'mobility': 'o', 'duration': '-', 'lethality': '+'}
