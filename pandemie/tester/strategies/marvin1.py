@@ -79,7 +79,7 @@ class Marvin1(AbstractStrategy):
         for pathogen in pathogens_sorted_names:
             if pathogen in possible_pathogens:
                 if operations.PRICES["develop_medication"]["initial"] <= points:
-                    print("develop", pathogen)
+                    # print("develop", pathogen)
                     return operations.develop_medication(pathogen)
 
         for pathogen in pathogens_med_available:
@@ -91,10 +91,10 @@ class Marvin1(AbstractStrategy):
             for city in cities_sorted:
                 if city in possible_cities:
                     if operations.PRICES["deploy_medication"]["initial"] <= points:
-                        print("deploy", pathogen)
+                        # print("deploy", pathogen)
                         return operations.deploy_medication(pathogen, city)
 
-        print("round:", round, "points:", points, "outcome:", outcome)
+        # print("round:", round, "points:", points, "outcome:", outcome)
 
         stats = False
         if stats:
