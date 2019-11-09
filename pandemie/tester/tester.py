@@ -5,6 +5,7 @@ import datetime
 import random
 from pandemie.tester import AbstractStrategy
 from pandemie.web import start_server
+from pandemie import visualization
 
 # consts used to shift the sigmoid curve
 WIN_RATE_HALVED = 25
@@ -106,6 +107,8 @@ if __name__ == "__main__":
     strategy_name = input("Enter the full name of the strategy you want to test (no .py):\t")
     do_output = input("Should a log be created? (y/n, default=n)\t").lower()
     do_output = do_output.startswith("y") or do_output.startswith("j")
+    visualize = input("Should the data be visualized? (y/n, default=n):\t")
+    visualize = visualize.startswith("y") or visualize.startswith("j")
 
     while True:
         count = input("How many rounds should the simulation last? (default=5)\t")

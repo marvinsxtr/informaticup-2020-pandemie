@@ -1,6 +1,8 @@
+import os
 from abc import ABC, abstractmethod
 from pandemie.event_checker import EventChecker
 from pandemie.util.encoding import filter_unicode
+import errno
 
 
 class AbstractStrategy(ABC):
@@ -14,7 +16,25 @@ class AbstractStrategy(ABC):
     def set_file(self, file):
         self.file = file
 
+    @staticmethod
+    def log_json(json_data):
+        filename = "tmp/current_json.dat"
+        if not os.path.exists(os.path.dirname(filename)):
+            try:
+                os.makedirs(os.path.dirname(filename))
+            except OSError as exc:  # Guard against race condition
+                if exc.errno != errno.EEXIST:
+                    raise
+
+        with open(filename, 'w+') as outfile:
+            outfile.write(str(json_data))
+            outfile.flush()
+            os.fsync(outfile.fileno())
+
     def solve(self, json_data, server):
+
+        # update current data for visualization
+        self.log_json(json_data)
 
         # warning, we actually do not send a last response after the game finished
         # todo: check the unknown behaviour of the ic20 tool
