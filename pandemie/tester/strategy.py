@@ -1,16 +1,20 @@
 import os
 from abc import ABC, abstractmethod
+
+import json
+
 from pandemie.event_checker import EventChecker
 from pandemie.util.encoding import filter_unicode
 import errno
 
 
 class AbstractStrategy(ABC):
-    def __init__(self, silent=False):
+    def __init__(self, silent=False, visualize=False):
         super().__init__()
         self.result = None
         self.file = ""
         self.silent = silent  # If False -> Output result and pathogens of each round into a file
+        self.visualize = visualize  # Writes json for every round into file to be visualized
         self.data_gatherer = EventChecker()
 
     def set_file(self, file):
@@ -27,14 +31,16 @@ class AbstractStrategy(ABC):
                     raise
 
         with open(filename, 'w+') as outfile:
-            outfile.write(str(json_data))
+            # todo: fix encoding
+            outfile.write(json.dumps(json_data))
             outfile.flush()
             os.fsync(outfile.fileno())
 
     def solve(self, json_data, server):
 
         # update current data for visualization
-        self.log_json(json_data)
+        if self.visualize:
+            self.log_json(json_data)
 
         # warning, we actually do not send a last response after the game finished
         # todo: check the unknown behaviour of the ic20 tool

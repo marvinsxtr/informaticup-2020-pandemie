@@ -141,6 +141,6 @@ if __name__ == "__main__":
         print("Strategy not found! Make sure it has the same name as the file. Exiting...")
         exit()
 
-    my_tester = Tester(strategy(silent=not do_output), random_seed=rand_seed)
+    my_tester = Tester(strategy(silent=not do_output, visualize=visualize), random_seed=rand_seed)
     result = my_tester.evaluate(times=count)
     print(result)
