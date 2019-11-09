@@ -1,3 +1,10 @@
+"""
+This file provides all necessary information about the possible operations / answers
+you can give to a game state (initial and per round prices) as well as the functions
+themselves.
+"""
+
+# dict containing all prices
 PRICES = {
     "end_round": {"initial": 0, "each": 0},
     "put_under_quarantine": {"initial": 20, "each": 10},
