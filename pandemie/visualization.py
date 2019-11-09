@@ -24,14 +24,12 @@ app.layout = html.Div(
 
 @app.callback(Output('game-state', 'children'),
               [Input('interval-component', 'n_intervals')])
-def update_metrics(n):
+def update_game_state(n):
     f = open(os.getcwd() + "/tester/tmp/current_json.dat", "r")
     json_data = json.loads(f.read())
 
-    if json_data:
-        round = json_data["round"]
-    return [html.Span('Round: {0}'.format(round), style={'padding': '5px', 'fontSize': '16px'})]
+    return [html.Span('Round: {0}'.format(json_data["round"]), style={'padding': '5px', 'fontSize': '16px'})]
 
 
 if __name__ == "__main__":
-    app.run_server(debug=True)
+    app.run_server(debug=False)

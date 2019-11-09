@@ -5,7 +5,6 @@ import datetime
 import random
 from pandemie.tester import AbstractStrategy
 from pandemie.web import start_server
-from pandemie import visualization
 
 # consts used to shift the sigmoid curve
 WIN_RATE_HALVED = 25
