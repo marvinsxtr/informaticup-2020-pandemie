@@ -16,39 +16,61 @@ log.setLevel(logging.ERROR)
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
-app.title = 'Updating...'
+app.config['suppress_callback_exceptions'] = True
+app.title = 'Pandemie!'
 app.layout = html.Div(
     html.Div([
-        html.H3('Pandemie!'),
+        html.H4('Pandemie!'),
+        dcc.Dropdown(
+            id='data_dropdown',
+            options=[
+                {'label': 'Visualize one round (current_round)', 'value': 'round'},
+                {'label': 'Visualize full game (current_game)', 'value': 'game'},
+            ],
+            value='round'
+        ),
         html.Div(id='game-state'),
-        dcc.Interval(
-            id='interval-component',
-            interval=10000,  # in millis
-            n_intervals=0
-        )
     ])
 )
 
-@app.callback(Output('game-state', 'children'),
-              [Input('interval-component', 'n_intervals')])
-def update_game_state(n):
 
-    f = open(os.getcwd() + "/tester/tmp/current_json.dat", "r")
-    json_data = json.loads(f.read())
+@app.callback(
+    dash.dependencies.Output('game-state', 'children'),
+    [dash.dependencies.Input('data_dropdown', 'value')])
+def update_output(value):
 
     # add visualizations
-    return [visualize_connections_infected(json_data),
-            visualize_round_number(json_data)]
+    path = os.getcwd()
+    if value == "round":
+        with open(path + "/tester/tmp/current_round.dat", 'r+') as f:
+            f.seek(0)
+            json_data = json.load(f)
+        return visualize_round(json_data)
+    else:
+        with open(path + "/tester/tmp/current_game.dat", 'r+') as f:
+            f.seek(0)
+            json_data = json.load(f)
+            print("loaded")
+        return visualize_game(json_data)
+
+
+def visualize_round(json_data):
+    return visualize_round_number(json_data)
+
+
+def visualize_game(json_data):
+    return visualize_round_number(json_data)
 
 
 def visualize_round_number(json_data):
-    return html.Span('Round: {0}'.format(json_data["round"]), style={'padding': '5px', 'fontSize': '16px'})
+    return html.Span('Round: {0}'.format(len(json_data)), style={'padding': '5px', 'fontSize': '16px'})
 
 
 def visualize_connections_infected(json_data):
     lat = []
     lon = []
     name = []
+
     for city in json_data["cities"].items():
         if "events" in city[1]:
             lat.append(city[1]["latitude"])
@@ -103,8 +125,7 @@ def visualize_connections_infected(json_data):
         )
 
     fig.update_layout(geo=dict(scope='world',
-                               projection=Projection(type="orthographic"),
-))
+                               projection=Projection(type="orthographic"),))
 
     return dcc.Graph(id='graph', figure=fig)
 

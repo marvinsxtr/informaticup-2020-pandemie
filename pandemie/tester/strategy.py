@@ -22,16 +22,42 @@ class AbstractStrategy(ABC):
 
     @staticmethod
     def log_json(json_data):
-        filename = "tmp/current_json.dat"
-        if not os.path.exists(os.path.dirname(filename)):
-            try:
-                os.makedirs(os.path.dirname(filename))
-            except OSError as exc:  # Guard against race condition
-                if exc.errno != errno.EEXIST:
-                    raise
+        # todo: fix encoding
 
-        with open(filename, 'w+') as outfile:
-            # todo: fix encoding
+        # creates a file if it does not exist yet
+        def create_file(filename):
+            if not os.path.exists(os.path.dirname(filename)):
+                try:
+                    os.makedirs(os.path.dirname(filename))
+                except OSError as exc:  # Guard against race condition
+                    if exc.errno != errno.EEXIST:
+                        raise
+
+        name = "tmp/current_game.dat"
+        create_file(name)
+
+        # clear game data at start of new game
+        if json_data["round"] == 1:
+            open(name, 'w').close()
+            with open(name, 'w') as f:
+                json.dump([], f)
+
+        # update current_game.dat
+        with open(name, 'r') as f:
+            f.seek(0)
+            combined_rounds = json.load(f)
+            combined_rounds.append(json_data)
+            f.seek(0)
+            with open(name, 'w') as f1:
+                json.dump(combined_rounds, f1)
+                f1.flush()
+                os.fsync(f1.fileno())
+
+        name = "tmp/current_round.dat"
+        create_file(name)
+
+        # update current_round.dat
+        with open(name, 'w') as outfile:
             outfile.write(json.dumps(json_data))
             outfile.flush()
             os.fsync(outfile.fileno())
