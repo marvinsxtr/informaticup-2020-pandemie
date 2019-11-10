@@ -54,7 +54,8 @@ def update_output(value):
 
 
 def visualize_round(json_data):
-    return visualize_round_number(json_data)
+    return [visualize_round_number(json_data),
+            visualize_connections_infected(json_data)]
 
 
 def visualize_round_number(json_data):
@@ -67,7 +68,7 @@ def visualize_game(json_data):
 
 
 def visualize_game_round_count(json_data):
-    return html.Span('Rounds: {0}'.format(len(json_data)), style={'padding': '5px', 'fontSize': '16px'})
+    return html.Span('Rounds: {0}'.format(json_data[len(json_data) - 1]["round"]), style={'padding': '5px', 'fontSize': '16px'})
 
 
 def visualize_game_outcome(json_data):
@@ -89,6 +90,7 @@ def visualize_connections_infected(json_data):
 
     fig.add_trace(go.Scattergeo(
         locationmode='ISO-3',
+        showlegend=False,
         lon=lon,
         lat=lat,
         text=name,
@@ -124,6 +126,7 @@ def visualize_connections_infected(json_data):
         fig.add_trace(
             go.Scattergeo(
                 locationmode='ISO-3',
+                showlegend=False,
                 lon=[flight_paths[i]["lon1"], flight_paths[i]["lon2"]],
                 lat=[flight_paths[i]["lat1"], flight_paths[i]["lat2"]],
                 mode='lines',
