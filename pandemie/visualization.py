@@ -50,7 +50,6 @@ def update_output(value):
         with open(path + "/tester/tmp/current_game.dat", 'r+') as f:
             f.seek(0)
             json_data = json.load(f)
-            print("loaded")
         return visualize_game(json_data)
 
 
@@ -58,12 +57,21 @@ def visualize_round(json_data):
     return visualize_round_number(json_data)
 
 
-def visualize_game(json_data):
-    return visualize_round_number(json_data)
-
-
 def visualize_round_number(json_data):
-    return html.Span('Round: {0}'.format(len(json_data)), style={'padding': '5px', 'fontSize': '16px'})
+    return html.Span('Round: {0}'.format(json_data["round"]), style={'padding': '5px', 'fontSize': '16px'})
+
+
+def visualize_game(json_data):
+    return [visualize_game_round_count(json_data),
+            visualize_game_outcome(json_data)]
+
+
+def visualize_game_round_count(json_data):
+    return html.Span('Rounds: {0}'.format(len(json_data)), style={'padding': '5px', 'fontSize': '16px'})
+
+
+def visualize_game_outcome(json_data):
+    return html.Span('Outcome: {0}'.format(json_data[len(json_data) - 1]["outcome"]), style={'padding': '5px', 'fontSize': '16px'})
 
 
 def visualize_connections_infected(json_data):

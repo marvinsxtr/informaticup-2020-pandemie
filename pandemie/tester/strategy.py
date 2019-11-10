@@ -20,6 +20,23 @@ class AbstractStrategy(ABC):
     def set_file(self, file):
         self.file = file
 
+    def log_result(self, json_data):
+        # Save strategy data
+        with open(self.get_file_path(), "a") as file:
+
+            # Dump outcome and played rounds
+            data = "{0}:\t{1}\n".format(json_data["outcome"], str(json_data["round"]))
+
+            # Append all pathogens which occurred during the round
+            if "events" in json_data:
+                for event in json_data["events"]:
+                    if event["type"] == "pathogenEncountered":
+                        data += str(event["pathogen"]) + "\n"  # Add the data of the pathogen
+
+            data += "\n"
+            data = filter_unicode(data)  # Remove all non UTF-8 characters
+            file.write(data)
+
     @staticmethod
     def log_json(json_data):
         # todo: fix encoding
@@ -77,22 +94,7 @@ class AbstractStrategy(ABC):
             self.result = (json_data["outcome"], json_data["round"])  # Set the result
 
             if not self.silent:
-
-                # Save strategy data
-                with open(self.get_file_path(), "a") as file:
-
-                    # Dump outcome and played rounds
-                    data = "{0}:\t{1}\n".format(json_data["outcome"], str(json_data["round"]))
-
-                    # Append all pathogens which occurred during the round
-                    if "events" in json_data:
-                        for event in json_data["events"]:
-                            if event["type"] == "pathogenEncountered":
-                                data += str(event["pathogen"]) + "\n"  # Add the data of the pathogen
-
-                    data += "\n"
-                    data = filter_unicode(data)  # Remove all non UTF-8 characters
-                    file.write(data)
+                self.log_result(json_data)  # log cumulative results
 
             # shutdown server
             server.stop()
