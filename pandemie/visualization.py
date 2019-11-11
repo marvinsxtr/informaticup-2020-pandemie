@@ -20,7 +20,7 @@ app.config['suppress_callback_exceptions'] = True
 app.title = 'Pandemie!'
 app.layout = html.Div(
     html.Div([
-        html.H4('Pandemie!'),
+        html.Center(html.H4('Pandemie!'),),
         dcc.Dropdown(
             id='data_dropdown',
             options=[
@@ -64,7 +64,28 @@ def visualize_round_number(json_data):
 
 def visualize_game(json_data):
     return [visualize_game_round_count(json_data),
-            visualize_game_outcome(json_data)]
+            visualize_game_outcome(json_data),
+            visualize_game_population(json_data)]
+
+
+def visualize_game_population(json_data):
+    population = []
+    rounds = []
+
+    for r in range(len(json_data)):
+        rounds.append(r)
+
+    for game in json_data:
+        p = 0
+        for city in game["cities"].items():
+            p += city[1]["population"]
+        population.append(p)
+
+    fig = go.Figure(go.Scatter(x=rounds, y=population, mode='lines+markers'))
+
+    fig.update_layout(title='World Population')
+
+    return html.Div([dcc.Graph(id='population', figure=fig)])
 
 
 def visualize_game_round_count(json_data):
