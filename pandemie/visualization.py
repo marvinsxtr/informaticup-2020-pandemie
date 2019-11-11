@@ -4,7 +4,6 @@ import os
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
-from dash.dependencies import Input, Output
 import plotly.graph_objects as go
 import logging
 
@@ -55,7 +54,34 @@ def update_output(value):
 
 def visualize_round(json_data):
     return [visualize_round_number(json_data),
-            visualize_connections_infected(json_data)]
+            visualize_connections_infected(json_data),
+            visualize_round_pathogens_pie(json_data)]
+
+
+def visualize_round_pathogens_pie(json_data):
+    labels = []
+    values = {}
+
+    for city in json_data["cities"].items():
+        if "events" in city[1]:
+            for event in city[1]["events"]:
+                if event["type"] == "outbreak":
+                    pathogen = event["pathogen"]
+                    if pathogen not in labels:
+                        labels.append(pathogen["name"])
+                        if not pathogen["name"] in values:
+                            values[pathogen["name"]] = 1
+                        else:
+                            values[pathogen["name"]] += 1
+
+    stats = []
+    print(values)
+    for key, value in (values.items()):
+        stats.append(value)
+
+    fig = go.Figure(data=[go.Pie(labels=labels, values=stats)])
+
+    return html.Div([dcc.Graph(id='pathogen_pie', figure=fig)])
 
 
 def visualize_round_number(json_data):
@@ -93,11 +119,13 @@ def visualize_game_population(json_data):
 
 
 def visualize_game_round_count(json_data):
-    return html.Span('Rounds: {0}'.format(json_data[len(json_data) - 1]["round"]), style={'padding': '5px', 'fontSize': '16px'})
+    return html.Span('Rounds: {0}'.format(json_data[len(json_data) - 1]["round"]),
+                     style={'padding': '5px', 'fontSize': '16px'})
 
 
 def visualize_game_outcome(json_data):
-    return html.Span('Outcome: {0}'.format(json_data[len(json_data) - 1]["outcome"]), style={'padding': '5px', 'fontSize': '16px'})
+    return html.Span('Outcome: {0}'.format(json_data[len(json_data) - 1]["outcome"]),
+                     style={'padding': '5px', 'fontSize': '16px'})
 
 
 def visualize_connections_infected(json_data):
