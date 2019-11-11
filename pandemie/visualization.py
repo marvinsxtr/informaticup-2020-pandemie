@@ -71,15 +71,19 @@ def visualize_game(json_data):
 def visualize_game_population(json_data):
     population = []
     rounds = []
+    tmp = []
 
-    for r in range(len(json_data)):
+    for r in range(json_data[len(json_data) - 1]["round"]):
         rounds.append(r)
+        tmp.append(r)
 
     for game in json_data:
-        p = 0
-        for city in game["cities"].items():
-            p += city[1]["population"]
-        population.append(p)
+        if game["round"] in tmp:
+            p = 0
+            for city in game["cities"].items():
+                p += city[1]["population"]
+            population.append(p)
+            tmp.remove(game["round"])
 
     fig = go.Figure(go.Scatter(x=rounds, y=population, mode='lines+markers'))
 
