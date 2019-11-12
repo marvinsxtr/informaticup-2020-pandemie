@@ -9,6 +9,8 @@ import logging
 
 from plotly.graph_objs.layout.geo import Projection
 
+from pandemie.util import encoding
+
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
 
@@ -74,12 +76,13 @@ def visualize_round_pathogens_pie(json_data):
                         else:
                             values[pathogen["name"]] += 1
 
-    stats = []
-    print(values)
+    counts = []
+    names = []
     for key, value in (values.items()):
-        stats.append(value)
+        names.append(key)
+        counts.append(value)
 
-    fig = go.Figure(data=[go.Pie(labels=labels, values=stats)])
+    fig = go.Figure(data=[go.Pie(labels=names, values=counts)])
 
     return html.Div([dcc.Graph(id='pathogen_pie', figure=fig)])
 
