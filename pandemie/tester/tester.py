@@ -68,12 +68,16 @@ class Tester:
     def evaluate(self, times=10):
         results = [self._run_strategy() for _ in range(times)]
         weighted_sum = 0
-
+        i = 1
         for r in results:
             if r[0] == "win":
                 weighted_sum += self.win_weight(r[1])
+                print("Game ",i ," :", r[0]," after ", r[1], " rounds and score: ", self.win_weight(r[1]))
+                i += 1
             elif r[0] == "loss":
                 weighted_sum += self.loss_weight(r[1])
+                print("Game ",i ," :", r[0]," after ", r[1], " rounds and score: ", self.win_weight(r[1]))
+                i += 1
             else:
                 raise ValueError("Unknown result type {0}".format(r[0]))
 
@@ -145,4 +149,4 @@ if __name__ == "__main__":
 
     my_tester = Tester(strategy(silent=not do_output, visualize=visualize), random_seed=rand_seed)
     result = my_tester.evaluate(times=count)
-    print(result)
+    print("Total score: ",result)
