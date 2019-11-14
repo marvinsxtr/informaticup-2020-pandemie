@@ -39,15 +39,15 @@ class Ruwen1(AbstractStrategy):
                         pathogen.remove(name)
                     available.append(name)
 
-        if len(pathogen) > 0 and points >= operations.PRICES["develop_medication"]["initial"]:
-            if len(available) == 0 or random.random() > 0.6:
+        if pathogen and points >= operations.PRICES["develop_medication"]["initial"]:
+            if not available or random.random() > 0.6:
                 spend += operations.PRICES["develop_medication"]["initial"]
                 p = random.choice(pathogen)
                 pathogen.remove(p)
                 op = operations.develop_medication(p)
                 return op
         pa = ""
-        if len(available) > 0:
+        if available:
             pa = random.choice(available)
         possible = []
 
@@ -58,7 +58,7 @@ class Ruwen1(AbstractStrategy):
                         if event["pathogen"]["name"] == pa:
                             possible.append(city)
 
-        if points - spend >= operations.PRICES["deploy_medication"]["initial"] and len(possible) > 0:
+        if points - spend >= operations.PRICES["deploy_medication"]["initial"] and possible:
             op = operations.deploy_medication(pa, random.choice(possible))
             return op
 
