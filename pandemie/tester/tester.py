@@ -76,7 +76,7 @@ class Tester:
                 i += 1
             elif r[0] == "loss":
                 weighted_sum += self.loss_weight(r[1])
-                print("Game ",i ," :", r[0]," after ", r[1], " rounds and score: ", self.win_weight(r[1]))
+                print("Game ",i ," :", r[0]," after ", r[1], " rounds and score: -", self.win_weight(r[1]))
                 i += 1
             else:
                 raise ValueError("Unknown result type {0}".format(r[0]))
