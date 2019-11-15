@@ -110,22 +110,25 @@ if __name__ == "__main__":
     strategy_name = input("Enter the full name of the strategy you want to test (no .py):\t")
     do_output = input("Should a log be created? (y/n, default=n)\t").lower()
     do_output = do_output.startswith("y") or do_output.startswith("j")
-    visualize = input("Do you want the data to be saved for visualization (extreme slow down)? (y/n, default=n):\t")
+    visualize = input("Do you want the data to be saved for visualization (slower and one round)? (y/n, default=n):\t")
     visualize = visualize.startswith("y") or visualize.startswith("j")
 
-    while True:
-        count = input("How many rounds should the simulation last? (default=5)\t")
+    if not visualize:
+        while True:
+            count = input("How many rounds should the simulation last? (default=5)\t")
 
-        if not count:
-            count = 5
-            break
+            if not count:
+                count = 5
+                break
 
-        elif not count.isdigit():
-            print("You need to enter a valid round number!")
+            elif not count.isdigit():
+                print("You need to enter a valid round number!")
 
-        else:
-            count = int(count)
-            break
+            else:
+                count = int(count)
+                break
+    else:
+        count = 1
 
     rand_seed = input("Do you want a random seed? (y/n, default=y)").lower()
     rand_seed = rand_seed.startswith("y") or rand_seed.startswith("j") or rand_seed == ""

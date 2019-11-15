@@ -9,7 +9,16 @@ import logging
 
 from plotly.graph_objs.layout.geo import Projection
 
-from pandemie.util import encoding
+options = [{'label': 'Visualize full game', 'value': 'game'}]
+
+
+def get_rounds():
+    path = os.getcwd()
+    rounds = os.listdir(path + "/tester/tmp/")
+
+    for round_name in rounds:
+        options.append({'label': 'Visualize {0}'.format(round_name), 'value': round_name})
+
 
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
@@ -24,11 +33,7 @@ app.layout = html.Div(
         html.Center(html.H4('Pandemie!'),),
         dcc.Dropdown(
             id='data_dropdown',
-            options=[
-                {'label': 'Visualize one round (current_round)', 'value': 'round'},
-                {'label': 'Visualize full game (current_game)', 'value': 'game'},
-            ],
-            value='round'
+            options=options,
         ),
         html.Div(id='game-state'),
     ])
@@ -42,16 +47,16 @@ def update_output(value):
 
     # add visualizations
     path = os.getcwd()
-    if value == "round":
-        with open(path + "/tester/tmp/current_round.dat", 'r+') as f:
+    if value is None:
+        return
+    if value == "game":
+        # todo: visualize game
+        return
+    else:
+        with open(path + "/tester/tmp/{0}".format(value), 'r+') as f:
             f.seek(0)
             json_data = json.load(f)
         return visualize_round(json_data)
-    else:
-        with open(path + "/tester/tmp/current_game.dat", 'r+') as f:
-            f.seek(0)
-            json_data = json.load(f)
-        return visualize_game(json_data)
 
 
 def visualize_round(json_data):
@@ -198,5 +203,6 @@ def visualize_connections_infected(json_data):
 
 
 if __name__ == "__main__":
+    get_rounds()
     print("Running on http://127.0.0.1:8050/ ...")
     app.run_server(debug=False)

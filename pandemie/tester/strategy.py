@@ -39,7 +39,16 @@ class AbstractStrategy(ABC):
 
     @staticmethod
     def log_json(json_data):
+        # todo: make visualization more efficient by pre-computing data here
         # todo: fix encoding
+
+        # delete files for new game
+        if json_data["round"] == 1:
+            path = os.getcwd()
+            rounds = os.listdir(path + "/tmp/")
+
+            for round_name in rounds:
+                os.remove(path + "/tmp/" + round_name)
 
         # creates a file if it does not exist yet
         def create_file(filename):
@@ -50,27 +59,7 @@ class AbstractStrategy(ABC):
                     if exc.errno != errno.EEXIST:
                         raise
 
-        name = "tmp/current_game.dat"
-        create_file(name)
-
-        # clear game data at start of new game
-        if json_data["round"] == 1:
-            open(name, 'w').close()
-            with open(name, 'w') as f:
-                json.dump([], f)
-
-        # update current_game.dat
-        with open(name, 'r') as f:
-            f.seek(0)
-            combined_rounds = json.load(f)
-            combined_rounds.append(json_data)
-            f.seek(0)
-            with open(name, 'w') as f1:
-                json.dump(combined_rounds, f1)
-                f1.flush()
-                os.fsync(f1.fileno())
-
-        name = "tmp/current_round.dat"
+        name = "tmp/round{0}.dat".format(json_data["round"])
         create_file(name)
 
         # update current_round.dat
