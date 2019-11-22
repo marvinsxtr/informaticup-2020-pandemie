@@ -199,10 +199,10 @@ def visualize_connections_infected(json_data):
     fig.update_layout(geo=dict(scope='world',
                                projection=Projection(type="orthographic"),))
 
-    return dcc.Graph(id='graph', figure=fig)
+    return dcc.Graph(id='connections', figure=fig)
 
 
 if __name__ == "__main__":
     get_rounds()
-    print("Running on http://127.0.0.1:8050/ ...")
+    print("Running on http://127.0.0.1:8050/...")
     app.run_server(debug=False)
