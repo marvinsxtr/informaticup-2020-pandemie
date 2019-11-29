@@ -17,7 +17,7 @@ class Marvin2(AbstractStrategy):
         round = json_data["round"]
         outcome = json_data["outcome"]
 
-        print(operations.PRICES["end_round"]["initial"])
+        ranking = []
 
         return operations.end_round()
 

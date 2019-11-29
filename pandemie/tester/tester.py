@@ -110,7 +110,7 @@ if __name__ == "__main__":
     strategy_name = input("Enter the full name of the strategy you want to test (no .py):\t")
     do_output = input("Should a log be created? (y/n, default=n)\t").lower()
     do_output = do_output.startswith("y") or do_output.startswith("j")
-    visualize = input("Do you want the data to be saved for visualization (slower and one round)? (y/n, default=n):\t")
+    visualize = input("Do you want the data of one round to be saved for visualization? (y/n, default=n):\t")
     visualize = visualize.startswith("y") or visualize.startswith("j")
 
     if not visualize:
@@ -149,4 +149,4 @@ if __name__ == "__main__":
 
     my_tester = Tester(strategy(silent=not do_output, visualize=visualize), random_seed=rand_seed)
     result = my_tester.evaluate(times=count)
-    print("Total score: ",result)
+    print("Total score: ", result)
