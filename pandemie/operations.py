@@ -73,7 +73,7 @@ def get(*args):
     """
     This function returns an operation by tuple in order to be able to rank these in strategies
     """
-    if len(args) > 1:
-        name, *rest = args
+    name, *rest = args
+    if len(rest) > 0:
         return globals()[name](rest)
-    return globals()[args[0]]()
+    return globals()[name]()

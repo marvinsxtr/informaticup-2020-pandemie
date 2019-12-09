@@ -17,10 +17,94 @@ class Marvin2(AbstractStrategy):
         round = json_data["round"]
         outcome = json_data["outcome"]
 
-        ranking = []
+        ranking = {}
 
+        def rank(*args, points):
+            if args not in ranking:
+                ranking[args] = points
+            else:
+                ranking[args] += points
+
+        pathogens = []
+        pathogens_names = []
+        pathogens_med_developing = []
+        pathogens_med_available = []
+
+        for event in events:
+            if event["type"] == "pathogenEncountered":
+                pathogens.append(event["pathogen"])
+
+        for pathogen in pathogens:
+            pathogens_names.append(pathogen["name"])
+
+        for event in events:
+            if event["type"] == "medicationInDevelopment":
+                pathogens_med_developing.append(event["pathogen"]["name"])
+
+        for event in events:
+            if event["type"] == "medicationAvailable":
+                pathogens_med_available.append(event["pathogen"]["name"])
+
+        city_pathogens = {}
+
+        for city in cities.items():
+            city_pathogens[city[0]] = []
+            if "events" in city[1]:
+                for event in city[1]["events"]:
+                    if event["type"] == "outbreak":
+                        city_pathogens[city[0]].append(event["pathogen"]["name"])
+
+        pathogens_sorted = sorted(pathogens, key=lambda p: (1.2 * score(p["infectivity"]),
+                                                            1.0 * score(p["mobility"]),
+                                                            1.0 * score(p["duration"]),
+                                                            1.2 * score(p["lethality"]),
+                                                            count_infected_cities(p["name"], city_pathogens)),
+                                  reverse=True)
+
+        cities_sorted_tmp = sorted(cities.items(), key=lambda c: (1.0 * score(c[1]["economy"]),
+                                                                  1.2 * score(c[1]["hygiene"]),
+                                                                  1.0 * score(c[1]["government"]),
+                                                                  1.2 * score(c[1]["awareness"])),
+                                   reverse=False)
+
+        cities_sorted = []
+
+        for city in cities_sorted_tmp:
+            cities_sorted.append(city[0])
+
+        pathogens_sorted_names = []
+
+        for pathogen in pathogens_sorted:
+            pathogens_sorted_names.append(pathogen["name"])
+
+        possible_pathogens = []
+        for pathogen in pathogens_names:
+            if pathogen not in pathogens_med_developing:
+                if pathogen not in pathogens_med_available:
+                    possible_pathogens.append(pathogen)
+
+        for pathogen in pathogens_sorted_names:
+            if pathogen in possible_pathogens:
+                if operations.PRICES["develop_medication"]["initial"] <= points:
+                    rank("develop_medication", pathogen, points=100)
+
+        for pathogen in pathogens_med_available:
+            possible_cities = []
+            for pathogen_tmp in pathogens_med_available:
+                for city, pathogens in city_pathogens.items():
+                    if pathogen_tmp in pathogens:
+                        possible_cities.append(city)
+            for city in cities_sorted:
+                if city in possible_cities:
+                    if operations.PRICES["deploy_medication"]["initial"] <= points:
+                        rank("deploy_medication", pathogen, city, points=100)
+
+        print(ranking)
+        print(possible_pathogens)
+        for key, value in sorted(ranking, key=lambda item: item[0]):
+            if key[0] in possible_pathogens:
+                return operations.get(key)
         return operations.get("end_round")
-
 
 def score(symbols):
     if symbols == "--":
