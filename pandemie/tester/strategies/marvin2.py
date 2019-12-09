@@ -99,12 +99,15 @@ class Marvin2(AbstractStrategy):
                     if operations.PRICES["deploy_medication"]["initial"] <= points:
                         rank("deploy_medication", pathogen, city, points=100)
 
-        print(ranking)
-        print(possible_pathogens)
-        for key, value in sorted(ranking, key=lambda item: item[0]):
-            if key[0] in possible_pathogens:
-                return operations.get(key)
-        return operations.get("end_round")
+        # print(ranking)
+        for key, value in sorted(ranking.items(), key=lambda item: item[1]):
+            if key[0] not in pathogens_med_developing:
+                print("took:", key)
+                name, *args = key
+                return operations.get(name, *args)
+
+        return operations.get(name="end_round")
+
 
 def score(symbols):
     if symbols == "--":

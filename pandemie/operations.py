@@ -69,11 +69,11 @@ def launch_campaign(city):
     return {"type": "launchCampaign", "city": city}
 
 
-def get(*args):
+def get(name, *args):
     """
     This function returns an operation by tuple in order to be able to rank these in strategies
     """
-    name, *rest = args
-    if len(rest) > 0:
-        return globals()[name](rest)
-    return globals()[name]()
+    if len(args) > 0:
+        return globals()[name](*args)
+    else:
+        return globals()[name]()
