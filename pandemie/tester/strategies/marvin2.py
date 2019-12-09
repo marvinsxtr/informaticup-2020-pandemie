@@ -19,7 +19,7 @@ class Marvin2(AbstractStrategy):
 
         ranking = []
 
-        return operations.end_round()
+        return operations.get("end_round")
 
 
 def score(symbols):

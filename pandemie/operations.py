@@ -67,3 +67,13 @@ def apply_hygienic_measures(city):
 
 def launch_campaign(city):
     return {"type": "launchCampaign", "city": city}
+
+
+def get(*args):
+    """
+    This function returns an operation by tuple in order to be able to rank these in strategies
+    """
+    if len(args) > 1:
+        name, *rest = args
+        return globals()[name](rest)
+    return globals()[args[0]]()
