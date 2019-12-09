@@ -20,6 +20,8 @@ class Marvin2(AbstractStrategy):
         ranking = {}
 
         def rank(*args, points):
+            if points == 0:
+                return
             if args not in ranking:
                 ranking[args] = points
             else:
@@ -77,6 +79,13 @@ class Marvin2(AbstractStrategy):
         for pathogen in pathogens_sorted:
             pathogens_sorted_names.append(pathogen["name"])
 
+        def get_pathogen_pos(name):
+            i = 0
+            for pathogen in pathogens_sorted_names:
+                if pathogen == name:
+                    return len(pathogens_sorted_names) - i
+                i += 1
+
         possible_pathogens = []
         for pathogen in pathogens_names:
             if pathogen not in pathogens_med_developing:
@@ -86,7 +95,7 @@ class Marvin2(AbstractStrategy):
         for pathogen in pathogens_sorted_names:
             if pathogen in possible_pathogens:
                 if operations.PRICES["develop_medication"]["initial"] <= points:
-                    rank("develop_medication", pathogen, points=100)
+                    rank("develop_medication", pathogen, points=(100 * get_pathogen_pos(pathogen)))
 
         for pathogen in pathogens_med_available:
             possible_cities = []
@@ -97,12 +106,12 @@ class Marvin2(AbstractStrategy):
             for city in cities_sorted:
                 if city in possible_cities:
                     if operations.PRICES["deploy_medication"]["initial"] <= points:
-                        rank("deploy_medication", pathogen, city, points=100)
+                        rank("deploy_medication", pathogen, city, points=(100 * get_pathogen_pos(pathogen)))
 
-        # print(ranking)
-        for key, value in sorted(ranking.items(), key=lambda item: item[1]):
+        print(sorted(ranking.items(), key=lambda item: item[1], reverse=True))
+        for key, value in sorted(ranking.items(), key=lambda item: item[1], reverse=True):
             if key[0] not in pathogens_med_developing:
-                print("took:", key)
+                print("took", key, "with", value, "points")
                 name, *args = key
                 return operations.get(name, *args)
 
