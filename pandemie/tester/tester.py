@@ -1,8 +1,12 @@
+import datetime
 import math
 import os
-import subprocess
-import datetime
 import random
+import subprocess
+#from threading import Thread
+from multiprocessing import Process
+import sys
+
 from pandemie.tester import AbstractStrategy
 from pandemie.web import start_server
 
@@ -10,6 +14,7 @@ from pandemie.web import start_server
 WIN_RATE_HALVED = 25
 LOSS_RATE_HALVED = 25
 EVALUATION_SLOPE = 0.1
+results=[]
 
 DEVNULL = subprocess.DEVNULL
 
@@ -62,11 +67,24 @@ class Tester:
 
         # start server and wait for round to end
         start_server(self.strategy)
+        global results
+        results.append(self.strategy.get_result())
 
-        return self.strategy.get_result()
+
+
 
     def evaluate(self, times=10):
-        results = [self._run_strategy() for _ in range(times)]
+        # Thread based call of amount(times) instances of .self_run_strategy
+
+        processes = [Process(target=self._run_strategy()) for _ in range(times)]
+        print("Round",times)
+
+        for p in processes:
+            p.start()
+            p.join()
+
+        global results
+
         weighted_sum = 0
         i = 1
         for r in results:
@@ -147,6 +165,12 @@ if __name__ == "__main__":
         print("Strategy not found! Make sure it has the same name as the file. Exiting...")
         exit()
 
+
     my_tester = Tester(strategy(silent=not do_output, visualize=visualize), random_seed=rand_seed)
     result = my_tester.evaluate(times=count)
     print("Total score: ", result)
+    #terminating python script in case it is open because of a lock of a thread
+
+    quit()
+    sys.exit()
+    raise SystemExit
