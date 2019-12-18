@@ -3,9 +3,7 @@ import math
 import os
 import random
 import subprocess
-#from threading import Thread
 from multiprocessing import Process
-import sys
 
 from pandemie.tester import AbstractStrategy
 from pandemie.web import start_server
@@ -169,8 +167,3 @@ if __name__ == "__main__":
     my_tester = Tester(strategy(silent=not do_output, visualize=visualize), random_seed=rand_seed)
     result = my_tester.evaluate(times=count)
     print("Total score: ", result)
-    #terminating python script in case it is open because of a lock of a thread
-
-    quit()
-    sys.exit()
-    raise SystemExit
