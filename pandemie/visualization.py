@@ -1,6 +1,6 @@
 import json
 import os
-
+import time
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
@@ -50,7 +50,18 @@ def update_output(value):
     if value is None:
         return
     if value == "game":
-        # todo: visualize game
+        # todo: vvisualize round is not working if its not in a return statement
+        # visulizes last game in intervall of 10 seconds per round. loading time depending on cpu speed
+        path, dirs, files = next(os.walk(path+"/tester/tmp"))
+        file_count = len(files)
+        for round in range(file_count):
+            print("File_count",file_count, "in directory", path)
+            with open(path + f"/round{(round+1)}.dat", 'r+') as f:
+                f.seek(0)
+                json_data = json.load(f)
+                visualize_round(json_data)
+                print("visualized round",round+1)
+                time.sleep(10)
         return
     else:
         with open(path + "/tester/tmp/{0}".format(value), 'r+') as f:
