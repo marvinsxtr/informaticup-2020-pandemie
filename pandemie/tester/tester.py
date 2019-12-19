@@ -75,7 +75,7 @@ class Tester:
         global results
         result = self.strategy.get_result()
         results.append(result)
-        print("Seeds in list", used_seeds, "got the result", result)
+        # print("Seeds in list", used_seeds, "got the result", result)
 
     def evaluate(self, times=10):
         # Thread based call of amount(times) instances of .self_run_strategy
