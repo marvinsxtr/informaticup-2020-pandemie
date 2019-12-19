@@ -13,8 +13,8 @@ from pandemie.web import start_server
 WIN_RATE_HALVED = 25
 LOSS_RATE_HALVED = 25
 EVALUATION_SLOPE = 0.1
-results=[]
-used_seeds=[]
+results = []
+used_seeds = []
 dir = 0
 
 DEVNULL = subprocess.DEVNULL
@@ -53,11 +53,11 @@ class Tester:
             dir = 1
 
         if os.name == "nt":
-            subprocess.call("ic20_windows.exe --random-seed {0}".format(self.seed), stdout=DEVNULL,
-                             stderr=DEVNULL,shell=True)
+            subprocess.call("ic20_windows.exe --random-seed {0}".format(self.seed), stdout=DEVNULL, stderr=DEVNULL,
+                            shell=True)
         else:
-            subprocess.call(["./ic20_linux", "--random-seed " + str(self.seed)], stdout=DEVNULL,
-                            stderr=DEVNULL, shell=True)
+            subprocess.call(["./ic20_linux", "--random-seed " + str(self.seed)], stdout=DEVNULL, stderr=DEVNULL,
+                            shell=True)
 
     def _run_strategy(self):
         print("================== NEW SEED: %s ==================" % str(self.seed))
@@ -71,15 +71,11 @@ class Tester:
         os.chdir(cwd)
 
         # start server and wait for round to end
-        #start_server(self.strategy)
+        # start_server(self.strategy)
         global results
         result = self.strategy.get_result()
         results.append(result)
-        print("Seeds in list", used_seeds,"got the result", result)
-
-
-
-
+        print("Seeds in list", used_seeds, "got the result", result)
 
     def evaluate(self, times=10):
         # Thread based call of amount(times) instances of .self_run_strategy
@@ -90,12 +86,12 @@ class Tester:
         server.start()
 
         for t in threads:
-            #time.sleep(0.1)
+            # time.sleep(0.1)
             t.start()
             # increment seed
             self.new_seed()
 
-            print("Started thread with id: ",t.ident)
+            print("Started thread with id: ", t.ident)
 
         # waiting for threads and the server to be finished
         for t in threads:
@@ -109,11 +105,11 @@ class Tester:
         for r in results:
             if r[0] == "win":
                 weighted_sum += self.win_weight(r[1])
-                print("Game ",i ," :", r[0]," after ", r[1], " rounds and score: ", self.win_weight(r[1]))
+                print("Game ", i, " :", r[0], " after ", r[1], " rounds and score: ", self.win_weight(r[1]))
                 i += 1
             elif r[0] == "loss":
                 weighted_sum += self.loss_weight(r[1])
-                print("Game ",i ," :", r[0]," after ", r[1], " rounds and score: -", self.win_weight(r[1]))
+                print("Game ", i, " :", r[0], " after ", r[1], " rounds and score: -", self.win_weight(r[1]))
                 i += 1
             else:
                 raise ValueError("Unknown result type {0}".format(r[0]))
@@ -183,7 +179,6 @@ if __name__ == "__main__":
     except AttributeError:
         print("Strategy not found! Make sure it has the same name as the file. Exiting...")
         exit()
-
 
     my_tester = Tester(strategy(silent=not do_output, visualize=visualize), random_seed=rand_seed)
     result = my_tester.evaluate(times=count)
