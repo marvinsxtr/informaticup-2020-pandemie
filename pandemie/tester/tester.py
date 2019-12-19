@@ -3,8 +3,9 @@ import math
 import os
 import random
 import subprocess
+import time
 from multiprocessing import Process
-
+import threading
 from pandemie.tester import AbstractStrategy
 from pandemie.web import start_server
 
@@ -13,6 +14,7 @@ WIN_RATE_HALVED = 25
 LOSS_RATE_HALVED = 25
 EVALUATION_SLOPE = 0.1
 results=[]
+dir = 0
 
 DEVNULL = subprocess.DEVNULL
 
@@ -43,20 +45,26 @@ class Tester:
         self.seed = 0
         self.new_seed()
 
+    def _start_tester(self):
+        global dir
+        if dir == 0:
+            os.chdir("../../test")
+            dir = 1
+
+        if os.name == "nt":
+            subprocess.call("ic20_windows.exe --random-seed {0}".format(self.seed), stdout=DEVNULL,
+                             stderr=DEVNULL,shell=True)
+        else:
+            subprocess.call(["./ic20_linux", "--random-seed " + str(self.seed)], stdout=DEVNULL,
+                            stderr=DEVNULL, shell=True)
+
     def _run_strategy(self):
         print("================== NEW SEED: %s ==================" % str(self.seed))
 
         # store cwd for later usage
+
         cwd = os.getcwd()
-        os.chdir("../../test")
-
-        if os.name == "nt":
-            subprocess.Popen("ic20_windows.exe --random-seed {0}".format(self.seed), stdout=DEVNULL,
-                             stderr=DEVNULL)
-        else:
-            subprocess.Popen(["./ic20_linux", "--random-seed",  str(self.seed)], stdout=DEVNULL,
-                             stderr=DEVNULL)
-
+        self._start_tester()
         # restore cwd
         os.chdir(cwd)
 
@@ -64,7 +72,7 @@ class Tester:
         self.new_seed()
 
         # start server and wait for round to end
-        start_server(self.strategy)
+        #start_server(self.strategy)
         global results
         results.append(self.strategy.get_result())
 
@@ -74,12 +82,21 @@ class Tester:
     def evaluate(self, times=10):
         # Thread based call of amount(times) instances of .self_run_strategy
 
-        processes = [Process(target=self._run_strategy()) for _ in range(times)]
-        print("Round",times)
+        cwd = os.getcwd()
+        threads = [threading.Thread(target=self._run_strategy,) for i in range(times)]
+        server = threading.Thread(target=start_server, args=(self.strategy,))
+        server.start()
 
-        for p in processes:
-            p.start()
-            p.join()
+        for t in threads:
+            time.sleep(0.1)
+            t.start()
+
+            print("Started thread with id: ",t.ident)
+
+        # waiting for threads and the server to be finished
+        for t in threads:
+            t.join()
+        server.join()
 
         global results
 
