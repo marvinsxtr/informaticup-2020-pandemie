@@ -14,6 +14,7 @@ WIN_RATE_HALVED = 25
 LOSS_RATE_HALVED = 25
 EVALUATION_SLOPE = 0.1
 results = []
+result_use = 0
 used_seeds = []
 dir = 0
 
@@ -66,7 +67,10 @@ class Tester:
         global used_seeds
         used_seeds.append(self.seed)
         cwd = os.getcwd()
+        # increment seed
+        self.new_seed()
         self._start_tester()
+
         # restore cwd
         os.chdir(cwd)
 
@@ -74,7 +78,15 @@ class Tester:
         # start_server(self.strategy)
         global results
         result = self.strategy.get_result()
-        results.append(result)
+
+        global result_use
+        while True:
+            time.sleep(4)
+            if result_use == 0:
+                result_use = 1
+                results.append(result)
+                result_use = 0
+                break
         # print("Seeds in list", used_seeds, "got the result", result)
 
     def evaluate(self, times=10):
@@ -86,10 +98,9 @@ class Tester:
         server.start()
 
         for t in threads:
-            # time.sleep(0.1)
+            #time.sleep(0.2)
             t.start()
-            # increment seed
-            self.new_seed()
+
 
             print("Started thread with id: ", t.ident)
 
