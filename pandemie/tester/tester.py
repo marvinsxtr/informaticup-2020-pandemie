@@ -107,7 +107,7 @@ class Tester:
         # waiting for threads and the server to be finished
         for t in threads:
             t.join()
-        server.join()
+        #server.join()
 
         global results
 
@@ -130,6 +130,7 @@ class Tester:
                 file.write(str(weighted_sum / len(results)))
 
         return weighted_sum / len(results)
+
 
     @staticmethod
     def win_weight(rounds, k=EVALUATION_SLOPE):

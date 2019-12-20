@@ -85,8 +85,7 @@ class AbstractStrategy(ABC):
             if not self.silent:
                 self.log_result(json_data)  # log cumulative results
 
-            # shutdown server
-            server.stop()
+
 
         return self._solve(json_data, server)
 
