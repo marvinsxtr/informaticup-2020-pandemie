@@ -1,21 +1,23 @@
+import errno
 import os
-from abc import ABC, abstractmethod
-
 import json
+import threading
+
+from abc import ABC, abstractmethod
 
 from pandemie.event_checker import EventChecker
 from pandemie.util.encoding import filter_unicode
-import errno
 
 
 class AbstractStrategy(ABC):
     def __init__(self, silent=False, visualize=False):
         super().__init__()
-        self.result = None
+        self.result = []
         self.file = ""
         self.silent = silent  # If False -> Output result and pathogens of each round into a file
         self.visualize = visualize  # Writes json for every round into file to be visualized
         self.data_gatherer = EventChecker()
+        self.lock = threading.Lock()
 
     def set_file(self, file):
         self.file = file
@@ -41,6 +43,7 @@ class AbstractStrategy(ABC):
     def log_json(json_data):
         # todo: make visualization more efficient by pre-computing data here
         # todo: fix encoding
+        # todo: make thread safe
 
         # delete files for new game
         if json_data["round"] == 1:
@@ -80,12 +83,13 @@ class AbstractStrategy(ABC):
         self.data_gatherer.check_all_events(json_data)  # Check for new Events and Pathogens
 
         if not json_data["outcome"] == "pending":  # Round ended
-            self.result = (json_data["outcome"], json_data["round"])  # Set the result
+
+            self.lock.acquire()
+            self.result.append((json_data["outcome"], json_data["round"]))
+            self.lock.release()
 
             if not self.silent:
                 self.log_result(json_data)  # log cumulative results
-
-
 
         return self._solve(json_data, server)
 

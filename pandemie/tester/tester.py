@@ -3,8 +3,8 @@ import math
 import os
 import random
 import subprocess
+import sys
 import time
-from multiprocessing import Process
 import threading
 from pandemie.tester import AbstractStrategy
 from pandemie.web import start_server
@@ -13,9 +13,7 @@ from pandemie.web import start_server
 WIN_RATE_HALVED = 25
 LOSS_RATE_HALVED = 25
 EVALUATION_SLOPE = 0.1
-results = []
-result_use = 0
-used_seeds = []
+
 dir = 0
 
 DEVNULL = subprocess.DEVNULL
@@ -41,75 +39,59 @@ class Tester:
             test_strategy.set_file("{0}-{1}.dat".format(test_strategy.name, self.now()))
 
         self.strategy = test_strategy
+        self.seed = self.new_seed()
+        self.random_seed = random_seed
 
-        self.random_seed = rand_seed
-
-        self.seed = 0
-        self.new_seed()
-
-    def _start_tester(self):
+    @staticmethod
+    def _start_tester(seed):
         global dir
         if dir == 0:
             os.chdir("../../test")
             dir = 1
 
         if os.name == "nt":
-            subprocess.call("ic20_windows.exe --random-seed {0}".format(self.seed), stdout=DEVNULL, stderr=DEVNULL,
+            subprocess.call("ic20_windows.exe --random-seed {0}".format(seed), stdout=DEVNULL, stderr=DEVNULL,
                             shell=True)
         else:
-            subprocess.call(["./ic20_linux", "--random-seed " + str(self.seed)], stdout=DEVNULL, stderr=DEVNULL,
+            subprocess.call(["./ic20_linux", "--random-seed " + str(seed)], stdout=DEVNULL, stderr=DEVNULL,
                             shell=True)
 
     def _run_strategy(self):
-        print("================== NEW SEED: %s ==================" % str(self.seed))
 
         # store cwd for later usage
-        global used_seeds
-        used_seeds.append(self.seed)
         cwd = os.getcwd()
-        # increment seed
-        self.new_seed()
-        self._start_tester()
+
+        if self.random_seed:
+            seed = self.new_seed()
+        else:
+            seed = self.seed
+
+        self._start_tester(seed)
 
         # restore cwd
         os.chdir(cwd)
 
-        # start server and wait for round to end
-        # start_server(self.strategy)
-        global results
-        result = self.strategy.get_result()
+    def evaluate(self, thread_count=10):
 
-        global result_use
-        while True:
-            time.sleep(4)
-            if result_use == 0:
-                result_use = 1
-                results.append(result)
-                result_use = 0
-                break
-        # print("Seeds in list", used_seeds, "got the result", result)
-
-    def evaluate(self, times=10):
-        # Thread based call of amount(times) instances of .self_run_strategy
-
-        cwd = os.getcwd()
-        threads = [threading.Thread(target=self._run_strategy,) for i in range(times)]
+        threads = [threading.Thread(target=self._run_strategy,) for _ in range(thread_count)]
         server = threading.Thread(target=start_server, args=(self.strategy,))
         server.start()
 
-        for t in threads:
-            #time.sleep(0.2)
+        # starting all threads
+        for i, t in enumerate(threads):
             t.start()
+            sys.stdout.write("\r \rStarted %d / %d threads" % (i+1, thread_count))
+            sys.stdout.flush()
 
-
-            print("Started thread with id: ", t.ident)
+        print()
 
         # waiting for threads and the server to be finished
-        for t in threads:
+        for i, t in enumerate(threads):
+            sys.stdout.write("\r \rWaiting for threads to finish: %d / %d" % (i, thread_count))
+            sys.stdout.flush()
             t.join()
-        #server.join()
 
-        global results
+        results = self.strategy.get_result()
 
         weighted_sum = 0
         i = 1
@@ -131,7 +113,6 @@ class Tester:
 
         return weighted_sum / len(results)
 
-
     @staticmethod
     def win_weight(rounds, k=EVALUATION_SLOPE):
         return math.exp(k*(-rounds + WIN_RATE_HALVED)) / (1 + math.exp(k*(-rounds + WIN_RATE_HALVED)))
@@ -144,11 +125,9 @@ class Tester:
     def now():
         return str(datetime.datetime.today().strftime('%Y-%m-%d--%H.%M.%S'))
 
-    def new_seed(self):
-        if self.random_seed:
-            self.seed = random.randint(1, 10000000000)
-        else:
-            self.seed += 1
+    @staticmethod
+    def new_seed():
+        return random.randint(1, 10000000000)
 
 
 if __name__ == "__main__":
@@ -160,7 +139,7 @@ if __name__ == "__main__":
 
     if not visualize:
         while True:
-            count = input("How many rounds should the simulation last? (default=5)\t")
+            count = input("How many simulations should be run simultaneously? (default=5)\t")
 
             if not count:
                 count = 5
@@ -193,5 +172,5 @@ if __name__ == "__main__":
         exit()
 
     my_tester = Tester(strategy(silent=not do_output, visualize=visualize), random_seed=rand_seed)
-    result = my_tester.evaluate(times=count)
+    result = my_tester.evaluate(thread_count=count)
     print("Total score: ", result)
