@@ -1,6 +1,5 @@
 import json
 import os
-import time
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
@@ -10,12 +9,10 @@ import logging
 from plotly.graph_objs.layout.geo import Projection
 
 options = [{'label': 'Visualize full game', 'value': 'game'}]
+rounds = sorted(os.listdir(os.getcwd() + "/tester/tmp/"), key=lambda item: int(''.join(filter(str.isdigit, item))))
 
 
 def get_rounds():
-    path = os.getcwd()
-    rounds = os.listdir(path + "/tester/tmp/")
-
     for round_name in rounds:
         options.append({'label': 'Visualize {0}'.format(round_name), 'value': round_name})
 
@@ -44,25 +41,12 @@ app.layout = html.Div(
     dash.dependencies.Output('game-state', 'children'),
     [dash.dependencies.Input('data_dropdown', 'value')])
 def update_output(value):
-
     # add visualizations
     path = os.getcwd()
     if value is None:
         return
     if value == "game":
-        # todo: vvisualize round is not working if its not in a return statement
-        # visulizes last game in intervall of 10 seconds per round. loading time depending on cpu speed
-        path, dirs, files = next(os.walk(path+"/tester/tmp"))
-        file_count = len(files)
-        for round in range(file_count):
-            print("File_count",file_count, "in directory", path)
-            with open(path + f"/round{(round+1)}.dat", 'r+') as f:
-                f.seek(0)
-                json_data = json.load(f)
-                visualize_round(json_data)
-                print("visualized round",round+1)
-                time.sleep(10)
-        return
+        return visualize_game()
     else:
         with open(path + "/tester/tmp/{0}".format(value), 'r+') as f:
             f.seek(0)
@@ -71,83 +55,21 @@ def update_output(value):
 
 
 def visualize_round(json_data):
+    """
+    This function visualizes a round of the pandemie game. The returned list is displayed as a column in dash.
+    :param json_data: round data
+    :return: list of visualizations
+    """
     return [visualize_round_number(json_data),
-            visualize_connections_infected(json_data),
+            visualize_round_connections_infected(json_data),
             visualize_round_pathogens_pie(json_data)]
-
-
-def visualize_round_pathogens_pie(json_data):
-    labels = []
-    values = {}
-
-    for city in json_data["cities"].items():
-        if "events" in city[1]:
-            for event in city[1]["events"]:
-                if event["type"] == "outbreak":
-                    pathogen = event["pathogen"]
-                    if pathogen not in labels:
-                        labels.append(pathogen["name"])
-                        if not pathogen["name"] in values:
-                            values[pathogen["name"]] = 1
-                        else:
-                            values[pathogen["name"]] += 1
-
-    counts = []
-    names = []
-    for key, value in (values.items()):
-        names.append(key)
-        counts.append(value)
-
-    fig = go.Figure(data=[go.Pie(labels=names, values=counts)])
-
-    return html.Div([dcc.Graph(id='pathogen_pie', figure=fig)])
 
 
 def visualize_round_number(json_data):
     return html.Span('Round: {0}'.format(json_data["round"]), style={'padding': '5px', 'fontSize': '16px'})
 
 
-def visualize_game(json_data):
-    return [visualize_game_round_count(json_data),
-            visualize_game_outcome(json_data),
-            visualize_game_population(json_data)]
-
-
-def visualize_game_population(json_data):
-    population = []
-    rounds = []
-    tmp = []
-
-    for r in range(json_data[len(json_data) - 1]["round"]):
-        rounds.append(r)
-        tmp.append(r)
-
-    for game in json_data:
-        if game["round"] in tmp:
-            p = 0
-            for city in game["cities"].items():
-                p += city[1]["population"]
-            population.append(p)
-            tmp.remove(game["round"])
-
-    fig = go.Figure(go.Scatter(x=rounds, y=population, mode='lines+markers'))
-
-    fig.update_layout(title='World Population')
-
-    return html.Div([dcc.Graph(id='population', figure=fig)])
-
-
-def visualize_game_round_count(json_data):
-    return html.Span('Rounds: {0}'.format(json_data[len(json_data) - 1]["round"]),
-                     style={'padding': '5px', 'fontSize': '16px'})
-
-
-def visualize_game_outcome(json_data):
-    return html.Span('Outcome: {0}'.format(json_data[len(json_data) - 1]["outcome"]),
-                     style={'padding': '5px', 'fontSize': '16px'})
-
-
-def visualize_connections_infected(json_data):
+def visualize_round_connections_infected(json_data):
     lat = []
     lon = []
     name = []
@@ -211,6 +133,92 @@ def visualize_connections_infected(json_data):
                                projection=Projection(type="orthographic"),))
 
     return dcc.Graph(id='connections', figure=fig)
+
+
+def visualize_round_pathogens_pie(json_data):
+    labels = []
+    values = {}
+
+    for city in json_data["cities"].items():
+        if "events" in city[1]:
+            for event in city[1]["events"]:
+                if event["type"] == "outbreak":
+                    pathogen = event["pathogen"]
+                    if pathogen not in labels:
+                        labels.append(pathogen["name"])
+                        if not pathogen["name"] in values:
+                            values[pathogen["name"]] = 1
+                        else:
+                            values[pathogen["name"]] += 1
+
+    counts = []
+    names = []
+    for key, value in (values.items()):
+        names.append(key)
+        counts.append(value)
+
+    fig = go.Figure(data=[go.Pie(labels=names, values=counts)])
+
+    return html.Div([dcc.Graph(id='pathogen_pie', figure=fig)])
+
+
+def visualize_game():
+    """
+    This function visualizes a complete pandemie game by iterating over the json for each round.
+    :return: list of visualizations
+    """
+    return [visualize_game_round_count(),
+            visualize_game_outcome(),
+            visualize_game_population()]
+
+
+def visualize_game_round_count():
+    return html.Span('Rounds: {0}'.format(len(rounds)), style={'padding': '5px', 'fontSize': '16px'})
+
+
+def visualize_game_outcome():
+    path = os.getcwd()
+    last = rounds[len(rounds) - 1]
+    print(last)
+    with open(path + "/tester/tmp/{0}".format(last), 'r+') as f:
+        f.seek(0)
+        json_data = json.load(f)
+    return html.Span('Outcome: {0}'.format(json_data["outcome"]),
+                     style={'padding': '5px', 'fontSize': '16px'})
+
+
+def visualize_game_population():
+    path = os.getcwd()
+    last = rounds[len(rounds) - 1]
+    with open(path + "/tester/tmp/{0}".format(last), 'r+') as f:
+        f.seek(0)
+        json_data = json.load(f)
+
+    y_population = []
+    x_rounds = []
+    tmp = []
+
+    for r in range(json_data["round"]):
+        x_rounds.append(r)
+        tmp.append(r)
+
+    for round in rounds:
+        path = os.getcwd()
+        with open(path + "/tester/tmp/{0}".format(round), 'r+') as f:
+            f.seek(0)
+            game = json.load(f)
+            if game["round"] in tmp:
+                p = 0
+                for city in game["cities"].items():
+                    p += city[1]["population"]
+                y_population.append(p)
+                tmp.remove(game["round"])
+
+    fig = go.Figure(go.Scatter(x=x_rounds, y=y_population, mode='lines+markers'))
+
+    fig.update_layout(title='World Population')
+
+    return html.Div([dcc.Graph(id='population', figure=fig)])
 
 
 if __name__ == "__main__":

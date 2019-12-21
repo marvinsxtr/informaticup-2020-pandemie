@@ -79,7 +79,6 @@ class AbstractStrategy(ABC):
 
         # warning, we actually do not send a last response after the game finished
         # todo: check the unknown behaviour of the ic20 tool
-        # todo: fix event checker bug with multi threading
         self.data_gatherer.check_all_events(json_data)  # Check for new Events and Pathogens
 
         if not json_data["outcome"] == "pending":  # Round ended
