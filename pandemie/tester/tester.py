@@ -41,6 +41,9 @@ class Tester:
         self.strategy = test_strategy
         self.seed = self.new_seed()
         self.random_seed = random_seed
+        self.amount_wins = 0
+        self.amount_loss = 0
+        self.amount_runs = 0
 
     @staticmethod
     def _start_tester(seed):
@@ -72,6 +75,7 @@ class Tester:
         os.chdir(cwd)
 
     def evaluate(self, thread_count=10):
+        self.amount_runs = thread_count
 
         threads = [threading.Thread(target=self._run_strategy,) for _ in range(thread_count)]
         server = threading.Thread(target=start_server, args=(self.strategy,))
@@ -100,10 +104,12 @@ class Tester:
                 weighted_sum += self.win_weight(r[1])
                 print("Game ", i, " :", r[0], " after ", r[1], " rounds and score: ", self.win_weight(r[1]))
                 i += 1
+                self.amount_wins += 1
             elif r[0] == "loss":
                 weighted_sum += self.loss_weight(r[1])
                 print("Game ", i, " :", r[0], " after ", r[1], " rounds and score: -", self.win_weight(r[1]))
                 i += 1
+                self.amount_loss += 1
             else:
                 raise ValueError("Unknown result type {0}".format(r[0]))
 
@@ -173,4 +179,5 @@ if __name__ == "__main__":
 
     my_tester = Tester(strategy(silent=not do_output, visualize=visualize), random_seed=rand_seed)
     result = my_tester.evaluate(thread_count=count)
-    print("Total score: ", result)
+    print(" Total games:", my_tester.amount_runs, "\n","Total games won:", my_tester.amount_wins, "\n", "Total games loss:", my_tester.amount_loss, "\n","win rate:", str((my_tester.amount_wins/my_tester.amount_runs)*100),"%")
+    print(" Total score: ", result)
