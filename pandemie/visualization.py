@@ -1,3 +1,7 @@
+"""
+This file contains everything needed to visualize games or individual rounds using the dash framework with plotly.
+"""
+
 import json
 import os
 import dash

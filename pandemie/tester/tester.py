@@ -14,8 +14,6 @@ WIN_RATE_HALVED = 25
 LOSS_RATE_HALVED = 25
 EVALUATION_SLOPE = 0.1
 
-dir = 0
-
 DEVNULL = subprocess.DEVNULL
 
 
@@ -47,16 +45,11 @@ class Tester:
 
     @staticmethod
     def _start_tester(seed):
-        global dir
-        if dir == 0:
-            os.chdir("../../test")
-            dir = 1
-
         if os.name == "nt":
-            subprocess.call("ic20_windows.exe --random-seed {0}".format(seed), stdout=DEVNULL, stderr=DEVNULL,
+            subprocess.call("../../test/ic20_windows.exe --random-seed {0}".format(seed), stdout=DEVNULL, stderr=DEVNULL,
                             shell=True)
         else:
-            subprocess.call(["./ic20_linux", "--random-seed " + str(seed)], stdout=DEVNULL, stderr=DEVNULL,
+            subprocess.call(["../../test/ic20_linux", "--random-seed " + str(seed)], stdout=DEVNULL, stderr=DEVNULL,
                             shell=True)
 
     def _run_strategy(self):
@@ -179,5 +172,9 @@ if __name__ == "__main__":
 
     my_tester = Tester(strategy(silent=not do_output, visualize=visualize), random_seed=rand_seed)
     result = my_tester.evaluate(thread_count=count)
-    print(" Total games:", my_tester.amount_runs, "\n","Total games won:", my_tester.amount_wins, "\n", "Total games loss:", my_tester.amount_loss, "\n","win rate:", str((my_tester.amount_wins/my_tester.amount_runs)*100),"%")
+    print(" Total games:", my_tester.amount_runs, "\n",
+          "Total games won:", my_tester.amount_wins, "\n",
+          "Total games loss:", my_tester.amount_loss, "\n",
+          "win rate:", str((my_tester.amount_wins / my_tester.amount_runs) * 100),
+          "%")
     print(" Total score: ", result)
