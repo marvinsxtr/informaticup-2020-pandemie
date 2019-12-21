@@ -9,11 +9,11 @@ import logging
 from plotly.graph_objs.layout.geo import Projection
 
 options = [{'label': 'Visualize full game', 'value': 'game'}]
-rounds = sorted(os.listdir(os.getcwd() + "/tester/tmp/"), key=lambda item: int(''.join(filter(str.isdigit, item))))
+round_names = sorted(os.listdir(os.getcwd() + "/tester/tmp/"), key=lambda item: int(''.join(filter(str.isdigit, item))))
 
 
 def get_rounds():
-    for round_name in rounds:
+    for round_name in round_names:
         options.append({'label': 'Visualize {0}'.format(round_name), 'value': round_name})
 
 
@@ -173,13 +173,12 @@ def visualize_game():
 
 
 def visualize_game_round_count():
-    return html.Span('Rounds: {0}'.format(len(rounds)), style={'padding': '5px', 'fontSize': '16px'})
+    return html.Span('Rounds: {0}'.format(len(round_names)), style={'padding': '5px', 'fontSize': '16px'})
 
 
 def visualize_game_outcome():
     path = os.getcwd()
-    last = rounds[len(rounds) - 1]
-    print(last)
+    last = round_names[len(round_names) - 1]
     with open(path + "/tester/tmp/{0}".format(last), 'r+') as f:
         f.seek(0)
         json_data = json.load(f)
@@ -189,7 +188,7 @@ def visualize_game_outcome():
 
 def visualize_game_population():
     path = os.getcwd()
-    last = rounds[len(rounds) - 1]
+    last = round_names[len(round_names) - 1]
     with open(path + "/tester/tmp/{0}".format(last), 'r+') as f:
         f.seek(0)
         json_data = json.load(f)
@@ -202,7 +201,7 @@ def visualize_game_population():
         x_rounds.append(r)
         tmp.append(r)
 
-    for round in rounds:
+    for round in round_names:
         path = os.getcwd()
         with open(path + "/tester/tmp/{0}".format(round), 'r+') as f:
             f.seek(0)
@@ -223,5 +222,6 @@ def visualize_game_population():
 
 if __name__ == "__main__":
     get_rounds()
+    # todo: make visualization more efficient by pre-computing data here
     print("Running on http://127.0.0.1:8050/...")
     app.run_server(debug=False)

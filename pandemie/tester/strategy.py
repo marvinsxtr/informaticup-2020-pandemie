@@ -41,10 +41,6 @@ class AbstractStrategy(ABC):
 
     @staticmethod
     def log_json(json_data):
-        # todo: make visualization more efficient by pre-computing data here
-        # todo: fix encoding
-        # todo: make thread safe
-
         # delete files for new game
         if json_data["round"] == 1:
             path = os.getcwd()
