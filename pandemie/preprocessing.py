@@ -1,11 +1,18 @@
+"""
+This file handles the pre-processing of the raw json data and stores the results in dicts.
+"""
+
 import json
 import os
 
+# this list has the raw game data as a list of json objects for each round
 raw_json_rounds = []
 
+# these store the preprocessed values for visualization
 game_visualizations = {}
 round_visualizations = []
 
+# a list of the round files and label for full game visualization
 option_labels = [{'label': 'Visualize full game', 'value': 'game'}]
 round_names = sorted(os.listdir(os.getcwd() + "/tester/tmp/"), key=lambda item: int(''.join(filter(str.isdigit, item))))
 
@@ -21,6 +28,17 @@ def init_rounds():
             f.seek(0)
             raw_json_rounds.append(json.load(f))
         number += 1
+
+
+def preprocess():
+    init_rounds()
+
+    # preprocess rounds
+    for json_round, number in zip(raw_json_rounds, range(len(raw_json_rounds))):
+        preprocess_round(json_round, number)
+
+    # preprocess game
+    preprocess_game()
 
 
 def preprocess_round(json_round, number):
@@ -127,13 +145,3 @@ def preprocess_game():
 
     game_visualizations["pathogens"] = pathogens
 
-
-def preprocess():
-    init_rounds()
-
-    # preprocess rounds
-    for json_round, number in zip(raw_json_rounds, range(len(raw_json_rounds))):
-        preprocess_round(json_round, number)
-
-    # preprocess game
-    preprocess_game()
