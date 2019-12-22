@@ -90,8 +90,8 @@ def visualize_round_connections_infected(number):
         )))
 
     # flight paths
-    flight_paths = pre.round_visualizations[number]["flight_paths"]
     """
+    flight_paths = pre.round_visualizations[number]["flight_paths"]
     for i in range(len(flight_paths)):
         fig.add_trace(
             go.Scattergeo(
