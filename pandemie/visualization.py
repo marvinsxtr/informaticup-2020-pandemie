@@ -31,7 +31,7 @@ app.config['suppress_callback_exceptions'] = True
 app.title = 'Pandemie!'
 app.layout = html.Div(
     html.Div([
-        html.Center(html.H4('Pandemie!'),),
+        html.Center(html.H4('Pandemie!'), ),
         dcc.Dropdown(
             id='data_dropdown',
             options=options,
@@ -116,7 +116,7 @@ def visualize_round_connections_infected(json_data):
                         for connection in city[1]["connections"]:
                             other_city = json_data["cities"][connection]
                             new_connection = dict({"lat1": other_city["latitude"], "lon1": other_city["longitude"],
-                                                  "lat2": city[1]["latitude"], "lon2": city[1]["longitude"]})
+                                                   "lat2": city[1]["latitude"], "lon2": city[1]["longitude"]})
                             flight_paths.append(new_connection)
             left_over_cities.remove(city[0])
 
@@ -134,7 +134,7 @@ def visualize_round_connections_infected(json_data):
         )
 
     fig.update_layout(geo=dict(scope='world',
-                               projection=Projection(type="orthographic"),))
+                               projection=Projection(type="orthographic"), ))
 
     return dcc.Graph(id='connections', figure=fig)
 
@@ -173,7 +173,7 @@ def visualize_game():
     """
     return [visualize_game_round_count(),
             visualize_game_outcome(),
-            visualize_game_population()]
+            visualize_game_population(), visualize_pathogens_in_full_game()]
 
 
 def visualize_game_round_count():
@@ -222,6 +222,38 @@ def visualize_game_population():
     fig.update_layout(title='World Population')
 
     return html.Div([dcc.Graph(id='population', figure=fig)])
+
+
+def visualize_pathogens_in_full_game():
+    # visualizes a list of all pathogens appeared in the game
+    pathogens = []
+    path = os.getcwd()
+    last = round_names[len(round_names) - 1]
+    with open(path + "/tester/tmp/{0}".format(last), 'r+') as f:
+        f.seek(0)
+        json_data = json.load(f)
+
+    x_rounds = []
+    for r in range(json_data["round"]):
+        x_rounds.append(r)
+
+    for round in round_names:
+        with open(path + "/tester/tmp/{0}".format(round), 'r+') as f:
+            f.seek(0)
+            game = json.load(f)
+
+            for city in game["cities"].items():
+                if "events" in city[1]:
+                    for event in city[1]["events"]:
+                        if event["type"] == "outbreak":
+                            pathogen = event["pathogen"]
+                            if pathogen not in pathogens:
+                                pathogens.append(pathogen["name"])
+
+    pathogens = list(set(pathogens))
+
+    return html.Span('All pathogens in game: ' + str(pathogens),
+                     style={'padding': '5px', 'fontSize': '16px'})
 
 
 if __name__ == "__main__":
