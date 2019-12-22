@@ -2,8 +2,6 @@
 This file contains everything needed to visualize games or individual rounds using the dash framework with plotly.
 """
 
-import json
-import os
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
@@ -58,6 +56,7 @@ def visualize_round(number):
 
 
 def visualize_round_number(number):
+    # displays the visualized round number
     return html.Span('Round: {0}'.format(number + 1), style={'padding': '5px', 'fontSize': '16px'})
 
 
@@ -107,6 +106,7 @@ def visualize_round_connections_infected(number):
 
 
 def visualize_round_pathogens_pie(number):
+    # displays encountered pathogens by city in percent
     counts = pre.round_visualizations[number]["counts"]
     names = pre.round_visualizations[number]["names"]
 
@@ -126,20 +126,23 @@ def visualize_game():
 
 
 def visualize_game_round_count():
+    # prints round count of a game
     return html.Span('Rounds: {0}'.format(len(pre.round_names)), style={'padding': '5px', 'fontSize': '16px'})
 
 
 def visualize_game_outcome():
+    # prints the outcome
     outcome = pre.game_visualizations["outcome"]
+
     return html.Span('Outcome: {0}'.format(outcome), style={'padding': '5px', 'fontSize': '16px'})
 
 
 def visualize_game_population():
+    # visualizes the population development in a game
     x_rounds = pre.game_visualizations["x_rounds"]
     y_population = pre.game_visualizations["y_population"]
 
     fig = go.Figure(go.Scatter(x=x_rounds, y=y_population, mode='lines+markers'))
-
     fig.update_layout(title='World Population')
 
     return html.Div([dcc.Graph(id='population', figure=fig)])
