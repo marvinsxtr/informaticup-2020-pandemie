@@ -79,14 +79,14 @@ class Tester:
             t.start()
             sys.stdout.write("\r \rStarted %d / %d threads" % (i+1, thread_count))
             sys.stdout.flush()
-
-        print()
+        sys.stdout.write("\n")
 
         # waiting for threads and the server to be finished
         for i, t in enumerate(threads):
             sys.stdout.write("\r \rWaiting for threads to finish: %d / %d" % (i, thread_count))
             sys.stdout.flush()
             t.join()
+        sys.stdout.write("\n")
 
         results = self.strategy.get_result()
 
@@ -175,6 +175,6 @@ if __name__ == "__main__":
     print(" Total games:", my_tester.amount_runs, "\n",
           "Total games won:", my_tester.amount_wins, "\n",
           "Total games loss:", my_tester.amount_loss, "\n",
-          "win rate:", str((my_tester.amount_wins / my_tester.amount_runs) * 100),
+          "Win rate:", str((my_tester.amount_wins / my_tester.amount_runs) * 100),
           "%")
     print(" Total score: ", result)

@@ -170,6 +170,7 @@ if __name__ == "__main__":
         sys.stdout.write("\r \rVisualized round %d / %d" % (round_number + 1, len(pre.round_names)))
         sys.stdout.flush()
     sys.stdout.write("\n")
+
     print("Start generating game visualization")
     visualized_game = visualize_game()
 
