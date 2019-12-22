@@ -1,6 +1,7 @@
 """
 This file contains everything needed to visualize games or individual rounds using the dash framework with plotly.
 """
+import sys
 
 import dash
 import dash_core_components as dcc
@@ -10,6 +11,10 @@ import logging
 import pandemie.preprocessing as pre
 
 from plotly.graph_objs.layout.geo import Projection
+
+# displayed lists of graphs/plots
+visualized_rounds = []
+visualized_game = []
 
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
@@ -39,10 +44,10 @@ def update_output(value):
     if value is None:
         return
     if value == "game":
-        return visualize_game()
+        return visualized_game
     else:
         number = int(''.join(filter(str.isdigit, value)))
-        return visualize_round(number - 1)
+        return visualized_rounds[number - 1]
 
 
 def visualize_round(number):
@@ -156,6 +161,17 @@ def visualize_pathogens_in_full_game():
 
 
 if __name__ == "__main__":
+    print("Started pre-processing")
     pre.preprocess()
+
+    print("Started generating visualizations")
+    for round_number in range(len(pre.round_names)):
+        visualized_rounds.append(visualize_round(round_number))
+        sys.stdout.write("\r \rVisualized round %d / %d" % (round_number + 1, len(pre.round_names)))
+        sys.stdout.flush()
+    sys.stdout.write("\n")
+    print("Start generating game visualization")
+    visualized_game = visualize_game()
+
     print("Running on http://127.0.0.1:8050/...")
     app.run_server(debug=False)
