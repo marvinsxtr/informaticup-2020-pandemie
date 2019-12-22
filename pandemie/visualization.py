@@ -130,41 +130,13 @@ def visualize_game_round_count():
 
 
 def visualize_game_outcome():
-    path = os.getcwd()
-    last = pre.round_names[len(pre.round_names) - 1]
-    with open(path + "/tester/tmp/{0}".format(last), 'r+') as f:
-        f.seek(0)
-        json_data = json.load(f)
-    return html.Span('Outcome: {0}'.format(json_data["outcome"]),
-                     style={'padding': '5px', 'fontSize': '16px'})
+    outcome = pre.game_visualizations["outcome"]
+    return html.Span('Outcome: {0}'.format(outcome), style={'padding': '5px', 'fontSize': '16px'})
 
 
 def visualize_game_population():
-    path = os.getcwd()
-    last = pre.round_names[len(pre.round_names) - 1]
-    with open(path + "/tester/tmp/{0}".format(last), 'r+') as f:
-        f.seek(0)
-        json_data = json.load(f)
-
-    y_population = []
-    x_rounds = []
-    tmp = []
-
-    for r in range(json_data["round"]):
-        x_rounds.append(r)
-        tmp.append(r)
-
-    for round in pre.round_names:
-        path = os.getcwd()
-        with open(path + "/tester/tmp/{0}".format(round), 'r+') as f:
-            f.seek(0)
-            game = json.load(f)
-            if game["round"] in tmp:
-                p = 0
-                for city in game["cities"].items():
-                    p += city[1]["population"]
-                y_population.append(p)
-                tmp.remove(game["round"])
+    x_rounds = pre.game_visualizations["x_rounds"]
+    y_population = pre.game_visualizations["y_population"]
 
     fig = go.Figure(go.Scatter(x=x_rounds, y=y_population, mode='lines+markers'))
 
@@ -175,34 +147,9 @@ def visualize_game_population():
 
 def visualize_pathogens_in_full_game():
     # visualizes a list of all pathogens appeared in the game
-    pathogens = []
-    path = os.getcwd()
-    last = pre.round_names[len(pre.round_names) - 1]
-    with open(path + "/tester/tmp/{0}".format(last), 'r+') as f:
-        f.seek(0)
-        json_data = json.load(f)
+    pathogens = pre.game_visualizations["pathogens"]
 
-    x_rounds = []
-    for r in range(json_data["round"]):
-        x_rounds.append(r)
-
-    for round in pre.round_names:
-        with open(path + "/tester/tmp/{0}".format(round), 'r+') as f:
-            f.seek(0)
-            game = json.load(f)
-
-            for city in game["cities"].items():
-                if "events" in city[1]:
-                    for event in city[1]["events"]:
-                        if event["type"] == "outbreak":
-                            pathogen = event["pathogen"]
-                            if pathogen not in pathogens:
-                                pathogens.append(pathogen["name"])
-
-    pathogens = list(set(pathogens))
-
-    return html.Span('All pathogens in game: ' + str(pathogens),
-                     style={'padding': '5px', 'fontSize': '16px'})
+    return html.Span('All pathogens in game: ' + str(pathogens), style={'padding': '5px', 'fontSize': '16px'})
 
 
 if __name__ == "__main__":
