@@ -91,7 +91,7 @@ def visualize_round_connections_infected(number):
 
     # flight paths
     flight_paths = pre.round_visualizations[number]["flight_paths"]
-
+    """
     for i in range(len(flight_paths)):
         fig.add_trace(
             go.Scattergeo(
@@ -104,8 +104,9 @@ def visualize_round_connections_infected(number):
                 opacity=1,
             )
         )
-
+    """
     fig.update_layout(geo=dict(scope='world', projection=Projection(type="orthographic"), ))
+    fig.update_layout(title='Outbreaks')
 
     return dcc.Graph(id='connections', figure=fig)
 
@@ -116,6 +117,7 @@ def visualize_round_pathogens_pie(number):
     names = pre.round_visualizations[number]["names"]
 
     fig = go.Figure(data=[go.Pie(labels=names, values=counts)])
+    fig.update_layout(title='Pathogens by affected cities')
 
     return html.Div([dcc.Graph(id='pathogen_pie', figure=fig)])
 

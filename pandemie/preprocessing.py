@@ -49,9 +49,11 @@ def preprocess_round(json_round, number):
 
     for city in json_round["cities"].items():
         if "events" in city[1]:
-            lat.append(city[1]["latitude"])
-            lon.append(city[1]["longitude"])
-            name.append(city[0])
+            for event in city[1]["events"]:
+                if event["type"] == "outbreak":
+                    lat.append(city[1]["latitude"])
+                    lon.append(city[1]["longitude"])
+                    name.append(city[0])
 
     round_visualizations[number].update({"lat": lat, "lon": lon, "name": name})
 
