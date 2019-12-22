@@ -26,7 +26,7 @@ app.layout = html.Div(
         html.Center(html.H4('Pandemie!'), ),
         dcc.Dropdown(
             id='data_dropdown',
-            options=pre.options,
+            options=pre.option_labels,
         ),
         html.Div(id='game-state'),
     ])

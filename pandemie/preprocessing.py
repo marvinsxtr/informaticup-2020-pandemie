@@ -6,16 +6,8 @@ raw_json_rounds = []
 game_visualization = {}
 round_visualizations = []
 
-"""
-lists to be visualized
-"""
-options = [{'label': 'Visualize full game', 'value': 'game'}]
+option_labels = [{'label': 'Visualize full game', 'value': 'game'}]
 round_names = sorted(os.listdir(os.getcwd() + "/tester/tmp/"), key=lambda item: int(''.join(filter(str.isdigit, item))))
-
-"""
-other visualizations
-"""
-round_number = None
 
 
 def init_rounds():
@@ -23,7 +15,7 @@ def init_rounds():
     number = 0
     for round_name in round_names:
         round_visualizations.insert(number, dict())
-        options.append({'label': 'Visualize {0}'.format(round_name), 'value': round_name})
+        option_labels.append({'label': 'Visualize {0}'.format(round_name), 'value': round_name})
         with open(path + "/tester/tmp/{0}".format(round_name), 'r+') as f:
             f.seek(0)
             raw_json_rounds.append(json.load(f))
