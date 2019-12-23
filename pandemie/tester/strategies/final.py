@@ -97,20 +97,20 @@ class Final(AbstractStrategy):
 
         # connect pathogens to cities with a dict
         for round_city_name, round_city_stats in round_cities.items():
+            city_pathogens[round_city_name] = []
+            city_pathogens_names[round_city_name] = []
             if "events" in round_city_stats:
                 for round_city_event in round_city_stats["events"]:
                     if round_city_event["type"] == "outbreak":
-                        # todo: assumes each city can only be affected by one pathogen
-                        city_pathogens[round_city_name] = round_city_event["pathogen"]
-                        city_pathogens_names[round_city_name] = round_city_event["pathogen"]["name"]
+                        city_pathogens[round_city_name].append(round_city_event["pathogen"])
+                        city_pathogens_names[round_city_name].append(round_city_event["pathogen"]["name"])
 
         # count how many cities are affected by each pathogen
         for pathogens_encountered_name in pathogens_encountered_names:
             affected_cities = 0
             for round_city_name, _ in round_cities.items():
-                if round_city_name in city_pathogens_names:
-                    if city_pathogens_names[round_city_name] == pathogens_encountered_name:
-                        affected_cities += 1
+                if pathogens_encountered_name in city_pathogens_names[round_city_name]:
+                    affected_cities += 1
             pathogens_count_infected_cities[pathogens_encountered_name] = affected_cities
 
         # debug output for generated lists
