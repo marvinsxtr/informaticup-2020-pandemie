@@ -40,7 +40,7 @@ class Final(AbstractStrategy):
 
         def rank_operation(*op_tuple, op_score):
             """
-            rank an operation tuple with a score; if it exists already, the score is added up
+            Rank an operation tuple with a score; if it exists already, the score is added up
             :param op_tuple: tuple with params needed for an operation (example: ("deploy_medication", city, pathogen))
             :param op_score: score assigned to tuple
             :return:
@@ -88,6 +88,7 @@ class Final(AbstractStrategy):
         pathogens_count_infected_cities = {}
 
         pathogens_scores = {}
+        cities_scores = {}
 
         # pre-processing
         # generate possible_operations_names including all possible operations in this round
@@ -133,11 +134,17 @@ class Final(AbstractStrategy):
                     affected_cities += 1
             pathogens_count_infected_cities[pathogen_name] = affected_cities
 
-        # assign score to each pathogen
+        # assign score to each pathogen (lower is less evil)
         for pathogen in pathogens:
             pathogen_score = score(pathogen["infectivity"]) + score(pathogen["mobility"]) + \
                              score(pathogen["duration"]) + score(pathogen["lethality"])
             pathogens_scores[pathogen["name"]] = pathogen_score
+
+        # assign score to each city (higher is better)
+        for round_city_name, round_city_stats in round_cities.items():
+            city_score = score(round_city_stats["economy"]) + score(round_city_stats["hygiene"]) + \
+                         score(round_city_stats["government"]) + score(round_city_stats["awareness"])
+            cities_scores[round_city_name] = city_score
 
         # debug output for generated lists
         if False:
@@ -148,6 +155,7 @@ class Final(AbstractStrategy):
             print(city_pathogens_names)
             print(pathogens_count_infected_cities)
             print(pathogens_scores)
+            print(cities_scores)
 
             print(sorted(ranking.items(), key=lambda item: item[1], reverse=True))
 
