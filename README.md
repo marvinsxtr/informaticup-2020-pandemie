@@ -1,5 +1,5 @@
 # README
-See the documentation on ShareLatex
+See the documentation
 
 ### Quickstart for debug purposes
 

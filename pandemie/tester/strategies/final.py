@@ -14,18 +14,18 @@ class Final(AbstractStrategy):
         cities = json_data["cities"]
         events = json_data["events"]
         points = json_data["points"]
-        round = json_data["round"]
+        round_number = json_data["round"]
         outcome = json_data["outcome"]
 
         ranking = {}
 
-        def rank(*args, points):
-            if points == 0:
+        def rank(*op_tuple, op_score):
+            if score == 0:
                 return
-            if args not in ranking:
-                ranking[args] = points
+            if op_tuple not in ranking:
+                ranking[op_tuple] = op_score
             else:
-                ranking[args] += points
+                ranking[op_tuple] += op_score
 
         pathogens = []
         pathogens_names = []
@@ -56,23 +56,25 @@ class Final(AbstractStrategy):
                     if event["type"] == "outbreak":
                         city_pathogens[city[0]].append(event["pathogen"]["name"])
 
-        pathogens_sorted = sorted(pathogens, key=lambda p: (1.2 * score(p["infectivity"]),
+        # highest risk to lowest
+        pathogens_sorted = sorted(pathogens, key=lambda p: (2.0 * score(p["infectivity"]),
                                                             1.0 * score(p["mobility"]),
                                                             1.0 * score(p["duration"]),
-                                                            1.2 * score(p["lethality"]),
+                                                            2.0 * score(p["lethality"]),
                                                             count_infected_cities(p["name"], city_pathogens)),
                                   reverse=True)
 
+        # highest risk to lowest (low values to high values)
         cities_sorted_tmp = sorted(cities.items(), key=lambda c: (1.0 * score(c[1]["economy"]),
-                                                                  1.2 * score(c[1]["hygiene"]),
+                                                                  2.0 * score(c[1]["hygiene"]),
                                                                   1.0 * score(c[1]["government"]),
-                                                                  1.2 * score(c[1]["awareness"])),
+                                                                  1.0 * score(c[1]["awareness"])),
                                    reverse=False)
 
-        cities_sorted = []
+        cities_sorted_names = []
 
         for city in cities_sorted_tmp:
-            cities_sorted.append(city[0])
+            cities_sorted_names.append(city[0])
 
         pathogens_sorted_names = []
 
@@ -96,7 +98,7 @@ class Final(AbstractStrategy):
             if pathogen in possible_pathogens:
                 if operations.PRICES["develop_medication"]["initial"] <= points:
                     if pathogen not in pathogens_med_developing:
-                        rank("develop_medication", pathogen, points=(100 * get_pathogen_pos(pathogen)))
+                        rank("develop_medication", pathogen, op_score=(100 * get_pathogen_pos(pathogen)))
 
         for pathogen in pathogens_med_available:
             possible_cities = []
@@ -104,19 +106,19 @@ class Final(AbstractStrategy):
                 for city, pathogens in city_pathogens.items():
                     if pathogen_tmp in pathogens:
                         possible_cities.append(city)
-            for city in cities_sorted:
+            for city in cities_sorted_names:
                 if city in possible_cities:
                     if operations.PRICES["deploy_medication"]["initial"] <= points:
-                        rank("deploy_medication", pathogen, city, points=(100 * get_pathogen_pos(pathogen)))
+                        rank("deploy_medication", pathogen, city, op_score=(100 * get_pathogen_pos(pathogen)))
 
         # print(sorted(ranking.items(), key=lambda item: item[1], reverse=True))
         for key, value in sorted(ranking.items(), key=lambda item: item[1], reverse=True):
             # print("took", key, "with", value, "points")
-            name, *args = key
-            if operations.PRICES[name]["initial"] < points:
+            op_name, *op_tuple = key
+            if operations.PRICES[op_name]["initial"] > points:
                 continue
             else:
-                return operations.get(name, *args)
+                return operations.get(op_name, *op_tuple)
 
         return operations.get("end_round")
 
@@ -132,7 +134,7 @@ def score(symbols):
         return 4
     if symbols == "++":
         return 5
-    print("wrong symbols")
+    print("Wrong symbols")
 
 
 def count_infected_cities(pathogen_name, city_pathogens):
