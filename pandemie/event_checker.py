@@ -37,63 +37,79 @@ class EventChecker:
                 # Load all Lines and split at the end of line
                 self.pathogens = f.read().split("\n")
 
-    # Function to check if new events occurred
     def check_events(self, events, local):
         """
         Function to check if new events occurred
         :param events: dict: All events occurred in this round
-        :param local: str: Whether the event is global or local
-        :return:
+        :param local: str: Whether the event is "global" or "local"
         """
+        # Check if there are unknown events and save them
         for event in events:
             if not event["type"] in self.events:
                 self.save_event(event, local)
 
-    # Function to save new events to the data-files
     def save_event(self, event, addition):
+        """
+        Function to save a newly occurred event
+        :param event: dict: The event to be saved
+        :param addition: str: Addition if event is "global" or "local"
+        """
+        # Save event locally
         self.events.append(event["type"])
 
         # Update the names file
         with open(self.name_path, "a") as f:
-            f.write("\n" + event["type"])
+            # Remove non-printable characters
+            f.write("\n" + filter_unicode(event["type"]))
 
         # Update the data file
         with open("data/event_data.dat", "a") as f:
-            f.write("\n\n{0}\t, {1}\n{2}".format(event["type"], addition, filter_unicode(event)))
+            # Write example of the event to save-file (Remove non-printable characters)
+            f.write("\n\n{0}\t, {1}\n{2}".format(filter_unicode(event["type"]), addition, filter_unicode(event)))
 
-    # Function to save pathogens to a file
     def save_pathogen(self, pathogen):
-        self.pathogens.append(pathogen["name"])
+        """
+        Function to save new discovered pathogens
+        :param pathogen: The pathogen to be saved
+        """
+        # Save pathogen locally
+        self.pathogens.append(filter_unicode(pathogen["name"]).strip())
 
+        # Update the names file
         with open(self.pathogen_path, "a") as f:
-            f.write("\n" + filter_unicode(pathogen["name"]))
+            f.write("\n" + filter_unicode(pathogen["name"]).strip())
 
+        # Update the data file
         with open("data/pathogen_data.dat", "a") as f:
             f.write(filter_unicode("\n\n{0}\n{1}".format(pathogen["name"], str(pathogen))))
 
-    # Function to check for new pathogens
     def check_for_pathogen(self, events):
+        """
+        Function to check for new pathogens
+        :param events: dict: All occurred events
+        """
         for event in events:
+            # Check if it's a new pathogen
             if event["type"] == "pathogenEncountered":
 
                 # Check if pathogen is known
                 for pathogen in self.pathogens:
-                    if filter_unicode(event["pathogen"]["name"]) == filter_unicode(pathogen):
+                    if filter_unicode(event["pathogen"]["name"]).strip() == pathogen.strip():
                         break
                 else:
-                    # todo(Ruwen): fix this
-                    # Need to be here -> sometimes doesn't detect correct  (Still not correct!)
-                    if not filter_unicode(event["pathogen"]["name"]) in self.pathogens and not \
-                                    filter_unicode(event["pathogen"]["name"]) in self.pathogens:
-                        self.save_pathogen(event["pathogen"])
+                    self.save_pathogen(event["pathogen"])
 
-    # Function to go through all data to check for events
-    def check_all_events(self, data):
+    def parse_data(self, data):
+        """
+        Function to parse the hole data-set to check for new events and pathogens
+        :param data: dict: The complete data-set of the current game-round
+        """
+        # Check for local events
         for city in data["cities"]:
             if "events" in data["cities"][city]:
                 self.check_events(data["cities"][city]["events"], "local")
 
-        # Check for global events
+        # Check for global events and pathogens
         if "events" in data:
             self.check_events(data["events"], "global")
             self.check_for_pathogen(data["events"])

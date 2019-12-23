@@ -1,17 +1,26 @@
 outbreak	, local
-{'type': 'outbreak', 'pathogen': {'name': 'Rhinonitis', 'infectivity': 'o', 'mobility': '-', 'duration': '-', 'lethality': '--'}, 'prevalence': 0.5288582183186951, 'sinceRound': 1}
+{'type': 'outbreak', 'pathogen': {'name': 'Xenomonocythemia', 'infectivity': '-', 'mobility': '--', 'duration': 'o', 'lethality': '++'}, 'prevalence': 0.06321243523316063, 'sinceRound': 1}
 
-largeScalePanic	, global
-{'type': 'largeScalePanic', 'sinceRound': 3}
+pathogenEncountered	, global
+{'type': 'pathogenEncountered', 'pathogen': {'name': 'N5-10', 'infectivity': '+', 'mobility': '++', 'duration': 'o', 'lethality': '+'}, 'round': 1}
+
+medicationInDevelopment	, global
+{'type': 'medicationInDevelopment', 'pathogen': {'name': 'N5-10', 'infectivity': '+', 'mobility': '++', 'duration': 'o', 'lethality': '+'}, 'sinceRound': 1, 'untilRound': 4}
 
 antiVaccinationism	, local
-{'type': 'antiVaccinationism', 'sinceRound': 3}
+{'type': 'antiVaccinationism', 'sinceRound': 2}
 
 economicCrisis	, global
-{'type': 'economicCrisis', 'sinceRound': 15}
+{'type': 'economicCrisis', 'sinceRound': 2}
+
+largeScalePanic	, global
+{'type': 'largeScalePanic', 'sinceRound': 2}
+
+medicationAvailable	, global
+{'type': 'medicationAvailable', 'pathogen': {'name': 'N5-10', 'infectivity': '+', 'mobility': '++', 'duration': 'o', 'lethality': '+'}, 'sinceRound': 4}
 
 medicationDeployed	, local
-{'type': 'medicationDeployed', 'pathogen': {'name': 'Neurodermantotitis', 'infectivity': '+', 'mobility': 'o', 'duration': 'o', 'lethality': 'o'}, 'round': 4}
+{'type': 'medicationDeployed', 'pathogen': {'name': 'N5-10', 'infectivity': '+', 'mobility': '++', 'duration': 'o', 'lethality': '+'}, 'round': 4}
 
 bioTerrorism	, local
-{'type': 'bioTerrorism', 'round': 15, 'pathogen': {'name': 'Neurodermantotitis', 'infectivity': '+', 'mobility': 'o', 'duration': 'o', 'lethality': 'o'}}
+{'type': 'bioTerrorism', 'round': 6, 'pathogen': {'name': 'N5-10', 'infectivity': '+', 'mobility': '++', 'duration': 'o', 'lethality': '+'}}
