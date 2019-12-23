@@ -114,13 +114,13 @@ class Final(AbstractStrategy):
         # print(sorted(ranking.items(), key=lambda item: item[1], reverse=True))
         for key, value in sorted(ranking.items(), key=lambda item: item[1], reverse=True):
             # print("took", key, "with", value, "points")
-            op_name, *op_tuple = key
-            if operations.PRICES[op_name]["initial"] > points:
-                continue
+            op_name, *op_rest = key
+            if operations.PRICES[op_name]["initial"] <= points:
+                return operations.get(op_name, *op_rest)
             else:
-                return operations.get(op_name, *op_tuple)
+                continue
 
-        return operations.get("end_round")
+
 
 
 def score(symbols):
