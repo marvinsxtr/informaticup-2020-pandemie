@@ -67,6 +67,8 @@ class Final(AbstractStrategy):
         city_pathogens = {}
         city_pathogens_names = {}
 
+        pathogens_count_infected_cities = {}
+
         # pre-processing
         # generate possible_operations_names including all possible operations in this round
         for op_name, op_prices in operations.PRICES.items():
@@ -102,15 +104,23 @@ class Final(AbstractStrategy):
                         city_pathogens[round_city_name] = round_city_event["pathogen"]
                         city_pathogens_names[round_city_name] = round_city_event["pathogen"]["name"]
 
-
+        # count how many cities are affected by each pathogen
+        for pathogens_encountered_name in pathogens_encountered_names:
+            affected_cities = 0
+            for round_city_name, _ in round_cities.items():
+                if round_city_name in city_pathogens_names:
+                    if city_pathogens_names[round_city_name] == pathogens_encountered_name:
+                        affected_cities += 1
+            pathogens_count_infected_cities[pathogens_encountered_name] = affected_cities
 
         # debug output for generated lists
-        if True:
+        if False:
             print(possible_operations_names)
             print(pathogens_medication_in_development_names)
             print(pathogens_medication_available_names)
             print(pathogens_encountered_names)
             print(city_pathogens_names)
+            print(pathogens_count_infected_cities)
 
             print(sorted(ranking.items(), key=lambda item: item[1], reverse=True))
 
