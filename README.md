@@ -1,5 +1,5 @@
 # README
-See the documentation
+See the [documentation](documents/documentation.md).
 
 ### Quickstart for debug purposes
 
