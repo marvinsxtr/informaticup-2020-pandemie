@@ -22,19 +22,20 @@ class Final(AbstractStrategy):
         # assigns each tuple of an operation a score
         ranking = {}
 
-        put_under_quarantine_weight = 1
-        close_airport_weight = 1
-        close_connection_weight = 1
+        end_round_weight = 1  # ends the current round
+        put_under_quarantine_weight = 1  # completely prevent spreading of pathogen
+        close_airport_weight = 1  # shut down connections from and to a city
+        close_connection_weight = 1  # shut down one connection
 
-        develop_vaccine_weight = 1
-        deploy_vaccine_weight = 1
-        develop_medication_weight = 1
-        deploy_medication_weight = 1
+        develop_vaccine_weight = 1  # after 6 rounds a vaccine is ready
+        deploy_vaccine_weight = 1  # deploy vaccine to specific city
+        develop_medication_weight = 1  # after 3 rounds a medication is available
+        deploy_medication_weight = 1  # deploy medication to specific city
 
-        exert_influence_weight = 1
-        call_elections_weight = 1
-        apply_hygienic_measures_weight = 1
-        launch_campaign_weight = 1
+        exert_influence_weight = 1  # corresponds to economy city stat
+        call_elections_weight = 1  # corresponds to government city stat
+        apply_hygienic_measures_weight = 1  # corresponds to hygiene city stat
+        launch_campaign_weight = 1  # corresponds to awareness city stat
 
         def rank_operation(*op_tuple, op_score):
             """
