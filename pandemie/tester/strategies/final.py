@@ -55,8 +55,8 @@ class Final(AbstractStrategy):
         # lists or dicts generated in pre-processing in order of generation
         possible_operations_names = []
 
-        pathogens_encountered = []
-        pathogens_encountered_names = []
+        pathogens = []
+        pathogens_names = []
 
         pathogens_medication_available = []
         pathogens_medication_available_names = []
@@ -69,6 +69,8 @@ class Final(AbstractStrategy):
 
         pathogens_count_infected_cities = {}
 
+        pathogens_scores = {}
+
         # pre-processing
         # generate possible_operations_names including all possible operations in this round
         for op_name, op_prices in operations.PRICES.items():
@@ -78,8 +80,8 @@ class Final(AbstractStrategy):
         # generate lists for pathogen global events
         for round_global_event in round_global_events:
             if round_global_event["type"] == "pathogenEncountered":
-                pathogens_encountered.append(round_global_event["pathogen"])
-                pathogens_encountered_names.append(round_global_event["pathogen"]["name"])
+                pathogens.append(round_global_event["pathogen"])
+                pathogens_names.append(round_global_event["pathogen"]["name"])
 
             if round_global_event["type"] == "medicationAvailable":
                 pathogens_medication_available.append(round_global_event["pathogen"])
@@ -106,19 +108,27 @@ class Final(AbstractStrategy):
                         city_pathogens_names[round_city_name].append(round_city_event["pathogen"]["name"])
 
         # count how many cities are affected by each pathogen
-        for pathogens_encountered_name in pathogens_encountered_names:
+        for pathogen_name in pathogens_names:
             affected_cities = 0
             for round_city_name, _ in round_cities.items():
-                if pathogens_encountered_name in city_pathogens_names[round_city_name]:
+                if pathogen_name in city_pathogens_names[round_city_name]:
                     affected_cities += 1
-            pathogens_count_infected_cities[pathogens_encountered_name] = affected_cities
+            pathogens_count_infected_cities[pathogen_name] = affected_cities
+
+        # assign score to each pathogen
+        for pathogen in pathogens:
+            pathogen_score = score(pathogen["infectivity"]) + score(pathogen["mobility"]) + \
+                             score(pathogen["duration"]) + score(pathogen["lethality"])
+            pathogens_scores[pathogen["name"]] = pathogen_score
+
+        print(pathogens_scores)
 
         # debug output for generated lists
         if False:
             print(possible_operations_names)
             print(pathogens_medication_in_development_names)
             print(pathogens_medication_available_names)
-            print(pathogens_encountered_names)
+            print(pathogens_names)
             print(city_pathogens_names)
             print(pathogens_count_infected_cities)
 
