@@ -51,8 +51,11 @@ class Final(AbstractStrategy):
             else:
                 ranking[op_tuple] += op_score
 
-        # lists or dicts generated in pre-processing
+        # lists or dicts generated in pre-processing in order of generation
         possible_operations_names = []
+
+        pathogens_encountered = []
+        pathogens_encountered_names = []
 
         pathogens_medication_available = []
         pathogens_medication_available_names = []
@@ -60,8 +63,8 @@ class Final(AbstractStrategy):
         pathogens_medication_in_development = []
         pathogens_medication_in_development_names = []
 
-        pathogens_encountered = []
-        pathogens_encountered_names = []
+        city_pathogens = []
+        city_pathogens_names = []
 
         # pre-processing
         # generate possible_operations_names including all possible operations in this round
@@ -83,6 +86,19 @@ class Final(AbstractStrategy):
                 pathogens_medication_in_development.append(round_global_event["pathogen"])
                 pathogens_medication_in_development_names.append(round_global_event["pathogen"]["name"])
 
+            # if round_global_event["type"] == "economicCrisis":
+            # todo: adjust weight for exert_influence
+
+            # if round_global_event["type"] == "largeScalePanic":
+            # todo: adjust weight for launch_campaign
+
+        # connect pathogens to cities with a dict
+        for round_city_name, round_city_stats in round_cities.items():
+            for round_city_event in round_city_stats["events"]:
+                if round_city_event["type"] == "outbreak":
+                    city_pathogens[round_city_name] = round_city_event["pathogen"]
+                    city_pathogens_names[round_city_name] = round_city_event["pathogen"]["name"]
+
         # debug output for generated lists
         if True:
             print(possible_operations_names)
@@ -90,7 +106,9 @@ class Final(AbstractStrategy):
             print(pathogens_medication_available_names)
             print(pathogens_encountered_names)
 
-        # print(sorted(ranking.items(), key=lambda item: item[1], reverse=True))
+            print(sorted(ranking.items(), key=lambda item: item[1], reverse=True))
+
+        # iterate over ranked operations to determine action
         for key, value in sorted(ranking.items(), key=lambda item: item[1], reverse=True):
             # print("took", key, "with", value, "points")
             op_name, *op_rest = key
