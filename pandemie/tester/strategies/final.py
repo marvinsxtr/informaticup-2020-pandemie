@@ -7,7 +7,7 @@ class Final(AbstractStrategy):
         super().__init__(silent=silent, visualize=visualize)
 
     def _solve(self, json_data, server):
-        # check if an error has occured
+        # check if an error has occurred
         if "error" in json_data:
             print(json_data["error"])
             return operations.end_round()
@@ -22,7 +22,21 @@ class Final(AbstractStrategy):
         # assigns each tuple of an operation a score
         ranking = {}
 
-        def rank(*op_tuple, op_score):
+        put_under_quarantine_weight = 1
+        close_airport_weight = 1
+        close_connection_weight = 1
+
+        develop_vaccine_weight = 1
+        deploy_vaccine_weight = 1
+        develop_medication_weight = 1
+        deploy_medication_weight = 1
+
+        exert_influence_weight = 1
+        call_elections_weight = 1
+        apply_hygienic_measures_weight = 1
+        launch_campaign_weight = 1
+
+        def rank_operation(*op_tuple, op_score):
             """
             rank an operation tuple with a score
             :param op_tuple: tuple with params needed for an operation (example: ("deploy_medication", city, pathogen))
@@ -36,7 +50,8 @@ class Final(AbstractStrategy):
             else:
                 ranking[op_tuple] += op_score
 
-        # todo
+        # pre-processing
+
 
         # print(sorted(ranking.items(), key=lambda item: item[1], reverse=True))
         for key, value in sorted(ranking.items(), key=lambda item: item[1], reverse=True):
