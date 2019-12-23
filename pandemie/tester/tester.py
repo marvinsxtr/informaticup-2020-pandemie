@@ -49,7 +49,7 @@ class Tester:
             subprocess.call("ic20_windows.exe --random-seed {0}".format(seed), stdout=DEVNULL, stderr=DEVNULL,
                             shell=True)
         else:
-            subprocess.call(["ic20_linux", "--random-seed " + str(seed)], stdout=DEVNULL, stderr=DEVNULL,
+            subprocess.call(["./ic20_linux", "--random-seed " + str(seed)], stdout=DEVNULL, stderr=DEVNULL,
                             shell=True)
 
     def _run_strategy(self):
