@@ -8,7 +8,6 @@
 * [How to use the the program](documentation.md#how-to-use-the-the-program)
 * [Scientific Background](documentation.md#scientific-background)
 * [Code Explained](documentation.md#code-explained)
-* [Scientific Background](documentation.md#scientific-background)
 * [API](documentation.md#api)
 * [Software Architecture](documentation.md#software-architecture)
 * [FAQ](documentation.md#faq)
