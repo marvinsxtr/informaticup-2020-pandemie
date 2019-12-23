@@ -57,8 +57,8 @@ class Final(AbstractStrategy):
         pathogens_medication_available = []
         pathogens_medication_available_names = []
 
-        pathogens_medication_developing = []
-        pathogens_medication_developing_names = []
+        pathogens_medication_in_development = []
+        pathogens_medication_in_development_names = []
 
         pathogens_encountered = []
         pathogens_encountered_names = []
@@ -79,9 +79,16 @@ class Final(AbstractStrategy):
                 pathogens_medication_available.append(round_global_event["pathogen"])
                 pathogens_medication_available_names.append(round_global_event["pathogen"]["name"])
 
-            if round_global_event["type"] == "medicationDeveloping":
-                pathogens_medication_developing.append(round_global_event["pathogen"])
-                pathogens_medication_developing_names.append(round_global_event["pathogen"]["name"])
+            if round_global_event["type"] == "medicationInDevelopment":
+                pathogens_medication_in_development.append(round_global_event["pathogen"])
+                pathogens_medication_in_development_names.append(round_global_event["pathogen"]["name"])
+
+        # debug output for generated lists
+        if True:
+            print(possible_operations_names)
+            print(pathogens_medication_in_development_names)
+            print(pathogens_medication_available_names)
+            print(pathogens_encountered_names)
 
         # print(sorted(ranking.items(), key=lambda item: item[1], reverse=True))
         for key, value in sorted(ranking.items(), key=lambda item: item[1], reverse=True):
