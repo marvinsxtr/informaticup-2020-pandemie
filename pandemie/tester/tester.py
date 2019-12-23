@@ -37,34 +37,31 @@ class Tester:
             test_strategy.set_file("{0}-{1}.dat".format(test_strategy.name, self.now()))
 
         self.strategy = test_strategy
-        self.seed = self.new_seed()
+        self.seed = 1
         self.random_seed = random_seed
         self.amount_wins = 0
         self.amount_loss = 0
         self.amount_runs = 0
 
-    @staticmethod
-    def _start_tester(seed):
+
+    def _start_tester(self):
         if os.name == "nt":
-            subprocess.call("ic20_windows.exe --random-seed {0}".format(seed), stdout=DEVNULL, stderr=DEVNULL,
+            subprocess.call("ic20_windows.exe --random-seed {0}".format(self.seed), stdout=DEVNULL, stderr=DEVNULL,
                             shell=True)
         else:
-            subprocess.call(["./ic20_linux", "--random-seed " + str(seed)], stdout=DEVNULL, stderr=DEVNULL,
+            subprocess.call(["./ic20_linux", "--random-seed " + str(self.seed)], stdout=DEVNULL, stderr=DEVNULL,
                             shell=True)
 
-    def _run_strategy(self):
-
+    def _thread_seed(self):
         if self.random_seed:
-            seed = self.new_seed()
+            self.seed = self.new_seed()
         else:
-            seed = self.seed
-
-        self._start_tester(seed)
+            self.seed = self.seed
 
     def evaluate(self, thread_count=10):
         self.amount_runs = thread_count
 
-        threads = [threading.Thread(target=self._run_strategy,) for _ in range(thread_count)]
+        threads = [threading.Thread(target=self._start_tester,) for _ in range(thread_count)]
         server = WebServer(self.strategy)
         server.start()
 
@@ -74,6 +71,7 @@ class Tester:
 
         # starting all threads
         for i, t in enumerate(threads):
+            self._thread_seed()
             t.start()
             sys.stdout.write("\r \rStarted %d / %d threads" % (i+1, thread_count))
             sys.stdout.flush()
