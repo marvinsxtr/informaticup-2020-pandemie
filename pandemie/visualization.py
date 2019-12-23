@@ -30,6 +30,7 @@ app.layout = html.Div(
         dcc.Dropdown(
             id='data_dropdown',
             options=pre.option_labels,
+            value='game',
         ),
         html.Div(id='game-state'),
     ])
