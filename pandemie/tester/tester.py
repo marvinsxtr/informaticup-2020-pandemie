@@ -37,7 +37,7 @@ class Tester:
             test_strategy.set_file("{0}-{1}.dat".format(test_strategy.name, self.now()))
 
         self.strategy = test_strategy
-        self.seed = 1
+        self.seed = 0
         self.random_seed = random_seed
         self.amount_wins = 0
         self.amount_loss = 0
@@ -56,7 +56,7 @@ class Tester:
         if self.random_seed:
             self.seed = self.new_seed()
         else:
-            self.seed = self.seed
+            self.seed = self.seed + 1
 
     def evaluate(self, thread_count=10):
         self.amount_runs = thread_count
