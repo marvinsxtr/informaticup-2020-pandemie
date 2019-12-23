@@ -140,11 +140,17 @@ class Final(AbstractStrategy):
                              score(pathogen["duration"]) + score(pathogen["lethality"])
             pathogens_scores[pathogen["name"]] = pathogen_score
 
+        # sort critical to uncritical pathogen
+        pathogens_scores = dict(sorted(pathogens_scores.items(), key=lambda item: item[1], reverse=True))
+
         # assign score to each city (higher is better)
         for round_city_name, round_city_stats in round_cities.items():
             city_score = score(round_city_stats["economy"]) + score(round_city_stats["hygiene"]) + \
                          score(round_city_stats["government"]) + score(round_city_stats["awareness"])
             cities_scores[round_city_name] = city_score
+
+        # sort worst to best city
+        cities_scores = dict(sorted(cities_scores.items(), key=lambda item: item[1], reverse=False))
 
         # debug output for generated lists
         if False:
