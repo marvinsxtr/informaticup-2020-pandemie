@@ -83,7 +83,6 @@ class EventChecker:
         with open("data/pathogen_data.dat", "a") as f:
             f.write(filter_unicode("\n\n{0}\n{1}".format(pathogen["name"], str(pathogen))))
 
-    # Function to check for new pathogens
     def check_for_pathogen(self, events):
         """
         Function to check for new pathogens
@@ -100,7 +99,6 @@ class EventChecker:
                 else:
                     self.save_pathogen(event["pathogen"])
 
-    # Function to go through all data to check for events
     def parse_data(self, data):
         """
         Function to parse the hole data-set to check for new events and pathogens
