@@ -119,8 +119,7 @@ class Final(AbstractStrategy):
                 return operations.get(op_name, *op_rest)
             else:
                 continue
-
-
+        return operations.get("end_round")
 
 
 def score(symbols):
