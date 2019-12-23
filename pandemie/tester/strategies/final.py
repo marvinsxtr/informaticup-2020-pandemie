@@ -7,6 +7,7 @@ class Final(AbstractStrategy):
         super().__init__(silent=silent, visualize=visualize)
 
     def _solve(self, json_data, server):
+        # check if an error has occured
         if "error" in json_data:
             print(json_data["error"])
             return operations.end_round()
@@ -18,9 +19,16 @@ class Final(AbstractStrategy):
         round_number = json_data["round"]
         round_outcome = json_data["outcome"]
 
+        # assigns each tuple of an operation a score
         ranking = {}
 
         def rank(*op_tuple, op_score):
+            """
+            rank an operation tuple with a score
+            :param op_tuple: tuple with params needed for an operation (example: ("deploy_medication", city, pathogen))
+            :param op_score: score assigned to tuple
+            :return:
+            """
             if score == 0:
                 return
             if op_tuple not in ranking:
