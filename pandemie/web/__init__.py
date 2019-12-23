@@ -1,1 +1,1 @@
-from pandemie.web.server import start_server
+from pandemie.web.server import WebServer

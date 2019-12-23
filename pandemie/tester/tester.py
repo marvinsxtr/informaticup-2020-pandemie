@@ -7,7 +7,7 @@ import sys
 import time
 import threading
 from pandemie.tester import AbstractStrategy
-from pandemie.web import start_server
+from pandemie.web import WebServer
 
 # consts used to shift the sigmoid curve
 WIN_RATE_HALVED = 25
@@ -65,7 +65,7 @@ class Tester:
         self.amount_runs = thread_count
 
         threads = [threading.Thread(target=self._run_strategy,) for _ in range(thread_count)]
-        server = threading.Thread(target=start_server, args=(self.strategy,))
+        server = WebServer(self.strategy)
         server.start()
 
         # store cwd for later usage
@@ -90,6 +90,9 @@ class Tester:
         sys.stdout.write("\n")
 
         results = self.strategy.get_result()
+
+        print("Stopping server...")
+        server.stop()
 
         weighted_sum = 0
         i = 1

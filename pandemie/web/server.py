@@ -5,7 +5,7 @@ from bottle import Bottle, request, BaseRequest, json_loads
 from gevent import monkey
 from gevent.pywsgi import WSGIServer
 
-from threading import Thread
+import threading
 
 import time
 
@@ -13,57 +13,53 @@ BaseRequest.MEMFILE_MAX = 1024 * 1024
 SLEEP_TIME = 0.01
 monkey.patch_all()
 
+app = Bottle()
 
-# todo: move this into a class Server(threading.thread)
-def start_server(handler, port=50123, log=None):
-    """
-    Starts a WSGI Server listening on the provided port.
-    It passes the json it gets from the post request to the handler.
-    :param handler: handler function that performs the simulation, should return a valid json answer
-    :param port: port for the server to listen on
-    :param log: whether the server should show debug output
-    :return: None
-    """
 
-    app = Bottle()
+class WebServer(threading.Thread):
+    def __init__(self, handler, port=50123, log=None):
+        super().__init__()
+        self.handler = handler
+        self.port = port
+        self.log = log
 
-    def begin():
-        server.serve_forever()
+        self.server = WSGIServer(('127.0.0.1', port), app, log=log)
+        server = self.server
 
-    @app.post("/")
-    def index():
+        @app.post("/")
+        def index():
+            # warning! hotfix in place
+            # the bottle api sometimes does not read the request body right
+            c_type = request.environ.get('CONTENT_TYPE', '').lower().split(';')[0]
+            if c_type == 'application/json':
+                max_tries = 5
+                for _ in range(max_tries):
+                    body = request.body.read()
+                    if body:
+                        try:
+                            game = json_loads(body)
+                            break
+                        except:
+                            raise RuntimeError("Could not decode json...")
 
-        # game = request.json
+                else:
+                    raise RuntimeError("Could not read request body after %d tries.." % max_tries)
 
-        # warning! hotfix in place
-        # the bottle api sometimes does not read the request body right
-        c_type = request.environ.get('CONTENT_TYPE', '').lower().split(';')[0]
-        if c_type == 'application/json':
-            max_tries = 5
-            for _ in range(max_tries):
-                body = request.body.read()
-                if body:
-                    try:
-                        game = json_loads(body)
-                        break
-                    except:
-                        raise RuntimeError("Could not decode json...")
+                return handler.solve(game, server)
 
             else:
-                raise RuntimeError("Could not read request body after %d tries.." % max_tries)
+                raise RuntimeError("Invalid content type, dropping request")
 
-            return handler.solve(game, server)
+    def run(self):
+        server_thread = threading.Thread(target=self.begin)
+        server_thread.daemon = True
+        server_thread.start()
 
-        else:
-            raise RuntimeError("Invalid content type, dropping request")
+        while not self.server.closed:
+            time.sleep(SLEEP_TIME)
 
-    server = WSGIServer(('127.0.0.1', port), app, log=log)
+    def begin(self):
+        self.server.serve_forever()
 
-    # start server thread
-    server_thread = Thread(target=begin)
-    server_thread.daemon = True
-    server_thread.start()
-
-    # wait until the game finished
-    while not server.closed:
-        time.sleep(SLEEP_TIME)
+    def stop(self):
+        self.server.stop()
