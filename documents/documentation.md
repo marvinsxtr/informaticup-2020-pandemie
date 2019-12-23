@@ -1,32 +1,32 @@
 # Pandemie!
 
 ## Contents
-* [Introduction](documentation.md#introduction)
-* [Basics](documentation.md#basics-(install,-run,-etc))
+* [Einleitung](documentation.md#einleitung)
+* [Grundlagen](documentation.md#grundlagen-(install,-run,-etc))
 * [Installation](documentation.md#installation)
-* [Quickstart](documentation.md#quickstart)
-* [How to use the the program](documentation.md#how-to-use-the-the-program)
-* [Scientific Background](documentation.md#scientific-background)
-* [Code Explained](documentation.md#code-explained)
+* [Schnellstart](documentation.md#schenllstart)
+* [Wie benutze ich das Programm](documentation.md#wie-benutze-ich-das-programm)
+* [Wissenschaftlicher Hintergrund](documentation.md#wissenschaftlicher-hintergrund)
+* [Erklärung des Programmcodes](documentation.md#erklaerung-des-programmcodes)
 * [API](documentation.md#api)
-* [Software Architecture](documentation.md#software-architecture)
+* [Software Architektur](documentation.md#software-architektur)
 * [FAQ](documentation.md#faq)
-* [Extra feature: visualization](documentation.md#extra-feature:-visualization)
-* [The web service](documentation.md#the-web-service)
-* [Why your idea is the best.](documentation.md#why-your-idea-is-the-best.)
-* [Validation of results](documentation.md#validation-of-results)
+* [Zusatzfunktion: Visualisierung](documentation.md#zusatzfunktion:-visualisierung)
+* [Der Web service](documentation.md#der-web-service)
+* [Warum unsere Idee die Beste ist.](documentation.md#warum-unsere-idee-die-beste-ist.)
+* [Auswertung der Ergebnisse](documentation.md#auswertung-der-ergebnisse)
 
-## Introduction
-## Basics (install, run, etc)
+## Einleitung
+## Grundlagen (install, run, etc)
 ## Installation
-## Quickstart
-## How to use the the program
-## Scientific Background
-## Code Explained
+## Schenllstart
+## Wie benutze ich das Programm
+## Wissenschaftlicher Hintergrund
+## Erklaerung des Programmcodes
 ## API
-## Software Architecture
+## Software Architektur
 ## FAQ
-## Extra feature: visualization
-## The web service
-## Why your idea is the best.
-## Validation of results
+## Zusatzfunktion: Visualisierung
+## Der Web Service
+## Warum unsere Idee die Beste ist.
+## Auswertung der Ergebnisse
