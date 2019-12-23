@@ -46,16 +46,13 @@ class Tester:
     @staticmethod
     def _start_tester(seed):
         if os.name == "nt":
-            subprocess.call("../../test/ic20_windows.exe --random-seed {0}".format(seed), stdout=DEVNULL, stderr=DEVNULL,
+            subprocess.call("ic20_windows.exe --random-seed {0}".format(seed), stdout=DEVNULL, stderr=DEVNULL,
                             shell=True)
         else:
-            subprocess.call(["../../test/ic20_linux", "--random-seed " + str(seed)], stdout=DEVNULL, stderr=DEVNULL,
+            subprocess.call(["ic20_linux", "--random-seed " + str(seed)], stdout=DEVNULL, stderr=DEVNULL,
                             shell=True)
 
     def _run_strategy(self):
-
-        # store cwd for later usage
-        cwd = os.getcwd()
 
         if self.random_seed:
             seed = self.new_seed()
@@ -64,9 +61,6 @@ class Tester:
 
         self._start_tester(seed)
 
-        # restore cwd
-        os.chdir(cwd)
-
     def evaluate(self, thread_count=10):
         self.amount_runs = thread_count
 
@@ -74,12 +68,19 @@ class Tester:
         server = threading.Thread(target=start_server, args=(self.strategy,))
         server.start()
 
+        # store cwd for later usage
+        cwd = os.getcwd()
+        os.chdir("../../test")
+
         # starting all threads
         for i, t in enumerate(threads):
             t.start()
             sys.stdout.write("\r \rStarted %d / %d threads" % (i+1, thread_count))
             sys.stdout.flush()
         sys.stdout.write("\n")
+
+        # restore cwd
+        os.chdir(cwd)
 
         # waiting for threads and the server to be finished
         for i, t in enumerate(threads):
