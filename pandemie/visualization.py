@@ -81,7 +81,7 @@ def visualize_round_connections_infected(number):
         text=text,
         mode='markers',
         marker=dict(
-            size=2,
+            size=4,
             color='rgb(255, 0, 0)',
             line=dict(
                 width=3,
