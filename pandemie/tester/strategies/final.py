@@ -45,12 +45,30 @@ class Final(AbstractStrategy):
             :param op_score: score assigned to tuple
             :return:
             """
-            if score == 0:
+            if op_score == 0:
                 return
             if op_tuple not in ranking:
                 ranking[op_tuple] = op_score
             else:
                 ranking[op_tuple] += op_score
+
+        def score(symbols):
+            """
+            This functions translates the pathogen values into numerical values
+            :param symbols: str: score string for a parameter
+            :return: related number
+            """
+            if symbols == "--":
+                return 1
+            if symbols == "-":
+                return 2
+            if symbols == "o":
+                return 3
+            if symbols == "+":
+                return 4
+            if symbols == "++":
+                return 5
+            print("Wrong symbols")
 
         # lists or dicts generated in pre-processing in order of generation
         possible_operations_names = []
@@ -121,8 +139,6 @@ class Final(AbstractStrategy):
                              score(pathogen["duration"]) + score(pathogen["lethality"])
             pathogens_scores[pathogen["name"]] = pathogen_score
 
-        print(pathogens_scores)
-
         # debug output for generated lists
         if False:
             print(possible_operations_names)
@@ -131,6 +147,7 @@ class Final(AbstractStrategy):
             print(pathogens_names)
             print(city_pathogens_names)
             print(pathogens_count_infected_cities)
+            print(pathogens_scores)
 
             print(sorted(ranking.items(), key=lambda item: item[1], reverse=True))
 
@@ -143,25 +160,3 @@ class Final(AbstractStrategy):
             else:
                 continue
         return operations.get("end_round")
-
-
-def score(symbols):
-    if symbols == "--":
-        return 1
-    if symbols == "-":
-        return 2
-    if symbols == "o":
-        return 3
-    if symbols == "+":
-        return 4
-    if symbols == "++":
-        return 5
-    print("Wrong symbols")
-
-
-def count_infected_cities(pathogen_name, city_pathogens):
-    count = 0
-    for city, pathogens in city_pathogens.items():
-        if pathogen_name in pathogens:
-            count += 1
-    return count
