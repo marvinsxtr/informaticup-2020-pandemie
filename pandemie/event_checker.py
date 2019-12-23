@@ -1,32 +1,50 @@
 import os.path
 from pandemie.util.encoding import filter_unicode
-# todo: maybe use pickle to store the data on disk
 
 
 class EventChecker:
+    """
+    Module to check in a given dataset for new event-types
+    """
     name_path = "data/event_names.dat"
     pathogen_path = "data/pathogen_names.dat"
 
     def __init__(self):
         self.events = []
         self.pathogens = []
+        # Preload all known events from save-file
         self.load_known_events()
+        # Preload all known pathogens from save-file
         self.load_known_pathogens()
 
-    # Function to load all known event-types
     def load_known_events(self):
+        """
+        Function to load all known event-types from the save-file
+        """
+        # Check if there is a save-file
         if os.path.exists(self.name_path):
             with open(self.name_path, "r") as f:
+                # Load all Lines and split at the end of line
                 self.events = f.read().split("\n")
 
-    # Function to load all known pathogens
     def load_known_pathogens(self):
+        """
+        Function to load all known pathogen-types from the save-file
+        """
+        # Check if there is a save-file
         if os.path.exists(self.pathogen_path):
             with open(self.pathogen_path, "r") as f:
+                # Load all Lines and split at the end of line
                 self.pathogens = f.read().split("\n")
 
     # Function to check if new events occurred
     def check_events(self, events, local):
+        """
+        Function to check if new events occurred
+        :param events: dict: All events occurred in this round
+        :param local: str: Whether the event is global or local
+        :return:
+        """
         for event in events:
             if not event["type"] in self.events:
                 self.save_event(event, local)
@@ -53,7 +71,6 @@ class EventChecker:
         with open("data/pathogen_data.dat", "a") as f:
             f.write(filter_unicode("\n\n{0}\n{1}".format(pathogen["name"], str(pathogen))))
 
-    # TODO: recognize known pathogens, compare not only by name but by attributes
     # Function to check for new pathogens
     def check_for_pathogen(self, events):
         for event in events:
