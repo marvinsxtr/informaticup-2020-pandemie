@@ -22,6 +22,7 @@ class Final(AbstractStrategy):
         # assigns each tuple of an operation a score
         ranking = {}
 
+        # these are the weights/multipliers applied to each possible operation
         end_round_weight = 1  # ends the current round
         put_under_quarantine_weight = 1  # completely prevent spreading of pathogen
         close_airport_weight = 1  # shut down connections from and to a city
@@ -63,8 +64,8 @@ class Final(AbstractStrategy):
         pathogens_medication_in_development = []
         pathogens_medication_in_development_names = []
 
-        city_pathogens = []
-        city_pathogens_names = []
+        city_pathogens = {}
+        city_pathogens_names = {}
 
         # pre-processing
         # generate possible_operations_names including all possible operations in this round
@@ -94,10 +95,14 @@ class Final(AbstractStrategy):
 
         # connect pathogens to cities with a dict
         for round_city_name, round_city_stats in round_cities.items():
-            for round_city_event in round_city_stats["events"]:
-                if round_city_event["type"] == "outbreak":
-                    city_pathogens[round_city_name] = round_city_event["pathogen"]
-                    city_pathogens_names[round_city_name] = round_city_event["pathogen"]["name"]
+            if "events" in round_city_stats:
+                for round_city_event in round_city_stats["events"]:
+                    if round_city_event["type"] == "outbreak":
+                        # todo: assumes each city can only be affected by one pathogen
+                        city_pathogens[round_city_name] = round_city_event["pathogen"]
+                        city_pathogens_names[round_city_name] = round_city_event["pathogen"]["name"]
+
+
 
         # debug output for generated lists
         if True:
@@ -105,6 +110,7 @@ class Final(AbstractStrategy):
             print(pathogens_medication_in_development_names)
             print(pathogens_medication_available_names)
             print(pathogens_encountered_names)
+            print(city_pathogens_names)
 
             print(sorted(ranking.items(), key=lambda item: item[1], reverse=True))
 
