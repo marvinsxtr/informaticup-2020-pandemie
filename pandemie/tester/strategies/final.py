@@ -1,3 +1,11 @@
+"""
+This is the strategy our team continuously improves to compete in the InformatiCup. Its basic principle is ranking
+each possible operation and thereby picking the best choice.
+
+Observations:
+- more efficient to put uninfected cities under quarantine
+"""
+
 from pandemie.tester import AbstractStrategy
 from pandemie import operations
 
@@ -102,7 +110,7 @@ class Final(AbstractStrategy):
         cities_outbreak_scores = {}
 
         """
-        pre-processing
+        pre-processing (for each list higher means more risk and 0 means none at all!)
         """
         # generate possible_operations_names including all possible operations in this round
         for op_name, op_prices in operations.PRICES.items():
@@ -156,26 +164,26 @@ class Final(AbstractStrategy):
         # sort critical to uncritical pathogen
         pathogens_scores = dict(sorted(pathogens_scores.items(), key=lambda item: item[1], reverse=True))
 
-        # assign score to each city (higher is better)
+        # assign score to each city (higher is riskier)
         for round_city_name, round_city_stats in round_cities.items():
             city_score = score(round_city_stats["economy"]) + score(round_city_stats["hygiene"]) + \
                          score(round_city_stats["government"]) + score(round_city_stats["awareness"])
-            cities_scores[round_city_name] = city_score
+            cities_scores[round_city_name] = highest_rating - city_score
 
         # sort worst to best city
-        cities_scores = dict(sorted(cities_scores.items(), key=lambda item: item[1], reverse=False))
+        cities_scores = dict(sorted(cities_scores.items(), key=lambda item: item[1], reverse=True))
 
         # combined score of city and pathogen scores (higher means less risk in the city)
         for city_name, city_score in cities_scores.items():
             pathogen_score = 0
             for pathogen_name in city_pathogens_names[city_name]:
-                pathogen_score += (highest_rating - pathogens_scores[pathogen_name])
+                pathogen_score += pathogens_scores[pathogen_name]
             combined_score = city_score + pathogen_score
             cities_pathogens_combined_score[city_name] = combined_score
 
-        # sort by combined score (lower to higher)
+        # sort by combined score (higher to lower)
         cities_pathogens_combined_score = dict(sorted(cities_pathogens_combined_score.items(),
-                                                      key=lambda item: item[1], reverse=False))
+                                                      key=lambda item: item[1], reverse=True))
 
         # count the number of flight connections for each city
         for round_city_name, round_city_stats in round_cities.items():
@@ -186,20 +194,27 @@ class Final(AbstractStrategy):
 
         # rate the outbreak for each affected city
         for round_city_name, round_city_stats in round_cities.items():
+            has_outbreak = False
             if "events" in round_city_stats:
                 for round_city_event in round_city_stats["events"]:
                     if round_city_event["type"] == "outbreak":
-                        outbreak_score = (1 + round_city_event["prevalence"]) * \
-                                         (round_number - round_city_event["sinceRound"])
+                        # this score is acquired by combining prevalence, duration and pathogen strength
+                        outbreak_score = round((1 + round_city_event["prevalence"]) *
+                                               (round_number - round_city_event["sinceRound"] +
+                                                pathogens_scores[round_city_event["pathogen"]["name"]]), 2)
                         cities_outbreak_scores[round_city_name] = outbreak_score
+                        has_outbreak = True
+            if not has_outbreak:
+                cities_outbreak_scores[round_city_name] = 0
+        # print(cities_outbreak_scores)
 
         """
         rank the operations based on collected data
         """
         # put cities most at risk under quarantine
         for city_name, city_overall_score in cities_pathogens_combined_score.items():
-            rank_operation("put_under_quarantaine", city_name, 3,
-                           op_score=(2 * highest_rating - city_overall_score))
+            rank_operation("put_under_quarantaine", city_name, 3, op_score=city_overall_score + cities_outbreak_scores[
+                city_name] + cities_count_flight_connections[city_name])
 
         # sort ranking
         ranking = dict(sorted(ranking.items(), key=lambda item: item[1], reverse=True))

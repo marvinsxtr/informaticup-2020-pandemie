@@ -124,7 +124,7 @@ def preprocess_game():
         if game["round"] in tmp:
             p = 0
             for city in game["cities"].items():
-                p += city[1]["population"]
+                p += city[1]["population"] * 1000
             y_population.append(p)
             tmp.remove(game["round"])
 
