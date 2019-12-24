@@ -95,7 +95,9 @@ class Final(AbstractStrategy):
         pathogens_scores = {}
         cities_scores = {}
 
-        cities_overall_score = {}
+        cities_pathogens_combined_score = {}
+
+        cities_count_flight_connections = {}
 
         """
         pre-processing
@@ -166,17 +168,25 @@ class Final(AbstractStrategy):
             pathogen_score = 0
             for pathogen_name in city_pathogens_names[city_name]:
                 pathogen_score += (highest_rating - pathogens_scores[pathogen_name])
-            overall_score = city_score + pathogen_score
-            cities_overall_score[city_name] = overall_score
+            combined_score = city_score + pathogen_score
+            cities_pathogens_combined_score[city_name] = combined_score
 
         # sort by combined score (lower to higher)
-        cities_overall_score = dict(sorted(cities_overall_score.items(), key=lambda item: item[1], reverse=False))
+        cities_pathogens_combined_score = dict(sorted(cities_pathogens_combined_score.items(),
+                                                      key=lambda item: item[1], reverse=False))
+
+        # count the number of flight connections for each city
+        for round_city_name, round_city_stats in round_cities.items():
+            flight_connections = 0
+            for _ in round_city_stats["connections"]:
+                flight_connections += 1
+            cities_count_flight_connections[round_city_name] = flight_connections
 
         """
         rank the operations based on collected data
         """
         # put cities most at risk under quarantine
-        for city_name, city_overall_score in cities_overall_score.items():
+        for city_name, city_overall_score in cities_pathogens_combined_score.items():
             rank_operation("put_under_quarantaine", city_name, 3,
                            op_score=(2 * highest_rating - city_overall_score))
 
@@ -194,13 +204,13 @@ class Final(AbstractStrategy):
             print(pathogens_count_infected_cities)
             print(pathogens_scores)
             print(cities_scores)
-            print(cities_overall_score)
+            print(cities_pathogens_combined_score)
 
             print(ranking)
 
         # iterate over ranked operations to determine action
         for operation, score in ranking.items():
-            print("took", operation, "with", score, "points")
+            # print("took", operation, "with", score, "points")
             op_name, *op_rest = operation
 
             # check if need to save for required action
