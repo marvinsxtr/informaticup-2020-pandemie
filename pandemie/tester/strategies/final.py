@@ -70,6 +70,9 @@ class Final(AbstractStrategy):
                 return 5
             print("Wrong symbols")
 
+        # used to convert a scale of scores (24 - 4 = 20 where 4 is the minimum points and 20 maximum)
+        highest_rating = 24
+
         # lists or dicts generated in pre-processing in order of generation
         possible_operations_names = []
 
@@ -89,6 +92,8 @@ class Final(AbstractStrategy):
 
         pathogens_scores = {}
         cities_scores = {}
+
+        cities_overall_score = {}
 
         # pre-processing
         # generate possible_operations_names including all possible operations in this round
@@ -152,6 +157,17 @@ class Final(AbstractStrategy):
         # sort worst to best city
         cities_scores = dict(sorted(cities_scores.items(), key=lambda item: item[1], reverse=False))
 
+        # combined score of city and pathogen scores (higher means less risk in the city)
+        for city_name, city_score in cities_scores.items():
+            pathogen_score = 0
+            for pathogen_name in city_pathogens_names[city_name]:
+                pathogen_score += (highest_rating - pathogens_scores[pathogen_name])
+            overall_score = city_score + pathogen_score
+            cities_overall_score[city_name] = overall_score
+
+        # sort by combined score
+        cities_overall_score = dict(sorted(cities_overall_score.items(), key=lambda item: item[1], reverse=False))
+
         # sort ranking
         ranking = dict(sorted(ranking.items(), key=lambda item: item[1], reverse=True))
 
@@ -173,6 +189,12 @@ class Final(AbstractStrategy):
         for operation, _ in ranking.items():
             # print("took", key, "with", value, "points")
             op_name, *op_rest = operation
+
+            # check if need to save for required action
+            # todo check if this is a good idea
+            if op_name not in possible_operations_names:
+                return operations.end_round()
+            # check if operation can be afforded
             if op_name in possible_operations_names:
                 return operations.get(op_name, *op_rest)
             else:
