@@ -152,6 +152,9 @@ class Final(AbstractStrategy):
         # sort worst to best city
         cities_scores = dict(sorted(cities_scores.items(), key=lambda item: item[1], reverse=False))
 
+        # sort ranking
+        ranking = dict(sorted(ranking.items(), key=lambda item: item[1], reverse=True))
+
         # debug output for generated lists
         if False:
             print(possible_operations_names)
@@ -163,13 +166,13 @@ class Final(AbstractStrategy):
             print(pathogens_scores)
             print(cities_scores)
 
-            print(sorted(ranking.items(), key=lambda item: item[1], reverse=True))
+            print(ranking)
 
         # iterate over ranked operations to determine action
-        for key, value in sorted(ranking.items(), key=lambda item: item[1], reverse=True):
+        for op_tuple, _ in ranking.items():
             # print("took", key, "with", value, "points")
-            op_name, *op_rest = key
-            if operations.PRICES[op_name]["initial"] <= round_points:
+            op_name, *op_rest = op_tuple
+            if op_name in possible_operations_names:
                 return operations.get(op_name, *op_rest)
             else:
                 continue
