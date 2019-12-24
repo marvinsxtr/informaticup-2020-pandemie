@@ -99,6 +99,8 @@ class Final(AbstractStrategy):
 
         cities_count_flight_connections = {}
 
+        cities_outbreak_scores = {}
+
         """
         pre-processing
         """
@@ -181,6 +183,15 @@ class Final(AbstractStrategy):
             for _ in round_city_stats["connections"]:
                 flight_connections += 1
             cities_count_flight_connections[round_city_name] = flight_connections
+
+        # rate the outbreak for each affected city
+        for round_city_name, round_city_stats in round_cities.items():
+            if "events" in round_city_stats:
+                for round_city_event in round_city_stats["events"]:
+                    if round_city_event["type"] == "outbreak":
+                        outbreak_score = (1 + round_city_event["prevalence"]) * \
+                                         (round_number - round_city_event["sinceRound"])
+                        cities_outbreak_scores[round_city_name] = outbreak_score
 
         """
         rank the operations based on collected data
