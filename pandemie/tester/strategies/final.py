@@ -73,7 +73,9 @@ class Final(AbstractStrategy):
         # used to convert a scale of scores (24 - 4 = 20 where 4 is the minimum points and 20 maximum)
         highest_rating = 24
 
-        # lists or dicts generated in pre-processing in order of generation
+        """
+        lists or dicts generated in pre-processing in order of generation
+        """
         possible_operations_names = []
 
         pathogens = []
@@ -95,7 +97,9 @@ class Final(AbstractStrategy):
 
         cities_overall_score = {}
 
-        # pre-processing
+        """
+        pre-processing
+        """
         # generate possible_operations_names including all possible operations in this round
         for op_name, op_prices in operations.PRICES.items():
             if op_prices["initial"] <= round_points:
@@ -165,8 +169,16 @@ class Final(AbstractStrategy):
             overall_score = city_score + pathogen_score
             cities_overall_score[city_name] = overall_score
 
-        # sort by combined score
+        # sort by combined score (lower to higher)
         cities_overall_score = dict(sorted(cities_overall_score.items(), key=lambda item: item[1], reverse=False))
+
+        """
+        rank the operations based on collected data
+        """
+        # put cities most at risk under quarantine
+        for city_name, city_overall_score in cities_overall_score.items():
+            rank_operation("put_under_quarantaine", city_name, 3,
+                           op_score=(2 * highest_rating - city_overall_score))
 
         # sort ranking
         ranking = dict(sorted(ranking.items(), key=lambda item: item[1], reverse=True))
@@ -182,12 +194,13 @@ class Final(AbstractStrategy):
             print(pathogens_count_infected_cities)
             print(pathogens_scores)
             print(cities_scores)
+            print(cities_overall_score)
 
             print(ranking)
 
         # iterate over ranked operations to determine action
-        for operation, _ in ranking.items():
-            # print("took", key, "with", value, "points")
+        for operation, score in ranking.items():
+            print("took", operation, "with", score, "points")
             op_name, *op_rest = operation
 
             # check if need to save for required action
