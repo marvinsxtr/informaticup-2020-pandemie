@@ -156,7 +156,8 @@ class Final(AbstractStrategy):
         ranking = dict(sorted(ranking.items(), key=lambda item: item[1], reverse=True))
 
         # debug output for generated lists
-        if False:
+        print_debug = False
+        if print_debug:
             print(possible_operations_names)
             print(pathogens_medication_in_development_names)
             print(pathogens_medication_available_names)
@@ -169,11 +170,11 @@ class Final(AbstractStrategy):
             print(ranking)
 
         # iterate over ranked operations to determine action
-        for op_tuple, _ in ranking.items():
+        for operation, _ in ranking.items():
             # print("took", key, "with", value, "points")
-            op_name, *op_rest = op_tuple
+            op_name, *op_rest = operation
             if op_name in possible_operations_names:
                 return operations.get(op_name, *op_rest)
             else:
                 continue
-        return operations.get("end_round")
+        return operations.end_round()
