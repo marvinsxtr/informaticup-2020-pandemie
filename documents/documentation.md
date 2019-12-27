@@ -155,6 +155,9 @@ sind:
 ## Software Architektur
 ## FAQ
 (Marvin)
+### Lizenz
+(Alex)<br>
+
 ## Zusatzfunktion: Visualisierung
 (Marvin)
 Zur Analyse und zum Vergleich verschiedener Strategien ist es sinnvoll, diese zu visualisieren. Dazu werden entweder
