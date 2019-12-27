@@ -133,7 +133,15 @@ class Tester:
 
 if __name__ == "__main__":
     strategy_name = input("Enter the full name of the strategy you want to test (no .py):\t")
-    # TODO Check now if name is valid
+
+    # checking stratagie file is avaliable
+    try:
+        f = open("strategies/"+strategy_name+".py")
+
+    except IOError:
+        print("Stratagie name not valid")
+        exit()
+
     do_output = input("Should a log be created? (y/n, default=n):\t").lower()
     do_output = do_output.startswith("y") or do_output.startswith("j")
     visualize = input("Do you want the data of one round to be saved for visualization? (y/n, default=n):\t")
