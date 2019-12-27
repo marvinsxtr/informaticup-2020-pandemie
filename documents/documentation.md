@@ -18,6 +18,19 @@
 
 ## Einleitung
 (Alex)
+In dieser Dokumentation wird die Verwendung und Funktionsweise unserer Lösung des Problems des Informaticups 2019
+beschrieben.<br>
+Durch das bereitgestellte Programm "ic20", welches von den Herrausgebern des Informaticups zur Verfügung gestellt wird,
+wird eine Epedemie der Welt simmuliert.
+Ziel ist es, dass in möglichst kurzer Zeit, die Menschheit auf dem Planeten Erde überlebt und die Seuchen
+ausgerottet werden. Diese Seuchen, mit unterschiedlichen Eigenschaften treten zufällig auf.
+Für die Lösung wurde unsererseits ein Webservice entwickelt, welcher in Kombination mit einer Lösungsstrategie dem
+Programm "ic20" rundebasiert Antworten schickt, die dazu führen sollen, dass die Simmulation der Epedemie positiv
+entschieden wird.<br>
+Um das Verhalten des Simmulationsprogramms zu analysieren und eine effektive Lösungsstrategie zu entwickeln, wurden
+weitere Programme durch die Gruppe entwickelt.<br>
+Des Weiteren enthält die von unserer Gruppe bereitgestellte Softwarelösung die Möglichkeit zur Visualisierung einer
+abgeschlossenen Simmulation.
 ## Grundlagen
 (Alex, kleine Intro schreiben)
 ### Installation

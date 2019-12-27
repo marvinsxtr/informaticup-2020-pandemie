@@ -1,5 +1,11 @@
-gevent
-bottle
-dash
-plotly
-ps
+bottle==0.12.18
+dash==1.7.0
+dash-core-components==1.6.0
+dash-html-components==1.0.2
+dash-renderer==1.2.2
+dash-table==4.5.1
+Flask==1.1.1
+Flask-Compress==1.4.0
+gevent==1.4.0
+plotly==4.4.1
+
