@@ -60,6 +60,16 @@ pip3.8 install -r requirements.txt
 
 ### Schenllstart
 (Alex)
+Um den Tester für das `ic20_linux` Programm auszuführen, kann auf dem Projektordner folgender Befehl aufgerufen werden.
+```bash
+python3.8 pandemie/tester/tester.py
+```
+Für die schnelle Ausführung des Programms sind bereits Standard-Parameter gesetzt. Diese können per aufgefordeter
+Terminaleingabe auch geändert werden. Dazu mehr in der Sektion 
+[Wie benutze ich das Programm](documentation.md#wie-benutze-ich-das-programm).
+Mit den Standard-Parametern wird das `ic20_linux` Programm in 5 Instanzen ausgefährt und gegen die zuletzt beste von uns
+entwickelte Strategie getestet. Wie gut die Strategie ist, wird nach Abschluss der Berechnungen auf dem Terminal als
+`win rate` ausgegeben.
 ## Wie benutze ich das Programm
 (Ruwen)
 Nach der Installation des Programms und einem einfachen Ausführungsbeispiel wird nun die Verwendung der einzelnen 
