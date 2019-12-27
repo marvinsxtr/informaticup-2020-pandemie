@@ -32,10 +32,10 @@ class WebServer(threading.Thread):
     """
     def __init__(self, handler: AbstractStrategy, port=50123, log=None):
         """
-
-        :param handler:
-        :param port:
-        :param log:
+        Constructs the WebServer.
+        :param handler: reference to the handler, here an AbstractStrategy implementation
+        :param port: port to bind the server to
+        :param log: log file, this is passed to the WSGI Server
         """
         if not isinstance(handler, AbstractStrategy):
             raise ValueError("Strategy is not valid.")
@@ -85,8 +85,8 @@ class WebServer(threading.Thread):
 
     def run(self):
         """
-
-        :return:
+        Start the server in another thread and wait until it is closed.
+        :return: None
         """
         server_thread = threading.Thread(target=self.begin)
         server_thread.daemon = True
@@ -97,14 +97,14 @@ class WebServer(threading.Thread):
 
     def begin(self):
         """
-
-        :return:
+        Start to serve. This is blocking.
+        :return: None
         """
         self.server.serve_forever()
 
     def stop(self):
         """
-
-        :return:
+        Stops the server.
+        :return: None
         """
         self.server.stop()
