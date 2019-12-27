@@ -132,7 +132,11 @@ class Tester:
 
 
 if __name__ == "__main__":
-    strategy_name = input("Enter the full name of the strategy you want to test (no .py):\t")
+    strategy_name = input("Enter the full name of the strategy you want to test (no .py) (default=final):\t")
+
+    # set default strategy
+    if not strategy_name:
+        strategy_name = "final"
 
     # checking stratagie file is avaliable
     try:
