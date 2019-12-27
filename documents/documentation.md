@@ -2,7 +2,7 @@
 
 ## Contents
 * [Einleitung](documentation.md#einleitung)
-* [Grundlagen](documentation.md#grundlagen-(install,-run,-etc))
+* [Grundlagen](documentation.md#grundlagen)
 * [Installation](documentation.md#installation)
 * [Schnellstart](documentation.md#schenllstart)
 * [Wie benutze ich das Programm](documentation.md#wie-benutze-ich-das-programm)
@@ -46,7 +46,14 @@ an den Tag legt. Für den Zweck der Entwicklung unserer Teamstrategie haben wir 
 visualisiert. Im Folgenden wird erklärt, wie auf diese zugegriffen werden kann und wie eigene Erweiterungen realisiert 
 werden können.
 ### Wie starte ich die Visualisierung
+Um die Visualisierung zu starten muss zunächst der Tester mit der Visualisierungs-Option gestartet werden. Dies führt
+dazu, dass im Ordner pandemie/tester/tmp die JSON Dateien der einzelnen Runden abgelegt werden. Ist diese Voraussetzung
+erfüllt, kann die Visualisierung wie folgt gestartet werden:
+
+
+
 ### Eigene Visualisierung hinzufügen
+
 ## Der Web Service
 ## Warum unsere Idee die Beste ist
 (Alex)
