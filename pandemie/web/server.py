@@ -30,7 +30,7 @@ class WebServer(threading.Thread):
         server = WebServer(your_strategy)
         server.start()
     """
-    def __init__(self, handler, port=50123, log=None):
+    def __init__(self, handler: AbstractStrategy, port=50123, log=None):
         """
 
         :param handler:
@@ -45,14 +45,19 @@ class WebServer(threading.Thread):
         self.port = port
         self.log = log
 
-        self.server = WSGIServer(('127.0.0.1', port), app, log=log)
-        server = self.server
+        server = WSGIServer(('127.0.0.1', port), app, log=log)
+        self.server = server
 
         @app.post("/")
         def index():
             """
+            This gets called upon a http request.
 
-            :return:
+            The json of the request gets passed to the strategy and its solution is returned to the http client.
+            If the request is invalid a empty string is returned. We answer a broken json request with the end round
+            operation to prevent the game from stopping.
+
+            :return: HTTP response / json answer
             """
             c_type = request.environ.get('CONTENT_TYPE', '').lower().split(';')[0]
             if c_type == 'application/json':
