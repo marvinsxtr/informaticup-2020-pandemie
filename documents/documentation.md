@@ -34,7 +34,11 @@ abgeschlossenen Simmulation.<br>
 
 *Das Programm ist ebenfalls für Windows verfügbar und vom Betriebssystem abhängig implementiert.
 ## Grundlagen
-(Alex, kleine Intro schreiben)
+(Alex, kleine Intro schreiben)<br>
+Zu den Grundlagen gehört zunächst die vollständige und erfolgreiche Installation der Software. Im Anschluss gibt es
+einen Schnellstart zum Testen einer Strategie. Im Anschluss wird genauer darauf eingegangen, in welchem Umfang die zur
+Verfügung stehenden Programme genutzt werden können. Dabei wird auch darauf eingegangen, wie eigene Strategien zu unserer
+Software kompatibel entwickelt und gestaltet werden können.
 ### Installation
 (Alex)<br>
 Zunächst muss das Projekt aus dem Gitlab geklont werden. Dazu wird die Versionskontrollsoftware `git` benötigt.
