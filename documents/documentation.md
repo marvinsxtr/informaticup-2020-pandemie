@@ -150,11 +150,13 @@ Darstellung unterschieden werden, wobei ersteres in `preprocessing.py` und letzt
 <br> Soll eine Visualisierung für das gesamte Spiel hinzugefügt werden, so muss das Preprocessing in der Funktion 
 `preprocess_game` stattfinden. Hier können benötigte Lists/Dicts erstellt und mithilfe der jeweiligen JSON-Datei
 generiert werden. Anschließend sollen generierte Daten in dem Dict `game_visualizations` abgelegt werden, um später auf
-sie zuzugreifen. <br>
+sie zuzugreifen. Analog können für einzelne Runden in der Funktion `preprocess_round` Daten gesammelt und in dem Dict 
+`round_visualizations[<Runden-Nummer>]` gespeichert werden.<br>
 In `visualization.py` kann nun eine Funktion hinzugefügt werden, welche einen 
 [Dash component](https://dash.plot.ly/dash-core-components) zurückgibt, was ein Graph aber auch andere GUI-Elemente sein
-können. Zusätzlich muss in der Funktion `visualize_game` der entsprechende Funktionsaufruf der zurückgegebenen Liste 
-hinzu gefügt werden. Die Visualisierungen werden entsprechend der Reihenfolge in dieser Liste untereinander angezeigt.
+kann. Zusätzlich muss in der Funktion `visualize_game` der entsprechende Funktionsaufruf der zurückgegebenen Liste 
+hinzugefügt werden. Die Visualisierungen werden entsprechend der Reihenfolge in dieser Liste untereinander angezeigt.
+Für die Visualisierung einzelner Runden kann hierfür analog die Funktion `visualize_round` verwendet werden.
 ## Der Web Service
 ## Warum unsere Idee die Beste ist
 (Alex)
