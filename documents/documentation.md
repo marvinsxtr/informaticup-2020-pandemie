@@ -13,7 +13,7 @@
 * [FAQ](documentation.md#faq)
 * [Zusatzfunktion: Visualisierung](documentation.md#zusatzfunktion:-visualisierung)
 * [Der Web service](documentation.md#der-web-service)
-* [Warum unsere Idee die Beste ist.](documentation.md#warum-unsere-idee-die-beste-ist.)
+* [Warum unsere Idee die Beste ist.](documentation.md#warum-unsere-idee-die-beste-ist)
 * [Auswertung der Ergebnisse](documentation.md#auswertung-der-ergebnisse)
 
 ## Einleitung
@@ -27,6 +27,7 @@
 ## Software Architektur
 ## FAQ
 ## Zusatzfunktion: Visualisierung
+Zur Analyse und zum Vergleich verschiedener Strategien ist es sinnvoll, 
 ## Der Web Service
-## Warum unsere Idee die Beste ist.
+## Warum unsere Idee die Beste ist
 ## Auswertung der Ergebnisse
