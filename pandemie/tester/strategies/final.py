@@ -103,7 +103,7 @@ class Final(AbstractStrategy):
         pathogens_scores = {}
         cities_scores = {}
 
-        cities_pathogens_combined_score = {}
+        cities_combined_pathogens_score = {}
 
         cities_count_flight_connections = {}
 
@@ -179,10 +179,10 @@ class Final(AbstractStrategy):
             for pathogen_name in city_pathogens_names[city_name]:
                 pathogen_score += pathogens_scores[pathogen_name]
             combined_score = city_score + pathogen_score
-            cities_pathogens_combined_score[city_name] = combined_score
+            cities_combined_pathogens_score[city_name] = combined_score
 
         # sort by combined score (higher to lower)
-        cities_pathogens_combined_score = dict(sorted(cities_pathogens_combined_score.items(),
+        cities_combined_pathogens_score = dict(sorted(cities_combined_pathogens_score.items(),
                                                       key=lambda item: item[1], reverse=True))
 
         # count the number of flight connections for each city
@@ -208,7 +208,7 @@ class Final(AbstractStrategy):
         rank the operations based on collected data
         """
         # put cities most at risk under quarantine
-        for city_name, city_overall_score in cities_pathogens_combined_score.items():
+        for city_name, city_overall_score in cities_combined_pathogens_score.items():
             rank_operation("put_under_quarantaine", city_name, 3, op_score=put_under_quarantine_weight * (
                     city_overall_score + cities_outbreak_scores[city_name] +
                     cities_count_flight_connections[city_name]))
@@ -227,7 +227,7 @@ class Final(AbstractStrategy):
             print(pathogens_count_infected_cities)
             print(pathogens_scores)
             print(cities_scores)
-            print(cities_pathogens_combined_score)
+            print(cities_combined_pathogens_score)
             print(cities_count_flight_connections)
             print(cities_outbreak_scores)
 
