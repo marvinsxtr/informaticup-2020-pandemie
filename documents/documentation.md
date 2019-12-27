@@ -13,14 +13,14 @@
 * [FAQ](documentation.md#faq)
 * [Zusatzfunktion: Visualisierung](documentation.md#zusatzfunktion:-visualisierung)
 * [Der Web service](documentation.md#der-web-service)
-* [Warum unsere Idee die Beste ist.](documentation.md#warum-unsere-idee-die-beste-ist.)
+* [Warum unsere Idee die Beste ist](documentation.md#warum-unsere-idee-die-beste-ist)
 * [Auswertung der Ergebnisse](documentation.md#auswertung-der-ergebnisse)
 
 ## Einleitung
-## Grundlagen (install, run, etc)
-## Installation
-## Schenllstart
-## Wie benutze ich das Programm
+## Grundlagen (Alex, kleine Intro schreiben)
+### Installation (Alex)
+### Schenllstart (Alex)
+## Wie benutze ich das Programm (Ruwen)
 ## Wissenschaftlicher Hintergrund
 ## Erklaerung des Programmcodes
 ## API
@@ -28,5 +28,5 @@
 ## FAQ
 ## Zusatzfunktion: Visualisierung
 ## Der Web Service
-## Warum unsere Idee die Beste ist.
+## Warum unsere Idee die Beste ist
 ## Auswertung der Ergebnisse
