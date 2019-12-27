@@ -17,24 +17,43 @@
 * [Auswertung der Ergebnisse](documentation.md#auswertung-der-ergebnisse)
 
 ## Einleitung
-(Alex)
+(Alex)<br>
 In dieser Dokumentation wird die Verwendung und Funktionsweise unserer Lösung des Problems des Informaticups 2019
 beschrieben.<br>
-Durch das bereitgestellte Programm "ic20", welches von den Herrausgebern des Informaticups zur Verfügung gestellt wird,
+Durch das bereitgestellte Programm `ic20_linux`*, welches von den Herrausgebern des Informaticups zur Verfügung gestellt wird,
 wird eine Epedemie der Welt simmuliert.
 Ziel ist es, dass in möglichst kurzer Zeit, die Menschheit auf dem Planeten Erde überlebt und die Seuchen
 ausgerottet werden. Diese Seuchen, mit unterschiedlichen Eigenschaften treten zufällig auf.
 Für die Lösung wurde unsererseits ein Webservice entwickelt, welcher in Kombination mit einer Lösungsstrategie dem
-Programm "ic20" rundebasiert Antworten schickt, die dazu führen sollen, dass die Simmulation der Epedemie positiv
+Programm `ic20_linux` rundebasiert Antworten schickt, die dazu führen sollen, dass die Simmulation der Epedemie positiv
 entschieden wird.<br>
 Um das Verhalten des Simmulationsprogramms zu analysieren und eine effektive Lösungsstrategie zu entwickeln, wurden
 weitere Programme durch die Gruppe entwickelt.<br>
 Des Weiteren enthält die von unserer Gruppe bereitgestellte Softwarelösung die Möglichkeit zur Visualisierung einer
-abgeschlossenen Simmulation.
+abgeschlossenen Simmulation.<br>
+
+*Das Programm ist ebenfalls für Windows verfügbar und vom Betriebssystem abhängig implementiert.
 ## Grundlagen
 (Alex, kleine Intro schreiben)
 ### Installation
-(Alex)
+(Alex)<br>
+Zunächst muss das Projekt aus dem Gitlab geklont werden. Dazu wird die Versionskontrollsoftware `git` benötigt.
+
+Der Klonvorgang geschieht mit dem nachstehenden Aufruf.
+```git
+git clone https://gitlab.projekt.uni-hannover.de/chi-informaticup03/project-pandemie-03.git
+```
+Als grundlegende Software wird Python in der Version 3.8 vorrausgesetzt(`python3.8`). Dieses ist je nachdem welches 
+Betriebssystem verwendet wird anders zu installieren.<br>
+Des Weiteren sind einige Abhängigkeiten für die korrekte Ausführung des Programmcodes notwendig. Die Abhängigkeiten 
+ der Software sind der Datei `requirements.txt` erfasst. Die Datei wird mit in dem Projektordner mitgeliefert und
+befindet sich auf der höchsten Hirarchieebene. Die Abhängigkeiten können mit der Software `pip3.8` installiert werden.
+
+Mit dem Aufruf eines Befehls ist das automatische Installieren möglich.
+```bash
+pip3.8 install -r requirements.txt
+```
+
 ### Schenllstart
 (Alex)
 ## Wie benutze ich das Programm
