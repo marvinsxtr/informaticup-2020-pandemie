@@ -49,7 +49,7 @@ Analysieren und Testen eigener Strategien bereitgestellt. Um eigene Strategien z
 $ python3 tester.py
 ```
 Im ersten Schritt wird man nun nach dem Namen der zu testenden Strategie gefragt:<br>
-```bash
+```
 Enter the full name of the strategy you want to test (no .py):	
 ```
 Hier ist einfach der Dateiname der Strategie ohne die `.py` Endung einzugeben und mit `ENTER` zu bestätigen.
@@ -58,7 +58,7 @@ eingegebene Strategiename nicht in diesem Ordner zu finden sein, wird der Fehler
 `StrategyModule [strategy-name] not found! Exiting...` ausgegeben und und das Programm terminiert.
 
 Nach der Eingabe des Namens wird gefragt, ob das Testen der Strategie geloggt werden soll:<br>
-```bash
+```
 Should a log be created? (y/n, default=n):
 ```
 Das Loggen beinhaltet das Ergebnis und die Anzahl der Runden, die bis zu diesem Ergebnis gespielt wurden, für jedes
@@ -79,17 +79,17 @@ win:	26
 -0.1635815380187609
 ```
 
-Im dritten Schritt muss angegeben werden, ob die gespieleten Runden für die Visualisierung gespiechert werden sollen:
+Im dritten Schritt muss angegeben werden, ob die gespielten Runden für die Visualisierung gespeichert werden sollen:
 <br>
-```bash
+```
 Do you want the data of one round to be saved for visualization? (y/n, default=n):
 ```
 Die Visualisierung dient wie auch das Loggen dem Analysieren und Verstehen der Strategie. Wie die Visualisierung 
-funktioniert, wird detailiert im Kapitel 
+funktioniert, wird detailliert im Kapitel 
 [Zusatzfunktion: Visualisierung](documentation.md#zusatzfunktion:-visualisierung) erläutert.
 
-Als nächstes muss angegeben werden, wie viele Spiele gleichzeitig gespielt werden sollen:
-```bash
+Als Nächstes muss angegeben werden, wie viele Spiele gleichzeitig gespielt werden sollen:
+```
 How many simulations should be run simultaneously? (default=5):
 ```
 Umso mehr Spiele gespielt werden, desto besser lässt sich die Strategie am Ende bewerten. Allerdings ist zu 
@@ -97,18 +97,18 @@ beachten, dass bei zu vielen Spielen gleichzeitig der Computer sehr viel zu arbe
 langsamer als gewöhnlich läuft.
 
 Im letzten Schritt wird gefragt, ob für jedes Spiel ein zufälliger Seed generiert werden soll:<br>
-```bash
+```
 Do you want a random seed? (y/n, default=y):
 ```
-Wird hier `n` angegeben, so werden die Seeds von 1 aufsteigend verwendet. Dies ist nützlich, um die Konsistenz einer
-Strategie zu beurteilen, aber auch um zwei Strategien bei exakt gleichen bedingungen zu vergleichen.
+Wird hier `n` angegeben, so werden die Seeds von 1 aufsteigend verwendet. Dies ist nützlich, um die Konsistenz einer 
+Strategie zu beurteilen, aber auch um zwei Strategien bei exakt gleichen Bedingungen zu vergleichen.
 Wird aber `y` angegeben, so wird für jedes Spiel ein zufälliger Seed zwischen 1 und 100.000.000.000 generiert.
 
 ### Standardeinstellungen des Testers
-Zum schnellen Testen einer Strategie kann die Standardkonfiguration des Testers genutzt werden. Als standartd festgelegt
+Zum schnellen Testen einer Strategie kann die Standardkonfiguration des Testers genutzt werden. Als Standard festgelegt
 sind:
  * Kein Log-Output wird erstellt
- * Die Runden werden nicht Visualisiert
+ * Die Runden werden nicht visualisiert
  * Es werden 5 Spiele gleichzeitig gespielt
  * Für jedes Spiel wird ein zufälliger Seed generiert
  
@@ -150,11 +150,13 @@ Darstellung unterschieden werden, wobei ersteres in `preprocessing.py` und letzt
 <br> Soll eine Visualisierung für das gesamte Spiel hinzugefügt werden, so muss das Preprocessing in der Funktion 
 `preprocess_game` stattfinden. Hier können benötigte Lists/Dicts erstellt und mithilfe der jeweiligen JSON-Datei
 generiert werden. Anschließend sollen generierte Daten in dem Dict `game_visualizations` abgelegt werden, um später auf
-sie zuzugreifen. <br>
+sie zuzugreifen. Analog können für einzelne Runden in der Funktion `preprocess_round` Daten gesammelt und in dem Dict 
+`round_visualizations[<Runden-Nummer>]` gespeichert werden.<br>
 In `visualization.py` kann nun eine Funktion hinzugefügt werden, welche einen 
 [Dash component](https://dash.plot.ly/dash-core-components) zurückgibt, was ein Graph aber auch andere GUI-Elemente sein
-können. Zusätzlich muss in der Funktion `visualize_game` der entsprechende Funktionsaufruf der zurückgegebenen Liste 
-hinzu gefügt werden. Die Visualisierungen werden entsprechend der Reihenfolge in dieser Liste untereinander angezeigt.
+kann. Zusätzlich muss in der Funktion `visualize_game` der entsprechende Funktionsaufruf der zurückgegebenen Liste 
+hinzugefügt werden. Die Visualisierungen werden entsprechend der Reihenfolge in dieser Liste untereinander angezeigt.
+Für die Visualisierung einzelner Runden kann hierfür analog die Funktion `visualize_round` verwendet werden.
 ## Der Web Service
 ## Warum unsere Idee die Beste ist
 (Alex)
