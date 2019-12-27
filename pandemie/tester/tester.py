@@ -128,20 +128,20 @@ class Tester:
 
     @staticmethod
     def new_seed():
-        return random.randint(1, 10000000000)
+        return random.randint(1, 100000000000)
 
 
 if __name__ == "__main__":
     strategy_name = input("Enter the full name of the strategy you want to test (no .py):\t")
     # TODO Check now if name is valid
-    do_output = input("Should a log be created? (y/n, default=n)\t").lower()
+    do_output = input("Should a log be created? (y/n, default=n):\t").lower()
     do_output = do_output.startswith("y") or do_output.startswith("j")
     visualize = input("Do you want the data of one round to be saved for visualization? (y/n, default=n):\t")
     visualize = visualize.startswith("y") or visualize.startswith("j")
 
     if not visualize:
         while True:
-            count = input("How many simulations should be run simultaneously? (default=5)\t")
+            count = input("How many simulations should be run simultaneously? (default=5):\t")
 
             if not count:
                 count = 5
@@ -156,7 +156,7 @@ if __name__ == "__main__":
     else:
         count = 1
 
-    rand_seed = input("Do you want a random seed? (y/n, default=y)").lower()
+    rand_seed = input("Do you want a random seed? (y/n, default=y):\t").lower()
     rand_seed = rand_seed.startswith("y") or rand_seed.startswith("j") or rand_seed == ""
 
     strategy = ""
