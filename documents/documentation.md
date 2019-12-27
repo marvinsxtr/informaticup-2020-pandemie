@@ -87,6 +87,23 @@ Do you want the data of one round to be saved for visualization? (y/n, default=n
 Die Visualisierung dient wie auch das Loggen dem Analysieren und Verstehen der Strategie. Wie die Visualisierung 
 funktioniert, wird detailiert im Kapitel 
 [Zusatzfunktion: Visualisierung](documentation.md#zusatzfunktion:-visualisierung) erläutert.
+
+Als nächstes muss angegeben werden, wie viele Spiele gleichzeitig gespielt werden sollen:
+```bash
+How many simulations should be run simultaneously? (default=5):
+```
+Umso mehr Spiele gespielt werden, desto besser lässt sich die Strategie am Ende bewerten. Allerdings ist zu 
+beachten, dass bei zu vielen Spielen gleichzeitig der Computer sehr viel zu arbeiten hat und es sein kann, dass er etwas
+langsamer als gewöhnlich läuft.
+
+Im letzten Schritt wird gefragt, ob für jedes Spiel ein zufälliger Seed generiert werden soll:<br>
+```bash
+Do you want a random seed? (y/n, default=y):
+```
+Wird hier `n` angegeben, so werden die Seeds von 1 aufsteigend verwendet. Dies ist nützlich, um die Konsistenz einer
+Strategie zu beurteilen, aber auch um zwei Strategien bei exakt gleichen bedingungen zu vergleichen.
+Wird aber `y` angegeben, so wird für jedes Spiel ein zufälliger Seed zwischen 1 und 100.000.000.000 generiert.
+
 ### Standardeinstellungen des Testers
 Zum schnellen Testen einer Strategie kann die Standardkonfiguration des Testers genutzt werden. Als standartd festgelegt
 sind:

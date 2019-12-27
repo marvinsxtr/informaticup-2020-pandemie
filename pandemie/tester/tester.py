@@ -128,7 +128,7 @@ class Tester:
 
     @staticmethod
     def new_seed():
-        return random.randint(1, 10000000000)
+        return random.randint(1, 100000000000)
 
 
 if __name__ == "__main__":
@@ -141,7 +141,7 @@ if __name__ == "__main__":
 
     if not visualize:
         while True:
-            count = input("How many simulations should be run simultaneously? (default=5)\t")
+            count = input("How many simulations should be run simultaneously? (default=5):\t")
 
             if not count:
                 count = 5
@@ -156,7 +156,7 @@ if __name__ == "__main__":
     else:
         count = 1
 
-    rand_seed = input("Do you want a random seed? (y/n, default=y)").lower()
+    rand_seed = input("Do you want a random seed? (y/n, default=y):\t").lower()
     rand_seed = rand_seed.startswith("y") or rand_seed.startswith("j") or rand_seed == ""
 
     strategy = ""
