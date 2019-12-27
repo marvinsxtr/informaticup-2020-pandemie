@@ -56,22 +56,28 @@ Im nächsten Schritt
 (Marvin)
 ## Zusatzfunktion: Visualisierung
 (Marvin)
-Zur Analyse und zum Vergleich verschiedener Strategien ist es sinnvoll, diese zu visualisieren. Hierbei können Stärken
-und Schwächen einer Strategie ausgemacht werden und so eine Verbesserung des Scores erzielt werden. Zudem sollen
+Zur Analyse und zum Vergleich verschiedener Strategien ist es sinnvoll, diese zu visualisieren. Dazu werden entweder
+einzelne Runden oder das gesamte Spiel mithilfe von verschiedenen Graphen oder Karten dargestellt. Hiermit können 
+Stärken und Schwächen einer Strategie ausgemacht werden und so eine Verbesserung des Scores erzielt werden. Zudem sollen
 Strategien von Grund auf neu entwickelt werden können. Dies ist ein iterativer Prozess, welcher schlussendlich zu einer 
 Strategie führen kann, welche auf verschiedene Ereignisse angemessen reagiert und eine gute Erfolgswahrscheinlichkeit
-an den Tag legt. Für den Zweck der Entwicklung unserer Teamstrategie haben wir bereits einige Daten gesammelt und
-visualisiert. Im Folgenden wird erklärt, wie auf diese zugegriffen werden kann und wie eigene Erweiterungen realisiert 
-werden können.
+an den Tag legt. Für den Zweck der Entwicklung unserer Teamstrategie existiert bereits die Implementierung zur 
+Darstellung einiger Graphen und Karten. Im Folgenden wird erklärt, wie auf diese zugegriffen werden kann und wie eigene 
+Erweiterungen realisiert werden können.
 ### Wie starte ich die Visualisierung
 Um die Visualisierung zu starten muss zunächst der Tester mit der Visualisierungs-Option gestartet werden. Dies führt
-dazu, dass im Ordner pandemie/tester/tmp die JSON Dateien der einzelnen Runden abgelegt werden. Ist diese Voraussetzung
-erfüllt, kann die Visualisierung wie folgt gestartet werden:
-
-
-
+dazu, dass im Ordner `pandemie/tester/tmp` die JSON-Dateien der einzelnen Runden abgelegt werden. Ist diese Voraussetzung
+erfüllt, kann die Visualisierung mit dem Modul `visualization.py` gestartet werden: <br>
+```bash
+$ python3 visualization.py
+```
+Sobald die Visualisierung fertig ist, wird anschließend ein Webserver gestartet, welcher über `localhost:8050`
+aufgerufen werden kann. Im Log wird hierzu auch ein Link angezeigt. Wenn die Seite aufgerufen wird, kann oben im
+Dropdown-Menü ausgewählt werden, welche Runde oder ob das gesamte Spiel visualisiert werden soll.
 ### Eigene Visualisierung hinzufügen
-
+Die Visualisierung wird mithilfe von `Plotly` mit `Dash` als Dashboard Anwendung realisiert. Plotly kann also dazu 
+genutzt werden, eigene Visualisierungen einzubinden. Hierbei soll zwischen Preprocessing und der eigentlichen 
+Darstellung unterschieden werden, wobei ersteres in `preprocessing.py` und letzteres in `visualization.py` stattfindet.
 ## Der Web Service
 ## Warum unsere Idee die Beste ist
 (Alex)
