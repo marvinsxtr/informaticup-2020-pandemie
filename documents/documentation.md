@@ -21,6 +21,9 @@
 ### Installation (Alex)
 ### Schenllstart (Alex)
 ## Wie benutze ich das Programm (Ruwen)
+### Eigene Strategien entwickeln
+#### Event-Checker als Daten-Analyse-Tool
+### Den Tester richtig nutzen
 ## Wissenschaftlicher Hintergrund
 ## Erklaerung des Programmcodes
 ## API
