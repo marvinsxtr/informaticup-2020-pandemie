@@ -164,6 +164,10 @@ if __name__ == "__main__":
 
             else:
                 count = int(count)
+                # prevent to much threads on machine
+                if count > 500:
+                    count = 500
+                    print("The amount of threads is limited to 500. The amount of threads was set to 500.")
                 break
     else:
         count = 1
