@@ -42,8 +42,8 @@ abgeschlossenen Simmulation.
 Nach der Installation des Programms und einem einfachen Ausführungsbeispiel wird nun die Verwendung der einzelnen 
 Funktionen des Programms erklärt.
 ### Den Tester richtig nutzen
-Zum testen von Strategien ist das Modul `tester.py` vorgesehen. Hier werden verschiedene Funktionalitäten zum 
-analysieren und testen eigener Strategien bereitgestellt. Um eigene Strategien zu testen muss lediglich das Modul
+Zum Testen von Strategien ist das Modul `tester.py` vorgesehen. Hier werden verschiedene Funktionalitäten zum 
+Analysieren und Testen eigener Strategien bereitgestellt. Um eigene Strategien zu testen, muss lediglich das Modul
 `tester.py` ausgeführt werden. <br>
 ```bash
 $ python3 tester.py
@@ -59,9 +59,9 @@ eingegebene Strategiename nicht in diesem Ordner zu finden sein, wird der Fehler
 
 Nach der Eingabe des Namens wird gefragt, ob das Testen der Strategie geloggt werden soll:<br>
 ```bash
-Should a log be created? (y/n, default=n)
+Should a log be created? (y/n, default=n):
 ```
-Das Loggen beinhaltet das Ergebniss und die Anzahl der Runden, die bis zu diesem Ergebnis gespielt wurden, für jedes
+Das Loggen beinhaltet das Ergebnis und die Anzahl der Runden, die bis zu diesem Ergebnis gespielt wurden, für jedes
 einzelne gespielte Spiel. Außerdem werden für jedes Spiel alle aufgetretenen Pathogene inklusive ihrer Eigenschaften
 geloggt. Am Ende der Log-Datei steht dann der berechnete Score der Strategie. Dieser befindet sich immer zwischen 1 und
 -1, wobei 1 ein perfekter Score wäre.<br>
@@ -78,6 +78,41 @@ win:	26
 
 -0.1635815380187609
 ```
+
+Im dritten Schritt muss angegeben werden, ob die gespieleten Runden für die Visualisierung gespiechert werden sollen:
+<br>
+```bash
+Do you want the data of one round to be saved for visualization? (y/n, default=n):
+```
+Die Visualisierung dient wie auch das Loggen dem Analysieren und Verstehen der Strategie. Wie die Visualisierung 
+funktioniert, wird detailiert im Kapitel 
+[Zusatzfunktion: Visualisierung](documentation.md#zusatzfunktion:-visualisierung) erläutert.
+
+Als nächstes muss angegeben werden, wie viele Spiele gleichzeitig gespielt werden sollen:
+```bash
+How many simulations should be run simultaneously? (default=5):
+```
+Umso mehr Spiele gespielt werden, desto besser lässt sich die Strategie am Ende bewerten. Allerdings ist zu 
+beachten, dass bei zu vielen Spielen gleichzeitig der Computer sehr viel zu arbeiten hat und es sein kann, dass er etwas
+langsamer als gewöhnlich läuft.
+
+Im letzten Schritt wird gefragt, ob für jedes Spiel ein zufälliger Seed generiert werden soll:<br>
+```bash
+Do you want a random seed? (y/n, default=y):
+```
+Wird hier `n` angegeben, so werden die Seeds von 1 aufsteigend verwendet. Dies ist nützlich, um die Konsistenz einer
+Strategie zu beurteilen, aber auch um zwei Strategien bei exakt gleichen bedingungen zu vergleichen.
+Wird aber `y` angegeben, so wird für jedes Spiel ein zufälliger Seed zwischen 1 und 100.000.000.000 generiert.
+
+### Standardeinstellungen des Testers
+Zum schnellen Testen einer Strategie kann die Standardkonfiguration des Testers genutzt werden. Als standartd festgelegt
+sind:
+ * Kein Log-Output wird erstellt
+ * Die Runden werden nicht Visualisiert
+ * Es werden 5 Spiele gleichzeitig gespielt
+ * Für jedes Spiel wird ein zufälliger Seed generiert
+ 
+ Somit muss lediglich angegeben werden, welche Strategie ausgeführt werden soll.
 ### Eigene Strategien entwickeln
 #### Event-Checker als Daten-Analyse-Tool
 ## Wissenschaftlicher Hintergrund
