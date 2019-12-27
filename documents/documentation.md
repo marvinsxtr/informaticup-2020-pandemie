@@ -40,11 +40,31 @@ Im ersten Schritt wird man nun nach dem Namen der zu testenden Strategie gefragt
 Enter the full name of the strategy you want to test (no .py):	
 ```
 Hier ist einfach der Dateiname der Strategie ohne die `.py` Endung einzugeben und mit `ENTER` zu bestätigen.
-<br> Hierbei ist zu beachten, dass sich die Strategie im Ordner `pandemie/tester/strategies` befindet. Falls der 
-eingegebene Strategiename nicht in diesem Ordner zu finden ist wird der Fehler 
+<br> Es ist zu beachten, dass sich die Strategie im Ordner `pandemie/tester/strategies` befindet. Sollte der 
+eingegebene Strategiename nicht in diesem Ordner zu finden sein, wird der Fehler 
 `StrategyModule [strategy-name] not found! Exiting...` ausgegeben und und das Programm terminiert.
 
-Im nächsten Schritt 
+Nach der Eingabe des Namens wird gefragt, ob das Testen der Strategie geloggt werden soll:<br>
+```bash
+Should a log be created? (y/n, default=n)
+```
+Das Loggen beinhaltet das Ergebniss und die Anzahl der Runden, die bis zu diesem Ergebnis gespielt wurden, für jedes
+einzelne gespielte Spiel. Außerdem werden für jedes Spiel alle aufgetretenen Pathogene inklusive ihrer Eigenschaften
+geloggt. Am Ende der Log-Datei steht dann der berechnete Score der Strategie. Dieser befindet sich immer zwischen 1 und
+-1, wobei 1 ein perfekter Score wäre.<br>
+Hier ein Beispiel für die Strategie `example_strategy.py` mit zwei gespielten Runden:<br>
+```
+loss:	11
+{'name': 'N5-10', 'infectivity': '+', 'mobility': '++', 'duration': 'o', 'lethality': '+'}
+{'name': 'Admiral Trips', 'infectivity': '++', 'mobility': '+', 'duration': '-', 'lethality': '++'}
+{'name': 'Plorps', 'infectivity': 'o', 'mobility': 'o', 'duration': '+', 'lethality': '-'}
+
+win:	26
+{'name': 'Shanty', 'infectivity': '+', 'mobility': '-', 'duration': 'o', 'lethality': '-'}
+{'name': 'Phagum vidiianum', 'infectivity': 'o', 'mobility': 'o', 'duration': '+', 'lethality': '+'}
+
+-0.1635815380187609
+```
 ### Eigene Strategien entwickeln
 #### Event-Checker als Daten-Analyse-Tool
 ## Wissenschaftlicher Hintergrund
