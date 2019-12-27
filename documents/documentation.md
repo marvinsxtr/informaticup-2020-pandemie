@@ -1,6 +1,6 @@
 # Pandemie!
 
-## Contents
+## Inhaltsverzeichnis
 * [Einleitung](documentation.md#einleitung)
 * [Grundlagen](documentation.md#grundlagen)
 * [Installation](documentation.md#installation)
@@ -85,8 +85,9 @@ an den Tag legt. Für den Zweck der Entwicklung unserer Teamstrategie existiert 
 Darstellung einiger Graphen und Karten. Im Folgenden wird erklärt, wie auf diese zugegriffen werden kann und wie eigene 
 Erweiterungen realisiert werden können.
 ### Wie starte ich die Visualisierung
-Um die Visualisierung zu starten muss zunächst der Tester mit der Visualisierungs-Option gestartet werden. Dies führt
-dazu, dass im Ordner `pandemie/tester/tmp` die JSON-Dateien der einzelnen Runden abgelegt werden. Ist diese Voraussetzung
+Um die Visualisierung zu starten muss zunächst mindestens einmal der 
+[Tester](documentation.md#den-tester-richtig-nutzen) mit der Visualisierungs-Option gestartet werden. Dies führt dazu, 
+dass im Ordner `pandemie/tester/tmp` die JSON-Dateien der einzelnen Runden abgelegt werden. Ist diese Voraussetzung 
 erfüllt, kann die Visualisierung mit dem Modul `visualization.py` gestartet werden: <br>
 ```bash
 $ python3 visualization.py
@@ -97,7 +98,15 @@ Dropdown-Menü ausgewählt werden, welche Runde oder ob das gesamte Spiel visual
 ### Eigene Visualisierung hinzufügen
 Die Visualisierung wird mithilfe von `Plotly` mit `Dash` als Dashboard Anwendung realisiert. Plotly kann also dazu 
 genutzt werden, eigene Visualisierungen einzubinden. Hierbei soll zwischen Preprocessing und der eigentlichen 
-Darstellung unterschieden werden, wobei ersteres in `preprocessing.py` und letzteres in `visualization.py` stattfindet.
+Darstellung unterschieden werden, wobei ersteres in `preprocessing.py` und letzteres in `visualization.py` stattfindet. 
+<br> Soll eine Visualisierung für das gesamte Spiel hinzugefügt werden, so muss das Preprocessing in der Funktion 
+`preprocess_game` stattfinden. Hier können benötigte Lists/Dicts erstellt und mithilfe der jeweiligen JSON-Datei
+generiert werden. Anschließend sollen generierte Daten in dem Dict `game_visualizations` abgelegt werden, um später auf
+sie zuzugreifen. <br>
+In `visualization.py` kann nun eine Funktion hinzugefügt werden, welche einen 
+[Dash component](https://dash.plot.ly/dash-core-components) zurückgibt, was ein Graph aber auch andere GUI-Elemente sein
+können. Zusätzlich muss in der Funktion `visualize_game` der entsprechende Funktionsaufruf der zurückgegebenen Liste 
+hinzu gefügt werden. Die Visualisierungen werden entsprechend der Reihenfolge in dieser Liste untereinander angezeigt.
 ## Der Web Service
 ## Warum unsere Idee die Beste ist
 (Alex)
