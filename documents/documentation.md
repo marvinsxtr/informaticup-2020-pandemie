@@ -79,16 +79,16 @@ win:	26
 -0.1635815380187609
 ```
 
-Im dritten Schritt muss angegeben werden, ob die gespieleten Runden für die Visualisierung gespiechert werden sollen:
+Im dritten Schritt muss angegeben werden, ob die gespielten Runden für die Visualisierung gespeichert werden sollen:
 <br>
 ```bash
 Do you want the data of one round to be saved for visualization? (y/n, default=n):
 ```
 Die Visualisierung dient wie auch das Loggen dem Analysieren und Verstehen der Strategie. Wie die Visualisierung 
-funktioniert, wird detailiert im Kapitel 
+funktioniert, wird detailliert im Kapitel 
 [Zusatzfunktion: Visualisierung](documentation.md#zusatzfunktion:-visualisierung) erläutert.
 
-Als nächstes muss angegeben werden, wie viele Spiele gleichzeitig gespielt werden sollen:
+Als Nächstes muss angegeben werden, wie viele Spiele gleichzeitig gespielt werden sollen:
 ```bash
 How many simulations should be run simultaneously? (default=5):
 ```
@@ -100,15 +100,15 @@ Im letzten Schritt wird gefragt, ob für jedes Spiel ein zufälliger Seed generi
 ```bash
 Do you want a random seed? (y/n, default=y):
 ```
-Wird hier `n` angegeben, so werden die Seeds von 1 aufsteigend verwendet. Dies ist nützlich, um die Konsistenz einer
-Strategie zu beurteilen, aber auch um zwei Strategien bei exakt gleichen bedingungen zu vergleichen.
+Wird hier `n` angegeben, so werden die Seeds von 1 aufsteigend verwendet. Dies ist nützlich, um die Konsistenz einer 
+Strategie zu beurteilen, aber auch um zwei Strategien bei exakt gleichen Bedingungen zu vergleichen.
 Wird aber `y` angegeben, so wird für jedes Spiel ein zufälliger Seed zwischen 1 und 100.000.000.000 generiert.
 
 ### Standardeinstellungen des Testers
-Zum schnellen Testen einer Strategie kann die Standardkonfiguration des Testers genutzt werden. Als standartd festgelegt
+Zum schnellen Testen einer Strategie kann die Standardkonfiguration des Testers genutzt werden. Als Standard festgelegt
 sind:
  * Kein Log-Output wird erstellt
- * Die Runden werden nicht Visualisiert
+ * Die Runden werden nicht visualisiert
  * Es werden 5 Spiele gleichzeitig gespielt
  * Für jedes Spiel wird ein zufälliger Seed generiert
  
