@@ -9,6 +9,7 @@ from gevent import monkey
 from gevent.pywsgi import WSGIServer
 
 from pandemie.operations import end_round
+from pandemie.tester import AbstractStrategy
 
 BaseRequest.MEMFILE_MAX = 1024 * 1024
 SLEEP_TIME = 0.01
@@ -36,6 +37,9 @@ class WebServer(threading.Thread):
         :param port:
         :param log:
         """
+        if not isinstance(handler, AbstractStrategy):
+            raise ValueError("Strategy is not valid.")
+
         super().__init__()  # init thread
         self.handler = handler
         self.port = port
