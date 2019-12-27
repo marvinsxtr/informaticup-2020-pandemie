@@ -16,11 +16,11 @@
 * [Warum unsere Idee die Beste ist.](documentation.md#warum-unsere-idee-die-beste-ist)
 * [Auswertung der Ergebnisse](documentation.md#auswertung-der-ergebnisse)
 
-## Einleitung
-## Grundlagen (install, run, etc)
-## Installation
-## Schenllstart
-## Wie benutze ich das Programm
+## Einleitung (Alex)
+## Grundlagen (Alex, kleine Intro schreiben)
+### Installation (Alex)
+### Schenllstart (Alex)
+## Wie benutze ich das Programm (Ruwen)
 ## Wissenschaftlicher Hintergrund
 ## Erklaerung des Programmcodes
 ## API
@@ -29,5 +29,5 @@
 ## Zusatzfunktion: Visualisierung
 Zur Analyse und zum Vergleich verschiedener Strategien ist es sinnvoll, 
 ## Der Web Service
-## Warum unsere Idee die Beste ist
+## Warum unsere Idee die Beste ist (Alex)
 ## Auswertung der Ergebnisse
