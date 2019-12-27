@@ -16,7 +16,7 @@
 * [Warum unsere Idee die Beste ist](documentation.md#warum-unsere-idee-die-beste-ist)
 * [Auswertung der Ergebnisse](documentation.md#auswertung-der-ergebnisse)
 
-## Einleitung
+## Einleitung (Alex)
 ## Grundlagen (Alex, kleine Intro schreiben)
 ### Installation (Alex)
 ### Schenllstart (Alex)
@@ -28,5 +28,5 @@
 ## FAQ
 ## Zusatzfunktion: Visualisierung
 ## Der Web Service
-## Warum unsere Idee die Beste ist
+## Warum unsere Idee die Beste ist (Alex)
 ## Auswertung der Ergebnisse
