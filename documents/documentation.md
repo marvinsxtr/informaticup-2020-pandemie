@@ -157,7 +157,9 @@ sind:
 (Marvin)
 ### Wie ist das Projekt lizensiert?
 (Alex)<br>
-
+Das Projekt ist mit der MIT Lizenz lizensiert und damit eine open-source Software. Die Lizenz für dieses Projekt
+befindet sich in der Datei `LICENSE`.<br>
+Des Weiteren sind die verwendeten Abhängigkeiten alle der MIT oder BSD Lizenz zugeordnet.
 ## Zusatzfunktion: Visualisierung
 (Marvin)
 Zur Analyse und zum Vergleich verschiedener Strategien ist es sinnvoll, diese zu visualisieren. Dazu werden entweder
