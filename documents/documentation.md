@@ -49,7 +49,7 @@ Analysieren und Testen eigener Strategien bereitgestellt. Um eigene Strategien z
 $ python3 tester.py
 ```
 Im ersten Schritt wird man nun nach dem Namen der zu testenden Strategie gefragt:<br>
-```bash
+```
 Enter the full name of the strategy you want to test (no .py):	
 ```
 Hier ist einfach der Dateiname der Strategie ohne die `.py` Endung einzugeben und mit `ENTER` zu bestätigen.
@@ -58,7 +58,7 @@ eingegebene Strategiename nicht in diesem Ordner zu finden sein, wird der Fehler
 `StrategyModule [strategy-name] not found! Exiting...` ausgegeben und und das Programm terminiert.
 
 Nach der Eingabe des Namens wird gefragt, ob das Testen der Strategie geloggt werden soll:<br>
-```bash
+```
 Should a log be created? (y/n, default=n):
 ```
 Das Loggen beinhaltet das Ergebnis und die Anzahl der Runden, die bis zu diesem Ergebnis gespielt wurden, für jedes
@@ -81,7 +81,7 @@ win:	26
 
 Im dritten Schritt muss angegeben werden, ob die gespielten Runden für die Visualisierung gespeichert werden sollen:
 <br>
-```bash
+```
 Do you want the data of one round to be saved for visualization? (y/n, default=n):
 ```
 Die Visualisierung dient wie auch das Loggen dem Analysieren und Verstehen der Strategie. Wie die Visualisierung 
@@ -89,7 +89,7 @@ funktioniert, wird detailliert im Kapitel
 [Zusatzfunktion: Visualisierung](documentation.md#zusatzfunktion:-visualisierung) erläutert.
 
 Als Nächstes muss angegeben werden, wie viele Spiele gleichzeitig gespielt werden sollen:
-```bash
+```
 How many simulations should be run simultaneously? (default=5):
 ```
 Umso mehr Spiele gespielt werden, desto besser lässt sich die Strategie am Ende bewerten. Allerdings ist zu 
@@ -97,7 +97,7 @@ beachten, dass bei zu vielen Spielen gleichzeitig der Computer sehr viel zu arbe
 langsamer als gewöhnlich läuft.
 
 Im letzten Schritt wird gefragt, ob für jedes Spiel ein zufälliger Seed generiert werden soll:<br>
-```bash
+```
 Do you want a random seed? (y/n, default=y):
 ```
 Wird hier `n` angegeben, so werden die Seeds von 1 aufsteigend verwendet. Dies ist nützlich, um die Konsistenz einer 
