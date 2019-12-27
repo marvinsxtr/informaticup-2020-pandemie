@@ -9,6 +9,8 @@ import threading
 
 import time
 
+from pandemie.operations import end_round
+
 BaseRequest.MEMFILE_MAX = 1024 * 1024
 SLEEP_TIME = 0.01
 monkey.patch_all()
@@ -28,8 +30,6 @@ class WebServer(threading.Thread):
 
         @app.post("/")
         def index():
-            # warning! hotfix in place
-            # the bottle api sometimes does not read the request body right
             c_type = request.environ.get('CONTENT_TYPE', '').lower().split(';')[0]
             if c_type == 'application/json':
                 max_tries = 5
@@ -39,16 +39,20 @@ class WebServer(threading.Thread):
                         try:
                             game = json_loads(body)
                             break
-                        except:
-                            raise RuntimeError("Could not decode json...")
+                        except Exception as e:
+                            print("[!] ", e)
+                            print("[!] Could not decode json, possible because of an internal server error!")
+                            return end_round()
 
                 else:
-                    raise RuntimeError("Could not read request body after %d tries.." % max_tries)
+                    print("[!] Could not read request body after %d tries!" % max_tries)
+                    return ""
 
                 return handler.solve(game, server)
 
             else:
-                raise RuntimeError("Invalid content type, dropping request")
+                print("[!] Received an invalid content type, dropping request")
+                return ""
 
     def run(self):
         server_thread = threading.Thread(target=self.begin)
