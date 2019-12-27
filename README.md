@@ -1,7 +1,18 @@
 # README
-See the [documentation](documents/documentation.md).
+Siehe [documentation](documents/documentation.md).
 
-### Quickstart for debug purposes
+### Schnellstart für debugging Zwecke
 
-* run tester.py and follow the instructions on command line
-* run visualization.py and open localhost:8050
+
+Um den Tester für das `ic20_linux` Programm auszuführen, kann auf dem Projektordner folgender Befehl aufgerufen werden.
+```bash
+python3.8 pandemie/tester/tester.py
+```
+Für die schnelle Ausführung des Programms sind bereits Standard-Parameter gesetzt. Diese können per aufgefordeter
+Terminaleingabe auch geändert werden.
+<br><br>
+Um die Visualisierung zu starten führen sie den nachstehenden Befehl aus.
+```bash
+python3.8 pandamie/visualization.py
+```
+Öffnen sie danach ihren Webbrowser mit der URL: `localhost:8050`

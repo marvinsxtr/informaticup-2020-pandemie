@@ -155,7 +155,7 @@ sind:
 ## Software Architektur
 ## FAQ
 (Marvin)
-### Lizenz
+### Wie ist das Projekt lizensiert?
 (Alex)<br>
 
 ## Zusatzfunktion: Visualisierung
