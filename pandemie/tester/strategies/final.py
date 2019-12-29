@@ -3,7 +3,7 @@ This is the strategy our team continuously improves to compete in the InformatiC
 each possible operation and thereby picking the best choice.
 
 Observations:
-- more efficient to put uninfected cities under quarantine
+- sometimes more efficient to put uninfected cities under quarantine
 """
 
 from pandemie.tester import AbstractStrategy
@@ -210,7 +210,8 @@ class Final(AbstractStrategy):
                         # this score is acquired by combining prevalence, duration and pathogen strength
                         outbreak_score = round((1 + city_event["prevalence"]) *
                                                (round_number - city_event["sinceRound"] +
-                                                pathogens_scores[city_event["pathogen"]["name"]]), 2)
+                                                pathogens_scores[city_event["pathogen"]["name"]] +
+                                                pathogens_count_infected_cities[city_event["pathogen"]["name"]]), 2)
                         cities_outbreak_scores[city_name] = outbreak_score
 
         """
@@ -223,6 +224,24 @@ class Final(AbstractStrategy):
                     cities_scores[city_name] +
                     cities_outbreak_scores[city_name] +
                     cities_count_flight_connections[city_name]))
+
+        # develop medication for most dangerous pathogens
+        for pathogen_name in pathogens_names:
+            rank_operation("develop_medication", pathogen_name, op_score=develop_medication_weight * (
+                    pathogens_scores[pathogen_name] +
+                    pathogens_count_infected_cities[pathogen_name]))
+
+        # deploy medication in cities at most risk
+        for city_name, pathogen_names in city_pathogens_names.items():
+            for pathogen_name in pathogen_names:
+                if pathogen_name in pathogens_medication_available_names:
+                    rank_operation("deploy_medication", pathogen_name, city_name, op_score=deploy_medication_weight * (
+                            cities_combined_pathogens_score[city_name] +
+                            cities_scores[city_name] +
+                            cities_outbreak_scores[city_name] +
+                            cities_count_flight_connections[city_name] +
+                            pathogens_scores[pathogen_name] +
+                            pathogens_count_infected_cities[pathogen_name]))
 
         # sort ranking
         ranking = dict(sorted(ranking.items(), key=lambda item: item[1], reverse=True))
@@ -250,7 +269,7 @@ class Final(AbstractStrategy):
             op_name, *op_rest = operation
 
             # check if need to save for required action
-            # todo check if this is a good idea
+            # todo check if this is a good idea and test other saving methods
             if op_name not in possible_operations_names:
                 return operations.end_round()
             # check if operation can be afforded
