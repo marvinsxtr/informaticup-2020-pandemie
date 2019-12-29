@@ -4,6 +4,7 @@ each possible operation and thereby picking the best choice.
 
 Observations:
 - sometimes more efficient to put uninfected cities under quarantine
+- a city can only be affected by one pathogen at a time
 """
 
 from pandemie.tester import AbstractStrategy
@@ -98,15 +99,15 @@ class Final(AbstractStrategy):
         pathogens_medication_in_development = []
         pathogens_medication_in_development_names = []
 
-        city_pathogens = {}
-        city_pathogens_names = {}
+        cities_pathogen = {}
+        cities_pathogen_name = {}
 
         pathogens_count_infected_cities = {}
 
         pathogens_scores = {}
         cities_scores = {}
 
-        cities_combined_pathogens_score = {}
+        cities_pathogen_score = {}
 
         cities_count_flight_connections = {}
 
@@ -149,20 +150,19 @@ class Final(AbstractStrategy):
 
         # connect pathogens to cities with a dict
         for city_name, city_stats in cities.items():
-            city_pathogens[city_name] = []
-            city_pathogens_names[city_name] = []
             if "events" in city_stats:
                 for city_event in city_stats["events"]:
                     if city_event["type"] == "outbreak":
-                        city_pathogens[city_name].append(city_event["pathogen"])
-                        city_pathogens_names[city_name].append(city_event["pathogen"]["name"])
+                        cities_pathogen[city_name] = city_event["pathogen"]
+                        cities_pathogen_name[city_name] = city_event["pathogen"]["name"]
 
         # count how many cities are affected by each pathogen
         for pathogen_name in pathogens_names:
             affected_cities = 0
-            for city_name, _ in cities.items():
-                if pathogen_name in city_pathogens_names[city_name]:
-                    affected_cities += 1
+            for city_name in cities_names:
+                if city_name in cities_pathogen_name:
+                    if pathogen_name == cities_pathogen_name[city_name]:
+                        affected_cities += 1
             pathogens_count_infected_cities[pathogen_name] = affected_cities
 
         # assign score to each pathogen (higher is more evil)
@@ -183,16 +183,16 @@ class Final(AbstractStrategy):
         # sort worst to best city
         cities_scores = dict(sorted(cities_scores.items(), key=lambda item: item[1], reverse=True))
 
-        # combined score of city and pathogen scores (higher score means higher risk in the city)
+        # assign pathogen score to cities (higher score means higher risk in the city)
         for city_name in cities_names:
             pathogen_score = 0
-            for pathogen_name in city_pathogens_names[city_name]:
-                pathogen_score += pathogens_scores[pathogen_name]
-            cities_combined_pathogens_score[city_name] = pathogen_score
+            if city_name in cities_pathogen_name:
+                pathogen_name = cities_pathogen_name[city_name]
+                pathogen_score = pathogens_scores[pathogen_name]
+            cities_pathogen_score[city_name] = pathogen_score
 
         # sort by combined pathogens score (higher to lower)
-        cities_combined_pathogens_score = dict(sorted(cities_combined_pathogens_score.items(),
-                                                      key=lambda item: item[1], reverse=True))
+        cities_pathogen_score = dict(sorted(cities_pathogen_score.items(), key=lambda item: item[1], reverse=True))
 
         # count the number of flight connections for each city
         for city_name, city_stats in cities.items():
@@ -220,7 +220,7 @@ class Final(AbstractStrategy):
         # put cities most at risk under quarantine
         for city_name in cities_names:
             rank_operation("put_under_quarantaine", city_name, 3, op_score=put_under_quarantine_weight * (
-                    cities_combined_pathogens_score[city_name] +
+                    cities_pathogen_score[city_name] +
                     cities_scores[city_name] +
                     cities_outbreak_scores[city_name] +
                     cities_count_flight_connections[city_name]))
@@ -232,16 +232,15 @@ class Final(AbstractStrategy):
                     pathogens_count_infected_cities[pathogen_name]))
 
         # deploy medication in cities at most risk
-        for city_name, pathogen_names in city_pathogens_names.items():
-            for pathogen_name in pathogen_names:
-                if pathogen_name in pathogens_medication_available_names:
-                    rank_operation("deploy_medication", pathogen_name, city_name, op_score=deploy_medication_weight * (
-                            cities_combined_pathogens_score[city_name] +
-                            cities_scores[city_name] +
-                            cities_outbreak_scores[city_name] +
-                            cities_count_flight_connections[city_name] +
-                            pathogens_scores[pathogen_name] +
-                            pathogens_count_infected_cities[pathogen_name]))
+        for city_name, pathogen_name in cities_pathogen_name.items():
+            if pathogen_name in pathogens_medication_available_names:
+                rank_operation("deploy_medication", pathogen_name, city_name, op_score=deploy_medication_weight * (
+                        cities_pathogen_score[city_name] +
+                        cities_scores[city_name] +
+                        cities_outbreak_scores[city_name] +
+                        cities_count_flight_connections[city_name] +
+                        pathogens_scores[pathogen_name] +
+                        pathogens_count_infected_cities[pathogen_name]))
 
         # sort ranking
         ranking = dict(sorted(ranking.items(), key=lambda item: item[1], reverse=True))
@@ -253,11 +252,11 @@ class Final(AbstractStrategy):
             print(pathogens_medication_in_development_names)
             print(pathogens_medication_available_names)
             print(pathogens_names)
-            print(city_pathogens_names)
+            print(cities_pathogen_name)
             print(pathogens_count_infected_cities)
             print(pathogens_scores)
             print(cities_scores)
-            print(cities_combined_pathogens_score)
+            print(cities_pathogen_score)
             print(cities_count_flight_connections)
             print(cities_outbreak_scores)
 
