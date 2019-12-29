@@ -184,12 +184,11 @@ class Final(AbstractStrategy):
         cities_scores = dict(sorted(cities_scores.items(), key=lambda item: item[1], reverse=True))
 
         # combined score of city and pathogen scores (higher score means higher risk in the city)
-        for city_name, city_score in cities_scores.items():
+        for city_name in cities_names:
             pathogen_score = 0
             for pathogen_name in city_pathogens_names[city_name]:
                 pathogen_score += pathogens_scores[pathogen_name]
-            combined_score = city_score + pathogen_score
-            cities_combined_pathogens_score[city_name] = combined_score
+            cities_combined_pathogens_score[city_name] = pathogen_score
 
         # sort by combined pathogens score (higher to lower)
         cities_combined_pathogens_score = dict(sorted(cities_combined_pathogens_score.items(),
