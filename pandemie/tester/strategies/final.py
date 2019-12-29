@@ -33,14 +33,14 @@ class Final(AbstractStrategy):
 
         # these are the weights/multipliers applied to each possible operation
         end_round_weight = 1  # ends the current round
-        put_under_quarantine_weight = 1  # completely prevent spreading of pathogen
+        put_under_quarantine_weight = 1.05  # completely prevent spreading of pathogen
         close_airport_weight = 1  # shut down connections from and to a city
         close_connection_weight = 1  # shut down one connection
 
         develop_vaccine_weight = 1  # after 6 rounds a vaccine is ready
         deploy_vaccine_weight = 1  # deploy vaccine to specific city
-        develop_medication_weight = 1  # after 3 rounds a medication is available
-        deploy_medication_weight = 1  # deploy medication to specific city
+        develop_medication_weight = 1.2  # after 3 rounds a medication is available
+        deploy_medication_weight = 1.1  # deploy medication to specific city
 
         exert_influence_weight = 1  # corresponds to economy city stat
         call_elections_weight = 1  # corresponds to government city stat
@@ -218,7 +218,10 @@ class Final(AbstractStrategy):
                         cities_outbreak_scores[city_name] = outbreak_score
 
         """
-        rank the operations based on collected data
+        rank the operations based on collected data (for each operation, the following steps are taken:)
+            - make score comparable to other operations
+            - adjust weight
+            - rank operations
         """
         # add up scores to get avg for put_under_quarantaine
         put_under_quarantine_overall_scores = []
