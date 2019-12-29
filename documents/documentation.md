@@ -20,25 +20,25 @@
 (Alex)<br>
 In dieser Dokumentation wird die Verwendung und Funktionsweise unserer Lösung des Problems des Informaticups 2019
 beschrieben.<br>
-Durch das bereitgestellte Programm `ic20_linux`*, welches von den Herrausgebern des Informaticups zur Verfügung gestellt wird,
-wird eine Epedemie der Welt simmuliert.
+Durch das bereitgestellte Programm `ic20_linux`*, welches von den Herausgebern des Informaticups zur Verfügung gestellt wird,
+wird eine Epedemie der Welt simuliert.
 Ziel ist es, dass in möglichst kurzer Zeit, die Menschheit auf dem Planeten Erde überlebt und die Seuchen
-ausgerottet werden. Diese Seuchen, mit unterschiedlichen Eigenschaften treten zufällig auf.
+ausgerottet werden. Diese Seuchen haben unterschiedliche Eigenschaften und treten zufällig auf.
 Für die Lösung wurde unsererseits ein Webservice entwickelt, welcher in Kombination mit einer Lösungsstrategie dem
-Programm `ic20_linux` rundebasiert Antworten schickt, die dazu führen sollen, dass die Simmulation der Epedemie positiv
+Programm `ic20_linux` rundenbasiert Antworten schickt, die dazu führen sollen, dass die Simmulation der Epedemie positiv
 entschieden wird.<br>
-Um das Verhalten des Simmulationsprogramms zu analysieren und eine effektive Lösungsstrategie zu entwickeln, wurden
+Um das Verhalten des Simulationsprogramms zu analysieren und eine effektive Lösungsstrategie zu entwickeln, wurden
 weitere Programme durch die Gruppe entwickelt.<br>
 Des Weiteren enthält die von unserer Gruppe bereitgestellte Softwarelösung die Möglichkeit zur Visualisierung einer
-abgeschlossenen Simmulation.<br>
+abgeschlossenen Simulation.<br>
 
 *Das Programm ist ebenfalls für Windows verfügbar und vom Betriebssystem abhängig implementiert.
 ## Grundlagen
 (Alex, kleine Intro schreiben)<br>
-Zu den Grundlagen gehört zunächst die vollständige und erfolgreiche Installation der Software. Im Anschluss gibt es
+Zu den Grundlagen gehört zunächst die vollständige und erfolgreiche Installation der Software. Daraufhin gibt es
 einen Schnellstart zum Testen einer Strategie. Im Anschluss wird genauer darauf eingegangen, in welchem Umfang die zur
-Verfügung stehenden Programme genutzt werden können. Dabei wird auch darauf eingegangen, wie eigene Strategien zu unserer
-Software kompatibel entwickelt und gestaltet werden können.
+Verfügung stehenden Programme genutzt werden können. Dabei wird auch darauf eingegangen, wie eigene Strategien zu 
+unserer Software kompatibel entwickelt und gestaltet werden können.
 ### Installation
 (Alex)<br>
 Zunächst muss das Projekt aus dem Gitlab geklont werden. Dazu wird die Versionskontrollsoftware `git` benötigt.
@@ -47,10 +47,10 @@ Der Klonvorgang geschieht mit dem nachstehenden Aufruf.
 ```git
 git clone https://gitlab.projekt.uni-hannover.de/chi-informaticup03/project-pandemie-03.git
 ```
-Als grundlegende Software wird Python in der Version 3.8 vorrausgesetzt(`python3.8`). Dieses ist je nachdem welches 
-Betriebssystem verwendet wird anders zu installieren.<br>
+Als grundlegende Software wird Python in der Version 3.8 vorrausgesetzt(`python3.8`). Dieses ist, je nachdem welches 
+Betriebssystem verwendet wird, anders zu installieren.<br>
 Des Weiteren sind einige Abhängigkeiten für die korrekte Ausführung des Programmcodes notwendig. Die Abhängigkeiten 
- der Software sind der Datei `requirements.txt` erfasst. Die Datei wird mit in dem Projektordner mitgeliefert und
+der Software sind in der Datei `requirements.txt` erfasst. Die Datei wird mit in dem Projektordner mitgeliefert und
 befindet sich auf der höchsten Hirarchieebene. Die Abhängigkeiten können mit der Software `pip3.8` installiert werden.
 
 Mit dem Aufruf eines Befehls ist das automatische Installieren möglich.
@@ -67,9 +67,10 @@ python3.8 pandemie/tester/tester.py
 Für die schnelle Ausführung des Programms sind bereits Standard-Parameter gesetzt. Diese können per aufgefordeter
 Terminaleingabe auch geändert werden. Dazu mehr in der Sektion 
 [Wie benutze ich das Programm](documentation.md#wie-benutze-ich-das-programm).
-Mit den Standard-Parametern wird das `ic20_linux` Programm in 5 Instanzen ausgefährt und gegen die zuletzt beste von uns
+Mit den Standard-Parametern wird das `ic20_linux` Programm in 5 Instanzen ausgeführt und gegen die zuletzt von uns
 entwickelte Strategie getestet. Wie gut die Strategie ist, wird nach Abschluss der Berechnungen auf dem Terminal als
-`win rate` ausgegeben.
+`win rate` ausgegeben. Zusätzlich kann der `score` zur Bewertung herangezogen werden, welcher neben dem Erfolg der
+Strategie auch die Anzahl der Runden bis zum Sieg bzw. Niederlage des Spiels einbezieht.
 ## Wie benutze ich das Programm
 (Ruwen)
 Nach der Installation des Programms und einem einfachen Ausführungsbeispiel wird nun die Verwendung der einzelnen 
@@ -147,9 +148,9 @@ sind:
  
  Somit muss lediglich angegeben werden, welche Strategie ausgeführt werden soll.
 ### Eigene Strategien entwickeln
+(Marvin)
 #### Event-Checker als Daten-Analyse-Tool
 ## Wissenschaftlicher Hintergrund
-(Marvin)
 ## Erklaerung des Programmcodes
 ## API
 ## Software Architektur
@@ -192,7 +193,7 @@ sie zuzugreifen. Analog können für einzelne Runden in der Funktion `preprocess
 `round_visualizations[<Runden-Nummer>]` gespeichert werden.<br>
 In `visualization.py` kann nun eine Funktion hinzugefügt werden, welche einen 
 [Dash component](https://dash.plot.ly/dash-core-components) zurückgibt, was ein Graph aber auch andere GUI-Elemente sein
-kann. Zusätzlich muss in der Funktion `visualize_game` der entsprechende Funktionsaufruf der zurückgegebenen Liste 
+können. Zusätzlich muss in der Funktion `visualize_game` der entsprechende Funktionsaufruf der zurückgegebenen Liste 
 hinzugefügt werden. Die Visualisierungen werden entsprechend der Reihenfolge in dieser Liste untereinander angezeigt.
 Für die Visualisierung einzelner Runden kann hierfür analog die Funktion `visualize_round` verwendet werden.
 ## Der Web Service
