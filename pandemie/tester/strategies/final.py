@@ -236,15 +236,15 @@ class Final(AbstractStrategy):
 
         # calculate weight
         if put_under_quarantine_overall_scores_avg != 0:
-            put_under_quarantine_weight *= round(avg_rating / put_under_quarantine_overall_scores_avg, 4)
+            put_under_quarantine_weight *= round(avg_rating / put_under_quarantine_overall_scores_avg, 5)
 
         # put cities most at risk under quarantine
         for city_name in cities_names:
-            rank_operation("put_under_quarantaine", city_name, 3, op_score=put_under_quarantine_weight * round(
+            rank_operation("put_under_quarantaine", city_name, 3, op_score=round(put_under_quarantine_weight * (
                     cities_pathogen_score[city_name] +
                     cities_scores[city_name] +
                     cities_outbreak_scores[city_name] +
-                    cities_count_flight_connections[city_name], 4))
+                    cities_count_flight_connections[city_name]), 5))
 
         # add up scores to get avg for develop_medication
         develop_medication_overall_scores = []
@@ -257,15 +257,15 @@ class Final(AbstractStrategy):
 
         # calculate weight
         if develop_medication_overall_scores_avg != 0:
-            develop_medication_weight *= round(avg_rating / develop_medication_overall_scores_avg, 4)
+            develop_medication_weight *= round(avg_rating / develop_medication_overall_scores_avg, 5)
 
         # develop medication for most dangerous pathogens
         for pathogen_name in pathogen_names:
             if pathogen_name not in pathogens_medication_available_names and pathogen_name not in \
                     pathogens_medication_in_development_names:
-                rank_operation("develop_medication", pathogen_name, op_score=develop_medication_weight * (
+                rank_operation("develop_medication", pathogen_name, op_score=round(develop_medication_weight * (
                         pathogens_scores[pathogen_name] +
-                        pathogens_count_infected_cities[pathogen_name]))
+                        pathogens_count_infected_cities[pathogen_name]), 5))
 
         # add up scores to get avg for deploy_medication
         deploy_medication_overall_scores = []
@@ -285,18 +285,18 @@ class Final(AbstractStrategy):
 
         # calculate weight
         if deploy_medication_overall_scores_avg != 0:
-            deploy_medication_weight *= round(avg_rating / deploy_medication_overall_scores_avg, 4)
+            deploy_medication_weight *= round(avg_rating / deploy_medication_overall_scores_avg, 5)
 
         # deploy medication in cities at most risk
         for city_name, pathogen_name in cities_pathogen_name.items():
             if pathogen_name in pathogens_medication_available_names:
-                rank_operation("deploy_medication", pathogen_name, city_name, op_score=deploy_medication_weight * (
+                rank_operation("deploy_medication", pathogen_name, city_name, op_score=round(deploy_medication_weight*(
                         cities_pathogen_score[city_name] +
                         cities_scores[city_name] +
                         cities_outbreak_scores[city_name] +
                         cities_count_flight_connections[city_name] +
                         pathogens_scores[pathogen_name] +
-                        pathogens_count_infected_cities[pathogen_name]))
+                        pathogens_count_infected_cities[pathogen_name]), 5))
 
         # sort ranking
         ranking = dict(sorted(ranking.items(), key=lambda item: item[1], reverse=True))
@@ -320,7 +320,6 @@ class Final(AbstractStrategy):
 
         # iterate over ranked operations to determine action
         for operation, score in ranking.items():
-            # print("took", operation, "with", score, "points")
             op_name, *op_rest = operation
 
             # check if need to save for required action
@@ -329,6 +328,7 @@ class Final(AbstractStrategy):
                 return operations.end_round()
             # check if operation can be afforded
             if op_name in possible_operations_names:
+                # print("took", operation, "with", score, "points")
                 return operations.get(op_name, *op_rest)
             else:
                 continue
