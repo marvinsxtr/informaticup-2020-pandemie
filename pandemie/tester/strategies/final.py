@@ -63,7 +63,7 @@ class Final(AbstractStrategy):
 
         def score(symbols):
             """
-            This functions translates the pathogen values into numerical values
+            This functions translates the pathogen or city values into numerical values
             :param symbols: str: score string for a parameter
             :return: related number
             """
@@ -82,22 +82,25 @@ class Final(AbstractStrategy):
         # used to convert a scale of scores (24 - 4 = 20 where 4 is the minimum points and 20 maximum)
         highest_rating = 24
 
+        # average rating used for ranking
+        avg_rating = 50
+
         """
         lists or dicts generated in pre-processing in order of generation
         """
         possible_operations_names = []
 
         pathogens = []
-        pathogens_names = []
-
-        cities = []
-        cities_names = []
+        pathogen_names = []
 
         pathogens_medication_available = []
         pathogens_medication_available_names = []
 
         pathogens_medication_in_development = []
         pathogens_medication_in_development_names = []
+
+        cities = []
+        cities_names = []
 
         cities_pathogen = {}
         cities_pathogen_name = {}
@@ -125,7 +128,7 @@ class Final(AbstractStrategy):
         for round_global_event in round_global_events:
             if round_global_event["type"] == "pathogenEncountered":
                 pathogens.append(round_global_event["pathogen"])
-                pathogens_names.append(round_global_event["pathogen"]["name"])
+                pathogen_names.append(round_global_event["pathogen"]["name"])
 
             if round_global_event["type"] == "medicationAvailable":
                 pathogens_medication_available.append(round_global_event["pathogen"])
@@ -157,7 +160,7 @@ class Final(AbstractStrategy):
                         cities_pathogen_name[city_name] = city_event["pathogen"]["name"]
 
         # count how many cities are affected by each pathogen
-        for pathogen_name in pathogens_names:
+        for pathogen_name in pathogen_names:
             affected_cities = 0
             for city_name in cities_names:
                 if city_name in cities_pathogen_name:
@@ -211,25 +214,75 @@ class Final(AbstractStrategy):
                         outbreak_score = round((1 + city_event["prevalence"]) *
                                                (round_number - city_event["sinceRound"] +
                                                 pathogens_scores[city_event["pathogen"]["name"]] +
-                                                pathogens_count_infected_cities[city_event["pathogen"]["name"]]), 2)
+                                                pathogens_count_infected_cities[city_event["pathogen"]["name"]]), 4)
                         cities_outbreak_scores[city_name] = outbreak_score
 
         """
         rank the operations based on collected data
         """
-        # put cities most at risk under quarantine
+        # add up scores to get avg for put_under_quarantaine
+        put_under_quarantine_overall_scores = []
         for city_name in cities_names:
-            rank_operation("put_under_quarantaine", city_name, 3, op_score=put_under_quarantine_weight * (
+            put_under_quarantine_overall_scores.append(
                     cities_pathogen_score[city_name] +
                     cities_scores[city_name] +
                     cities_outbreak_scores[city_name] +
-                    cities_count_flight_connections[city_name]))
+                    cities_count_flight_connections[city_name])
+        put_under_quarantine_overall_scores_avg = sum(put_under_quarantine_overall_scores) / len(
+            put_under_quarantine_overall_scores)
+
+        # calculate weight
+        if put_under_quarantine_overall_scores_avg != 0:
+            put_under_quarantine_weight *= round(avg_rating / put_under_quarantine_overall_scores_avg, 4)
+
+        # put cities most at risk under quarantine
+        for city_name in cities_names:
+            rank_operation("put_under_quarantaine", city_name, 3, op_score=put_under_quarantine_weight * round(
+                    cities_pathogen_score[city_name] +
+                    cities_scores[city_name] +
+                    cities_outbreak_scores[city_name] +
+                    cities_count_flight_connections[city_name], 4))
+
+        # add up scores to get avg for develop_medication
+        develop_medication_overall_scores = []
+        for pathogen_name in pathogen_names:
+            develop_medication_overall_scores.append(
+                pathogens_scores[pathogen_name] +
+                pathogens_count_infected_cities[pathogen_name])
+        develop_medication_overall_scores_avg = sum(develop_medication_overall_scores) / len(
+            develop_medication_overall_scores)
+
+        # calculate weight
+        if develop_medication_overall_scores_avg != 0:
+            develop_medication_weight *= round(avg_rating / develop_medication_overall_scores_avg, 4)
 
         # develop medication for most dangerous pathogens
-        for pathogen_name in pathogens_names:
-            rank_operation("develop_medication", pathogen_name, op_score=develop_medication_weight * (
+        for pathogen_name in pathogen_names:
+            if pathogen_name not in pathogens_medication_available_names and pathogen_name not in \
+                    pathogens_medication_in_development_names:
+                rank_operation("develop_medication", pathogen_name, op_score=develop_medication_weight * (
+                        pathogens_scores[pathogen_name] +
+                        pathogens_count_infected_cities[pathogen_name]))
+
+        # add up scores to get avg for deploy_medication
+        deploy_medication_overall_scores = []
+        for city_name, pathogen_name in cities_pathogen_name.items():
+            if pathogen_name in pathogens_medication_available_names:
+                deploy_medication_overall_scores.append(
+                    cities_pathogen_score[city_name] +
+                    cities_scores[city_name] +
+                    cities_outbreak_scores[city_name] +
+                    cities_count_flight_connections[city_name] +
                     pathogens_scores[pathogen_name] +
-                    pathogens_count_infected_cities[pathogen_name]))
+                    pathogens_count_infected_cities[pathogen_name])
+        deploy_medication_overall_scores_avg = 0
+        if len(deploy_medication_overall_scores) != 0:
+            deploy_medication_overall_scores_avg = sum(deploy_medication_overall_scores) / len(
+                deploy_medication_overall_scores)
+
+        # calculate weight
+        if deploy_medication_overall_scores_avg != 0:
+            deploy_medication_weight *= round(avg_rating / deploy_medication_overall_scores_avg, 4)
 
         # deploy medication in cities at most risk
         for city_name, pathogen_name in cities_pathogen_name.items():
@@ -251,7 +304,7 @@ class Final(AbstractStrategy):
             print(possible_operations_names)
             print(pathogens_medication_in_development_names)
             print(pathogens_medication_available_names)
-            print(pathogens_names)
+            print(pathogen_names)
             print(cities_pathogen_name)
             print(pathogens_count_infected_cities)
             print(pathogens_scores)
