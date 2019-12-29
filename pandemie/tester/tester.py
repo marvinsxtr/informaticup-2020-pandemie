@@ -18,6 +18,7 @@ TIME_FORMAT = "%Y-%m-%d--%H.%M.%S"
 
 MAX_THREADS = 500
 
+
 def to_camel_case(name):
     return name.title().replace("_", "")
 
@@ -74,9 +75,9 @@ class Tester:
         os.chdir("../../test")
 
         # starting all threads
-        for i, t in enumerate(threads):
+        for i, thread in enumerate(threads):
             self._thread_seed()
-            t.start()
+            thread.start()
             sys.stdout.write("\r \rStarted %d / %d threads" % (i+1, thread_count))
             sys.stdout.flush()
         sys.stdout.write("\n")
@@ -85,10 +86,10 @@ class Tester:
         os.chdir(cwd)
 
         # waiting for threads and the server to be finished
-        for i, t in enumerate(threads):
+        for i, thread in enumerate(threads):
             sys.stdout.write("\r \rWaiting for threads to finish: %d / %d" % (i, thread_count))
             sys.stdout.flush()
-            t.join()
+            thread.join()
         sys.stdout.write("\n")
 
         results = self.strategy.get_result()
@@ -97,17 +98,13 @@ class Tester:
         server.stop()
 
         weighted_sum = 0
-        i = 1
-        for r in results:
+        for i, r in enumerate(results):
+            print("Game {0}: {1} after {2} rounds and score: {3:4f}".format(i + 1, r[0], r[1], self.win_weight(r[1])))
+            weighted_sum += self.win_weight(r[1])
+
             if r[0] == "win":
-                weighted_sum += self.win_weight(r[1])
-                print("Game ", i, " :", r[0], " after ", r[1], " rounds and score: ", self.win_weight(r[1]))
-                i += 1
                 self.amount_wins += 1
             elif r[0] == "loss":
-                weighted_sum += self.loss_weight(r[1])
-                print("Game ", i, " :", r[0], " after ", r[1], " rounds and score: -", self.win_weight(r[1]))
-                i += 1
                 self.amount_loss += 1
             else:
                 raise ValueError("Unknown result type {0}".format(r[0]))
@@ -174,7 +171,8 @@ if __name__ == "__main__":
                 # prevent to much threads on machine
                 if count > MAX_THREADS:
                     count = MAX_THREADS
-                    print("The amount of threads is limited to %d. The number of threads got reduced" % MAX_THREADS)
+                    print("The amount of threads is limited to {0}. The number of threads got reduced".format(
+                        MAX_THREADS))
                 break
     else:
         count = 1
@@ -188,9 +186,11 @@ if __name__ == "__main__":
     result = my_tester.evaluate(thread_count=count)
 
     # print stats
-    print(" Total games:", my_tester.amount_runs, "\n",
-          "Total games won:", my_tester.amount_wins, "\n",
-          "Total games loss:", my_tester.amount_loss, "\n",
-          "Win rate:", str((my_tester.amount_wins / my_tester.amount_runs) * 100),
-          "%")
-    print(" Total score: ", result)
+    percentage = (my_tester.amount_wins / my_tester.amount_runs) * 100
+    print("\nTotal games: {0}\nTotal games won: {1}\nTotal games loss: {2}\nWin rate: {3}%".format(
+        my_tester.amount_runs,
+        my_tester.amount_wins,
+        my_tester.amount_loss,
+        percentage))
+
+    print("Total score: ", result)
