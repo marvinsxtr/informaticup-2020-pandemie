@@ -4,7 +4,6 @@ import os
 import random
 import subprocess
 import sys
-import time
 import threading
 from pandemie.tester import AbstractStrategy
 from pandemie.web import WebServer
@@ -15,10 +14,15 @@ LOSS_RATE_HALVED = 25
 EVALUATION_SLOPE = 0.1
 
 DEVNULL = subprocess.DEVNULL
+TIME_FORMAT = "%Y-%m-%d--%H.%M.%S"
 
 
 def to_camel_case(name):
     return name.title().replace("_", "")
+
+
+def now():
+    return str(datetime.datetime.today().strftime(TIME_FORMAT))
 
 
 class Tester:
@@ -34,7 +38,7 @@ class Tester:
                 os.makedirs(strategy_dir)
 
             # Create the name for the log file and pass it to the strategy
-            test_strategy.set_file("{0}-{1}.dat".format(test_strategy.name, self.now()))
+            test_strategy.set_file("{0}-{1}.dat".format(test_strategy.name, now()))
 
         self.strategy = test_strategy
         self.seed = 0
@@ -42,7 +46,6 @@ class Tester:
         self.amount_wins = 0
         self.amount_loss = 0
         self.amount_runs = 0
-
 
     def _start_tester(self):
         if os.name == "nt":
@@ -121,10 +124,6 @@ class Tester:
     @staticmethod
     def loss_weight(rounds):
         return Tester.win_weight(rounds, k=-EVALUATION_SLOPE) - 1
-
-    @staticmethod
-    def now():
-        return str(datetime.datetime.today().strftime('%Y-%m-%d--%H.%M.%S'))
 
     @staticmethod
     def new_seed():
