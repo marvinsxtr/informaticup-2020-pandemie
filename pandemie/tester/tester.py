@@ -20,11 +20,21 @@ MAX_THREADS = 500
 
 
 def to_camel_case(name):
+    """
+    Converts a name into its camel case equivalent.
+    Example `to_camel_case` -> `ToCamelCase`
+    :param name: string to be converted
+    :return: camel case name
+    """
     return name.title().replace("_", "")
 
 
 def now():
-    return str(datetime.datetime.today().strftime(TIME_FORMAT))
+    """
+    Returns the current time.
+    :return: current time
+    """
+    return datetime.datetime.today().strftime(TIME_FORMAT)
 
 
 class Tester:
@@ -50,6 +60,10 @@ class Tester:
         self.amount_runs = 0
 
     def _start_tester(self):
+        """
+        Starts the ica test tool as a subprocess.
+        :return: None
+        """
         if os.name == "nt":
             subprocess.call("ic20_windows.exe --random-seed {0}".format(self.seed), stdout=DEVNULL, stderr=DEVNULL,
                             shell=True)
@@ -58,6 +72,10 @@ class Tester:
                             shell=True)
 
     def _thread_seed(self):
+        """
+        Sets the next seed either as a random one or increments the old one by 1.
+        :return: None
+        """
         if self.random_seed:
             self.seed = self.new_seed()
         else:
@@ -117,14 +135,29 @@ class Tester:
 
     @staticmethod
     def win_weight(rounds, k=EVALUATION_SLOPE):
+        """
+        Calculates the win score using a sigmoid curve.
+        :param rounds: amount of rounds
+        :param k: parameter alter the slope of the sigmoid curve
+        :return: score
+        """
         return math.exp(k*(-rounds + WIN_RATE_HALVED)) / (1 + math.exp(k*(-rounds + WIN_RATE_HALVED)))
 
     @staticmethod
     def loss_weight(rounds):
+        """
+        Calculates the loss score using a sigmoid curve. This is the win weight with an inverse slope minus one.
+        :param rounds: amount of rounds
+        :return: score
+        """
         return Tester.win_weight(rounds, k=-EVALUATION_SLOPE) - 1
 
     @staticmethod
     def new_seed():
+        """
+        Generates a new random seed.
+        :return: random integer between 1 and 100000000000
+        """
         return random.randint(1, 100000000000)
 
 
