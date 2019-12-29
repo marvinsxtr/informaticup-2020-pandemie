@@ -38,6 +38,10 @@ def now():
 
 
 class Tester:
+    """
+    The Tester. It evaluates a strategy by testing it multiple time with the ica test tool. Then it calculates an
+    average score by converting each round into a float score.
+    """
     def __init__(self, test_strategy, random_seed=True):
         if not isinstance(test_strategy, AbstractStrategy):
             raise ValueError("Strategy is not valid.")
@@ -82,6 +86,11 @@ class Tester:
             self.seed = self.seed + 1
 
     def evaluate(self, thread_count=10):
+        """
+        Evaluates the current strategy. For each game a new thread is started.
+        :param thread_count: number of threads to be started
+        :return: the average score
+        """
         self.amount_runs = thread_count
 
         threads = [threading.Thread(target=self._start_tester,) for _ in range(thread_count)]
