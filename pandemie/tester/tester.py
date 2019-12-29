@@ -16,6 +16,7 @@ EVALUATION_SLOPE = 0.1
 DEVNULL = subprocess.DEVNULL
 TIME_FORMAT = "%Y-%m-%d--%H.%M.%S"
 
+MAX_THREADS = 500
 
 def to_camel_case(name):
     return name.title().replace("_", "")
@@ -137,16 +138,23 @@ if __name__ == "__main__":
     if not strategy_name:
         strategy_name = "final"
 
-    # checking stratagie file is avaliable
-    try:
-        f = open("strategies/"+strategy_name+".py")
+    strategy = None
 
-    except IOError:
-        print("Stratagie name not valid")
+    try:
+        strategy_mod = __import__("pandemie.tester.strategies." + strategy_name, fromlist=to_camel_case(strategy_name))
+        strategy = getattr(strategy_mod, to_camel_case(strategy_name))
+
+    except ModuleNotFoundError:
+        print("StrategyModule {0} not found! Exiting...".format(strategy_name))
+        exit()
+
+    except AttributeError:
+        print("Strategy not found! Make sure it has the same name as the file. Exiting...")
         exit()
 
     do_output = input("Should a log be created? (y/n, default=n):\t").lower()
     do_output = do_output.startswith("y") or do_output.startswith("j")
+
     visualize = input("Do you want the data of one round to be saved for visualization? (y/n, default=n):\t")
     visualize = visualize.startswith("y") or visualize.startswith("j")
 
@@ -164,9 +172,9 @@ if __name__ == "__main__":
             else:
                 count = int(count)
                 # prevent to much threads on machine
-                if count > 500:
-                    count = 500
-                    print("The amount of threads is limited to 500. The amount of threads was set to 500.")
+                if count > MAX_THREADS:
+                    count = MAX_THREADS
+                    print("The amount of threads is limited to %d. The number of threads got reduced" % MAX_THREADS)
                 break
     else:
         count = 1
@@ -174,22 +182,12 @@ if __name__ == "__main__":
     rand_seed = input("Do you want a random seed? (y/n, default=y):\t").lower()
     rand_seed = rand_seed.startswith("y") or rand_seed.startswith("j") or rand_seed == ""
 
-    strategy = ""
-
-    try:
-        strategy_mod = __import__("pandemie.tester.strategies." + strategy_name, fromlist=to_camel_case(strategy_name))
-        strategy = getattr(strategy_mod, to_camel_case(strategy_name))
-
-    except ModuleNotFoundError:
-        print("StrategyModule {0} not found! Exiting...".format(strategy_name))
-        exit()
-
-    except AttributeError:
-        print("Strategy not found! Make sure it has the same name as the file. Exiting...")
-        exit()
-
     my_tester = Tester(strategy(silent=not do_output, visualize=visualize), random_seed=rand_seed)
+
+    # execute tester
     result = my_tester.evaluate(thread_count=count)
+
+    # print stats
     print(" Total games:", my_tester.amount_runs, "\n",
           "Total games won:", my_tester.amount_wins, "\n",
           "Total games loss:", my_tester.amount_loss, "\n",
