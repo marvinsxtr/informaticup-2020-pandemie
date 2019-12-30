@@ -150,6 +150,20 @@ sind:
 ### Eigene Strategien entwickeln
 (Marvin)
 #### Event-Checker als Daten-Analyse-Tool
+Das Modul `event_checker.py` dient dem Sammeln von allgemeinen Daten, die zum erstellen einer guten Strategie essentiell 
+sind. Dabei filtert das Modul die gesamten rohdaten einer Runde und überprüft diese auf bisher unbekannte Viren- und 
+Event-Typen.
+##### Einbinden des Event-Checkers
+Das manuelle einbinden des Moduls ist nicht notwendig. Das Modul wird bereits in `strategy.py` eingebunden und ist somit 
+standardmäßig in jeder Strategie beinhaltet und kann nicht ohne Änderungen an `strategy.py` deaktiviert oder entfernt 
+werden.
+##### Die gesammelten Daten
+Die bekannten Viren- und Eventnamen werden in der Datei `pandemie/tester/data/pathogen_names.dat` bzw.
+`pandemie/tester/data/event_names.dat` gespeichert.
+
+Zusätzlich zu den Namen werden für jedes Pathogen und jedes Event auch ein Beispiel für die Eigenschaften gespeichert. 
+Die Daten werden dann in `pandemie/tester/data/pathogen_data.dat` bzw. `pandemie/tester/data/event_data.dat` 
+gespeichert.
 ## Wissenschaftlicher Hintergrund
 ## Erklaerung des Programmcodes
 ## API
