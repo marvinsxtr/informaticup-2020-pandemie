@@ -99,12 +99,13 @@ class Tester:
         weighted_sum = 0
         for i, r in enumerate(results):
             print("Game {0}: {1} after {2} rounds and score: {3:4f}".format(i + 1, r[0], r[1], self.win_weight(r[1])))
-            weighted_sum += self.win_weight(r[1])
 
             if r[0] == "win":
                 self.amount_wins += 1
+                weighted_sum += self.win_weight(r[1])
             elif r[0] == "loss":
                 self.amount_loss += 1
+                weighted_sum += self.loss_weight(r[1])
             else:
                 raise ValueError("Unknown result type {0}".format(r[0]))
 
