@@ -9,8 +9,12 @@ from pandemie.util import block_print, enable_print, to_camel_case
 
 
 # TODO: add pydoc
-def weighted_final_strategy(put_under_quarantine_weight, develop_medication_weight, deploy_medication_weight):
-    weights = (put_under_quarantine_weight, develop_medication_weight, deploy_medication_weight)
+def weighted_final_strategy(put_under_quarantine_weight, develop_medication_weight, deploy_medication_weight,
+                            close_airport_weight):
+    weights = (put_under_quarantine_weight,
+               develop_medication_weight,
+               deploy_medication_weight,
+               close_airport_weight)
 
     name = "final"
     _module = __import__("pandemie.tester.strategies." + name, fromlist=to_camel_case(name))
