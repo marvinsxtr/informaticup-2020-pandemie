@@ -1,4 +1,3 @@
-import datetime
 import math
 import os
 import random
@@ -6,12 +5,9 @@ import subprocess
 import sys
 import threading
 
-from bayes_opt import BayesianOptimization, JSONLogger
-from bayes_opt.event import Events
-
-from pandemie.tester import AbstractStrategy
+from pandemie.tester import AbstractStrategy, bayesian_optimization
 from pandemie.web import WebServer
-from pandemie.util import block_print, enable_print
+from pandemie.util import to_camel_case, now
 
 # consts used to shift the sigmoid curve
 WIN_RATE_HALVED = 25
@@ -19,64 +15,8 @@ LOSS_RATE_HALVED = 25
 EVALUATION_SLOPE = 0.1
 
 DEVNULL = subprocess.DEVNULL
-TIME_FORMAT = "%Y-%m-%d--%H.%M.%S"
 
 MAX_THREADS = 500
-
-
-def to_camel_case(name):
-    """
-    Converts a name into its camel case equivalent.
-    Example `to_camel_case` -> `ToCamelCase`
-    :param name: string to be converted
-    :return: camel case name
-    """
-    return name.title().replace("_", "")
-
-
-def now():
-    """
-    Returns the current time.
-    :return: current time
-    """
-    return datetime.datetime.today().strftime(TIME_FORMAT)
-
-
-def weighted_final_strategy(put_under_quarantine_weight, develop_medication_weight, deploy_medication_weight):
-    weights = (put_under_quarantine_weight, develop_medication_weight, deploy_medication_weight)
-
-    name = "final"
-    module = __import__("pandemie.tester.strategies." + name, fromlist=to_camel_case(name))
-    final_strategy = getattr(module, to_camel_case(name))
-
-    block_print()
-    tester = Tester(final_strategy(silent=True, visualize=False, weights=weights), random_seed=False)
-    score = tester.evaluate(thread_count=50)
-    enable_print()
-
-    win_rate = (tester.amount_wins / tester.amount_runs)
-    return score + win_rate
-
-
-def bayesian_optimization():
-    # Bounded region of parameter space
-    pbounds = {'put_under_quarantine_weight': (0.2, 1.8),
-               'develop_medication_weight': (0.2, 1.8),
-               'deploy_medication_weight': (0.2, 1.8)}
-
-    optimizer = BayesianOptimization(
-        f=weighted_final_strategy,
-        pbounds=pbounds,
-        random_state=1,
-    )
-
-    logger = JSONLogger(path="./logs/bayes_logs.json")
-    optimizer.subscribe(Events.OPTMIZATION_STEP, logger)
-
-    optimizer.maximize(
-        init_points=5,
-        n_iter=50,
-    )
 
 
 class Tester:
