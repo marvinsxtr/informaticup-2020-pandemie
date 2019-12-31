@@ -214,4 +214,4 @@ dmypy.json
 /pandemie/express/node_modules/express/*
 /pandemie/tester/tmp/
 /pandemie/tester/tmp/*
-/pandemie/tester/logs/bayes_logs.json
+/pandemie/tester/logs/
