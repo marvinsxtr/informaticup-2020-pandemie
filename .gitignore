@@ -212,6 +212,5 @@ dmypy.json
 # Additional
 /pandemie/express/node_modules/*
 /pandemie/express/node_modules/express/*
-/pandemie/tester/tmp/
 /pandemie/tester/tmp/*
-/pandemie/tester/logs/
+/pandemie/tester/logs/*
