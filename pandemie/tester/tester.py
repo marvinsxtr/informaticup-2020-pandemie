@@ -5,10 +5,13 @@ import random
 import subprocess
 import sys
 import threading
-from pandemie.tester import AbstractStrategy
-from pandemie.web import WebServer
+
 from bayes_opt import BayesianOptimization, JSONLogger
 from bayes_opt.event import Events
+
+from pandemie.tester import AbstractStrategy
+from pandemie.web import WebServer
+from pandemie.util import block_print, enable_print
 
 # consts used to shift the sigmoid curve
 WIN_RATE_HALVED = 25
@@ -37,14 +40,6 @@ def now():
     :return: current time
     """
     return datetime.datetime.today().strftime(TIME_FORMAT)
-
-
-def block_print():
-    sys.stdout = open(os.devnull, 'w')
-
-
-def enable_print():
-    sys.stdout = sys.__stdout__
 
 
 def weighted_final_strategy(put_under_quarantine_weight, develop_medication_weight, deploy_medication_weight):
