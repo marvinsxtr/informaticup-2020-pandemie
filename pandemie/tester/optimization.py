@@ -17,7 +17,7 @@ def weighted_final_strategy(put_under_quarantine_weight, develop_medication_weig
     final_strategy = getattr(_module, to_camel_case(name))
 
     block_print()
-    tester = Tester(final_strategy(silent=True, visualize=False, weights=weights), random_seed=False)
+    tester = tst.Tester(final_strategy(silent=True, visualize=False, weights=weights))
     score = tester.evaluate(thread_count=20)
     enable_print()
 
