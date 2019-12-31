@@ -10,8 +10,9 @@ from pandemie.util.encoding import filter_unicode
 
 
 class AbstractStrategy(ABC):
-    def __init__(self, silent=False, visualize=False):
+    def __init__(self, silent=False, visualize=False, weights=None):
         super().__init__()
+        self.weights = weights
         self.result = []
         self.file = ""
         self.silent = silent  # If False -> Output result and pathogens of each round into a file
@@ -86,10 +87,10 @@ class AbstractStrategy(ABC):
             if not self.silent:
                 self.log_result(json_data)  # log cumulative results
 
-        return self._solve(json_data, server)
+        return self._solve(json_data, server, self.weights)
 
     @abstractmethod
-    def _solve(self, json_data, server):
+    def _solve(self, json_data, server, weights):
         pass
 
     def get_result(self):

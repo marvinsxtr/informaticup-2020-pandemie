@@ -8,4 +8,5 @@ Flask==1.1.1
 Flask-Compress==1.4.0
 gevent==1.4.0
 plotly==4.4.1
+bayesian-optimization==1.0.1
 

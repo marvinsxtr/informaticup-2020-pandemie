@@ -7,6 +7,8 @@ import sys
 import threading
 from pandemie.tester import AbstractStrategy
 from pandemie.web import WebServer
+from bayes_opt import BayesianOptimization, JSONLogger
+from bayes_opt.event import Events
 
 # consts used to shift the sigmoid curve
 WIN_RATE_HALVED = 25
@@ -37,6 +39,51 @@ def now():
     return datetime.datetime.today().strftime(TIME_FORMAT)
 
 
+def block_print():
+    sys.stdout = open(os.devnull, 'w')
+
+
+def enable_print():
+    sys.stdout = sys.__stdout__
+
+
+def weighted_final_strategy(put_under_quarantine_weight, develop_medication_weight, deploy_medication_weight):
+    weights = (put_under_quarantine_weight, develop_medication_weight, deploy_medication_weight)
+
+    name = "final"
+    module = __import__("pandemie.tester.strategies." + name, fromlist=to_camel_case(name))
+    final_strategy = getattr(module, to_camel_case(name))
+
+    block_print()
+    tester = Tester(final_strategy(silent=True, visualize=False, weights=weights), random_seed=False)
+    score = tester.evaluate(thread_count=50)
+    enable_print()
+
+    win_rate = (tester.amount_wins / tester.amount_runs)
+    return score + win_rate
+
+
+def bayesian_optimization():
+    # Bounded region of parameter space
+    pbounds = {'put_under_quarantine_weight': (0.2, 1.8),
+               'develop_medication_weight': (0.2, 1.8),
+               'deploy_medication_weight': (0.2, 1.8)}
+
+    optimizer = BayesianOptimization(
+        f=weighted_final_strategy,
+        pbounds=pbounds,
+        random_state=1,
+    )
+
+    logger = JSONLogger(path="./logs/bayes_logs.json")
+    optimizer.subscribe(Events.OPTMIZATION_STEP, logger)
+
+    optimizer.maximize(
+        init_points=5,
+        n_iter=50,
+    )
+
+
 class Tester:
     """
     The Tester. It evaluates a strategy by testing it multiple time with the ica test tool. Then it calculates an
@@ -57,7 +104,7 @@ class Tester:
             test_strategy.set_file("{0}-{1}.dat".format(test_strategy.name, now()))
 
         self.strategy = test_strategy
-        self.seed = 0
+        self.seed = 1
         self.random_seed = random_seed
         self.amount_wins = 0
         self.amount_loss = 0
@@ -171,6 +218,13 @@ class Tester:
 
 
 if __name__ == "__main__":
+    optimize_strategy = input("Do you want to optimize the final strategy? (y/n, default=n):\t").lower()
+    optimize_strategy = optimize_strategy.startswith("y") or optimize_strategy.startswith("j")
+
+    if optimize_strategy:
+        bayesian_optimization()
+        exit()
+
     strategy_name = input("Enter the full name of the strategy you want to test (no .py) (default=final):\t")
 
     # set default strategy

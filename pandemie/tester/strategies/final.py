@@ -3,7 +3,6 @@ This is the strategy our team continuously improves to compete in the InformatiC
 each possible operation and thereby picking the best choice.
 
 Observations:
-- sometimes more efficient to put uninfected cities under quarantine
 - a city can only be affected by one pathogen at a time
 """
 
@@ -12,10 +11,10 @@ from pandemie import operations
 
 
 class Final(AbstractStrategy):
-    def __init__(self, silent=False, visualize=False):
-        super().__init__(silent=silent, visualize=visualize)
+    def __init__(self, silent=False, visualize=False, weights=None):
+        super().__init__(silent=silent, visualize=visualize, weights=weights)
 
-    def _solve(self, json_data, server):
+    def _solve(self, json_data, server, weights):
         # check if an error has occurred
         if "error" in json_data:
             print(json_data["error"])
@@ -31,21 +30,25 @@ class Final(AbstractStrategy):
         # assigns each tuple of an operation a score
         ranking = {}
 
-        # these are the weights/multipliers applied to each possible operation
-        end_round_weight = 1  # ends the current round
-        put_under_quarantine_weight = 1.05  # completely prevent spreading of pathogen
-        close_airport_weight = 1  # shut down connections from and to a city
-        close_connection_weight = 1  # shut down one connection
+        # unpack weights
+        if weights:
+            put_under_quarantine_weight, develop_medication_weight, deploy_medication_weight = weights
+        else:
+            # these are the weights/multipliers applied to each possible operation
+            end_round_weight = 1  # ends the current round
+            put_under_quarantine_weight = 1.8  # completely prevent spreading of pathogen
+            close_airport_weight = 1  # shut down connections from and to a city
+            close_connection_weight = 1  # shut down one connection
 
-        develop_vaccine_weight = 1  # after 6 rounds a vaccine is ready
-        deploy_vaccine_weight = 1  # deploy vaccine to specific city
-        develop_medication_weight = 1.2  # after 3 rounds a medication is available
-        deploy_medication_weight = 1.1  # deploy medication to specific city
+            develop_vaccine_weight = 1  # after 6 rounds a vaccine is ready
+            deploy_vaccine_weight = 1  # deploy vaccine to specific city
+            develop_medication_weight = 1.0794714419292164  # after 3 rounds a medication is available
+            deploy_medication_weight = 0.2  # deploy medication to specific city
 
-        exert_influence_weight = 1  # corresponds to economy city stat
-        call_elections_weight = 1  # corresponds to government city stat
-        apply_hygienic_measures_weight = 1  # corresponds to hygiene city stat
-        launch_campaign_weight = 1  # corresponds to awareness city stat
+            exert_influence_weight = 1  # corresponds to economy city stat
+            call_elections_weight = 1  # corresponds to government city stat
+            apply_hygienic_measures_weight = 1  # corresponds to hygiene city stat
+            launch_campaign_weight = 1  # corresponds to awareness city stat
 
         def rank_operation(*op_tuple, op_score):
             """
