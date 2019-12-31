@@ -30,25 +30,25 @@ class Final(AbstractStrategy):
         # assigns each tuple of an operation a score
         ranking = {}
 
-        # unpack weights
+        # these are the weights/multipliers applied to each possible operation
+        end_round_weight = 1  # ends the current round
+        put_under_quarantine_weight = 1  # completely prevent spreading of pathogen
+        close_airport_weight = 1  # shut down connections from and to a city
+        close_connection_weight = 1  # shut down one connection
+
+        develop_vaccine_weight = 1  # after 6 rounds a vaccine is ready
+        deploy_vaccine_weight = 1  # deploy vaccine to specific city
+        develop_medication_weight = 1  # after 3 rounds a medication is available
+        deploy_medication_weight = 0  # deploy medication to specific city
+
+        exert_influence_weight = 1  # corresponds to economy city stat
+        call_elections_weight = 1  # corresponds to government city stat
+        apply_hygienic_measures_weight = 1  # corresponds to hygiene city stat
+        launch_campaign_weight = 1  # corresponds to awareness city stat
+
+        # unpack weights if they are given
         if weights:
             put_under_quarantine_weight, develop_medication_weight, deploy_medication_weight = weights
-        else:
-            # these are the weights/multipliers applied to each possible operation
-            end_round_weight = 1  # ends the current round
-            put_under_quarantine_weight = 1.8  # completely prevent spreading of pathogen
-            close_airport_weight = 1  # shut down connections from and to a city
-            close_connection_weight = 1  # shut down one connection
-
-            develop_vaccine_weight = 1  # after 6 rounds a vaccine is ready
-            deploy_vaccine_weight = 1  # deploy vaccine to specific city
-            develop_medication_weight = 1.0794714419292164  # after 3 rounds a medication is available
-            deploy_medication_weight = 0.2  # deploy medication to specific city
-
-            exert_influence_weight = 1  # corresponds to economy city stat
-            call_elections_weight = 1  # corresponds to government city stat
-            apply_hygienic_measures_weight = 1  # corresponds to hygiene city stat
-            launch_campaign_weight = 1  # corresponds to awareness city stat
 
         def rank_operation(*op_tuple, op_score):
             """
@@ -94,7 +94,7 @@ class Final(AbstractStrategy):
         possible_operations_names = []
 
         pathogens = []
-        pathogen_names = []
+        pathogens_names = []
 
         pathogens_medication_available = []
         pathogens_medication_available_names = []
@@ -117,7 +117,14 @@ class Final(AbstractStrategy):
 
         cities_count_flight_connections = {}
 
+        cities_outbreak_names = []
         cities_outbreak_scores = {}
+
+        cities_connected_cities_names = {}
+        cities_combined_connected_cities_scores = {}
+        cities_combined_connected_cities_difference = {}
+
+        cities_airport_closed_names = []
 
         """
         pre-processing (for each list higher means more risk and 0 means none at all!)
@@ -131,7 +138,7 @@ class Final(AbstractStrategy):
         for round_global_event in round_global_events:
             if round_global_event["type"] == "pathogenEncountered":
                 pathogens.append(round_global_event["pathogen"])
-                pathogen_names.append(round_global_event["pathogen"]["name"])
+                pathogens_names.append(round_global_event["pathogen"]["name"])
 
             if round_global_event["type"] == "medicationAvailable":
                 pathogens_medication_available.append(round_global_event["pathogen"])
@@ -163,7 +170,7 @@ class Final(AbstractStrategy):
                         cities_pathogen_name[city_name] = city_event["pathogen"]["name"]
 
         # count how many cities are affected by each pathogen
-        for pathogen_name in pathogen_names:
+        for pathogen_name in pathogens_names:
             affected_cities = 0
             for city_name in cities_names:
                 if city_name in cities_pathogen_name:
@@ -213,12 +220,48 @@ class Final(AbstractStrategy):
             if "events" in city_stats:
                 for city_event in city_stats["events"]:
                     if city_event["type"] == "outbreak":
+                        cities_outbreak_names.append(city_name)
                         # this score is acquired by combining prevalence, duration and pathogen strength
                         outbreak_score = round((1 + city_event["prevalence"]) *
                                                (round_number - city_event["sinceRound"] +
                                                 pathogens_scores[city_event["pathogen"]["name"]] +
                                                 pathogens_count_infected_cities[city_event["pathogen"]["name"]]), 4)
                         cities_outbreak_scores[city_name] = outbreak_score
+
+        # associate connected cities to a city
+        for city_name, city_stats in cities.items():
+            if "connections" in city_stats:
+                cities_connected_cities_names[city_name] = city_stats["connections"]
+
+        # combine score of connected cities
+        for city_name in cities_names:
+            combined_score = 0
+            for connected_city_name in cities_connected_cities_names[city_name]:
+                combined_score += cities_scores[connected_city_name]
+            cities_combined_connected_cities_scores[city_name] = combined_score
+
+        # sort higher to lower
+        cities_combined_connected_cities_scores = dict(sorted(cities_combined_connected_cities_scores.items(),
+                                                              key=lambda item: item[1], reverse=True))
+
+        # calculate difference of city score to its connected cities scores
+        for city_name, combined_score in cities_combined_connected_cities_scores.items():
+            difference = 0
+            if combined_score != 0:
+                difference = round(abs(cities_scores[city_name] - combined_score / len(
+                    cities_connected_cities_names[city_name])), 5)
+            cities_combined_connected_cities_difference[city_name] = difference
+
+        # sort higher to lower
+        cities_combined_connected_cities_difference = dict(sorted(cities_combined_connected_cities_difference.items(),
+                                                                  key=lambda item: item[1], reverse=True))
+
+        # make a list of closed airport cities
+        for city_name, city_stats in cities.items():
+            if "events" in city_stats:
+                for event in city_stats["events"]:
+                    if event["type"] == "airportClosed":
+                        cities_airport_closed_names.append(city_name)
 
         """
         rank the operations based on collected data (for each operation, the following steps are taken:)
@@ -251,7 +294,7 @@ class Final(AbstractStrategy):
 
         # add up scores to get avg for develop_medication
         develop_medication_overall_scores = []
-        for pathogen_name in pathogen_names:
+        for pathogen_name in pathogens_names:
             develop_medication_overall_scores.append(
                 pathogens_scores[pathogen_name] +
                 pathogens_count_infected_cities[pathogen_name])
@@ -263,7 +306,7 @@ class Final(AbstractStrategy):
             develop_medication_weight *= round(avg_rating / develop_medication_overall_scores_avg, 5)
 
         # develop medication for most dangerous pathogens
-        for pathogen_name in pathogen_names:
+        for pathogen_name in pathogens_names:
             if pathogen_name not in pathogens_medication_available_names and pathogen_name not in \
                     pathogens_medication_in_development_names:
                 rank_operation("develop_medication", pathogen_name, op_score=round(develop_medication_weight * (
@@ -301,6 +344,30 @@ class Final(AbstractStrategy):
                         pathogens_scores[pathogen_name] +
                         pathogens_count_infected_cities[pathogen_name]), 5))
 
+        # add up scores to get avg for close_airport
+        close_airport_overall_scores = []
+        for city_name in cities_names:
+            if city_name not in cities_airport_closed_names:
+                close_airport_overall_scores.append(
+                    cities_combined_connected_cities_difference[city_name] +
+                    cities_combined_connected_cities_scores[city_name])
+        close_airport_overall_scores_avg = sum(close_airport_overall_scores) / len(
+                close_airport_overall_scores)
+
+        # calculate weight
+        if close_airport_overall_scores_avg != 0:
+            close_airport_weight *= round(avg_rating / close_airport_overall_scores_avg, 5)
+
+        # close airports with most difference in risk compared to connected cities
+        for city_name in cities_names:
+            if city_name not in cities_airport_closed_names:
+                max_rounds = int((round_points - operations.PRICES["close_airport"]["initial"]) / operations.PRICES[
+                    "close_airport"]["each"])
+                if max_rounds >= 1:
+                    rank_operation("close_airport", city_name, max_rounds, op_score=round(close_airport_weight * (
+                        cities_combined_connected_cities_difference[city_name] +
+                        cities_combined_connected_cities_scores[city_name]), 5))
+
         # sort ranking
         ranking = dict(sorted(ranking.items(), key=lambda item: item[1], reverse=True))
 
@@ -310,7 +377,7 @@ class Final(AbstractStrategy):
             print(possible_operations_names)
             print(pathogens_medication_in_development_names)
             print(pathogens_medication_available_names)
-            print(pathogen_names)
+            print(pathogens_names)
             print(cities_pathogen_name)
             print(pathogens_count_infected_cities)
             print(pathogens_scores)

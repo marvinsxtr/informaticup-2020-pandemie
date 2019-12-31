@@ -24,3 +24,6 @@ medicationDeployed	, local
 
 bioTerrorism	, local
 {'type': 'bioTerrorism', 'round': 6, 'pathogen': {'name': 'N5-10', 'infectivity': '+', 'mobility': '++', 'duration': 'o', 'lethality': '+'}}
+
+airportClosed	, local
+{'type': 'airportClosed', 'sinceRound': 2, 'untilRound': 5}
