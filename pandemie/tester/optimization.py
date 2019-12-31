@@ -1,8 +1,9 @@
 from bayes_opt import BayesianOptimization, JSONLogger
 from bayes_opt.event import Events
 
+import pandemie.tester as tst  # we cannot use import from due to circular imports
+
 from pandemie.util import block_print, enable_print, to_camel_case
-from pandemie.tester import Tester
 
 
 # TODO: add pydoc
@@ -14,7 +15,7 @@ def weighted_final_strategy(put_under_quarantine_weight, develop_medication_weig
     final_strategy = getattr(_module, to_camel_case(name))
 
     block_print()
-    tester = Tester(final_strategy(silent=True, visualize=False, weights=weights), random_seed=False)
+    tester = tst.Tester(final_strategy(silent=True, visualize=False, weights=weights), random_seed=False)
     score = tester.evaluate(thread_count=50)
     enable_print()
 

@@ -5,7 +5,9 @@ import subprocess
 import sys
 import threading
 
-from pandemie.tester import AbstractStrategy, bayesian_optimization
+import pandemie.tester.optimization as optimization  # we cannot use import from due to circular imports
+
+from pandemie.tester import AbstractStrategy
 from pandemie.web import WebServer
 from pandemie.util import to_camel_case, now
 
@@ -24,7 +26,7 @@ class Tester:
     The Tester. It evaluates a strategy by testing it multiple time with the ica test tool. Then it calculates an
     average score by converting each round into a float score.
     """
-    def __init__(self, test_strategy, random_seed=True):
+    def __init__(self, test_strategy, seed=0):
         if not isinstance(test_strategy, AbstractStrategy):
             raise ValueError("Strategy is not valid.")
 
@@ -39,8 +41,7 @@ class Tester:
             test_strategy.set_file("{0}-{1}.dat".format(test_strategy.name, now()))
 
         self.strategy = test_strategy
-        self.seed = 1
-        self.random_seed = random_seed
+        self.seed = seed
         self.amount_wins = 0
         self.amount_loss = 0
         self.amount_runs = 0
@@ -56,16 +57,6 @@ class Tester:
         else:
             subprocess.call(["./ic20_linux", "--random-seed " + str(self.seed)], stdout=DEVNULL, stderr=DEVNULL,
                             shell=True)
-
-    def _thread_seed(self):
-        """
-        Sets the next seed either as a random one or increments the old one by 1.
-        :return: None
-        """
-        if self.random_seed:
-            self.seed = self.new_seed()
-        else:
-            self.seed = self.seed + 1
 
     def evaluate(self, thread_count=10):
         """
@@ -85,7 +76,6 @@ class Tester:
 
         # starting all threads
         for i, thread in enumerate(threads):
-            self._thread_seed()
             thread.start()
             sys.stdout.write("\r \rStarted %d / %d threads" % (i+1, thread_count))
             sys.stdout.flush()
@@ -157,7 +147,7 @@ if __name__ == "__main__":
     optimize_strategy = optimize_strategy.startswith("y") or optimize_strategy.startswith("j")
 
     if optimize_strategy:
-        bayesian_optimization()
+        optimization.bayesian_optimization()
         exit()
 
     strategy_name = input("Enter the full name of the strategy you want to test (no .py) (default=final):\t")
@@ -211,7 +201,23 @@ if __name__ == "__main__":
     rand_seed = input("Do you want a random seed? (y/n, default=y):\t").lower()
     rand_seed = rand_seed.startswith("y") or rand_seed.startswith("j") or rand_seed == ""
 
-    my_tester = Tester(strategy(silent=not do_output, visualize=visualize), random_seed=rand_seed)
+    user_seed = 0
+    # get seed
+    if not rand_seed:
+        while True:
+            user_seed = input("Enter a seed:\t")
+
+            if not user_seed:
+                continue
+
+            elif not user_seed.isdigit():
+                print("You need to enter a valid round number!")
+
+            else:
+                user_seed = int(user_seed)
+                break
+
+    my_tester = Tester(strategy(silent=not do_output, visualize=visualize), seed=user_seed)
 
     # execute tester
     result = my_tester.evaluate(thread_count=count)
