@@ -32,14 +32,14 @@ class Final(AbstractStrategy):
 
         # these are the weights/multipliers applied to each possible operation
         end_round_weight = 1  # ends the current round
-        put_under_quarantine_weight = 1  # completely prevent spreading of pathogen
-        close_airport_weight = 1  # shut down connections from and to a city
+        put_under_quarantine_weight = 0.8  # completely prevent spreading of pathogen
+        close_airport_weight = 0.8  # shut down connections from and to a city
         close_connection_weight = 1  # shut down one connection
 
         develop_vaccine_weight = 1  # after 6 rounds a vaccine is ready
         deploy_vaccine_weight = 1  # deploy vaccine to specific city
-        develop_medication_weight = 1  # after 3 rounds a medication is available
-        deploy_medication_weight = 0  # deploy medication to specific city
+        develop_medication_weight = 1.0489695419909937  # after 3 rounds a medication is available
+        deploy_medication_weight = 1.0204341548464462  # deploy medication to specific city
 
         exert_influence_weight = 1  # corresponds to economy city stat
         call_elections_weight = 1  # corresponds to government city stat
@@ -48,7 +48,8 @@ class Final(AbstractStrategy):
 
         # unpack weights if they are given
         if weights:
-            put_under_quarantine_weight, develop_medication_weight, deploy_medication_weight = weights
+            put_under_quarantine_weight, develop_medication_weight, deploy_medication_weight, close_airport_weight = \
+                weights
 
         def rank_operation(*op_tuple, op_score):
             """
