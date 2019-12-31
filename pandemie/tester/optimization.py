@@ -44,7 +44,7 @@ def bayesian_optimization():
         random_state=1,
     )
 
-    number_of_logs = os.listdir("./logs")
+    number_of_logs = len(os.listdir("./logs"))
     logger = JSONLogger(path="./logs/bayes_log_{0}.json".format(number_of_logs))
     optimizer.subscribe(Events.OPTMIZATION_STEP, logger)
 
