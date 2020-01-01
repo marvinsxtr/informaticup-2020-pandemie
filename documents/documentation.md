@@ -4,7 +4,7 @@
 * [Einleitung](documentation.md#einleitung)
 * [Grundlagen](documentation.md#grundlagen)
 * [Installation](documentation.md#installation)
-* [Schnellstart](documentation.md#schenllstart)
+* [Schnellstart](documentation.md#schnellstart)
 * [Wie benutze ich das Programm](documentation.md#wie-benutze-ich-das-programm)
 * [Wissenschaftlicher Hintergrund](documentation.md#wissenschaftlicher-hintergrund)
 * [Erklärung des Programmcodes](documentation.md#erklaerung-des-programmcodes)
@@ -58,7 +58,7 @@ Mit dem Aufruf eines Befehls ist das automatische Installieren möglich.
 pip3.8 install -r requirements.txt
 ```
 
-### Schenllstart
+### Schnellstart
 (Alex)
 Um den Tester für das `ic20_linux` Programm auszuführen, kann auf dem Projektordner folgender Befehl aufgerufen werden.
 ```bash
