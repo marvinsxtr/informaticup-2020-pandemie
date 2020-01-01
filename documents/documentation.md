@@ -6,6 +6,7 @@
 * [Installation](documentation.md#installation)
 * [Schnellstart](documentation.md#schenllstart)
 * [Wie benutze ich das Programm](documentation.md#wie-benutze-ich-das-programm)
+* [Lösungsstrategien](documentation.md#lsungsstrategien)
 * [Wissenschaftlicher Hintergrund](documentation.md#wissenschaftlicher-hintergrund)
 * [Erklärung des Programmcodes](documentation.md#erklaerung-des-programmcodes)
 * [API](documentation.md#api)
@@ -147,14 +148,6 @@ sind:
  * Für jedes Spiel wird ein zufälliger Seed generiert
  
  Somit muss lediglich angegeben werden, welche Strategie ausgeführt werden soll.
-### Eigene Strategien entwickeln
-(Marvin)
-Alle Strategien erben von der Klasse `AbstractStrategy` und implementieren die Methode `_solve()`. Diese ist das
-Herzstück jeder Strategie, da in ihr abhängig von dem aktuellen Spielstand im JSON-Format über die Antwort und damit die
-Güte der Strategie entschieden wird. Um die Umsetzung einer eigenen Strategie zu erleichtern, existiert das Modul 
-`operations.py`, welches alle möglichen Operationen im vorgegebenen JSON-Format und deren Preise beinhaltet. Zudem kann
-eine Operation auch mit einem Tupel angegeben werden. Dies kann zum Beispiel nützlich sein, um wie in unserer 
-Teamstrategie bestimmte Operationen zu ranken und auf Basis einer Sortierung eine Auswahl zu treffen.
 #### Event-Checker als Daten-Analyse-Tool
 Das Modul `event_checker.py` dient dem Sammeln von allgemeinen Daten, die zum Erstellen einer guten Strategie essenziell 
 sind. Dabei filtert das Modul die gesamten Rohdaten einer Runde und überprüft diese auf bisher unbekannte Pathogen- und 
@@ -166,10 +159,36 @@ werden.
 ##### Die gesammelten Daten
 Die bekannten Pathogen- und Eventnamen werden in der Datei `pandemie/tester/data/pathogen_names.dat` bzw.
 `pandemie/tester/data/event_names.dat` gespeichert.
-
 Zusätzlich zu den Namen werden für jedes Pathogen und jedes Event auch ein Beispiel für die Eigenschaften gespeichert. 
 Die Daten werden dann in `pandemie/tester/data/pathogen_data.dat` bzw. `pandemie/tester/data/event_data.dat` 
 gespeichert.
+## Lösungsstrategien
+(Marvin)
+Eine Strategie bezeichnet in unserem Kontext eine Implementierung, um auf den aktuellen Spielstand zustandslos zu 
+antworten.
+### Unsere Strategie
+Unsere Teamstrategie kann in `final.py` gefunden werden. Im Folgenden bezeichnen "Maßnahmen" eine mögliche Aktion zur 
+Veränderung des Spielstandes (bspw.: put_under_quarantine) und "Operationen" konkret angewandte Maßnahmen im Spiel
+(bspw. ("put_under_quarantine", city, pathogen)). Die Strategie besteht grundlegend aus drei Phasen: Preprocessing, 
+Ranking nach Operation und Ranking nach Maßname. Im ersten Schritt wird der Spielzustand analysiert und neu in Listen 
+bzw. Dicts abgespeichert. Zum Beispiel werden den Städten und Pathogenen einige neue Parameter zugeordnet und nach
+diesen sortiert. Im nächsten Schritt wird innerhalb einer Maßnahme die beste Operation gesucht. Dies führt am Ende dazu,
+dass für jede Maßnahme eine Operation als beste Option auserkoren wird. Im letzten Schritt werden die Operationen in die
+abschließende Reihenfolge gebracht, an deren erster Stelle die Operation steht, die ausgeführt wird. Kann die Operation
+aufgrund mangelnder Punkte nicht ausgeführt werden, muss die Runde beendet werden.
+#### Beobachtungen bei der Entwicklung
+Bei der Entwicklung unserer Teamstrategie haben wir einige Beobachtungen gemacht, die es erleichtern, eigene Strategien
+zu entwickeln. Diese werden im folgenden aufgeführt:
+ * Jede Stadt kann nur von einem Pathogen gleichzeitig befallen werden
+ * Die Punkte für eine Operation werden für die angegebene Rundenzahl im Voraus bezahlt
+### Eigene Strategien entwickeln
+(Marvin)
+Alle Strategien erben von der Klasse `AbstractStrategy` und implementieren die Methode `_solve()`. Diese ist das
+Herzstück jeder Strategie, da in ihr abhängig von dem aktuellen Spielstand im JSON-Format über die Antwort und damit die
+Güte der Strategie entschieden wird. Um die Umsetzung einer eigenen Strategie zu erleichtern, existiert das Modul 
+`operations.py`, welches alle möglichen Operationen im vorgegebenen JSON-Format und deren Preise beinhaltet. Zudem kann
+eine Operation auch mit einem Tupel angegeben werden. Dies kann zum Beispiel nützlich sein, um wie in unserer 
+Teamstrategie bestimmte Operationen zu ranken und auf Basis einer Sortierung eine Auswahl zu treffen.
 ## Wissenschaftlicher Hintergrund
 ## Erklaerung des Programmcodes
 ## API
