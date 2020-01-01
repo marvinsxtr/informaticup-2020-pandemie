@@ -4,6 +4,8 @@ each possible operation and thereby picking the best choice.
 
 Observations:
 - a city can only be affected by one pathogen at a time
+- it might be sufficient to sort by operation and afterwards sort the 12 best possibilities
+- points for an operation are pre-paid for the required round duration
 """
 
 from pandemie.tester import AbstractStrategy

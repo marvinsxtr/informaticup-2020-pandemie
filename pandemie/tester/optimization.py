@@ -8,9 +8,16 @@ import pandemie.tester as tst  # we cannot use import from due to circular impor
 from pandemie.util import block_print, enable_print, to_camel_case
 
 
-# TODO: add pydoc
 def weighted_final_strategy(put_under_quarantine_weight, develop_medication_weight, deploy_medication_weight,
                             close_airport_weight):
+    """
+    This function executes the final strategy with the given weights for optimization purposes
+    :param put_under_quarantine_weight:
+    :param develop_medication_weight:
+    :param deploy_medication_weight:
+    :param close_airport_weight:
+    :return:
+    """
     weights = (put_under_quarantine_weight,
                develop_medication_weight,
                deploy_medication_weight,
@@ -26,10 +33,14 @@ def weighted_final_strategy(put_under_quarantine_weight, develop_medication_weig
     enable_print()
 
     win_rate = (tester.amount_wins / tester.amount_runs)
-    return win_rate  # add score when usable
+    return win_rate + score
 
 
 def bayesian_optimization():
+    """
+    This function uses a bayesian blackbox optimization to improve the final strategy
+    :return: Best parameters and score obtained
+    """
     # Bounded region of parameter space
     minimum = 0.8
     maximum = 1.2
@@ -52,3 +63,6 @@ def bayesian_optimization():
         init_points=5,
         n_iter=100,
     )
+
+    print(optimizer.max)
+    return optimizer.max
