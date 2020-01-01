@@ -41,3 +41,17 @@ def now():
     :return: current time
     """
     return datetime.datetime.today().strftime(TIME_FORMAT)
+
+
+def map_symbol_score(symbol):
+    """
+    This functions translates the pathogen or city values into numerical values
+    :param symbol: str: score string for a parameter
+    :return: related number
+    """
+    mapping = "--", "-", "o", "+", "++"
+
+    if symbol not in mapping:
+        raise ValueError("Cannot map invalid symbol", symbol)
+
+    return mapping.index(symbol) + 1

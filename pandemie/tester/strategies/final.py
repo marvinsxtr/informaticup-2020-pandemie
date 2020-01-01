@@ -17,6 +17,8 @@ class Final(AbstractStrategy):
         super().__init__(silent=silent, visualize=visualize, weights=weights)
 
     def _solve(self, json_data):
+        from pandemie.util import map_symbol_score as score
+
         # check if an error has occurred
         if "error" in json_data:
             print(json_data["error"])
@@ -66,24 +68,6 @@ class Final(AbstractStrategy):
                 ranking[op_tuple] = op_score
             else:
                 ranking[op_tuple] += op_score
-
-        def score(symbols):
-            """
-            This functions translates the pathogen or city values into numerical values
-            :param symbols: str: score string for a parameter
-            :return: related number
-            """
-            if symbols == "--":
-                return 1
-            if symbols == "-":
-                return 2
-            if symbols == "o":
-                return 3
-            if symbols == "+":
-                return 4
-            if symbols == "++":
-                return 5
-            print("Wrong symbols")
 
         def max_rounds(identifier):
             """
