@@ -18,20 +18,26 @@ def weighted_final_strategy(put_under_quarantine_weight, develop_medication_weig
     :param close_airport_weight:
     :return:
     """
-    weights = (put_under_quarantine_weight,
-               develop_medication_weight,
-               deploy_medication_weight,
-               close_airport_weight)
+    # put weights in a dict
+    weights = {
+        "put_under_quarantine": put_under_quarantine_weight,
+        "close_airport": close_airport_weight,
+        "develop_medication": develop_medication_weight,
+        "deploy_medication": deploy_medication_weight,
+    }
 
+    # get final strategy
     name = "final"
     _module = __import__("pandemie.tester.strategies." + name, fromlist=to_camel_case(name))
     final_strategy = getattr(_module, to_camel_case(name))
 
+    # run strategy
     block_print()
     tester = tst.Tester(final_strategy(silent=True, visualize=False, weights=weights))
     score = tester.evaluate(thread_count=20)
     enable_print()
 
+    # calculate win rate
     win_rate = (tester.amount_wins / tester.amount_runs)
     return win_rate + score
 

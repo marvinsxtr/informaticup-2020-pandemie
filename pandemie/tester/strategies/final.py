@@ -7,6 +7,7 @@ Observations:
 - it might be sufficient to sort by operation and afterwards sort the 12 best possibilities
 - points for an operation are pre-paid for the required round duration
 """
+import numbers
 
 from pandemie.tester import AbstractStrategy
 from pandemie import operations
@@ -31,29 +32,80 @@ class Final(AbstractStrategy):
         round_number = json_data["round"]
         round_outcome = json_data["outcome"]
 
-        # assigns each tuple of an operation a score
-        ranking = {}
+        # assigns a score to each tuple of the best operation for a measure
+        measure_ranking = {}
 
-        # these are the weights/multipliers applied to each possible operation
-        end_round_weight = 1  # ends the current round
-        put_under_quarantine_weight = 0.8  # completely prevent spreading of pathogen
-        close_airport_weight = 0.8  # shut down connections from and to a city
-        close_connection_weight = 1  # shut down one connection
+        # these are the weights applied to the measure ranking which are in {1, ... ,12}
+        measure_weights = {
+            "end_round": 1,  # ends the current round
+            "put_under_quarantine": 1,  # completely prevent spreading of pathogen
+            "close_airport": 1,  # shut down connections from and to a city
+            "close_connection": 1,  # shut down one connection
 
-        develop_vaccine_weight = 1  # after 6 rounds a vaccine is ready
-        deploy_vaccine_weight = 1  # deploy vaccine to specific city
-        develop_medication_weight = 1.0489695419909937  # after 3 rounds a medication is available
-        deploy_medication_weight = 1.0204341548464462  # deploy medication to specific city
+            "develop_vaccine": 1,  # after 6 rounds a vaccine is ready
+            "deploy_vaccine": 1,  # deploy vaccine to specific city
+            "develop_medication": 1,  # after 3 rounds a medication is available
+            "deploy_medication": 1,  # deploy medication to specific city
 
-        exert_influence_weight = 1  # corresponds to economy city stat
-        call_elections_weight = 1  # corresponds to government city stat
-        apply_hygienic_measures_weight = 1  # corresponds to hygiene city stat
-        launch_campaign_weight = 1  # corresponds to awareness city stat
+            "exert_influence": 1,  # corresponds to economy city stat
+            "call_elections": 1,  # corresponds to government city stat
+            "apply_hygienic_measures": 1,  # corresponds to hygiene city stat
+            "launch_campaign": 1,  # corresponds to awareness city stat
+        }
 
-        # unpack weights if they are given
+        # change weights if they are given
         if self.weights:
-            put_under_quarantine_weight, develop_medication_weight, deploy_medication_weight, close_airport_weight = \
-                self.weights
+            measure_weights = self.weights
+
+        # this dict contains the rankings for concrete operations by measure
+        operation_rankings = {
+            "end_round": {},
+            "put_under_quarantine": {},
+            "close_airport": {},
+            "close_connection": {},
+
+            "develop_vaccine": {},
+            "deploy_vaccine": {},
+            "develop_medication": {},
+            "deploy_medication": {},
+
+            "exert_influence": {},
+            "call_elections": {},
+            "apply_hygienic_measures": {},
+            "launch_campaign": {},
+        }
+
+        def get_best_operation():
+            """
+            This returns the best operation which will be the return value of the solve function
+            :return: operation tuple
+            """
+            # get best operation for each measure
+            for operation_name, operation_ranking in operation_rankings:
+                best_operation_for_measure = max(operation_ranking, key=lambda key: operation_ranking[key])
+                measure_ranking[best_operation_for_measure] = measure_weights[operation_name]
+
+            # todo: add some criteria for measure ranking as this will always give operation with max weight
+            # get best overall operation (out of all measures)
+            best_operation = max(measure_ranking, key=lambda key: measure_ranking[key])
+
+            # calculate price and check if operation is possible
+            rounds = 0
+            for param in best_operation:
+                if isinstance(param, numbers.Number):
+                    rounds = param
+
+            name, *_ = best_operation
+            if rounds == 0:
+                price = operations.PRICES[name]["initial"]
+            else:
+                price = rounds * operations.PRICES[name]["each"] + operations.PRICES[name]["initial"]
+
+            # check if operation is affordable
+            if price <= round_points:
+                return best_operation
+            else:
+                return operations.end_round()
 
         def rank_operation(*op_tuple, op_score):
             """
@@ -62,16 +114,21 @@ class Final(AbstractStrategy):
             :param op_score: score assigned to tuple
             :return:
             """
+
+            # get the ranking corresponding to measure type
+            name, *_ = op_tuple
+            operation_ranking = operation_rankings[name]
+
             if op_score == 0:
                 return
-            if op_tuple not in ranking:
-                ranking[op_tuple] = op_score
+            if op_tuple not in operation_ranking:
+                operation_ranking[op_tuple] = op_score
             else:
-                ranking[op_tuple] += op_score
+                operation_ranking[op_tuple] += op_score
 
-        def max_rounds(identifier):
+        def affordable_rounds(identifier):
             """
-            This function calculates the maximum duration in rounds which an operation can last with the current points
+            This function calculates the maximal number of rounds affordable for an operation
             :param identifier: operation name
             :return: max duration in rounds
             """
@@ -260,84 +317,33 @@ class Final(AbstractStrategy):
                         cities_airport_closed_names.append(city_name)
 
         """
-        rank the operations based on collected data (for each operation, the following steps are taken:)
-            - make score comparable to other operations
-            - adjust weight
-            - rank operations
+        rank the operations for each measure based on collected data
         """
-        # add up scores to get avg for put_under_quarantaine
-        put_under_quarantine_overall_scores = []
-        for city_name in cities_names:
-            put_under_quarantine_overall_scores.append(
-                    cities_pathogen_score[city_name] +
-                    cities_scores[city_name] +
-                    cities_outbreak_scores[city_name] +
-                    cities_count_flight_connections[city_name])
-        put_under_quarantine_overall_scores_avg = sum(put_under_quarantine_overall_scores) / len(
-            put_under_quarantine_overall_scores)
-
-        # calculate weight
-        if put_under_quarantine_overall_scores_avg != 0:
-            put_under_quarantine_weight *= round(avg_rating / put_under_quarantine_overall_scores_avg, 5)
-
         # put cities most at risk under quarantine
         for city_name in cities_names:
-            maximum = max_rounds("put_under_quarantine")
+            maximum = affordable_rounds("put_under_quarantine")
             if maximum >= 1:
-                rank_operation("put_under_quarantaine", city_name, maximum, op_score=round(
-                    put_under_quarantine_weight * (
+                rank_operation("put_under_quarantine", city_name, maximum, op_score=round(
+                    measure_weights["put_under_quarantine"] * (
                         cities_pathogen_score[city_name] +
                         cities_scores[city_name] +
                         cities_outbreak_scores[city_name] +
                         cities_count_flight_connections[city_name]), 5))
-
-        # add up scores to get avg for develop_medication
-        develop_medication_overall_scores = []
-        for pathogen_name in pathogens_names:
-            develop_medication_overall_scores.append(
-                pathogens_scores[pathogen_name] +
-                pathogens_count_infected_cities[pathogen_name])
-        develop_medication_overall_scores_avg = sum(develop_medication_overall_scores) / len(
-            develop_medication_overall_scores)
-
-        # calculate weight
-        if develop_medication_overall_scores_avg != 0:
-            develop_medication_weight *= round(avg_rating / develop_medication_overall_scores_avg, 5)
 
         # develop medication for most dangerous pathogens
         for pathogen_name in pathogens_names:
             if pathogen_name not in pathogens_medication_available_names and pathogen_name not in \
                     pathogens_medication_in_development_names:
                 rank_operation("develop_medication", pathogen_name, op_score=round(
-                    develop_medication_weight * (
+                    measure_weights["develop_medication"] * (
                         pathogens_scores[pathogen_name] +
                         pathogens_count_infected_cities[pathogen_name]), 5))
-
-        # add up scores to get avg for deploy_medication
-        deploy_medication_overall_scores = []
-        for city_name, pathogen_name in cities_pathogen_name.items():
-            if pathogen_name in pathogens_medication_available_names:
-                deploy_medication_overall_scores.append(
-                    cities_pathogen_score[city_name] +
-                    cities_scores[city_name] +
-                    cities_outbreak_scores[city_name] +
-                    cities_count_flight_connections[city_name] +
-                    pathogens_scores[pathogen_name] +
-                    pathogens_count_infected_cities[pathogen_name])
-        deploy_medication_overall_scores_avg = 0
-        if len(deploy_medication_overall_scores) != 0:
-            deploy_medication_overall_scores_avg = sum(deploy_medication_overall_scores) / len(
-                deploy_medication_overall_scores)
-
-        # calculate weight
-        if deploy_medication_overall_scores_avg != 0:
-            deploy_medication_weight *= round(avg_rating / deploy_medication_overall_scores_avg, 5)
 
         # deploy medication in cities at most risk
         for city_name, pathogen_name in cities_pathogen_name.items():
             if pathogen_name in pathogens_medication_available_names:
                 rank_operation("deploy_medication", pathogen_name, city_name, op_score=round(
-                    deploy_medication_weight*(
+                    measure_weights["deploy_medication"] * (
                         cities_pathogen_score[city_name] +
                         cities_scores[city_name] +
                         cities_outbreak_scores[city_name] +
@@ -345,62 +351,15 @@ class Final(AbstractStrategy):
                         pathogens_scores[pathogen_name] +
                         pathogens_count_infected_cities[pathogen_name]), 5))
 
-        # add up scores to get avg for close_airport
-        close_airport_overall_scores = []
-        for city_name in cities_names:
-            if city_name not in cities_airport_closed_names:
-                close_airport_overall_scores.append(
-                    cities_combined_connected_cities_difference[city_name] +
-                    cities_combined_connected_cities_scores[city_name])
-        close_airport_overall_scores_avg = sum(close_airport_overall_scores) / len(
-                close_airport_overall_scores)
-
-        # calculate weight
-        if close_airport_overall_scores_avg != 0:
-            close_airport_weight *= round(avg_rating / close_airport_overall_scores_avg, 5)
-
         # close airports with most difference in risk compared to connected cities
         for city_name in cities_names:
             if city_name not in cities_airport_closed_names:
-                maximum = max_rounds("close_airport")
+                maximum = affordable_rounds("close_airport")
                 if maximum >= 1:
                     rank_operation("close_airport", city_name, maximum, op_score=round(
-                        close_airport_weight * (
+                        measure_weights["close airport"] * (
                             cities_combined_connected_cities_difference[city_name] +
                             cities_combined_connected_cities_scores[city_name]), 5))
 
-        # sort ranking
-        ranking = dict(sorted(ranking.items(), key=lambda item: item[1], reverse=True))
-
-        # debug output for generated lists
-        print_debug = False
-        if print_debug:
-            print(possible_operations_names)
-            print(pathogens_medication_in_development_names)
-            print(pathogens_medication_available_names)
-            print(pathogens_names)
-            print(cities_pathogen_name)
-            print(pathogens_count_infected_cities)
-            print(pathogens_scores)
-            print(cities_scores)
-            print(cities_pathogen_score)
-            print(cities_count_flight_connections)
-            print(cities_outbreak_scores)
-
-            print(ranking)
-
-        # iterate over ranked operations to determine action
-        for operation, score in ranking.items():
-            op_name, *op_rest = operation
-
-            # check if need to save for required action
-            # todo check if this is a good idea and test other saving methods
-            if op_name not in possible_operations_names:
-                return operations.end_round()
-            # check if operation can be afforded
-            if op_name in possible_operations_names:
-                # print("took", operation, "with", score, "points")
-                return operations.get(op_name, *op_rest)
-            else:
-                continue
-        return operations.end_round()
+        # use collected data to make a decision
+        return get_best_operation()
