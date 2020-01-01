@@ -68,7 +68,7 @@ class AbstractStrategy(ABC):
             outfile.flush()
             os.fsync(outfile.fileno())
 
-    def solve(self, json_data, server):
+    def solve(self, json_data):
 
         # update current data for visualization
         if self.visualize:
@@ -87,10 +87,10 @@ class AbstractStrategy(ABC):
             if not self.silent:
                 self.log_result(json_data)  # log cumulative results
 
-        return self._solve(json_data, server, self.weights)
+        return self._solve(json_data)
 
     @abstractmethod
-    def _solve(self, json_data, server, weights):
+    def _solve(self, json_data):
         pass
 
     def get_result(self):

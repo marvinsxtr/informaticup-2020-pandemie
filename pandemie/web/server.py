@@ -77,7 +77,7 @@ class WebServer(threading.Thread):
                     print("[!] Could not read request body after %d tries!" % max_tries)
                     return ""
 
-                return handler.solve(game, server)
+                return handler.solve(game)
 
             else:
                 print("[!] Received an invalid content type, dropping request")

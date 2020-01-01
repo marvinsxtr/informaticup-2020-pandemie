@@ -14,7 +14,7 @@ class Final(AbstractStrategy):
     def __init__(self, silent=False, visualize=False, weights=None):
         super().__init__(silent=silent, visualize=visualize, weights=weights)
 
-    def _solve(self, json_data, server, weights):
+    def _solve(self, json_data):
         # check if an error has occurred
         if "error" in json_data:
             print(json_data["error"])
@@ -47,9 +47,9 @@ class Final(AbstractStrategy):
         launch_campaign_weight = 1  # corresponds to awareness city stat
 
         # unpack weights if they are given
-        if weights:
+        if self.weights:
             put_under_quarantine_weight, develop_medication_weight, deploy_medication_weight, close_airport_weight = \
-                weights
+                self.weights
 
         def rank_operation(*op_tuple, op_score):
             """
