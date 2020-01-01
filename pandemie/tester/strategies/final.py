@@ -83,6 +83,15 @@ class Final(AbstractStrategy):
                 return 5
             print("Wrong symbols")
 
+        def max_rounds(identifier):
+            """
+            This function calculates the maximum duration in rounds which an operation can last with the current points
+            :param identifier: operation name
+            :return: max duration in rounds
+            """
+            return int((round_points - operations.PRICES[identifier]["initial"]) /
+                       operations.PRICES[identifier]["each"])
+
         # used to convert a scale of scores (24 - 4 = 20 where 4 is the minimum points and 20 maximum)
         highest_rating = 24
 
@@ -287,11 +296,14 @@ class Final(AbstractStrategy):
 
         # put cities most at risk under quarantine
         for city_name in cities_names:
-            rank_operation("put_under_quarantaine", city_name, 3, op_score=round(put_under_quarantine_weight * (
-                    cities_pathogen_score[city_name] +
-                    cities_scores[city_name] +
-                    cities_outbreak_scores[city_name] +
-                    cities_count_flight_connections[city_name]), 5))
+            maximum = max_rounds("put_under_quarantine")
+            if maximum >= 1:
+                rank_operation("put_under_quarantaine", city_name, maximum, op_score=round(
+                    put_under_quarantine_weight * (
+                        cities_pathogen_score[city_name] +
+                        cities_scores[city_name] +
+                        cities_outbreak_scores[city_name] +
+                        cities_count_flight_connections[city_name]), 5))
 
         # add up scores to get avg for develop_medication
         develop_medication_overall_scores = []
@@ -310,7 +322,8 @@ class Final(AbstractStrategy):
         for pathogen_name in pathogens_names:
             if pathogen_name not in pathogens_medication_available_names and pathogen_name not in \
                     pathogens_medication_in_development_names:
-                rank_operation("develop_medication", pathogen_name, op_score=round(develop_medication_weight * (
+                rank_operation("develop_medication", pathogen_name, op_score=round(
+                    develop_medication_weight * (
                         pathogens_scores[pathogen_name] +
                         pathogens_count_infected_cities[pathogen_name]), 5))
 
@@ -337,7 +350,8 @@ class Final(AbstractStrategy):
         # deploy medication in cities at most risk
         for city_name, pathogen_name in cities_pathogen_name.items():
             if pathogen_name in pathogens_medication_available_names:
-                rank_operation("deploy_medication", pathogen_name, city_name, op_score=round(deploy_medication_weight*(
+                rank_operation("deploy_medication", pathogen_name, city_name, op_score=round(
+                    deploy_medication_weight*(
                         cities_pathogen_score[city_name] +
                         cities_scores[city_name] +
                         cities_outbreak_scores[city_name] +
@@ -362,12 +376,12 @@ class Final(AbstractStrategy):
         # close airports with most difference in risk compared to connected cities
         for city_name in cities_names:
             if city_name not in cities_airport_closed_names:
-                max_rounds = int((round_points - operations.PRICES["close_airport"]["initial"]) / operations.PRICES[
-                    "close_airport"]["each"])
-                if max_rounds >= 1:
-                    rank_operation("close_airport", city_name, max_rounds, op_score=round(close_airport_weight * (
-                        cities_combined_connected_cities_difference[city_name] +
-                        cities_combined_connected_cities_scores[city_name]), 5))
+                maximum = max_rounds("close_airport")
+                if maximum >= 1:
+                    rank_operation("close_airport", city_name, maximum, op_score=round(
+                        close_airport_weight * (
+                            cities_combined_connected_cities_difference[city_name] +
+                            cities_combined_connected_cities_scores[city_name]), 5))
 
         # sort ranking
         ranking = dict(sorted(ranking.items(), key=lambda item: item[1], reverse=True))
