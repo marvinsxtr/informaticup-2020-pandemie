@@ -1,16 +1,16 @@
 """
 This file contains everything needed to visualize games or individual rounds using the dash framework with plotly.
 """
+import logging
 import sys
 
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
 import plotly.graph_objects as go
-import logging
-import pandemie.preprocessing as pre
-
 from plotly.graph_objs.layout.geo import Projection
+
+import pandemie.visualization.preprocessing as pre
 
 # displayed lists of graphs/plots
 visualized_rounds = []
