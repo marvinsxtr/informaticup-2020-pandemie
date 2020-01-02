@@ -163,7 +163,8 @@ def visualize_pathogens_in_full_game():
     return html.Span('All pathogens in game: ' + str(pathogens), style={'padding': '5px', 'fontSize': '16px'})
 
 
-if __name__ == "__main__":
+def main():
+    global visualized_game
     print("Started pre-processing")
     pre.preprocess()
 
@@ -179,3 +180,6 @@ if __name__ == "__main__":
 
     print("Running on http://127.0.0.1:8050/...")
     app.run_server(debug=False)
+
+if __name__ == "__main__":
+    main()
