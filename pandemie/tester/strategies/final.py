@@ -11,7 +11,7 @@ import numbers
 
 from pandemie.tester import AbstractStrategy
 from pandemie import operations
-from pandemie.util import normalize
+from pandemie.util import normalize_ranking, merge_ranking
 
 
 class Final(AbstractStrategy):
@@ -83,7 +83,7 @@ class Final(AbstractStrategy):
             """
             # normalize rankings
             for operation_name, operation_ranking in operation_rankings.items():
-                operation_rankings[operation_name] = normalize(operation_ranking)
+                operation_rankings[operation_name] = normalize_ranking(operation_ranking)
                 # print(operation_rankings[operation_name])
 
             # get best operation for each measure
@@ -92,9 +92,17 @@ class Final(AbstractStrategy):
                     best_operation_for_measure = max(operation_ranking, key=lambda key: operation_ranking[key])
                     measure_ranking[best_operation_for_measure] = measure_weights[operation_name]
 
-            # todo: add some criteria for measure ranking as this will always give operation with max weight
+            # print(measure_ranking)
+
+            # merge all rankings
+            overall_ranking = merge_ranking(*operation_rankings.values())
+
+            # sort overall ranking
+            overall_ranking = dict(sorted(overall_ranking.items(), key=lambda item: item[1], reverse=True))
+
             # get best overall operation (out of all measures)
-            best_operation = max(measure_ranking, key=lambda key: measure_ranking[key])
+            # best_operation = max(measure_ranking, key=lambda key: measure_ranking[key])
+            best_operation = max(overall_ranking, key=lambda key: overall_ranking[key])
 
             # calculate price and check if operation is possible
             rounds = 0
