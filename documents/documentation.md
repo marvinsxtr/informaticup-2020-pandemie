@@ -61,9 +61,9 @@ pip3.8 install -r requirements.txt
 
 ### Schnellstart
 (Alex)
-Um den Tester für das `ic20_linux` Programm auszuführen, kann auf dem Projektordner folgender Befehl aufgerufen werden.
+Um den Tester für das `ic20_linux` Programm auszuführen, kann in dem Projektordner folgender Befehl aufgerufen werden.
 ```bash
-python3.8 pandemie/tester/tester.py
+python3.8 -m pandemie.tester
 ```
 Für die schnelle Ausführung des Programms sind bereits Standard-Parameter gesetzt. Diese können per aufgefordeter
 Terminaleingabe auch geändert werden. Dazu mehr in der Sektion 
@@ -79,9 +79,9 @@ Funktionen des Programms erklärt.
 ### Den Tester richtig nutzen
 Zum Testen von Strategien ist das Modul `tester.py` vorgesehen. Hier werden verschiedene Funktionalitäten zum 
 Analysieren und Testen eigener Strategien bereitgestellt. Um eigene Strategien zu testen, muss lediglich das Modul
-`tester.py` ausgeführt werden. <br>
+`tester.py` aus dem Projektordner heraus ausgeführt werden. <br>
 ```bash
-$ python3 tester.py
+python3.8 -m pandemie.tester
 ```
 Im ersten Schritt wird man nun nach dem Namen der zu testenden Strategie gefragt:<br>
 ```
