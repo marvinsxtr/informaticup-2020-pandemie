@@ -54,34 +54,36 @@ class EventChecker:
         :param event: dict: The event to be saved
         :param addition: str: Addition if event is "global" or "local"
         """
-        # Save event locally
-        self.events.append(event["type"])
+        if os.path.exists(self.name_path):
+            # Save event locally
+            self.events.append(event["type"])
 
-        # Update the names file
-        with open(self.name_path, "a") as f:
-            # Remove non-printable characters
-            f.write("\n" + filter_unicode(event["type"]))
+            # Update the names file
+            with open(self.name_path, "a") as f:
+                # Remove non-printable characters
+                f.write("\n" + filter_unicode(event["type"]))
 
-        # Update the data file
-        with open("data/event_data.dat", "a") as f:
-            # Write example of the event to save-file (Remove non-printable characters)
-            f.write("\n\n{0}\t, {1}\n{2}".format(filter_unicode(event["type"]), addition, filter_unicode(event)))
+            # Update the data file
+            with open("data/event_data.dat", "a") as f:
+                # Write example of the event to save-file (Remove non-printable characters)
+                f.write("\n\n{0}\t, {1}\n{2}".format(filter_unicode(event["type"]), addition, filter_unicode(event)))
 
     def save_pathogen(self, pathogen):
         """
         Function to save new discovered pathogens
         :param pathogen: The pathogen to be saved
         """
-        # Save pathogen locally
-        self.pathogens.append(filter_unicode(pathogen["name"]).strip())
+        if os.path.exists(self.pathogen_path):
+            # Save pathogen locally
+            self.pathogens.append(filter_unicode(pathogen["name"]).strip())
 
-        # Update the names file
-        with open(self.pathogen_path, "a") as f:
-            f.write("\n" + filter_unicode(pathogen["name"]).strip())
+            # Update the names file
+            with open(self.pathogen_path, "a") as f:
+                f.write("\n" + filter_unicode(pathogen["name"]).strip())
 
-        # Update the data file
-        with open("data/pathogen_data.dat", "a") as f:
-            f.write(filter_unicode("\n\n{0}\n{1}".format(pathogen["name"], str(pathogen))))
+            # Update the data file
+            with open("data/pathogen_data.dat", "a") as f:
+                f.write(filter_unicode("\n\n{0}\n{1}".format(pathogen["name"], str(pathogen))))
 
     def check_for_pathogen(self, events):
         """
