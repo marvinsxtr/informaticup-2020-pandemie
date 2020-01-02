@@ -27,3 +27,6 @@ bioTerrorism	, local
 
 airportClosed	, local
 {'type': 'airportClosed', 'sinceRound': 2, 'untilRound': 5}
+
+quarantine	, local
+{'type': 'quarantine', 'sinceRound': 1, 'untilRound': 3}

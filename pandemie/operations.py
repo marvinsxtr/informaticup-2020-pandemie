@@ -25,7 +25,7 @@ def end_round():
     return {"type": "endRound"}
 
 
-def put_under_quarantaine(city, rounds):
+def put_under_quarantine(city, rounds):
     return {"type": "putUnderQuarantine", "city": city, "rounds": rounds}
 
 

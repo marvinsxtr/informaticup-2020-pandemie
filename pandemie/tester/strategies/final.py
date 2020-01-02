@@ -81,9 +81,10 @@ class Final(AbstractStrategy):
             :return: operation tuple
             """
             # get best operation for each measure
-            for operation_name, operation_ranking in operation_rankings:
-                best_operation_for_measure = max(operation_ranking, key=lambda key: operation_ranking[key])
-                measure_ranking[best_operation_for_measure] = measure_weights[operation_name]
+            for operation_name, operation_ranking in operation_rankings.items():
+                if len(operation_ranking) > 0:
+                    best_operation_for_measure = max(operation_ranking, key=lambda key: operation_ranking[key])
+                    measure_ranking[best_operation_for_measure] = measure_weights[operation_name]
 
             # todo: add some criteria for measure ranking as this will always give operation with max weight
             # get best overall operation (out of all measures)
@@ -95,7 +96,7 @@ class Final(AbstractStrategy):
                 if isinstance(param, numbers.Number):
                     rounds = param
 
-            name, *_ = best_operation
+            name, *rest = best_operation
             if rounds == 0:
                 price = operations.PRICES[name]["initial"]
             else:
@@ -103,7 +104,7 @@ class Final(AbstractStrategy):
 
             # check if operation is affordable
             if price <= round_points:
-                return best_operation
+                return operations.get(name, *rest)
             else:
                 return operations.end_round()
 
@@ -357,7 +358,7 @@ class Final(AbstractStrategy):
                 maximum = affordable_rounds("close_airport")
                 if maximum >= 1:
                     rank_operation("close_airport", city_name, maximum, op_score=round(
-                        measure_weights["close airport"] * (
+                        measure_weights["close_airport"] * (
                             cities_combined_connected_cities_difference[city_name] +
                             cities_combined_connected_cities_scores[city_name]), 5))
 
