@@ -145,7 +145,11 @@ class Tester:
         return random.randint(1, 100000000000)
 
 
-if __name__ == "__main__":
+def main():
+    """
+    Main program flow
+    :return: None
+    """
     optimize_strategy = input("Do you want to optimize the final strategy? (y/n, default=n):\t").lower()
     optimize_strategy = optimize_strategy.startswith("y") or optimize_strategy.startswith("j")
 
@@ -234,3 +238,8 @@ if __name__ == "__main__":
         percentage))
 
     print("Total score: ", result)
+
+
+# Execute here if we run this python file
+if __name__ == "__main__":
+    main()
