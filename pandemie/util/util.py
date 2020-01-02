@@ -8,15 +8,16 @@ import datetime
 TIME_FORMAT = "%Y-%m-%d--%H.%M.%S"
 
 
-def normalize(ranking, target=1.0):
+def normalize(ranking):
     """
     This function normalizes a ranking
     :param ranking: dict to normalize
-    :param target: the sum of all scores in the resulting dict
     :return: normalized dict
     """
     raw = sum(ranking.values())
-    factor = target / raw
+    if raw == 0:
+        return ranking
+    factor = len(ranking) / raw
     return {key: value * factor for key, value in ranking.items()}
 
 
