@@ -12,9 +12,9 @@ from pandemie.web import WebServer
 from pandemie.util import to_camel_case, now
 
 # consts used to shift the sigmoid curve
-WIN_RATE_HALVED = 25
-LOSS_RATE_HALVED = 25
-EVALUATION_SLOPE = 0.1
+WIN_RATE_HALVED = 75
+LOSS_RATE_HALVED = 75
+EVALUATION_SLOPE = 0.07
 
 DEVNULL = subprocess.DEVNULL
 

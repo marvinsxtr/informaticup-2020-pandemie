@@ -32,4 +32,4 @@ quarantine	, local
 {'type': 'quarantine', 'sinceRound': 1, 'untilRound': 3}
 
 uprising	, local
-{'type': 'uprising', 'sinceRound': 2, 'participants': 39}
+{'type': 'uprising', 'sinceRound': 2, 'participants': 387}
