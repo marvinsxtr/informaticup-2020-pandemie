@@ -4,7 +4,7 @@ import random
 import subprocess
 import sys
 import threading
-
+import getopt
 import pandemie.tester.optimization as optimization  # We cannot use import from due to circular imports
 
 from pandemie.tester import AbstractStrategy
@@ -150,79 +150,86 @@ def main():
     Main program flow
     :return: None
     """
-    optimize_strategy = input("Do you want to optimize the final strategy? (y/n, default=n):\t").lower()
-    optimize_strategy = optimize_strategy.startswith("y") or optimize_strategy.startswith("j")
+    strategy_name = "final"     # default stratagy name
+    do_output = False       # default log value
+    visualize = False       # default value for visualization
+    count = 5       # default value for amounts of threads
+    rand_seed = True       # default value for random seed
+    user_seed = 0       # default user seed, will be overwritten when user uses non random seed 0 = randomness
+    strategy_mod = __import__("pandemie.tester.strategies." + strategy_name,
+                              fromlist=to_camel_case(strategy_name))
+    strategy = getattr(strategy_mod, to_camel_case(strategy_name))
 
-    if optimize_strategy:
-        optimization.bayesian_optimization()
-        exit()
 
-    strategy_name = input("Enter the full name of the strategy you want to test (no .py) (default=final):\t")
+    # read commandline arguments, first
+    fullCmdArguments = sys.argv
 
-    # Set default strategy
-    if not strategy_name:
-        strategy_name = "final"
+    # - further arguments
+    argumentList = fullCmdArguments[1:]
 
-    strategy = None
+    # define allowed cli arguments
+    unixOptions = "hos:lvt:u"
+    gnuOptions = ["help", "optimize", "log", "visualization", "user_seed"]
 
     try:
-        strategy_mod = __import__("pandemie.tester.strategies." + strategy_name, fromlist=to_camel_case(strategy_name))
-        strategy = getattr(strategy_mod, to_camel_case(strategy_name))
+        arguments, values = getopt.getopt(argumentList, unixOptions, gnuOptions)
+    except getopt.error as err:
+        # output error, and return with an error code
+        print(str(err))
+        sys.exit(2)
 
-    except ModuleNotFoundError:
-        print("StrategyModule {0} not found! Exiting...".format(strategy_name))
-        exit()
+    # execute commands to chosen arguments
+    for currentArgument, currentValue in arguments:
+        if currentArgument in ("-h", "--help"):
+            print("-h --help            show the help\n"
+                  "-o --optimize        enable optimization for the final strategy\n"
+                  "-s                   add the full name of the strategy you want to test (no .py) (default=final)\n"
+                  "-l --log             write down log of run\n"
+                  "-v --visualization   save visualization data for one thread\n"
+                  "-t                   how many simulations should be run simultaneously? (default=5)\n"
+                  "-u --user_seed       turns off random seed and requiers user seed via cli input\n")
+            if len(arguments) < 2:
+                exit()
+        elif currentArgument in ("-o", "--optimize"):
+            print("Optimizing final strategy")
+            optimization.bayesian_optimization()
+            exit()
+        elif currentArgument in ("-s"):
+            strategy_name = currentValue
+            try:
+                strategy_mod = __import__("pandemie.tester.strategies." + strategy_name,
+                                          fromlist=to_camel_case(strategy_name))
+                strategy = getattr(strategy_mod, to_camel_case(strategy_name))
 
-    except AttributeError:
-        print("Strategy not found! Make sure it has the same name as the file. Exiting...")
-        exit()
+            except ModuleNotFoundError:
+                print("StrategyModule {0} not found! Exiting...".format(strategy_name))
+                exit()
 
-    do_output = input("Should a log be created? (y/n, default=n):\t").lower()
-    do_output = do_output.startswith("y") or do_output.startswith("j")
-
-    visualize = input("Do you want the data of one round to be saved for visualization? (y/n, default=n):\t")
-    visualize = visualize.startswith("y") or visualize.startswith("j")
-
-    if not visualize:
-        while True:
-            count = input("How many simulations should be run simultaneously? (default=5):\t")
-
-            if not count:
-                count = 5
-                break
-
-            elif not count.isdigit():
+            except AttributeError:
+                print("Strategy not found! Make sure it has the same name as the file. Exiting...")
+                exit()
+        elif currentArgument in ("-l", "--log"):
+            do_output = True
+        elif currentArgument in ("-v", "--visualization"):
+            visualize = True
+        elif currentArgument in ("-t"):
+            if not currentValue.isdigit():
                 print("You need to enter a valid round number!")
+                exit()
+            count = int(currentValue)
+            if count > MAX_THREADS:
+                count = MAX_THREADS
+                print("The amount of threads is limited to {0}. The number of threads got reduced".format(
+                    MAX_THREADS))
+        elif currentArgument in ("-u", "--user_seed"):
+            rand_seed = False
+            user_seed = int(currentValue)
+            if not user_seed.isdigit():
+                print("You need to enter a valid round number!")
+                exit()
 
-            else:
-                count = int(count)
-                # Prevent to much threads on machine
-                if count > MAX_THREADS:
-                    count = MAX_THREADS
-                    print("The amount of threads is limited to {0}. The number of threads got reduced".format(
-                        MAX_THREADS))
-                break
-    else:
+    if visualize:
         count = 1
-
-    rand_seed = input("Do you want a random seed? (y/n, default=y):\t").lower()
-    rand_seed = rand_seed.startswith("y") or rand_seed.startswith("j") or rand_seed == ""
-
-    user_seed = 0
-    # Get seed
-    if not rand_seed:
-        while True:
-            user_seed = input("Enter a seed:\t")
-
-            if not user_seed:
-                continue
-
-            elif not user_seed.isdigit():
-                print("You need to enter a valid round number!")
-
-            else:
-                user_seed = int(user_seed)
-                break
 
     my_tester = Tester(strategy(silent=not do_output, visualize=visualize), seed=user_seed)
 

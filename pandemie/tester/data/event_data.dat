@@ -33,3 +33,6 @@ quarantine	, local
 
 uprising	, local
 {'type': 'uprising', 'sinceRound': 2, 'participants': 387}
+
+hygienicMeasuresApplied	, local
+{'type': 'hygienicMeasuresApplied', 'round': 2}
