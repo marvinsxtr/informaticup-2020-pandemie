@@ -11,6 +11,7 @@ import numbers
 
 from pandemie.tester import AbstractStrategy
 from pandemie import operations
+from pandemie.util import normalize
 
 
 class Final(AbstractStrategy):
@@ -80,6 +81,11 @@ class Final(AbstractStrategy):
             This returns the best operation which will be the return value of the solve function
             :return: operation tuple
             """
+            # normalize rankings
+            for operation_name, operation_ranking in operation_rankings.items():
+                operation_rankings[operation_name] = normalize(operation_ranking)
+                # print(operation_rankings[operation_name])
+
             # get best operation for each measure
             for operation_name, operation_ranking in operation_rankings.items():
                 if len(operation_ranking) > 0:
