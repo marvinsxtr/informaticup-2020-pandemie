@@ -84,15 +84,12 @@ class Final(AbstractStrategy):
             # normalize rankings
             for operation_name, operation_ranking in operation_rankings.items():
                 operation_rankings[operation_name] = normalize_ranking(operation_ranking)
-                # print(operation_rankings[operation_name])
 
             # get best operation for each measure
             for operation_name, operation_ranking in operation_rankings.items():
                 if len(operation_ranking) > 0:
                     best_operation_for_measure = max(operation_ranking, key=lambda key: operation_ranking[key])
                     measure_ranking[best_operation_for_measure] = measure_weights[operation_name]
-
-            # print(measure_ranking)
 
             # merge all rankings
             overall_ranking = merge_ranking(*operation_rankings.values())
@@ -152,9 +149,6 @@ class Final(AbstractStrategy):
 
         # used to convert a scale of scores (24 - 4 = 20 where 4 is the minimum points and 20 maximum)
         highest_rating = 24
-
-        # average rating used for ranking
-        avg_rating = 50
 
         """
         lists or dicts generated in pre-processing in order of generation
