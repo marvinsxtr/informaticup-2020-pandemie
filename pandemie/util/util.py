@@ -8,9 +8,21 @@ import datetime
 TIME_FORMAT = "%Y-%m-%d--%H.%M.%S"
 
 
-def normalize(ranking):
+def merge_ranking(*rankings):
     """
-    This function normalizes a ranking
+    This function merges multiple rankings together
+    :param rankings: rankings to be merged
+    :return: merged ranking
+    """
+    merged_rankings = {}
+    for ranking in rankings:
+        merged_rankings.update(ranking)
+    return merged_rankings
+
+
+def normalize_ranking(ranking):
+    """
+    This function normalizes a ranking to make it comparable to other rankings
     :param ranking: dict to normalize
     :return: normalized dict
     """
