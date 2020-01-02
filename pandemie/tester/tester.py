@@ -5,13 +5,13 @@ import subprocess
 import sys
 import threading
 
-import pandemie.tester.optimization as optimization  # we cannot use import from due to circular imports
+import pandemie.tester.optimization as optimization  # We cannot use import from due to circular imports
 
 from pandemie.tester import AbstractStrategy
 from pandemie.web import WebServer
 from pandemie.util import to_camel_case, now
 
-# consts used to shift the sigmoid curve
+# Consts used to shift the sigmoid curve
 WIN_RATE_HALVED = 75
 LOSS_RATE_HALVED = 75
 EVALUATION_SLOPE = 0.07
@@ -70,21 +70,21 @@ class Tester:
         server = WebServer(self.strategy)
         server.start()
 
-        # store cwd for later usage
+        # Store cwd for later usage
         cwd = os.getcwd()
         os.chdir("../../test")
 
-        # starting all threads
+        # Starting all threads
         for i, thread in enumerate(threads):
             thread.start()
             sys.stdout.write("\r \rStarted %d / %d threads" % (i+1, thread_count))
             sys.stdout.flush()
         sys.stdout.write("\n")
 
-        # restore cwd
+        # Restore cwd
         os.chdir(cwd)
 
-        # waiting for threads and the server to be finished
+        # Waiting for threads and the server to be finished
         for i, thread in enumerate(threads):
             sys.stdout.write("\r \rWaiting for threads to finish: %d / %d" % (i, thread_count))
             sys.stdout.flush()
@@ -159,7 +159,7 @@ def main():
 
     strategy_name = input("Enter the full name of the strategy you want to test (no .py) (default=final):\t")
 
-    # set default strategy
+    # Set default strategy
     if not strategy_name:
         strategy_name = "final"
 
@@ -196,7 +196,7 @@ def main():
 
             else:
                 count = int(count)
-                # prevent to much threads on machine
+                # Prevent to much threads on machine
                 if count > MAX_THREADS:
                     count = MAX_THREADS
                     print("The amount of threads is limited to {0}. The number of threads got reduced".format(
@@ -209,7 +209,7 @@ def main():
     rand_seed = rand_seed.startswith("y") or rand_seed.startswith("j") or rand_seed == ""
 
     user_seed = 0
-    # get seed
+    # Get seed
     if not rand_seed:
         while True:
             user_seed = input("Enter a seed:\t")
@@ -226,10 +226,10 @@ def main():
 
     my_tester = Tester(strategy(silent=not do_output, visualize=visualize), seed=user_seed)
 
-    # execute tester
+    # Execute tester
     result = my_tester.evaluate(thread_count=count)
 
-    # print stats
+    # Print stats
     percentage = (my_tester.amount_wins / my_tester.amount_runs) * 100
     print("\nTotal games: {0}\nTotal games won: {1}\nTotal games loss: {2}\nWin rate: {3}%".format(
         my_tester.amount_runs,

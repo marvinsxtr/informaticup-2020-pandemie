@@ -3,7 +3,7 @@ import os
 from bayes_opt import BayesianOptimization, JSONLogger
 from bayes_opt.event import Events
 
-import pandemie.tester as tst  # we cannot use import from due to circular imports
+import pandemie.tester as tst  # We cannot use import from due to circular imports
 
 from pandemie.util import block_print, enable_print, to_camel_case
 
@@ -18,7 +18,7 @@ def weighted_final_strategy(put_under_quarantine_weight, develop_medication_weig
     :param close_airport_weight:
     :return:
     """
-    # put weights in a dict
+    # Put weights in a dict
     weights = {
         "put_under_quarantine": put_under_quarantine_weight,
         "close_airport": close_airport_weight,
@@ -26,18 +26,18 @@ def weighted_final_strategy(put_under_quarantine_weight, develop_medication_weig
         "deploy_medication": deploy_medication_weight,
     }
 
-    # get final strategy
+    # Get final strategy
     name = "final"
     _module = __import__("pandemie.tester.strategies." + name, fromlist=to_camel_case(name))
     final_strategy = getattr(_module, to_camel_case(name))
 
-    # run strategy
+    # Run strategy
     block_print()
     tester = tst.Tester(final_strategy(silent=True, visualize=False, weights=weights))
     score = tester.evaluate(thread_count=20)
     enable_print()
 
-    # calculate win rate
+    # Calculate win rate
     win_rate = (tester.amount_wins / tester.amount_runs)
     return win_rate + score
 

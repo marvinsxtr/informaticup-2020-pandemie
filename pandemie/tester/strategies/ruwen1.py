@@ -14,7 +14,7 @@ class Ruwen1(AbstractStrategy):
         if "error" in data:
             print(data["error"])
 
-        # print("Round:\t", data["round"])
+        # Print("Round:\t", data["round"])
         points = int(data["points"])
         spend = 0
 

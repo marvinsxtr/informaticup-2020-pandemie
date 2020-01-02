@@ -12,7 +12,7 @@ from plotly.graph_objs.layout.geo import Projection
 
 import pandemie.visualization.preprocessing as pre
 
-# displayed lists of graphs/plots
+  # Displayed lists of graphs/plots
 visualized_rounds = []
 visualized_game = []
 
@@ -41,7 +41,7 @@ app.layout = html.Div(
     dash.dependencies.Output('game-state', 'children'),
     [dash.dependencies.Input('data_dropdown', 'value')])
 def update_output(value):
-    # add visualizations
+    # Add visualizations
     if value is None:
         return
     if value == "game":
@@ -62,12 +62,12 @@ def visualize_round(number):
 
 
 def visualize_round_number(number):
-    # displays the visualized round number
+    # Displays the visualized round number
     return html.Span('Round: {0}'.format(number + 1), style={'padding': '5px', 'fontSize': '16px'})
 
 
 def visualize_round_connections_infected(number):
-    # city positions
+    # City positions
     lon = pre.round_visualizations[number]["lon"]
     lat = pre.round_visualizations[number]["lat"]
     text = pre.round_visualizations[number]["name"]
@@ -90,7 +90,7 @@ def visualize_round_connections_infected(number):
             )
         )))
 
-    # flight paths
+    # Flight paths
     """
     flight_paths = pre.round_visualizations[number]["flight_paths"]
     for i in range(len(flight_paths)):
@@ -113,7 +113,7 @@ def visualize_round_connections_infected(number):
 
 
 def visualize_round_pathogens_pie(number):
-    # displays encountered pathogens by city in percent
+    # Displays encountered pathogens by city in percent
     counts = pre.round_visualizations[number]["counts"]
     names = pre.round_visualizations[number]["names"]
 
@@ -134,19 +134,19 @@ def visualize_game():
 
 
 def visualize_game_round_count():
-    # prints round count of a game
+    # Prints round count of a game
     return html.Span('Rounds: {0}'.format(len(pre.round_names)), style={'padding': '5px', 'fontSize': '16px'})
 
 
 def visualize_game_outcome():
-    # prints the outcome
+    # Prints the outcome
     outcome = pre.game_visualizations["outcome"]
 
     return html.Span('Outcome: {0}'.format(outcome), style={'padding': '5px', 'fontSize': '16px'})
 
 
 def visualize_game_population():
-    # visualizes the population development in a game
+    # Visualizes the population development in a game
     x_rounds = pre.game_visualizations["x_rounds"]
     y_population = pre.game_visualizations["y_population"]
 
@@ -157,7 +157,7 @@ def visualize_game_population():
 
 
 def visualize_pathogens_in_full_game():
-    # visualizes a list of all pathogens appeared in the game
+    # Visualizes a list of all pathogens appeared in the game
     pathogens = pre.game_visualizations["pathogens"]
 
     return html.Span('All pathogens in game: ' + str(pathogens), style={'padding': '5px', 'fontSize': '16px'})

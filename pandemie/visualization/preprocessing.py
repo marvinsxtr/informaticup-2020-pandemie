@@ -7,20 +7,20 @@ import os
 
 tmp_path = "./../tester/tmp/"
 
-# this list has the raw game data as a list of json objects for each round
+  # This list has the raw game data as a list of json objects for each round
 raw_json_rounds = []
 
-# these store the preprocessed values for visualization
+  # These store the preprocessed values for visualization
 game_visualizations = {}
 round_visualizations = []
 
-# a list of the round files and label for full game visualization
+  # A list of the round files and label for full game visualization
 option_labels = [{'label': 'Visualize full game', 'value': 'game'}]
 round_names = sorted(os.listdir(os.getcwd() + tmp_path), key=lambda item: int(''.join(filter(str.isdigit, item))))
 
 
 def init_rounds():
-    # this function reads the raw json data and saves it in a list
+    # This function reads the raw json data and saves it in a list
     path = os.getcwd()
     number = 0
     for round_name in round_names:
@@ -35,16 +35,16 @@ def init_rounds():
 def preprocess():
     init_rounds()
 
-    # preprocess rounds
+    # Preprocess rounds
     for json_round, number in zip(raw_json_rounds, range(len(raw_json_rounds))):
         preprocess_round(json_round, number)
 
-    # preprocess game
+    # Preprocess game
     preprocess_game()
 
 
 def preprocess_round(json_round, number):
-    # city positions
+    # City positions
     lat = []
     lon = []
     name = []
@@ -59,7 +59,7 @@ def preprocess_round(json_round, number):
 
     round_visualizations[number].update({"lat": lat, "lon": lon, "name": name})
 
-    # flight paths
+    # Flight paths
     flight_paths = []
     left_over_cities = []
 
@@ -80,7 +80,7 @@ def preprocess_round(json_round, number):
 
     round_visualizations[number].update({"flight_paths": flight_paths})
 
-    # pathogen pie
+    # Pathogen pie
     labels = []
     values = {}
 
@@ -107,12 +107,12 @@ def preprocess_round(json_round, number):
 
 
 def preprocess_game():
-    # outcome
+    # Outcome
     json_last_game = raw_json_rounds[len(raw_json_rounds) - 1]
 
     game_visualizations["outcome"] = json_last_game["outcome"]
 
-    # population
+    # Population
     y_population = []
     x_rounds = []
     tmp = []
@@ -133,7 +133,7 @@ def preprocess_game():
     game_visualizations["x_rounds"] = x_rounds
     game_visualizations["y_population"] = y_population
 
-    # pathogens in full game
+    # Pathogens in full game
     pathogens = []
 
     for game in raw_json_rounds:

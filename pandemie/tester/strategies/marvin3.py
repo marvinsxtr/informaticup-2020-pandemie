@@ -56,7 +56,7 @@ class Marvin3(AbstractStrategy):
                     if event["type"] == "outbreak":
                         city_pathogens[city[0]].append(event["pathogen"]["name"])
 
-        # highest risk to lowest
+        # Highest risk to lowest
         pathogens_sorted = sorted(pathogens, key=lambda p: (2.0 * score(p["infectivity"]),
                                                             1.0 * score(p["mobility"]),
                                                             1.0 * score(p["duration"]),
@@ -64,7 +64,7 @@ class Marvin3(AbstractStrategy):
                                                             count_infected_cities(p["name"], city_pathogens)),
                                   reverse=True)
 
-        # highest risk to lowest (low values to high values)
+        # Highest risk to lowest (low values to high values)
         cities_sorted_tmp = sorted(cities.items(), key=lambda c: (1.0 * score(c[1]["economy"]),
                                                                   2.0 * score(c[1]["hygiene"]),
                                                                   1.0 * score(c[1]["government"]),
@@ -111,9 +111,9 @@ class Marvin3(AbstractStrategy):
                     if operations.PRICES["deploy_medication"]["initial"] <= points:
                         rank("deploy_medication", pathogen, city, op_score=(100 * get_pathogen_pos(pathogen)))
 
-        # print(sorted(ranking.items(), key=lambda item: item[1], reverse=True))
+        # Print(sorted(ranking.items(), key=lambda item: item[1], reverse=True))
         for key, value in sorted(ranking.items(), key=lambda item: item[1], reverse=True):
-            # print("took", key, "with", value, "points")
+            # Print("took", key, "with", value, "points")
             op_name, *op_rest = key
             if operations.PRICES[op_name]["initial"] <= points:
                 return operations.get(op_name, *op_rest)

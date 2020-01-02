@@ -42,7 +42,7 @@ class AbstractStrategy(ABC):
 
     @staticmethod
     def log_json(json_data):
-        # delete files for new game
+        # Delete files for new game
         if json_data["round"] == 1:
             path = os.getcwd()
             rounds = os.listdir(path + "/tmp/")
@@ -50,7 +50,7 @@ class AbstractStrategy(ABC):
             for round_name in rounds:
                 os.remove(path + "/tmp/" + round_name)
 
-        # creates a file if it does not exist yet
+        # Creates a file if it does not exist yet
         def create_file(filename):
             if not os.path.exists(os.path.dirname(filename)):
                 try:
@@ -62,7 +62,7 @@ class AbstractStrategy(ABC):
         name = "tmp/round{0}.dat".format(json_data["round"])
         create_file(name)
 
-        # update current_round.dat
+        # Update current_round.dat
         with open(name, 'w') as outfile:
             outfile.write(json.dumps(json_data))
             outfile.flush()
@@ -70,12 +70,12 @@ class AbstractStrategy(ABC):
 
     def solve(self, json_data):
 
-        # update current data for visualization
+        # Update current data for visualization
         if self.visualize:
             self.log_json(json_data)
 
-        # warning, we actually do not send a last response after the game finished
-        # todo: check the unknown behaviour of the ic20 tool
+        # Warning, we actually do not send a last response after the game finished
+        # Todo: check the unknown behaviour of the ic20 tool
         self.data_gatherer.parse_data(json_data)  # Check for new Events and Pathogens
 
         if not json_data["outcome"] == "pending":  # Round ended
@@ -85,7 +85,7 @@ class AbstractStrategy(ABC):
             self.lock.release()
 
             if not self.silent:
-                self.log_result(json_data)  # log cumulative results
+                self.log_result(json_data)  # Log cumulative results
 
         return self._solve(json_data)
 

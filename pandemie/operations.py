@@ -4,7 +4,7 @@ you can give to a game state (initial and per round prices) as well as the funct
 themselves.
 """
 
-# dict containing all prices
+# Dict containing all prices
 PRICES = {
     "end_round": {"initial": 0, "each": 0},
     "put_under_quarantine": {"initial": 20, "each": 10},

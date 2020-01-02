@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+  # !/usr/bin/env python3
 
 import time
 import threading
@@ -14,10 +14,10 @@ from pandemie.tester import AbstractStrategy
 BaseRequest.MEMFILE_MAX = 1024 * 1024
 SLEEP_TIME = 0.01
 
-# patch some parts of the standard library to make it gevent compatible
+  # Patch some parts of the standard library to make it gevent compatible
 monkey.patch_all()
 
-# initiate bottle
+  # Initiate bottle
 app = Bottle()
 
 
@@ -40,7 +40,7 @@ class WebServer(threading.Thread):
         if not isinstance(handler, AbstractStrategy):
             raise ValueError("Strategy is not valid.")
 
-        super().__init__()  # init thread
+        super().__init__()  # Init thread
         self.handler = handler
         self.port = port
         self.log = log
