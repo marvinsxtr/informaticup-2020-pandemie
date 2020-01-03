@@ -7,7 +7,6 @@
 
 # User-specific stuff
 .idea
-pandemie/tester/results/
 .idea/**/workspace.xml
 .idea/**/tasks.xml
 .idea/**/usage.statistics.xml
@@ -212,5 +211,3 @@ dmypy.json
 # Additional
 /pandemie/express/node_modules/*
 /pandemie/express/node_modules/express/*
-/pandemie/tester/tmp/*.dat
-/pandemie/tester/logs/*.json

@@ -150,13 +150,12 @@ def main():
     Main program flow
     :return: None
     """
-    strategy_name = "final"     # default stratagy name
+    strategy_name = "final"     # default strategy name
     do_output = False       # default log value
     visualize = False       # default value for visualization
-    count = 5       # default value for amounts of threads
-    user_seed = 0       # default user seed, will be overwritten when user uses non random seed 0 = randomness
-    strategy_mod = __import__("pandemie.tester.strategies." + strategy_name,
-                              fromlist=to_camel_case(strategy_name))
+    count = 5       # default value for amount of threads
+    user_seed = 0       # default user seed, will be overwritten when user uses non random seed (0 = randomness)
+    strategy_mod = __import__("pandemie.tester.strategies." + strategy_name, fromlist=to_camel_case(strategy_name))
     strategy = getattr(strategy_mod, to_camel_case(strategy_name))
 
     # read commandline arguments, first

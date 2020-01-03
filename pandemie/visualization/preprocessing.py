@@ -5,7 +5,7 @@ This file handles the pre-processing of the raw json data and stores the results
 import json
 import os
 
-tmp_path = "./../tester/tmp/"
+tmp_path = "logs/"
 
   # This list has the raw game data as a list of json objects for each round
 raw_json_rounds = []

@@ -45,10 +45,10 @@ class AbstractStrategy(ABC):
         # Delete files for new game
         if json_data["round"] == 1:
             path = os.getcwd()
-            rounds = os.listdir(path + "/tmp/")
+            rounds = os.listdir(path + "/logs/")
 
             for round_name in rounds:
-                os.remove(path + "/tmp/" + round_name)
+                os.remove(path + "/logs/" + round_name)
 
         # Creates a file if it does not exist yet
         def create_file(filename):
@@ -59,7 +59,7 @@ class AbstractStrategy(ABC):
                     if exc.errno != errno.EEXIST:
                         raise
 
-        name = "tmp/round{0}.dat".format(json_data["round"])
+        name = "logs/round{0}.dat".format(json_data["round"])
         create_file(name)
 
         # Update current_round.dat
