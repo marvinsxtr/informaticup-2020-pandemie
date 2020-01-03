@@ -83,23 +83,30 @@ Analysieren und Testen eigener Strategien bereitgestellt. Um eigene Strategien z
 ```bash
 python3.8 -m pandemie.tester
 ```
-Im ersten Schritt wird man nun nach dem Namen der zu testenden Strategie gefragt:<br>
+<br>Der Tester kann mit verschiedenen Optionen über die Kommandozeile konfigurieren werden. Diese kann man sich so anzeigen
+lassen:
+```bash
+> python3.8 -m pandemie.tester -h
+-h --help            show the help
+-o --optimize        enable optimization for the final strategy
+-s                   add the full name of the strategy you want to test (no .py) (default=final)
+-l --log             write down log of run
+-v --visualization   save visualization data for one thread
+-t                   how many simulations should be run simultaneously? (default=5)
+-u --user_seed       uses a predefined seed for all games, if not set a random seed is used
 ```
-Enter the full name of the strategy you want to test (no .py):	
-```
-Hier ist einfach der Dateiname der Strategie ohne die `.py` Endung einzugeben und mit `ENTER` zu bestätigen.
-<br> Es ist zu beachten, dass sich die Strategie im Ordner `pandemie/tester/strategies` befindet. Sollte der 
-eingegebene Strategiename nicht in diesem Ordner zu finden sein, wird der Fehler 
-`StrategyModule [strategy-name] not found! Exiting...` ausgegeben und und das Programm terminiert.
+Im folgenden werden die einzelnen Optionen erläutert.
+Der Tester implementiert die Möglichkeit die Gewichte einer Strategie mittels einer `Bayesian optimization` anzupassen.
+Dazu wird über die Kommandozeile die `-o` bzw. die `--optimize` Option angegeben. Aktuell ist es nur möglich die `final`
+Strategie zu optimieren. Dabei werden alle anderen Parameter verworfen.
 
-Nach der Eingabe des Namens wird gefragt, ob das Testen der Strategie geloggt werden soll:<br>
-```
-Should a log be created? (y/n, default=n):
-```
-Das Loggen beinhaltet das Ergebnis und die Anzahl der Runden, die bis zu diesem Ergebnis gespielt wurden, für jedes
-einzelne gespielte Spiel. Außerdem werden für jedes Spiel alle aufgetretenen Pathogene inklusive ihrer Eigenschaften
-geloggt. Am Ende der Log-Datei steht dann der berechnete Score der Strategie. Dieser befindet sich immer zwischen 1 und
--1, wobei 1 ein perfekter Score wäre.<br>
+Möchte man eine andere Strategie testen so muss man den vollständigen Namen der Strategie der `-s` Option übergeben.
+Die auszuführenden Strategie muss im `/pandemie/tester/strategies` Ordner liegen und von der `AbstractStrategy` erben.
+
+Die `-l` oder `--log` Flag aktiviert das Erstellen eines Log. Das Loggen beinhaltet das Ergebnis und die Anzahl der 
+Runden, die bis zu diesem Ergebnis gespielt wurden, für jedes einzelne gespielte Spiel. Außerdem werden für jedes Spiel
+alle aufgetretenen Pathogene inklusive ihrer Eigenschaften geloggt. Am Ende der Log-Datei steht dann der berechnete
+Score der Strategie. Dieser befindet sich immer zwischen 1 und -1, wobei 1 ein perfekter Score wäre.<br>
 Hier ein Beispiel für die Strategie `example_strategy.py` mit zwei gespielten Runden:<br>
 ```
 loss:	11
@@ -113,41 +120,30 @@ win:	26
 
 -0.1635815380187609
 ```
+<br>Um die statistische Aussagekraft eines Testdurchlaufes zu erhöhen, kann man mit der `-t` Option die Anzahl der
+parallel durchgeführten Spieldurchläufe festlegen. Die maximale Anzahl der Threads ist auf 500 beschränkt. Bei
+zu hoher Anzahl der Threads können Komplikationen auftreten. Der Webserver kann dann nicht alle Anfragen korrekt
+auswerten und es werden Requests falsch verarbeitet.
 
-Im dritten Schritt muss angegeben werden, ob die gespielten Runden für die Visualisierung gespeichert werden sollen:
-<br>
-```
-Do you want the data of one round to be saved for visualization? (y/n, default=n):
-```
+Um die Testdurchläufe vergleichbar zu machen, kann man einen festen Seed übergeben. Dies geschieht mittels der `-u`
+bzw. der `--user_seed` Option.
+
+Um das Zusatzfeature Visualisierung zu benutzen, müssen zuvor die Daten einer Runde gespeichert werden. Dazu muss die
+`-v` oder die `--visualization` Flag gesetzt werden. Dadurch wird die Anzahl der Threads auf eins gesetzt und die Daten
+passend vorbereitet.
 Die Visualisierung dient wie auch das Loggen dem Analysieren und Verstehen der Strategie. Wie die Visualisierung 
 funktioniert, wird detailliert im Kapitel 
 [Zusatzfunktion: Visualisierung](documentation.md#zusatzfunktion:-visualisierung) erläutert.
 
-Als Nächstes muss angegeben werden, wie viele Spiele gleichzeitig gespielt werden sollen:
-```
-How many simulations should be run simultaneously? (default=5):
-```
-Umso mehr Spiele gespielt werden, desto besser lässt sich die Strategie am Ende bewerten. Allerdings ist zu 
-beachten, dass bei zu vielen Spielen gleichzeitig der Computer sehr viel zu arbeiten hat und es sein kann, dass er etwas
-langsamer als gewöhnlich läuft.
-
-Im letzten Schritt wird gefragt, ob für jedes Spiel ein zufälliger Seed generiert werden soll:<br>
-```
-Do you want a random seed? (y/n, default=y):
-```
-Wird hier `n` angegeben, so werden die Seeds von 1 aufsteigend verwendet. Dies ist nützlich, um die Konsistenz einer 
-Strategie zu beurteilen, aber auch um zwei Strategien bei exakt gleichen Bedingungen zu vergleichen.
-Wird aber `y` angegeben, so wird für jedes Spiel ein zufälliger Seed zwischen 1 und 100.000.000.000 generiert.
-
-### Standardeinstellungen des Testers
-Zum schnellen Testen einer Strategie kann die Standardkonfiguration des Testers genutzt werden. Als Standard festgelegt
-sind:
+Die Standardeinstellungen sind wie folgend:
+ * Es wird die `final` Strategie benutzt
  * Kein Log-Output wird erstellt
  * Die Runden werden nicht visualisiert
  * Es werden 5 Spiele gleichzeitig gespielt
  * Für jedes Spiel wird ein zufälliger Seed generiert
- 
- Somit muss lediglich angegeben werden, welche Strategie ausgeführt werden soll.
+
+### Standardeinstellungen des Testers
+
 #### Event-Checker als Daten-Analyse-Tool
 Das Modul `event_checker.py` dient dem Sammeln von allgemeinen Daten, die zum Erstellen einer guten Strategie essenziell 
 sind. Dabei filtert das Modul die gesamten Rohdaten einer Runde und überprüft diese auf bisher unbekannte Pathogen- und 
