@@ -42,13 +42,15 @@ class AbstractStrategy(ABC):
 
     @staticmethod
     def log_json(json_data):
+        path = "../visualization/logs/"
+
         # Delete files for new game
         if json_data["round"] == 1:
-            path = os.getcwd()
-            rounds = os.listdir(path + "/logs/")
+            rounds = os.listdir(path)
 
             for round_name in rounds:
-                os.remove(path + "/logs/" + round_name)
+                if round_name != ".gitignore":
+                    os.remove(path + round_name)
 
         # Creates a file if it does not exist yet
         def create_file(filename):
@@ -59,7 +61,7 @@ class AbstractStrategy(ABC):
                     if exc.errno != errno.EEXIST:
                         raise
 
-        name = "logs/round{0}.dat".format(json_data["round"])
+        name = "{0}round{1}.dat".format(path, json_data["round"])
         create_file(name)
 
         # Update current_round.dat
