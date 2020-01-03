@@ -154,25 +154,23 @@ def main():
     do_output = False       # default log value
     visualize = False       # default value for visualization
     count = 5       # default value for amounts of threads
-    rand_seed = True       # default value for random seed
     user_seed = 0       # default user seed, will be overwritten when user uses non random seed 0 = randomness
     strategy_mod = __import__("pandemie.tester.strategies." + strategy_name,
                               fromlist=to_camel_case(strategy_name))
     strategy = getattr(strategy_mod, to_camel_case(strategy_name))
 
-
     # read commandline arguments, first
-    fullCmdArguments = sys.argv
+    full_cmd_arguments = sys.argv
 
     # - further arguments
-    argumentList = fullCmdArguments[1:]
+    argument_list = full_cmd_arguments[1:]
 
     # define allowed cli arguments
-    unixOptions = "hos:lvt:u"
-    gnuOptions = ["help", "optimize", "log", "visualization", "user_seed"]
+    unix_options = "hos:lvt:u"
+    gnu_options = ["help", "optimize", "log", "visualization", "user_seed"]
 
     try:
-        arguments, values = getopt.getopt(argumentList, unixOptions, gnuOptions)
+        arguments, values = getopt.getopt(argument_list, unix_options, gnu_options)
     except getopt.error as err:
         # output error, and return with an error code
         print(str(err))
@@ -187,14 +185,14 @@ def main():
                   "-l --log             write down log of run\n"
                   "-v --visualization   save visualization data for one thread\n"
                   "-t                   how many simulations should be run simultaneously? (default=5)\n"
-                  "-u --user_seed       turns off random seed and requiers user seed via cli input\n")
+                  "-u --user_seed       uses a predefined seed for all games, if not set a random seed is used\n")
             if len(arguments) < 2:
                 exit()
         elif currentArgument in ("-o", "--optimize"):
             print("Optimizing final strategy")
             optimization.bayesian_optimization()
             exit()
-        elif currentArgument in ("-s"):
+        elif currentArgument in ("-s", ):
             strategy_name = currentValue
             try:
                 strategy_mod = __import__("pandemie.tester.strategies." + strategy_name,
@@ -212,9 +210,9 @@ def main():
             do_output = True
         elif currentArgument in ("-v", "--visualization"):
             visualize = True
-        elif currentArgument in ("-t"):
+        elif currentArgument in ("-t", ):
             if not currentValue.isdigit():
-                print("You need to enter a valid round number!")
+                print("You need to enter a valid thread number!")
                 exit()
             count = int(currentValue)
             if count > MAX_THREADS:
@@ -222,13 +220,14 @@ def main():
                 print("The amount of threads is limited to {0}. The number of threads got reduced".format(
                     MAX_THREADS))
         elif currentArgument in ("-u", "--user_seed"):
-            rand_seed = False
-            user_seed = int(currentValue)
+            user_seed = currentValue
             if not user_seed.isdigit():
-                print("You need to enter a valid round number!")
+                print("You need to enter a valid user seed!")
                 exit()
+            user_seed = int(user_seed)
 
     if visualize:
+        print("Reduced thread number to 1 since we want to store the data for the visualization.")
         count = 1
 
     my_tester = Tester(strategy(silent=not do_output, visualize=visualize), seed=user_seed)
