@@ -135,14 +135,13 @@ Die Visualisierung dient wie auch das Loggen dem Analysieren und Verstehen der S
 funktioniert, wird detailliert im Kapitel 
 [Zusatzfunktion: Visualisierung](documentation.md#zusatzfunktion:-visualisierung) erläutert.
 
+### Standardeinstellungen des Testers
 Die Standardeinstellungen sind wie folgend:
  * Es wird die `final` Strategie benutzt
  * Kein Log-Output wird erstellt
  * Die Runden werden nicht visualisiert
  * Es werden 5 Spiele gleichzeitig gespielt
  * Für jedes Spiel wird ein zufälliger Seed generiert
-
-### Standardeinstellungen des Testers
 
 #### Event-Checker als Daten-Analyse-Tool
 Das Modul `event_checker.py` dient dem Sammeln von allgemeinen Daten, die zum Erstellen einer guten Strategie essenziell 
@@ -162,6 +161,8 @@ gespeichert.
 (Marvin)
 Eine Strategie bezeichnet in unserem Kontext eine Implementierung, um auf den aktuellen Spielstand zustandslos zu 
 antworten.
+### Die Scorefunktion
+(Nils)
 ### Unsere Strategie
 Unsere Teamstrategie kann in `final.py` gefunden werden. Im Folgenden bezeichnen "Maßnahmen" eine mögliche Aktion zur 
 Veränderung des Spielstandes (bspw.: put_under_quarantine) und "Operationen" konkret angewandte Maßnahmen im Spiel
@@ -209,7 +210,7 @@ Erweiterungen realisiert werden können.
 ### Wie starte ich die Visualisierung
 Um die Visualisierung zu starten muss zunächst mindestens einmal der 
 [Tester](documentation.md#den-tester-richtig-nutzen) mit der Visualisierungs-Option gestartet werden. Dies führt dazu, 
-dass im Ordner `pandemie/tester/tmp` die JSON-Dateien der einzelnen Runden abgelegt werden. Ist diese Voraussetzung 
+dass im Ordner `pandemie/visualization/logs` die JSON-Dateien der einzelnen Runden abgelegt werden. Ist diese Voraussetzung 
 erfüllt, kann die Visualisierung mit dem Modul `visualization.py` gestartet werden: <br>
 ```bash
 $ python3 visualization.py
