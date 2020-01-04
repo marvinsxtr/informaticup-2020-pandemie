@@ -12,7 +12,7 @@ from plotly.graph_objs.layout.geo import Projection
 
 import pandemie.visualization.preprocessing as pre
 
-  # Displayed lists of graphs/plots
+# Displayed lists of graphs/plots
 visualized_rounds = []
 visualized_game = []
 
@@ -180,6 +180,7 @@ def main():
 
     print("Running on http://127.0.0.1:8050/...")
     app.run_server(debug=False)
+
 
 if __name__ == "__main__":
     main()

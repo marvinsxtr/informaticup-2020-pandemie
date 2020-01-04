@@ -5,18 +5,20 @@ This file handles the pre-processing of the raw json data and stores the results
 import json
 import os
 
-tmp_path = "logs/"
+logs_path = "/logs/"
 
-  # This list has the raw game data as a list of json objects for each round
+# This list has the raw game data as a list of json objects for each round
 raw_json_rounds = []
 
-  # These store the preprocessed values for visualization
+# These store the preprocessed values for visualization
 game_visualizations = {}
 round_visualizations = []
 
-  # A list of the round files and label for full game visualization
+# A list of the round files and label for full game visualization
 option_labels = [{'label': 'Visualize full game', 'value': 'game'}]
-round_names = sorted(os.listdir(os.getcwd() + tmp_path), key=lambda item: int(''.join(filter(str.isdigit, item))))
+round_names = os.listdir(os.getcwd() + logs_path)
+round_names.remove(".gitignore")
+round_names = sorted(round_names, key=lambda item: int(''.join(filter(str.isdigit, item))))
 
 
 def init_rounds():
@@ -26,7 +28,7 @@ def init_rounds():
     for round_name in round_names:
         round_visualizations.insert(number, dict())
         option_labels.append({'label': 'Visualize {0}'.format(round_name), 'value': round_name})
-        with open(path + "{0}{1}".format(tmp_path, round_name), 'r+') as f:
+        with open(path + "{0}{1}".format(logs_path, round_name), 'r+') as f:
             f.seek(0)
             raw_json_rounds.append(json.load(f))
         number += 1
