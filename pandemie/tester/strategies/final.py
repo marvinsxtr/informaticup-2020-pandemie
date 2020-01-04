@@ -10,8 +10,7 @@ Observations:
 import numbers
 
 from pandemie.tester import AbstractStrategy
-from pandemie import operations
-from pandemie.util import normalize_ranking, merge_ranking
+from pandemie.util import normalize_ranking, merge_ranking, operations
 
 
 class Final(AbstractStrategy):

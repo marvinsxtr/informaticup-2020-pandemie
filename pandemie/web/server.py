@@ -8,7 +8,7 @@ from bottle import Bottle, request, BaseRequest, json_loads
 from gevent import monkey
 from gevent.pywsgi import WSGIServer
 
-from pandemie.operations import end_round
+from pandemie.util.operations import end_round
 from pandemie.tester import AbstractStrategy
 
 BaseRequest.MEMFILE_MAX = 1024 * 1024

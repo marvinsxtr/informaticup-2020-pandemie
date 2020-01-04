@@ -1,5 +1,5 @@
 from pandemie.tester import AbstractStrategy
-from pandemie import operations
+from pandemie.util import operations
 
 
 class Marvin1(AbstractStrategy):
