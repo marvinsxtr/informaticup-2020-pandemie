@@ -1,11 +1,53 @@
 """
 This file contains several useful function.
 """
+import errno
+import json
 import sys
 import os
 import datetime
 
 TIME_FORMAT = "%Y-%m-%d--%H.%M.%S"
+
+
+def create_file(path):
+    """
+    This function creates a file if it does not exist already
+    :param path: path to file
+    :return: None
+    """
+    if not os.path.exists(os.path.dirname(path)):
+        try:
+            os.makedirs(os.path.dirname(path))
+        except OSError as exc:  # Guard against race condition
+            if exc.errno != errno.EEXIST:
+                raise
+
+
+def log_json(json_data):
+    """
+    This function saves the json data for each round for later use in visualization
+    :param json_data: the json data of a round
+    :return: None
+    """
+    path = "../visualization/logs/"
+
+    # Delete files for new game
+    if json_data["round"] == 1:
+        rounds = os.listdir(path)
+
+        for round_name in rounds:
+            if round_name != ".gitignore":
+                os.remove(path + round_name)
+
+    name = "{0}round{1}.dat".format(path, json_data["round"])
+    create_file(name)
+
+    # Update current_round.dat
+    with open(name, 'w') as outfile:
+        outfile.write(json.dumps(json_data))
+        outfile.flush()
+        os.fsync(outfile.fileno())
 
 
 def merge_ranking(*rankings):

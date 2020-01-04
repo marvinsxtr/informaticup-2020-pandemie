@@ -1,12 +1,9 @@
-import errno
-import os
-import json
 import threading
 
 from abc import ABC, abstractmethod
 
 from pandemie.event_checker import EventChecker
-from pandemie.util.encoding import filter_unicode
+from pandemie.util import filter_unicode, log_json
 
 
 class AbstractStrategy(ABC):
@@ -40,41 +37,11 @@ class AbstractStrategy(ABC):
             data = filter_unicode(data)  # Remove all non UTF-8 characters
             file.write(data)
 
-    @staticmethod
-    def log_json(json_data):
-        path = "../visualization/logs/"
-
-        # Delete files for new game
-        if json_data["round"] == 1:
-            rounds = os.listdir(path)
-
-            for round_name in rounds:
-                if round_name != ".gitignore":
-                    os.remove(path + round_name)
-
-        # Creates a file if it does not exist yet
-        def create_file(filename):
-            if not os.path.exists(os.path.dirname(filename)):
-                try:
-                    os.makedirs(os.path.dirname(filename))
-                except OSError as exc:  # Guard against race condition
-                    if exc.errno != errno.EEXIST:
-                        raise
-
-        name = "{0}round{1}.dat".format(path, json_data["round"])
-        create_file(name)
-
-        # Update current_round.dat
-        with open(name, 'w') as outfile:
-            outfile.write(json.dumps(json_data))
-            outfile.flush()
-            os.fsync(outfile.fileno())
-
     def solve(self, json_data):
 
         # Update current data for visualization
         if self.visualize:
-            self.log_json(json_data)
+            log_json(json_data)
 
         # Warning, we actually do not send a last response after the game finished
         # Todo: check the unknown behaviour of the ic20 tool
