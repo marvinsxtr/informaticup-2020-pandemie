@@ -99,6 +99,9 @@ class Final(AbstractStrategy):
             # Sort overall ranking
             overall_ranking = dict(sorted(overall_ranking.items(), key=lambda item: item[1], reverse=True))
 
+            if len(overall_ranking) == 0:
+                return operations.end_round()
+
             # Get best overall operation (out of all measures)
             # Best_operation = max(measure_ranking, key=lambda key: measure_ranking[key])
             best_operation = max(overall_ranking, key=lambda key: overall_ranking[key])
@@ -152,9 +155,6 @@ class Final(AbstractStrategy):
         # Used to convert a scale of scores (24 - 4 = 20 where 4 is the minimum points and 20 maximum)
         highest_rating = 24
 
-        # Average rating used for ranking
-        avg_rating = 50
-
         """
         lists or dicts generated in pre-processing in order of generation
         """
@@ -184,7 +184,7 @@ class Final(AbstractStrategy):
 
         cities_count_flight_connections = {}
 
-        cities_outbreak_names = []
+        outbreak_city_names = []
         cities_outbreak_scores = {}
 
         cities_connected_cities_names = {}
@@ -287,7 +287,7 @@ class Final(AbstractStrategy):
             if "events" in city_stats:
                 for city_event in city_stats["events"]:
                     if city_event["type"] == "outbreak":
-                        cities_outbreak_names.append(city_name)
+                        outbreak_city_names.append(city_name)
                         # This score is acquired by combining prevalence, duration and pathogen strength
                         outbreak_score = round((1 + city_event["prevalence"]) *
                                                (round_number - city_event["sinceRound"] +
@@ -339,10 +339,10 @@ class Final(AbstractStrategy):
             if maximum >= 1:
                 rank_operation("put_under_quarantine", city_name, maximum, op_score=round(
                     measure_weights["put_under_quarantine"] * (
-                        cities_pathogen_score[city_name] +
-                        cities_scores[city_name] +
-                        cities_outbreak_scores[city_name] +
-                        cities_count_flight_connections[city_name]), 5))
+                            cities_pathogen_score[city_name] +
+                            cities_scores[city_name] +
+                            cities_outbreak_scores[city_name] +
+                            cities_count_flight_connections[city_name]), 5))
 
         # Develop medication for most dangerous pathogens
         for pathogen_name in pathogens_names:
@@ -350,30 +350,31 @@ class Final(AbstractStrategy):
                     pathogens_medication_in_development_names:
                 rank_operation("develop_medication", pathogen_name, op_score=round(
                     measure_weights["develop_medication"] * (
-                        pathogens_scores[pathogen_name] +
-                        pathogens_count_infected_cities[pathogen_name]), 5))
+                            pathogens_scores[pathogen_name] +
+                            pathogens_count_infected_cities[pathogen_name]), 5))
 
         # Deploy medication in cities at most risk
         for city_name, pathogen_name in cities_pathogen_name.items():
             if pathogen_name in pathogens_medication_available_names:
                 rank_operation("deploy_medication", pathogen_name, city_name, op_score=round(
                     measure_weights["deploy_medication"] * (
-                        cities_pathogen_score[city_name] +
-                        cities_scores[city_name] +
-                        cities_outbreak_scores[city_name] +
-                        cities_count_flight_connections[city_name] +
-                        pathogens_scores[pathogen_name] +
-                        pathogens_count_infected_cities[pathogen_name]), 5))
+                            cities_pathogen_score[city_name] +
+                            cities_scores[city_name] +
+                            cities_outbreak_scores[city_name] +
+                            cities_count_flight_connections[city_name] +
+                            pathogens_scores[pathogen_name] +
+                            pathogens_count_infected_cities[pathogen_name]), 5))
 
         # Close airports with most difference in risk compared to connected cities
         for city_name in cities_names:
-            if city_name not in cities_airport_closed_names:
+            if city_name not in cities_airport_closed_names and city_name in outbreak_city_names:
                 maximum = affordable_rounds("close_airport")
                 if maximum >= 1:
                     rank_operation("close_airport", city_name, maximum, op_score=round(
                         measure_weights["close_airport"] * (
-                            cities_combined_connected_cities_difference[city_name] +
-                            cities_combined_connected_cities_scores[city_name]), 5))
+                                cities_combined_connected_cities_difference[city_name] +
+                                cities_combined_connected_cities_scores[city_name]) +
+                        cities_outbreak_scores[city_name], 5))
 
         # Use collected data to make a decision
         return get_best_operation()
