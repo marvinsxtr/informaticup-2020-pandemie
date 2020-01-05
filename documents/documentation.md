@@ -213,7 +213,7 @@ Um die Visualisierung zu starten muss zunächst mindestens einmal der
 dass im Ordner `pandemie/visualization/logs` die JSON-Dateien der einzelnen Runden abgelegt werden. Ist diese Voraussetzung 
 erfüllt, kann die Visualisierung mit dem Modul `visualization.py` gestartet werden: <br>
 ```bash
-$ python3 visualization.py
+$ python3.8 -m pandemie.visualization
 ```
 Sobald die Visualisierung fertig ist, wird anschließend ein Webserver gestartet, welcher über `localhost:8050`
 aufgerufen werden kann. Im Log wird hierzu auch ein Link angezeigt. Wenn die Seite aufgerufen wird, kann oben im

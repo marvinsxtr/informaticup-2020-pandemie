@@ -374,7 +374,8 @@ class Final(AbstractStrategy):
                         measure_weights["close_airport"] * (
                                 cities_combined_connected_cities_difference[city_name] +
                                 cities_combined_connected_cities_scores[city_name]) +
-                        cities_outbreak_scores[city_name], 5))
+                        cities_outbreak_scores[city_name] +
+                        cities_pathogen_score[city_name], 5))
 
         # Use collected data to make a decision
         return get_best_operation()
