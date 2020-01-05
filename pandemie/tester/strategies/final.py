@@ -158,8 +158,6 @@ class Final(AbstractStrategy):
         """
         lists or dicts generated in pre-processing in order of generation
         """
-        possible_operations_names = []
-
         pathogens = []
         pathogens_names = []
 
@@ -196,10 +194,6 @@ class Final(AbstractStrategy):
         """
         pre-processing (for each list higher means more risk and 0 means none at all!)
         """
-        # Generate possible_operations_names including all possible operations in this round
-        for op_name, op_prices in operations.PRICES.items():
-            if op_prices["initial"] <= round_points:
-                possible_operations_names.append(op_name)
 
         # Generate lists for pathogen global events
         for round_global_event in round_global_events:
