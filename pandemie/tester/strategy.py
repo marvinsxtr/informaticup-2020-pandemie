@@ -7,7 +7,16 @@ from pandemie.util import filter_unicode, log_json
 
 
 class AbstractStrategy(ABC):
-    def __init__(self, silent=False, visualize=False, weights=None):
+    """
+    An abstract template for strategies with all necessary functionalities, default run values and integrated
+    data-gatherer
+    """
+    def __init__(self, silent=True, visualize=False, weights=None):
+        """
+        :param silent: default:True; Determines whether log is created or not
+        :param visualize: default:False; Determines whether data is saved for visualisation or not
+        :param weights: Weights for weighted decision
+        """
         super().__init__()
         self.weights = weights
         self.result = []
@@ -18,9 +27,17 @@ class AbstractStrategy(ABC):
         self.lock = threading.Lock()
 
     def set_file(self, file):
+        """
+        Function to set the name of the logfile
+        :param file: name of the logfile
+        """
         self.file = file
 
     def log_result(self, json_data):
+        """
+        Function to write the round-data into a logfile
+        :param json_data: raw data for the current round
+        """
         # Save strategy data
         with open(self.get_file_path(), "a") as file:
 
@@ -38,6 +55,11 @@ class AbstractStrategy(ABC):
             file.write(data)
 
     def solve(self, json_data):
+        """
+        Function to decide the operation used in the current round and do log + data-gathering
+        :param json_data: raw data for the current round
+        :return: operation applied for this round
+        """
 
         # Update current data for visualization
         if self.visualize:
@@ -60,14 +82,31 @@ class AbstractStrategy(ABC):
 
     @abstractmethod
     def _solve(self, json_data):
+        """
+        Function gets implemented to decide the operation used
+        :param json_data: raw data of the current round
+        :return: operation to apply
+        """
         pass
 
     def get_result(self):
+        """
+        Getter-function for all outcomes of the played games
+        :return: List containing outcome - survived Rounds tuples
+        """
         return self.result
 
     def get_file_path(self):
+        """
+        Helper-function to return the dynamic path to the logfile
+        :return: path to the logfile
+        """
         return "results/" + self.name + "/" + self.file
 
     @property
     def name(self):
+        """
+        The name of the strategy for easier usage
+        :return: Classname
+        """
         return self.__class__.__name__
