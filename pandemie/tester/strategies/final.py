@@ -186,12 +186,18 @@ class Final(AbstractStrategy):
 
         outbreak_city_names = []
         cities_outbreak_scores = {}
+        cities_outbreak = {}
 
         cities_connected_cities_names = {}
         cities_combined_connected_cities_scores = {}
         cities_combined_connected_cities_difference = {}
 
         cities_airport_closed_names = []
+
+        flight_connections = set()
+        flight_connections_closed = set()
+        flight_connections_one_infected = []
+        flight_connections_one_infected_score = {}
 
         """
         pre-processing (for each list higher means more risk and 0 means none at all!)
@@ -280,10 +286,10 @@ class Final(AbstractStrategy):
 
         # Count the number of flight connections for each city
         for city_name, city_stats in cities.items():
-            flight_connections = 0
+            count_flight_connections = 0
             for _ in city_stats["connections"]:
-                flight_connections += 1
-            cities_count_flight_connections[city_name] = flight_connections
+                count_flight_connections += 1
+            cities_count_flight_connections[city_name] = count_flight_connections
 
         # Rate the outbreak for each affected city
         for city_name, city_stats in cities.items():
@@ -292,6 +298,7 @@ class Final(AbstractStrategy):
                 for city_event in city_stats["events"]:
                     if city_event["type"] == "outbreak":
                         outbreak_city_names.append(city_name)
+                        cities_outbreak[city_name] = city_event
                         # This score is acquired by combining prevalence, duration and pathogen strength
                         outbreak_score = round((1 + city_event["prevalence"]) *
                                                (round_number - city_event["sinceRound"] +
@@ -333,6 +340,41 @@ class Final(AbstractStrategy):
                 for event in city_stats["events"]:
                     if event["type"] == "airportClosed":
                         cities_airport_closed_names.append(city_name)
+
+        # Collect closed connections
+        for city_name, city_stats in cities.items():
+            if "events" in city_stats:
+                for event in city_stats["events"]:
+                    if event["type"] == "connectionClosed":
+                        flight_connections_closed.add(frozenset((city_name, event["city"])))
+
+        # Collect connected cities in a set
+        for city_name, city_stats in cities.items():
+            connections = city_stats["connections"]
+            for connected_city_name in connections:
+                flight_connections.add(frozenset((city_name, connected_city_name)))
+
+        # Rank connections by comparing their outbreaks
+        for flight_connection in flight_connections:
+            connection = tuple(flight_connection)
+            x, y = connection
+
+            # Check if only one city in the connection is infected
+            only_x_infected = (x in outbreak_city_names) and (y not in outbreak_city_names)
+            only_y_infected = (y in outbreak_city_names) and (x not in outbreak_city_names)
+
+            if only_x_infected or only_y_infected:
+                flight_connections_one_infected.append(connection)
+
+                # Assign a score to the connection
+                if only_x_infected:
+                    infected_city = x
+                else:
+                    infected_city = y
+
+                flight_connections_one_infected_score[connection] = \
+                    cities[infected_city]["population"] * cities_outbreak[infected_city]["prevalence"] + \
+                    cities_pathogen_score[infected_city]
 
         """
         rank the operations for each measure based on collected data
@@ -406,6 +448,16 @@ class Final(AbstractStrategy):
                                 cities_combined_connected_cities_scores[city_name]) +
                         cities_outbreak_scores[city_name] +
                         cities_pathogen_score[city_name], 5))
+
+        # Close connections based on the difference between two cities
+        for connection in flight_connections_one_infected:
+            if frozenset(connection) not in flight_connections_closed:
+                x, y = connection
+                maximum = affordable_rounds("close_connection")
+                if maximum >= 1:
+                    rank_operation("close_connection", x, y, maximum,
+                                   op_score=round(measure_weights["close_connection"] * (
+                                       flight_connections_one_infected_score[connection]), 5))
 
         # Use collected data to make a decision
         return get_best_operation()

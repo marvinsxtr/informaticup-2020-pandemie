@@ -45,3 +45,6 @@ vaccineAvailable	, global
 
 vaccineDeployed	, local
 {'type': 'vaccineDeployed', 'pathogen': {'name': 'Plorps', 'infectivity': 'o', 'mobility': 'o', 'duration': '+', 'lethality': '-'}, 'round': 13}
+
+connectionClosed	, local
+{'type': 'connectionClosed', 'city': '', 'sinceRound': 2, 'untilRound': 7}
