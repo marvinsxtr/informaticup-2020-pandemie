@@ -38,7 +38,7 @@ def preprocess():
     init_rounds()
 
     # Preprocess rounds
-    for json_round, number in zip(raw_json_rounds, range(len(raw_json_rounds))):
+    for number, json_round in enumerate(raw_json_rounds):
         preprocess_round(json_round, number)
 
     # Preprocess game
