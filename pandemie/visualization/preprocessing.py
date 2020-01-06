@@ -1,5 +1,5 @@
 """
-This file handles the pre-processing of the raw json data and stores the results in dicts.
+This file handles the pre-processing of the raw json data and stores the logs in dicts.
 """
 
 import json
