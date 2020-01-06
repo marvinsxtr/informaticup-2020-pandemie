@@ -37,10 +37,10 @@ def analyse(file):
             line = yaml.load(lines[j], Loader=yaml.FullLoader)
             pathogens[filter_unicode(line["name"]).strip()][i] += 1
 
-    s = "".join(c + "\t-\twins: " + str(pathogens[c][0]) + "\t-\tloss: " + str(pathogens[c][1]) + "\n"
-                for c in pathogens)
+    t = "".join(c + "".join(" " for _ in range(31 - len(c))) + "\t-\twins: " + str(pathogens[c][0]) + " - loss: " +
+                str(pathogens[c][1]) + "\n" for c in pathogens)
     with open(file, "a") as f:
-        f.write("\n\n" + s)
+        f.write("\n\n" + t)
 
 
     
