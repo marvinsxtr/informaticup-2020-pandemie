@@ -42,7 +42,7 @@ class AbstractStrategy(ABC):
         with open(self.get_file_path(), "a") as file:
 
             # Dump outcome and played rounds
-            data = "{0}:\t{1}\n".format(json_data["outcome"], str(json_data["round"]))
+            data = "${0}:\t{1}\n".format(json_data["outcome"], str(json_data["round"]))
 
             # Append all pathogens which occurred during the round
             if "events" in json_data:
