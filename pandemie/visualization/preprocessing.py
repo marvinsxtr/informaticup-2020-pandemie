@@ -5,6 +5,8 @@ This file handles the pre-processing of the raw json data and stores the results
 import json
 import os
 
+from collections import defaultdict
+
 logs_path = "/logs/"
 
 # This list has the raw game data as a list of json objects for each round
@@ -12,33 +14,42 @@ raw_json_rounds = []
 
 # These store the preprocessed values for visualization
 game_visualizations = {}
+
+# store a dict for each round
+# { lat -> latitude of cities
+#   lon -> longitude of cities
+#   names -> names of cities
 round_visualizations = []
 
 # A list of the round files and label for full game visualization
-option_labels = [{'label': 'Visualize full game', 'value': 'game'}]
+option_labels = [{"label": "Visualize full game", "value": "game"}]
+
+# Read file names and store them sorted
 round_names = os.listdir(os.getcwd() + logs_path)
 round_names.remove(".gitignore")
-round_names = sorted(round_names, key=lambda item: int(''.join(filter(str.isdigit, item))))
+round_names = sorted(round_names, key=lambda item: int("".join(filter(str.isdigit, item))))
 
 
 def init_rounds():
-    # This function reads the raw json data and saves it in a list
+    """
+    This function reads the raw json data and saves it in a list
+    :return: None
+    """
     path = os.getcwd()
-    number = 0
-    for round_name in round_names:
-        round_visualizations.insert(number, dict())
-        option_labels.append({'label': 'Visualize {0}'.format(round_name), 'value': round_name})
-        with open(path + "{0}{1}".format(logs_path, round_name), 'r+') as f:
-            f.seek(0)
+
+    for number, round_name in enumerate(round_names):
+        round_visualizations.append(dict())
+        option_labels.append({"label": "Visualize {0}".format(round_name), "value": round_name})
+
+        with open(path + logs_path + round_name, "r+") as f:
             raw_json_rounds.append(json.load(f))
-        number += 1
 
 
 def preprocess():
     init_rounds()
 
     # Preprocess rounds
-    for json_round, number in zip(raw_json_rounds, range(len(raw_json_rounds))):
+    for number, json_round in enumerate(raw_json_rounds):
         preprocess_round(json_round, number)
 
     # Preprocess game
@@ -46,20 +57,19 @@ def preprocess():
 
 
 def preprocess_round(json_round, number):
-    # City positions
-    lat = []
-    lon = []
-    name = []
+    # Store city positions
+    round_update = defaultdict(list)
 
     for city in json_round["cities"].items():
-        if "events" in city[1]:
-            for event in city[1]["events"]:
-                if event["type"] == "outbreak":
-                    lat.append(city[1]["latitude"])
-                    lon.append(city[1]["longitude"])
-                    name.append(city[0])
+        for event in city[1].get("events", ()):
+            if event["type"] == "outbreak":
+                round_update["lat"].append(city[1]["latitude"])
+                round_update["lon"].append(city[1]["longitude"])
+                round_update["name"].append(city[0])
+                break
 
-    round_visualizations[number].update({"lat": lat, "lon": lon, "name": name})
+    round_visualizations[number].update(round_update)
+
 
     # Flight paths
     flight_paths = []
@@ -83,29 +93,15 @@ def preprocess_round(json_round, number):
     round_visualizations[number].update({"flight_paths": flight_paths})
 
     # Pathogen pie
-    labels = []
-    values = {}
+    pathogen_occurrence = defaultdict(lambda: 0)
 
     for city in json_round["cities"].items():
-        if "events" in city[1]:
-            for event in city[1]["events"]:
-                if event["type"] == "outbreak":
-                    pathogen = event["pathogen"]
-                    if pathogen not in labels:
-                        labels.append(pathogen["name"])
-                        if not pathogen["name"] in values:
-                            values[pathogen["name"]] = 1
-                        else:
-                            values[pathogen["name"]] += 1
+        for event in city[1].get("events", ()):
+            if event["type"] == "outbreak":
+                pathogen_occurrence[event["pathogen"]["name"]] += 1
 
-    counts = []
-    names = []
-
-    for key, value in (values.items()):
-        names.append(key)
-        counts.append(value)
-
-    round_visualizations[number].update({"counts": counts, "names": names})
+    round_visualizations[number].update({"counts": list(pathogen_occurrence.keys()),
+                                         "names": list(pathogen_occurrence.values())})
 
 
 def preprocess_game():

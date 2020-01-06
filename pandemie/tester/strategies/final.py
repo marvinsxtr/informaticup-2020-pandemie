@@ -11,6 +11,7 @@ import numbers
 
 from pandemie.tester import AbstractStrategy
 from pandemie.util import normalize_ranking, merge_ranking, operations
+from pandemie.util import map_symbol_score as score
 
 
 class Final(AbstractStrategy):
@@ -18,7 +19,6 @@ class Final(AbstractStrategy):
         super().__init__(silent=silent, visualize=visualize, weights=weights)
 
     def _solve(self, json_data):
-        from pandemie.util import map_symbol_score as score
 
         # Check if an error has occurred
         if "error" in json_data:

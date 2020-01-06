@@ -1,4 +1,4 @@
-  # !/usr/bin/env python3
+# !/usr/bin/env python3
 
 import time
 import threading
@@ -14,10 +14,10 @@ from pandemie.tester import AbstractStrategy
 BaseRequest.MEMFILE_MAX = 1024 * 1024
 SLEEP_TIME = 0.01
 
-  # Patch some parts of the standard library to make it gevent compatible
+# Patch some parts of the standard library to make it gevent compatible
 monkey.patch_all()
 
-  # Initiate bottle
+# Initiate bottle
 app = Bottle()
 
 
