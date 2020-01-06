@@ -68,9 +68,9 @@ def visualize_round_number(number):
 
 def visualize_round_connections_infected(number):
     # City positions
-    lon = pre.round_visualizations[number]["lon"]
-    lat = pre.round_visualizations[number]["lat"]
-    text = pre.round_visualizations[number]["name"]
+    lon = pre.round_visualizations[number].get("lon", ())
+    lat = pre.round_visualizations[number].get("lat", ())
+    text = pre.round_visualizations[number].get("name", ())
 
     fig = go.Figure()
 

@@ -106,24 +106,8 @@ class Final(AbstractStrategy):
             # Best_operation = max(measure_ranking, key=lambda key: measure_ranking[key])
             best_operation = max(overall_ranking, key=lambda key: overall_ranking[key])
 
-            # Calculate price and check if operation is possible
-            rounds = 0
-            for param in best_operation:
-                if isinstance(param, numbers.Number):
-                    rounds = param
-
             name, *rest = best_operation
-            if rounds == 0:
-                price = operations.PRICES[name]["initial"]
-            else:
-                price = rounds * operations.PRICES[name]["each"] + operations.PRICES[name]["initial"]
-
-            # Check if operation is affordable
-            if price <= round_points:
-                print(operations.get(name, *rest))
-                return operations.get(name, *rest)
-            else:
-                return operations.end_round()
+            return operations.get(name, *rest)
 
         def rank_operation(*op_tuple, op_score):
             """
@@ -150,8 +134,20 @@ class Final(AbstractStrategy):
             :param identifier: operation name
             :return: max duration in rounds
             """
+            if round_points == 0:
+                return 0
             return int((round_points - operations.PRICES[identifier]["initial"]) /
                        operations.PRICES[identifier]["each"])
+
+        def is_affordable(identifier):
+            """
+            This function returns whether a measure is affordable
+            :param identifier: operation name
+            :return: whether the measure is affordable
+            """
+            if round_points == 0:
+                return 0
+            return round_points - operations.PRICES[identifier]["initial"] >= 0
 
         # Used to convert a scale of scores (24 - 4 = 20 where 4 is the minimum points and 20 maximum)
         highest_rating = 24
@@ -357,22 +353,24 @@ class Final(AbstractStrategy):
         for pathogen_name in pathogens_names:
             if pathogen_name not in pathogens_medication_available_names and pathogen_name not in \
                     pathogens_medication_in_development_names:
-                rank_operation("develop_medication", pathogen_name, op_score=round(
-                    measure_weights["develop_medication"] * (
-                            pathogens_scores[pathogen_name] +
-                            pathogens_count_infected_cities[pathogen_name]), 5))
+                if is_affordable("develop_medication"):
+                    rank_operation("develop_medication", pathogen_name, op_score=round(
+                        measure_weights["develop_medication"] * (
+                                pathogens_scores[pathogen_name] +
+                                pathogens_count_infected_cities[pathogen_name]), 5))
 
         # Deploy medication in cities at most risk
         for city_name, pathogen_name in cities_pathogen_name.items():
             if pathogen_name in pathogens_medication_available_names:
-                rank_operation("deploy_medication", pathogen_name, city_name, op_score=round(
-                    measure_weights["deploy_medication"] * (
-                            cities_pathogen_score[city_name] +
-                            cities_scores[city_name] +
-                            cities_outbreak_scores[city_name] +
-                            cities_count_flight_connections[city_name] +
-                            pathogens_scores[pathogen_name] +
-                            pathogens_count_infected_cities[pathogen_name]), 5))
+                if is_affordable("deploy_medication"):
+                    rank_operation("deploy_medication", pathogen_name, city_name, op_score=round(
+                        measure_weights["deploy_medication"] * (
+                                cities_pathogen_score[city_name] +
+                                cities_scores[city_name] +
+                                cities_outbreak_scores[city_name] +
+                                cities_count_flight_connections[city_name] +
+                                pathogens_scores[pathogen_name] +
+                                pathogens_count_infected_cities[pathogen_name]), 5))
 
         # Develop medication for most dangerous pathogens
         for pathogen in pathogens:
