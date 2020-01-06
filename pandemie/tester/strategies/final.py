@@ -302,8 +302,9 @@ class Final(AbstractStrategy):
                         # This score is acquired by combining prevalence, duration and pathogen strength
                         outbreak_score = round((1 + city_event["prevalence"]) *
                                                (round_number - city_event["sinceRound"] +
-                                                pathogens_scores[city_event["pathogen"]["name"]] +
-                                                pathogens_count_infected_cities[city_event["pathogen"]["name"]]), 4)
+                                               city_stats["population"]) +
+                                               pathogens_scores[city_event["pathogen"]["name"]] +
+                                               pathogens_count_infected_cities[city_event["pathogen"]["name"]], 5)
                         cities_outbreak_scores[city_name] = outbreak_score
 
         # Associate connected cities to a city
