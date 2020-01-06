@@ -6,10 +6,12 @@ import sys
 import threading
 import getopt
 import pandemie.tester.optimization as optimization  # We cannot use import from due to circular imports
+import pandemie.util.analyse_log as analyse_log
 
 from pandemie.tester import AbstractStrategy
 from pandemie.web import WebServer
 from pandemie.util import to_camel_case, now
+
 
 # Consts used to shift the sigmoid curve
 WIN_RATE_HALVED = 75
@@ -243,6 +245,9 @@ def main():
         percentage))
 
     print("Total score: ", result)
+
+    if do_output:
+        analyse_log.analyse(my_tester.strategy.get_file_path())
 
 
 # Execute here if we run this python file
