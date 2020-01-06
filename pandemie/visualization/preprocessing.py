@@ -38,7 +38,7 @@ round_names = sorted(round_names, key=lambda item: int("".join(filter(str.isdigi
 
 def init_rounds():
     """
-    This function reads the raw json data and saves it in a list
+    This function reads the raw json data and saves it in a list.
     :return: None
     """
     path = os.getcwd()
@@ -52,6 +52,11 @@ def init_rounds():
 
 
 def preprocess():
+    """
+    Preprocesses the whole json data.
+    :return: None
+    """
+    # Read the files from the disk
     init_rounds()
 
     # Preprocess rounds
@@ -68,7 +73,7 @@ def preprocess_round(json_round, number):
     plotting.
     :param json_round: json data of the round
     :param number: index of the round visualization
-    :return:
+    :return: None
     """
     # Store city positions
     round_update = defaultdict(list)
@@ -102,9 +107,7 @@ def preprocess_round(json_round, number):
     round_visualizations[number].update({"counts": list(pathogen_occurrence.values()),
                                          "names": list(pathogen_occurrence.keys())})
 
-    # Too many flight connections make the visualization lag
-
-    # Calculate the `weight` of a connection by adding the population
+    # Calculate the `weight` of a connection by summing the population up
     flight_value = {}
     for city_pair in flight_connections:
         c1, c2 = city_pair
@@ -125,44 +128,31 @@ def preprocess_round(json_round, number):
 
 
 def preprocess_game():
+    """
+    Adds the occurring pathogens and the world population for each round to the game visualization.
+    :return: None
+    """
     # Outcome
-    json_last_game = raw_json_rounds[len(raw_json_rounds) - 1]
-
-    game_visualizations["outcome"] = json_last_game["outcome"]
+    game_visualizations["outcome"] = raw_json_rounds[-1]["outcome"]
 
     # Population
     y_population = []
-    x_rounds = []
-    tmp = []
+    x_rounds = list(range(len(raw_json_rounds)))
 
-    for r in range(len(raw_json_rounds) + 1):
-        x_rounds.append(r)
-        tmp.append(r)
-
-    for round_number in range(len(round_names)):
-        game = raw_json_rounds[round_number]
-        if game["round"] in tmp:
-            p = 0
-            for city in game["cities"].items():
-                p += city[1]["population"] * 1000
-            y_population.append(p)
-            tmp.remove(game["round"])
+    # Calculating world population
+    for game in raw_json_rounds:
+        y_population.append(sum(city[1]["population"] for city in game["cities"].items())*1000)
 
     game_visualizations["x_rounds"] = x_rounds
     game_visualizations["y_population"] = y_population
 
     # Pathogens in full game
-    pathogens = []
+    pathogens = set()
 
     for game in raw_json_rounds:
         for city in game["cities"].items():
-            if "events" in city[1]:
-                for event in city[1]["events"]:
-                    if event["type"] == "outbreak":
-                        pathogen = event["pathogen"]
-                        if pathogen not in pathogens:
-                            pathogens.append(pathogen["name"])
+            for event in city[1].get("events", ()):
+                if event["type"] == "outbreak":
+                    pathogens.add(event["pathogen"]["name"])
 
-    pathogens = list(set(pathogens))
-
-    game_visualizations["pathogens"] = pathogens
+    game_visualizations["pathogens"] = list(pathogens)
