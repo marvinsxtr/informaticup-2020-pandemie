@@ -41,7 +41,3 @@ def analyse(file):
                 str(pathogens[c][1]) + "\n" for c in pathogens)
     with open(file, "a") as f:
         f.write("\n\n" + t)
-
-
-    
-
