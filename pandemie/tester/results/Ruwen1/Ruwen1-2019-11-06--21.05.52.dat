@@ -1,0 +1,258 @@
+loss:	14
+{'name': 'Moricillus ', 'infectivity': '-', 'mobility': 'o', 'duration': '-', 'lethality': '+'}
+{'name': 'N5-10', 'infectivity': '+', 'mobility': '++', 'duration': 'o', 'lethality': '+'}
+{'name': 'Methanobrevibacter colferi', 'infectivity': 'o', 'mobility': '++', 'duration': '--', 'lethality': '-'}
+
+loss:	28
+{'name': 'Procrastinalgia', 'infectivity': '-', 'mobility': '--', 'duration': '++', 'lethality': '--'}
+{'name': 'Phagum vidiianum', 'infectivity': 'o', 'mobility': 'o', 'duration': '+', 'lethality': '+'}
+{'name': 'Moricillus ', 'infectivity': '-', 'mobility': 'o', 'duration': '-', 'lethality': '+'}
+{'name': 'Shanty', 'infectivity': '+', 'mobility': '-', 'duration': 'o', 'lethality': '-'}
+
+win:	25
+{'name': 'Methanobrevibacter colferi', 'infectivity': 'o', 'mobility': '++', 'duration': '--', 'lethality': '-'}
+{'name': 'Rhinonitis', 'infectivity': 'o', 'mobility': '-', 'duration': '-', 'lethality': '--'}
+{'name': 'N5-10', 'infectivity': '+', 'mobility': '++', 'duration': 'o', 'lethality': '+'}
+
+loss:	5
+{'name': 'Admiral Trips', 'infectivity': '++', 'mobility': '+', 'duration': '-', 'lethality': '++'}
+
+loss:	42
+{'name': 'Moricillus ', 'infectivity': '-', 'mobility': 'o', 'duration': '-', 'lethality': '+'}
+{'name': 'Endoictus', 'infectivity': '-', 'mobility': 'o', 'duration': '+', 'lethality': '--'}
+{'name': 'Neurodermantotitis', 'infectivity': '+', 'mobility': 'o', 'duration': 'o', 'lethality': 'o'}
+
+loss:	34
+{'name': 'Phagum vidiianum', 'infectivity': 'o', 'mobility': 'o', 'duration': '+', 'lethality': '+'}
+{'name': 'Shanty', 'infectivity': '+', 'mobility': '-', 'duration': 'o', 'lethality': '-'}
+{'name': 'Neurodermantotitis', 'infectivity': '+', 'mobility': 'o', 'duration': 'o', 'lethality': 'o'}
+
+loss:	51
+{'name': 'Procrastinalgia', 'infectivity': '-', 'mobility': '--', 'duration': '++', 'lethality': '--'}
+{'name': 'N5-10', 'infectivity': '+', 'mobility': '++', 'duration': 'o', 'lethality': '+'}
+{'name': 'Phagum vidiianum', 'infectivity': 'o', 'mobility': 'o', 'duration': '+', 'lethality': '+'}
+
+win:	36
+{'name': 'Phagum vidiianum', 'infectivity': 'o', 'mobility': 'o', 'duration': '+', 'lethality': '+'}
+{'name': 'Plorps', 'infectivity': 'o', 'mobility': 'o', 'duration': '+', 'lethality': '-'}
+
+loss:	5
+{'name': 'Admiral Trips', 'infectivity': '++', 'mobility': '+', 'duration': '-', 'lethality': '++'}
+{'name': 'Xenomonocythemia', 'infectivity': '-', 'mobility': '--', 'duration': 'o', 'lethality': '++'}
+{'name': 'Procrastinalgia', 'infectivity': '-', 'mobility': '--', 'duration': '++', 'lethality': '--'}
+
+win:	40
+{'name': 'Rhinonitis', 'infectivity': 'o', 'mobility': '-', 'duration': '-', 'lethality': '--'}
+{'name': 'Moricillus ', 'infectivity': '-', 'mobility': 'o', 'duration': '-', 'lethality': '+'}
+{'name': 'Saccharomyces cerevisiae mutans', 'infectivity': 'o', 'mobility': 'o', 'duration': 'o', 'lethality': '-'}
+
+loss:	11
+{'name': 'Admiral Trips', 'infectivity': '++', 'mobility': '+', 'duration': '-', 'lethality': '++'}
+{'name': 'Azmodeus', 'infectivity': 'o', 'mobility': 'o', 'duration': 'o', 'lethality': 'o'}
+{'name': 'N5-10', 'infectivity': '+', 'mobility': '++', 'duration': 'o', 'lethality': '+'}
+
+loss:	18
+{'name': 'Azmodeus', 'infectivity': 'o', 'mobility': 'o', 'duration': 'o', 'lethality': 'o'}
+{'name': 'N5-10', 'infectivity': '+', 'mobility': '++', 'duration': 'o', 'lethality': '+'}
+
+loss:	52
+{'name': 'Endoictus', 'infectivity': '-', 'mobility': 'o', 'duration': '+', 'lethality': '--'}
+{'name': 'Shanty', 'infectivity': '+', 'mobility': '-', 'duration': 'o', 'lethality': '-'}
+{'name': 'Phagum vidiianum', 'infectivity': 'o', 'mobility': 'o', 'duration': '+', 'lethality': '+'}
+{'name': 'Moricillus ', 'infectivity': '-', 'mobility': 'o', 'duration': '-', 'lethality': '+'}
+
+win:	16
+{'name': 'Shanty', 'infectivity': '+', 'mobility': '-', 'duration': 'o', 'lethality': '-'}
+{'name': 'Admiral Trips', 'infectivity': '++', 'mobility': '+', 'duration': '-', 'lethality': '++'}
+
+loss:	28
+{'name': 'Plorps', 'infectivity': 'o', 'mobility': 'o', 'duration': '+', 'lethality': '-'}
+{'name': 'Admiral Trips', 'infectivity': '++', 'mobility': '+', 'duration': '-', 'lethality': '++'}
+{'name': 'thisis', 'infectivity': 'o', 'mobility': 'o', 'duration': 'o', 'lethality': 'o'}
+
+loss:	9
+{'name': 'Admiral Trips', 'infectivity': '++', 'mobility': '+', 'duration': '-', 'lethality': '++'}
+{'name': 'Influenza iutiubensis', 'infectivity': '++', 'mobility': '++', 'duration': '--', 'lethality': '--'}
+{'name': 'Shanty', 'infectivity': '+', 'mobility': '-', 'duration': 'o', 'lethality': '-'}
+
+loss:	87
+{'name': 'Xenomonocythemia', 'infectivity': '-', 'mobility': '--', 'duration': 'o', 'lethality': '++'}
+{'name': 'Saccharomyces cerevisiae mutans', 'infectivity': 'o', 'mobility': 'o', 'duration': 'o', 'lethality': '-'}
+{'name': 'Methanobrevibacter colferi', 'infectivity': 'o', 'mobility': '++', 'duration': '--', 'lethality': '-'}
+{'name': 'Endoictus', 'infectivity': '-', 'mobility': 'o', 'duration': '+', 'lethality': '--'}
+{'name': 'Shanty', 'infectivity': '+', 'mobility': '-', 'duration': 'o', 'lethality': '-'}
+{'name': 'Hexapox', 'infectivity': 'o', 'mobility': '+', 'duration': 'o', 'lethality': 'o'}
+
+win:	46
+{'name': 'Neurodermantotitis', 'infectivity': '+', 'mobility': 'o', 'duration': 'o', 'lethality': 'o'}
+{'name': 'N5-10', 'infectivity': '+', 'mobility': '++', 'duration': 'o', 'lethality': '+'}
+{'name': 'Saccharomyces cerevisiae mutans', 'infectivity': 'o', 'mobility': 'o', 'duration': 'o', 'lethality': '-'}
+
+loss:	27
+{'name': 'Phagum vidiianum', 'infectivity': 'o', 'mobility': 'o', 'duration': '+', 'lethality': '+'}
+{'name': 'Hexapox', 'infectivity': 'o', 'mobility': '+', 'duration': 'o', 'lethality': 'o'}
+{'name': 'Coccus innocuus', 'infectivity': 'o', 'mobility': '--', 'duration': 'o', 'lethality': '--'}
+
+loss:	5
+{'name': 'Xenomonocythemia', 'infectivity': '-', 'mobility': '--', 'duration': 'o', 'lethality': '++'}
+{'name': 'Admiral Trips', 'infectivity': '++', 'mobility': '+', 'duration': '-', 'lethality': '++'}
+{'name': 'Procrastinalgia', 'infectivity': '-', 'mobility': '--', 'duration': '++', 'lethality': '--'}
+
+win:	37
+{'name': 'Endoictus', 'infectivity': '-', 'mobility': 'o', 'duration': '+', 'lethality': '--'}
+{'name': 'Xenomonocythemia', 'infectivity': '-', 'mobility': '--', 'duration': 'o', 'lethality': '++'}
+{'name': 'Neurodermantotitis', 'infectivity': '+', 'mobility': 'o', 'duration': 'o', 'lethality': 'o'}
+
+loss:	31
+{'name': 'Moricillus ', 'infectivity': '-', 'mobility': 'o', 'duration': '-', 'lethality': '+'}
+{'name': 'Neurodermantotitis', 'infectivity': '+', 'mobility': 'o', 'duration': 'o', 'lethality': 'o'}
+{'name': 'Methanobrevibacter colferi', 'infectivity': 'o', 'mobility': '++', 'duration': '--', 'lethality': '-'}
+
+loss:	23
+{'name': 'Hexapox', 'infectivity': 'o', 'mobility': '+', 'duration': 'o', 'lethality': 'o'}
+{'name': 'Rhinonitis', 'infectivity': 'o', 'mobility': '-', 'duration': '-', 'lethality': '--'}
+{'name': 'Moricillus ', 'infectivity': '-', 'mobility': 'o', 'duration': '-', 'lethality': '+'}
+
+win:	33
+{'name': 'Azmodeus', 'infectivity': 'o', 'mobility': 'o', 'duration': 'o', 'lethality': 'o'}
+{'name': 'Xenomonocythemia', 'infectivity': '-', 'mobility': '--', 'duration': 'o', 'lethality': '++'}
+{'name': 'N5-10', 'infectivity': '+', 'mobility': '++', 'duration': 'o', 'lethality': '+'}
+{'name': 'Saccharomyces cerevisiae mutans', 'infectivity': 'o', 'mobility': 'o', 'duration': 'o', 'lethality': '-'}
+
+win:	32
+{'name': 'Plorps', 'infectivity': 'o', 'mobility': 'o', 'duration': '+', 'lethality': '-'}
+{'name': 'Rhinonitis', 'infectivity': 'o', 'mobility': '-', 'duration': '-', 'lethality': '--'}
+{'name': 'Admiral Trips', 'infectivity': '++', 'mobility': '+', 'duration': '-', 'lethality': '++'}
+
+win:	23
+{'name': 'N5-10', 'infectivity': '+', 'mobility': '++', 'duration': 'o', 'lethality': '+'}
+{'name': 'Hexapox', 'infectivity': 'o', 'mobility': '+', 'duration': 'o', 'lethality': 'o'}
+
+win:	29
+{'name': 'Saccharomyces cerevisiae mutans', 'infectivity': 'o', 'mobility': 'o', 'duration': 'o', 'lethality': '-'}
+{'name': 'Moricillus ', 'infectivity': '-', 'mobility': 'o', 'duration': '-', 'lethality': '+'}
+
+loss:	28
+{'name': 'Methanobrevibacter colferi', 'infectivity': 'o', 'mobility': '++', 'duration': '--', 'lethality': '-'}
+{'name': 'Moricillus ', 'infectivity': '-', 'mobility': 'o', 'duration': '-', 'lethality': '+'}
+{'name': 'Phagum vidiianum', 'infectivity': 'o', 'mobility': 'o', 'duration': '+', 'lethality': '+'}
+
+loss:	28
+{'name': 'Hexapox', 'infectivity': 'o', 'mobility': '+', 'duration': 'o', 'lethality': 'o'}
+{'name': 'Methanobrevibacter colferi', 'infectivity': 'o', 'mobility': '++', 'duration': '--', 'lethality': '-'}
+{'name': 'Phagum vidiianum', 'infectivity': 'o', 'mobility': 'o', 'duration': '+', 'lethality': '+'}
+
+loss:	14
+{'name': 'Admiral Trips', 'infectivity': '++', 'mobility': '+', 'duration': '-', 'lethality': '++'}
+{'name': 'Phagum vidiianum', 'infectivity': 'o', 'mobility': 'o', 'duration': '+', 'lethality': '+'}
+{'name': 'thisis', 'infectivity': 'o', 'mobility': 'o', 'duration': 'o', 'lethality': 'o'}
+
+loss:	47
+{'name': 'Admiral Trips', 'infectivity': '++', 'mobility': '+', 'duration': '-', 'lethality': '++'}
+{'name': 'Shanty', 'infectivity': '+', 'mobility': '-', 'duration': 'o', 'lethality': '-'}
+{'name': 'Endoictus', 'infectivity': '-', 'mobility': 'o', 'duration': '+', 'lethality': '--'}
+{'name': 'Phagum vidiianum', 'infectivity': 'o', 'mobility': 'o', 'duration': '+', 'lethality': '+'}
+
+loss:	21
+{'name': 'Neurodermantotitis', 'infectivity': '+', 'mobility': 'o', 'duration': 'o', 'lethality': 'o'}
+{'name': 'Moricillus ', 'infectivity': '-', 'mobility': 'o', 'duration': '-', 'lethality': '+'}
+
+loss:	15
+{'name': 'Influenza iutiubensis', 'infectivity': '++', 'mobility': '++', 'duration': '--', 'lethality': '--'}
+{'name': 'Admiral Trips', 'infectivity': '++', 'mobility': '+', 'duration': '-', 'lethality': '++'}
+{'name': 'Azmodeus', 'infectivity': 'o', 'mobility': 'o', 'duration': 'o', 'lethality': 'o'}
+
+loss:	28
+{'name': 'Methanobrevibacter colferi', 'infectivity': 'o', 'mobility': '++', 'duration': '--', 'lethality': '-'}
+{'name': 'Phagum vidiianum', 'infectivity': 'o', 'mobility': 'o', 'duration': '+', 'lethality': '+'}
+{'name': 'Azmodeus', 'infectivity': 'o', 'mobility': 'o', 'duration': 'o', 'lethality': 'o'}
+{'name': 'Admiral Trips', 'infectivity': '++', 'mobility': '+', 'duration': '-', 'lethality': '++'}
+
+loss:	74
+{'name': 'Coccus innocuus', 'infectivity': 'o', 'mobility': '--', 'duration': 'o', 'lethality': '--'}
+{'name': 'Hexapox', 'infectivity': 'o', 'mobility': '+', 'duration': 'o', 'lethality': 'o'}
+{'name': 'Xenomonocythemia', 'infectivity': '-', 'mobility': '--', 'duration': 'o', 'lethality': '++'}
+{'name': 'Endoictus', 'infectivity': '-', 'mobility': 'o', 'duration': '+', 'lethality': '--'}
+{'name': 'thisis', 'infectivity': 'o', 'mobility': 'o', 'duration': 'o', 'lethality': 'o'}
+{'name': 'Moricillus ', 'infectivity': '-', 'mobility': 'o', 'duration': '-', 'lethality': '+'}
+{'name': 'Shanty', 'infectivity': '+', 'mobility': '-', 'duration': 'o', 'lethality': '-'}
+
+win:	40
+{'name': 'Hexapox', 'infectivity': 'o', 'mobility': '+', 'duration': 'o', 'lethality': 'o'}
+{'name': 'Coccus innocuus', 'infectivity': 'o', 'mobility': '--', 'duration': 'o', 'lethality': '--'}
+{'name': 'Xenomonocythemia', 'infectivity': '-', 'mobility': '--', 'duration': 'o', 'lethality': '++'}
+
+loss:	20
+{'name': 'Phagum vidiianum', 'infectivity': 'o', 'mobility': 'o', 'duration': '+', 'lethality': '+'}
+{'name': 'N5-10', 'infectivity': '+', 'mobility': '++', 'duration': 'o', 'lethality': '+'}
+{'name': 'thisis', 'infectivity': 'o', 'mobility': 'o', 'duration': 'o', 'lethality': 'o'}
+
+loss:	28
+{'name': 'Phagum vidiianum', 'infectivity': 'o', 'mobility': 'o', 'duration': '+', 'lethality': '+'}
+{'name': 'Coccus innocuus', 'infectivity': 'o', 'mobility': '--', 'duration': 'o', 'lethality': '--'}
+{'name': 'Plorps', 'infectivity': 'o', 'mobility': 'o', 'duration': '+', 'lethality': '-'}
+
+win:	43
+{'name': 'Hexapox', 'infectivity': 'o', 'mobility': '+', 'duration': 'o', 'lethality': 'o'}
+{'name': 'thisis', 'infectivity': 'o', 'mobility': 'o', 'duration': 'o', 'lethality': 'o'}
+{'name': 'N5-10', 'infectivity': '+', 'mobility': '++', 'duration': 'o', 'lethality': '+'}
+{'name': 'Coccus innocuus', 'infectivity': 'o', 'mobility': '--', 'duration': 'o', 'lethality': '--'}
+
+win:	26
+{'name': 'Moricillus ', 'infectivity': '-', 'mobility': 'o', 'duration': '-', 'lethality': '+'}
+{'name': 'Procrastinalgia', 'infectivity': '-', 'mobility': '--', 'duration': '++', 'lethality': '--'}
+
+loss:	27
+{'name': 'Coccus innocuus', 'infectivity': 'o', 'mobility': '--', 'duration': 'o', 'lethality': '--'}
+{'name': 'Phagum vidiianum', 'infectivity': 'o', 'mobility': 'o', 'duration': '+', 'lethality': '+'}
+{'name': 'Saccharomyces cerevisiae mutans', 'infectivity': 'o', 'mobility': 'o', 'duration': 'o', 'lethality': '-'}
+
+loss:	29
+{'name': 'Moricillus ', 'infectivity': '-', 'mobility': 'o', 'duration': '-', 'lethality': '+'}
+{'name': 'Coccus innocuus', 'infectivity': 'o', 'mobility': '--', 'duration': 'o', 'lethality': '--'}
+{'name': 'thisis', 'infectivity': 'o', 'mobility': 'o', 'duration': 'o', 'lethality': 'o'}
+
+win:	35
+{'name': 'Procrastinalgia', 'infectivity': '-', 'mobility': '--', 'duration': '++', 'lethality': '--'}
+{'name': 'Moricillus ', 'infectivity': '-', 'mobility': 'o', 'duration': '-', 'lethality': '+'}
+{'name': 'Methanobrevibacter colferi', 'infectivity': 'o', 'mobility': '++', 'duration': '--', 'lethality': '-'}
+
+loss:	34
+{'name': 'Phagum vidiianum', 'infectivity': 'o', 'mobility': 'o', 'duration': '+', 'lethality': '+'}
+{'name': 'Neurodermantotitis', 'infectivity': '+', 'mobility': 'o', 'duration': 'o', 'lethality': 'o'}
+{'name': 'thisis', 'infectivity': 'o', 'mobility': 'o', 'duration': 'o', 'lethality': 'o'}
+
+loss:	40
+{'name': 'Moricillus ', 'infectivity': '-', 'mobility': 'o', 'duration': '-', 'lethality': '+'}
+{'name': 'Methanobrevibacter colferi', 'infectivity': 'o', 'mobility': '++', 'duration': '--', 'lethality': '-'}
+{'name': 'Saccharomyces cerevisiae mutans', 'infectivity': 'o', 'mobility': 'o', 'duration': 'o', 'lethality': '-'}
+
+loss:	31
+{'name': 'Methanobrevibacter colferi', 'infectivity': 'o', 'mobility': '++', 'duration': '--', 'lethality': '-'}
+{'name': 'Phagum vidiianum', 'infectivity': 'o', 'mobility': 'o', 'duration': '+', 'lethality': '+'}
+{'name': 'Plorps', 'infectivity': 'o', 'mobility': 'o', 'duration': '+', 'lethality': '-'}
+
+win:	19
+{'name': 'Admiral Trips', 'infectivity': '++', 'mobility': '+', 'duration': '-', 'lethality': '++'}
+{'name': 'Saccharomyces cerevisiae mutans', 'infectivity': 'o', 'mobility': 'o', 'duration': 'o', 'lethality': '-'}
+{'name': 'Xenomonocythemia', 'infectivity': '-', 'mobility': '--', 'duration': 'o', 'lethality': '++'}
+
+win:	38
+{'name': 'Influenza iutiubensis', 'infectivity': '++', 'mobility': '++', 'duration': '--', 'lethality': '--'}
+{'name': 'Phagum vidiianum', 'infectivity': 'o', 'mobility': 'o', 'duration': '+', 'lethality': '+'}
+{'name': 'Procrastinalgia', 'infectivity': '-', 'mobility': '--', 'duration': '++', 'lethality': '--'}
+{'name': 'Coccus innocuus', 'infectivity': 'o', 'mobility': '--', 'duration': 'o', 'lethality': '--'}
+
+loss:	33
+{'name': 'Methanobrevibacter colferi', 'infectivity': 'o', 'mobility': '++', 'duration': '--', 'lethality': '-'}
+{'name': 'Xenomonocythemia', 'infectivity': '-', 'mobility': '--', 'duration': 'o', 'lethality': '++'}
+{'name': 'Phagum vidiianum', 'infectivity': 'o', 'mobility': 'o', 'duration': '+', 'lethality': '+'}
+{'name': 'thisis', 'infectivity': 'o', 'mobility': 'o', 'duration': 'o', 'lethality': 'o'}
+{'name': 'Admiral Trips', 'infectivity': '++', 'mobility': '+', 'duration': '-', 'lethality': '++'}
+{'name': 'Procrastinalgia', 'infectivity': '-', 'mobility': '--', 'duration': '++', 'lethality': '--'}
+
+loss:	5
+{'name': 'Admiral Trips', 'infectivity': '++', 'mobility': '+', 'duration': '-', 'lethality': '++'}
+{'name': 'Procrastinalgia', 'infectivity': '-', 'mobility': '--', 'duration': '++', 'lethality': '--'}
+
+-0.19470312029295042

@@ -9,6 +9,9 @@ from collections import defaultdict
 
 logs_path = "/logs/"
 
+# Max number of flight connections displayed
+MAX_PATHS = 100
+
 # This list has the raw game data as a list of json objects for each round
 raw_json_rounds = []
 
@@ -60,6 +63,13 @@ def preprocess():
 
 
 def preprocess_round(json_round, number):
+    """
+    Analyze a single round. Coordinates, occurring pathogens and flight connection are analyzed and store for later
+    plotting.
+    :param json_round: json data of the round
+    :param number: index of the round visualization
+    :return:
+    """
     # Store city positions
     round_update = defaultdict(list)
 
@@ -72,31 +82,38 @@ def preprocess_round(json_round, number):
     # Iterate over all cities
     for city in json_round["cities"].items():
         for event in city[1].get("events", ()):
-            if event["type"] == "outbreak":  # there should only be one outbreak for each city
+            if event["type"] == "outbreak":  # There should only be one outbreak for each city
+
+                # Save city coordinates
                 round_update["lat"].append(city[1]["latitude"])
                 round_update["lon"].append(city[1]["longitude"])
                 round_update["name"].append(city[0])
 
+                # Increase pathogen count
                 pathogen_occurrence[event["pathogen"]["name"]] += 1
 
+                # save flight connection
                 for connection in city[1]["connections"]:
                     flight_connections.add(frozenset((city[0], connection)))
 
+    # Update round visualizations
     round_visualizations[number].update(round_update)
 
     round_visualizations[number].update({"counts": list(pathogen_occurrence.values()),
                                          "names": list(pathogen_occurrence.keys())})
 
-    max_paths = 100
-    # to many flight connections make the visualization lag
+    # Too many flight connections make the visualization lag
 
+    # Calculate the `weight` of a connection by adding the population
     flight_value = {}
     for city_pair in flight_connections:
         c1, c2 = city_pair
         flight_value[city_pair] = json_round["cities"][c1]["population"] + json_round["cities"][c2]["population"]
 
-    sorted_flights = sorted(flight_value.items(), key=lambda x: x[1], reverse=True)[:max_paths]
+    # Sort flights
+    sorted_flights = sorted(flight_value.items(), key=lambda x: x[1], reverse=True)[:MAX_PATHS]
 
+    # Store connection
     flight_path = []
     for (c1, c2), _ in sorted_flights:
         c1 = json_round["cities"][c1]
