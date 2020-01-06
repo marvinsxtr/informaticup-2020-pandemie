@@ -91,7 +91,7 @@ def visualize_round_connections_infected(number):
         )))
 
     # Flight paths
-    """
+
     flight_paths = pre.round_visualizations[number]["flight_paths"]
     for i in range(len(flight_paths)):
         fig.add_trace(
@@ -105,7 +105,7 @@ def visualize_round_connections_infected(number):
                 opacity=1,
             )
         )
-    """
+
     fig.update_layout(geo=dict(scope='world', projection=Projection(type="orthographic"), ))
     fig.update_layout(title='Outbreaks')
 

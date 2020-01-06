@@ -18,7 +18,10 @@ game_visualizations = {}
 # store a dict for each round
 # { lat -> latitude of cities
 #   lon -> longitude of cities
-#   names -> names of cities
+#   name -> names of cities
+#   flight_paths ->
+#   counts -> pathogen counts
+#   names -> pathogen names }
 round_visualizations = []
 
 # A list of the round files and label for full game visualization
@@ -60,48 +63,48 @@ def preprocess_round(json_round, number):
     # Store city positions
     round_update = defaultdict(list)
 
-    for city in json_round["cities"].items():
-        for event in city[1].get("events", ()):
-            if event["type"] == "outbreak":
-                round_update["lat"].append(city[1]["latitude"])
-                round_update["lon"].append(city[1]["longitude"])
-                round_update["name"].append(city[0])
-                break
-
-    round_visualizations[number].update(round_update)
-
-
-    # Flight paths
-    flight_paths = []
-    left_over_cities = []
-
-    for city in json_round["cities"].items():
-        left_over_cities.append(city[0])
-
-    for city in json_round["cities"].items():
-        if city[0] in left_over_cities:
-            if "events" in city[1]:
-                for event in city[1]["events"]:
-                    if event["type"] == "outbreak":
-                        for connection in city[1]["connections"]:
-                            other_city = json_round["cities"][connection]
-                            new_connection = dict({"lat1": other_city["latitude"], "lon1": other_city["longitude"],
-                                                   "lat2": city[1]["latitude"], "lon2": city[1]["longitude"]})
-                            flight_paths.append(new_connection)
-            left_over_cities.remove(city[0])
-
-    round_visualizations[number].update({"flight_paths": flight_paths})
-
     # Pathogen pie
     pathogen_occurrence = defaultdict(lambda: 0)
 
+    # Flight paths
+    flight_connections = set()
+
+    # Iterate over all cities
     for city in json_round["cities"].items():
         for event in city[1].get("events", ()):
-            if event["type"] == "outbreak":
+            if event["type"] == "outbreak":  # there should only be one outbreak for each city
+                round_update["lat"].append(city[1]["latitude"])
+                round_update["lon"].append(city[1]["longitude"])
+                round_update["name"].append(city[0])
+
                 pathogen_occurrence[event["pathogen"]["name"]] += 1
 
-    round_visualizations[number].update({"counts": list(pathogen_occurrence.keys()),
-                                         "names": list(pathogen_occurrence.values())})
+                for connection in city[1]["connections"]:
+                    flight_connections.add(frozenset((city[0], connection)))
+
+    round_visualizations[number].update(round_update)
+
+    round_visualizations[number].update({"counts": list(pathogen_occurrence.values()),
+                                         "names": list(pathogen_occurrence.keys())})
+
+    max_paths = 100
+    # to many flight connections make the visualization lag
+
+    flight_value = {}
+    for city_pair in flight_connections:
+        c1, c2 = city_pair
+        flight_value[city_pair] = json_round["cities"][c1]["population"] + json_round["cities"][c2]["population"]
+
+    sorted_flights = sorted(flight_value.items(), key=lambda x: x[1], reverse=True)[:max_paths]
+
+    flight_path = []
+    for (c1, c2), _ in sorted_flights:
+        c1 = json_round["cities"][c1]
+        c2 = json_round["cities"][c2]
+        flight_path.append({"lat1": c1["latitude"], "lon1": c1["longitude"], "lat2": c2["latitude"],
+                            "lon2": c2["longitude"]})
+
+    round_visualizations[number].update({"flight_paths": flight_path})
 
 
 def preprocess_game():
@@ -146,4 +149,3 @@ def preprocess_game():
     pathogens = list(set(pathogens))
 
     game_visualizations["pathogens"] = pathogens
-
