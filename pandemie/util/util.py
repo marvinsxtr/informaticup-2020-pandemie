@@ -10,6 +10,16 @@ import datetime
 TIME_FORMAT = "%Y-%m-%d--%H.%M.%S"
 
 
+def apply_weight(ranking, weight):
+    """
+    This function applies a weight to a ranking
+    :param ranking: the ranking which the
+    :param weight: weight to be applied
+    :return: weighted ranking
+    """
+    return {k: v * weight for k, v in ranking.items()}
+
+
 def create_file(path):
     """
     This function creates a file if it does not exist already
