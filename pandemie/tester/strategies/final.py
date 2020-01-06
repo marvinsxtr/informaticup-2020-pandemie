@@ -7,8 +7,6 @@ Observations:
 - it might be sufficient to sort by operation and afterwards sort the 12 best possibilities
 - points for an operation are pre-paid for the required round duration
 """
-import numbers
-
 from pandemie.tester import AbstractStrategy
 from pandemie.util import normalize_ranking, merge_ranking, operations
 from pandemie.util import map_symbol_score as score
