@@ -9,7 +9,7 @@ Observations:
 """
 from pandemie.tester import AbstractStrategy
 from pandemie.util import normalize_ranking, merge_ranking, operations, map_symbol_score
-from pandemie.util import map_symbol_score as score
+from pandemie.util import map_symbol_score as score, apply_weight
 
 
 class Final(AbstractStrategy):
@@ -78,10 +78,11 @@ class Final(AbstractStrategy):
             This returns the best operation which will be the return value of the solve function
             :return: operation tuple
             """
-            # Normalize rankings
-            for operation_name, operation_ranking in operation_rankings.items():
-                operation_rankings[operation_name] = normalize_ranking(operation_ranking)
-                # Print(operation_rankings[operation_name])
+            # Normalize and weight rankings
+            for operation_name in operation_rankings.keys():
+                operation_rankings[operation_name] = normalize_ranking(operation_rankings[operation_name])
+                operation_rankings[operation_name] = apply_weight(operation_rankings[operation_name],
+                                                                  measure_weights[operation_name])
 
             # Get best operation for each measure
             for operation_name, operation_ranking in operation_rankings.items():
