@@ -106,23 +106,8 @@ class Final(AbstractStrategy):
             # Best_operation = max(measure_ranking, key=lambda key: measure_ranking[key])
             best_operation = max(overall_ranking, key=lambda key: overall_ranking[key])
 
-            # Calculate price and check if operation is possible
-            rounds = 0
-            for param in best_operation:
-                if isinstance(param, numbers.Number):
-                    rounds = param
-
             name, *rest = best_operation
-            if rounds == 0:
-                price = operations.PRICES[name]["initial"]
-            else:
-                price = rounds * operations.PRICES[name]["each"] + operations.PRICES[name]["initial"]
-
-            # Check if operation is affordable
-            if price <= round_points:
-                return operations.get(name, *rest)
-            else:
-                return operations.end_round()
+            return operations.get(name, *rest)
 
         def rank_operation(*op_tuple, op_score):
             """
@@ -149,6 +134,8 @@ class Final(AbstractStrategy):
             :param identifier: operation name
             :return: max duration in rounds
             """
+            if round_points == 0:
+                return 0
             return int((round_points - operations.PRICES[identifier]["initial"]) /
                        operations.PRICES[identifier]["each"])
 
@@ -158,6 +145,8 @@ class Final(AbstractStrategy):
             :param identifier: operation name
             :return: whether the measure is affordable
             """
+            if round_points == 0:
+                return 0
             return round_points - operations.PRICES[identifier]["initial"] >= 0
 
         # Used to convert a scale of scores (24 - 4 = 20 where 4 is the minimum points and 20 maximum)
