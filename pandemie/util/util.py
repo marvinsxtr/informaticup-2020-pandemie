@@ -10,6 +10,11 @@ import datetime
 TIME_FORMAT = "%Y-%m-%d--%H.%M.%S"
 
 
+def apply_weight(ranking, weight):
+    for value in ranking.values():
+        value *= weight
+
+
 def create_file(path):
     """
     This function creates a file if it does not exist already
