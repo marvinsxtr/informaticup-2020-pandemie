@@ -36,3 +36,12 @@ uprising	, local
 
 hygienicMeasuresApplied	, local
 {'type': 'hygienicMeasuresApplied', 'round': 2}
+
+vaccineInDevelopment	, global
+{'type': 'vaccineInDevelopment', 'pathogen': {'name': 'Rhinonitis', 'infectivity': 'o', 'mobility': '-', 'duration': '-', 'lethality': '--'}, 'sinceRound': 4, 'untilRound': 10}
+
+vaccineAvailable	, global
+{'type': 'vaccineAvailable', 'pathogen': {'name': 'Phagum vidiianum', 'infectivity': 'o', 'mobility': 'o', 'duration': '+', 'lethality': '+'}, 'sinceRound': 10}
+
+vaccineDeployed	, local
+{'type': 'vaccineDeployed', 'pathogen': {'name': 'Plorps', 'infectivity': 'o', 'mobility': 'o', 'duration': '+', 'lethality': '-'}, 'round': 13}

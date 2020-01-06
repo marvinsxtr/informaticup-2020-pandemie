@@ -10,7 +10,7 @@ Observations:
 import numbers
 
 from pandemie.tester import AbstractStrategy
-from pandemie.util import normalize_ranking, merge_ranking, operations
+from pandemie.util import normalize_ranking, merge_ranking, operations, map_symbol_score
 from pandemie.util import map_symbol_score as score
 
 
@@ -120,6 +120,7 @@ class Final(AbstractStrategy):
 
             # Check if operation is affordable
             if price <= round_points:
+                print(operations.get(name, *rest))
                 return operations.get(name, *rest)
             else:
                 return operations.end_round()
@@ -167,6 +168,12 @@ class Final(AbstractStrategy):
         pathogens_medication_in_development = []
         pathogens_medication_in_development_names = []
 
+        pathogens_vaccine_in_development = []
+        pathogens_vaccine_in_development_names = []
+
+        pathogens_vaccine_available = []
+        pathogens_vaccine_available_names = []
+
         cities = []
         cities_names = []
 
@@ -208,6 +215,14 @@ class Final(AbstractStrategy):
             if round_global_event["type"] == "medicationInDevelopment":
                 pathogens_medication_in_development.append(round_global_event["pathogen"])
                 pathogens_medication_in_development_names.append(round_global_event["pathogen"]["name"])
+
+            if round_global_event["type"] == "vaccineAvailable":
+                pathogens_vaccine_available.append(round_global_event["pathogen"])
+                pathogens_vaccine_available_names.append(round_global_event["pathogen"]["name"])
+
+            if round_global_event["type"] == "vaccineInDevelopment":
+                pathogens_vaccine_in_development.append(round_global_event["pathogen"])
+                pathogens_vaccine_in_development_names.append(round_global_event["pathogen"]["name"])
 
             # If round_global_event["type"] == "economicCrisis":
             # Todo: adjust weight for exert_influence
@@ -352,6 +367,28 @@ class Final(AbstractStrategy):
             if pathogen_name in pathogens_medication_available_names:
                 rank_operation("deploy_medication", pathogen_name, city_name, op_score=round(
                     measure_weights["deploy_medication"] * (
+                            cities_pathogen_score[city_name] +
+                            cities_scores[city_name] +
+                            cities_outbreak_scores[city_name] +
+                            cities_count_flight_connections[city_name] +
+                            pathogens_scores[pathogen_name] +
+                            pathogens_count_infected_cities[pathogen_name]), 5))
+
+        # Develop medication for most dangerous pathogens
+        for pathogen in pathogens:
+            if pathogen["name"] not in pathogens_vaccine_available_names and pathogen["name"] not in \
+                    pathogens_vaccine_in_development_names:
+                rank_operation("develop_vaccine", pathogen["name"], op_score=round(
+                    measure_weights["develop_vaccine"] * (
+                            pathogens_scores[pathogen["name"]] +
+                            map_symbol_score(pathogen["lethality"]) * 5 +
+                            pathogens_count_infected_cities[pathogen["name"]]), 5))
+
+        # Deploy medication in cities at most risk
+        for city_name, pathogen_name in cities_pathogen_name.items():
+            if pathogen_name in pathogens_medication_available_names:
+                rank_operation("deploy_vaccine", pathogen_name, city_name, op_score=round(
+                    measure_weights["deploy_vaccine"] * (
                             cities_pathogen_score[city_name] +
                             cities_scores[city_name] +
                             cities_outbreak_scores[city_name] +
