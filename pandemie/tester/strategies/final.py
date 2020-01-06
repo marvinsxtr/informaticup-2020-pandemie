@@ -383,7 +383,7 @@ class Final(AbstractStrategy):
 
         # Deploy vaccine in cities at most risk
         for city_name, pathogen_name in cities_pathogen_name.items():
-            if pathogen_name in pathogens_medication_available_names:
+            if pathogen_name in pathogens_vaccine_available_names:
                 if is_affordable("deploy_vaccine"):
                     rank_operation("deploy_vaccine", pathogen_name, city_name, op_score=round(
                         measure_weights["deploy_vaccine"] * (
