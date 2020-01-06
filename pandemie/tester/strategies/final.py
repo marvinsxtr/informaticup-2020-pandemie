@@ -372,17 +372,18 @@ class Final(AbstractStrategy):
                                 pathogens_scores[pathogen_name] +
                                 pathogens_count_infected_cities[pathogen_name]), 5))
 
-        # Develop medication for most dangerous pathogens
+        # Develop vaccine for most dangerous pathogens
         for pathogen in pathogens:
             if pathogen["name"] not in pathogens_vaccine_available_names and pathogen["name"] not in \
                     pathogens_vaccine_in_development_names:
-                rank_operation("develop_vaccine", pathogen["name"], op_score=round(
-                    measure_weights["develop_vaccine"] * (
-                            pathogens_scores[pathogen["name"]] +
-                            map_symbol_score(pathogen["lethality"]) * 5 +
-                            pathogens_count_infected_cities[pathogen["name"]]), 5))
+                if is_affordable("develop_vaccine"):
+                    rank_operation("develop_vaccine", pathogen["name"], op_score=round(
+                        measure_weights["develop_vaccine"] * (
+                                pathogens_scores[pathogen["name"]] +
+                                map_symbol_score(pathogen["lethality"]) * 5 +
+                                pathogens_count_infected_cities[pathogen["name"]]), 5))
 
-        # Deploy medication in cities at most risk
+        # Deploy vaccine in cities at most risk
         for city_name, pathogen_name in cities_pathogen_name.items():
             if pathogen_name in pathogens_medication_available_names:
                 rank_operation("deploy_vaccine", pathogen_name, city_name, op_score=round(
