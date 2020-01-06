@@ -15,23 +15,27 @@ game_visualizations = {}
 round_visualizations = []
 
 # A list of the round files and label for full game visualization
-option_labels = [{'label': 'Visualize full game', 'value': 'game'}]
+option_labels = [{"label": "Visualize full game", "value": "game"}]
+
+# Read file names and store them sorted
 round_names = os.listdir(os.getcwd() + logs_path)
 round_names.remove(".gitignore")
-round_names = sorted(round_names, key=lambda item: int(''.join(filter(str.isdigit, item))))
+round_names = sorted(round_names, key=lambda item: int("".join(filter(str.isdigit, item))))
 
 
 def init_rounds():
-    # This function reads the raw json data and saves it in a list
+    """
+    This function reads the raw json data and saves it in a list
+    :return: None
+    """
     path = os.getcwd()
-    number = 0
-    for round_name in round_names:
+
+    for number, round_name in enumerate(round_names):
         round_visualizations.insert(number, dict())
-        option_labels.append({'label': 'Visualize {0}'.format(round_name), 'value': round_name})
-        with open(path + "{0}{1}".format(logs_path, round_name), 'r+') as f:
-            f.seek(0)
+        option_labels.append({"label": "Visualize {0}".format(round_name), "value": round_name})
+
+        with open(path + logs_path + round_name, "r+") as f:
             raw_json_rounds.append(json.load(f))
-        number += 1
 
 
 def preprocess():
