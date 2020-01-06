@@ -31,7 +31,7 @@ class Tester:
             raise ValueError("Strategy is not valid.")
 
         if not test_strategy.silent:
-            strategy_dir = "results/" + test_strategy.name
+            strategy_dir = "logs/" + test_strategy.name
 
             # Create a directory for the strategy if it doesn't exists
             if not os.path.exists(strategy_dir):

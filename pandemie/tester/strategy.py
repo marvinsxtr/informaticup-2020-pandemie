@@ -2,7 +2,7 @@ import threading
 
 from abc import ABC, abstractmethod
 
-from pandemie.event_checker import EventChecker
+from pandemie.util.event_checker import EventChecker
 from pandemie.util import filter_unicode, log_json
 
 
@@ -76,7 +76,7 @@ class AbstractStrategy(ABC):
             self.lock.release()
 
             if not self.silent:
-                self.log_result(json_data)  # Log cumulative results
+                self.log_result(json_data)  # Log cumulative logs
 
         return self._solve(json_data)
 
@@ -101,7 +101,7 @@ class AbstractStrategy(ABC):
         Helper-function to return the dynamic path to the logfile
         :return: path to the logfile
         """
-        return "results/" + self.name + "/" + self.file
+        return "logs/" + self.name + "/" + self.file
 
     @property
     def name(self):
