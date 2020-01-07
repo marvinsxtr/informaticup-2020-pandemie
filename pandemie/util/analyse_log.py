@@ -29,17 +29,15 @@ def analyse(file):
     with open(file, "r") as f:
         raw_data = f.read()
 
-    # Split different games at $-symbol
+    # Split different games
     data = raw_data.split("$")
     for d in data:
         # Check if game was lost
         if "loss" in d[:4]:
-            # Set index for loss
             i = 1
         else:
-            # Set index for win
             i = 0
-        # Split to get the pathogens
+        # Split the pathogens
         lines = d.split("\n")
         # Start at 1 -> first pathogen
         for j in range(1, len(lines) - 2):
@@ -47,10 +45,14 @@ def analyse(file):
             line = yaml.load(lines[j], Loader=yaml.FullLoader)
             pathogens[filter_unicode(line["name"]).strip()][i] += 1
 
-    # Format the data
-    t = "".join(c + "".join(" " for _ in range(31 - len(c))) + "\t-\twins: " + str(pathogens[c][0]) + " - loss: " +
-                str(pathogens[c][1]) + "\n" for c in pathogens)
+    s = ""
+    for p in pathogens:
+        s += p
+        # Add whitespaces for better view
+        for _ in range(len("Saccharomyces cerevisiae mutans") - len(p)):
+            s += " "
+        s += "\t-\twins: %s - loss: %s\n" % (str(pathogens[p][0]), str(pathogens[p][1]))
 
     # Write the data to the end of the logfile
     with open(file, "a") as f:
-        f.write("\n\n" + t)
+        f.write("\n\n" + s)
