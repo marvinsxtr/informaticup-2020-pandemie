@@ -3,6 +3,11 @@ from pandemie.util.encoding import filter_unicode
 
 
 def analyse(file):
+    """
+    This function parses the given logfile and creates a statistic for each pathogen, how many games were lost and how
+    many games were won, when the specific pathogen occurred. This statistic ist added to the end of the logfile.
+    :param file: path to the logfile
+    """
     # Init dict vor all known pathogens: Name: [win, loss]
     pathogens = {
         "Admiral Trips": [0, 0],
