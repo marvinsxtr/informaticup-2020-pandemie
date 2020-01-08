@@ -21,8 +21,8 @@
 (Alex)<br>
 In dieser Dokumentation wird die Verwendung und Funktionsweise unserer Lösung des Problems des Informaticups 2019
 beschrieben.<br>
-Durch das bereitgestellte Programm `ic20_linux`*, welches von den Herausgebern des Informaticups zur Verfügung gestellt wird,
-wird eine Epedemie der Welt simuliert.
+Durch das bereitgestellte Programm `ic20_linux`*, welches von den Herausgebern des Informaticups zur Verfügung gestellt 
+wird, wird eine Epedemie der Welt simuliert.
 Ziel ist es, dass in möglichst kurzer Zeit, die Menschheit auf dem Planeten Erde überlebt und die Seuchen
 ausgerottet werden. Diese Seuchen haben unterschiedliche Eigenschaften und treten zufällig auf.
 Für die Lösung wurde unsererseits ein Webservice entwickelt, welcher in Kombination mit einer Lösungsstrategie dem
@@ -83,8 +83,8 @@ Analysieren und Testen eigener Strategien bereitgestellt. Um eigene Strategien z
 ```bash
 python3.8 -m pandemie.tester
 ```
-<br>Der Tester kann mit verschiedenen Optionen über die Kommandozeile konfigurieren werden. Diese kann man sich so anzeigen
-lassen:
+<br>Der Tester kann mit verschiedenen Optionen über die Kommandozeile konfigurieren werden. Diese kann man sich so 
+anzeigen lassen:
 ```bash
 > python3.8 -m pandemie.tester -h
 -h --help            show the help
@@ -210,8 +210,8 @@ Erweiterungen realisiert werden können.
 ### Wie starte ich die Visualisierung
 Um die Visualisierung zu starten muss zunächst mindestens einmal der 
 [Tester](documentation.md#den-tester-richtig-nutzen) mit der Visualisierungs-Option gestartet werden. Dies führt dazu, 
-dass im Ordner `pandemie/visualization/logs` die JSON-Dateien der einzelnen Runden abgelegt werden. Ist diese Voraussetzung 
-erfüllt, kann die Visualisierung mit dem Modul `visualization.py` gestartet werden: <br>
+dass im Ordner `pandemie/visualization/logs` die JSON-Dateien der einzelnen Runden abgelegt werden. Ist diese 
+Voraussetzung erfüllt, kann die Visualisierung mit dem Modul `visualization.py` gestartet werden: <br>
 ```bash
 $ python3.8 -m pandemie.visualization
 ```
