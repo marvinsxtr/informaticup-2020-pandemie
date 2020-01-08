@@ -1,10 +1,12 @@
-import math
 import os
 import random
 import subprocess
 import sys
 import threading
 import getopt
+
+from numpy import exp
+
 import pandemie.tester.optimization as optimization  # We cannot use import from due to circular imports
 import pandemie.util.analyse_log as analyse_log
 
@@ -14,8 +16,7 @@ from pandemie.util import to_camel_case, now
 
 
 # Consts used to shift the sigmoid curve
-WIN_RATE_HALVED = 75
-LOSS_RATE_HALVED = 75
+SCORE_HALVED = 75
 EVALUATION_SLOPE = 0.07
 
 DEVNULL = subprocess.DEVNULL
@@ -127,7 +128,7 @@ class Tester:
         :param k: parameter alter the slope of the sigmoid curve
         :return: score
         """
-        return math.exp(k*(-rounds + WIN_RATE_HALVED)) / (1 + math.exp(k*(-rounds + WIN_RATE_HALVED)))
+        return exp(k*(-rounds + SCORE_HALVED)) / (1 + exp(k*(-rounds + SCORE_HALVED)))
 
     @staticmethod
     def loss_weight(rounds):
