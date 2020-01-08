@@ -77,35 +77,33 @@ class Final(AbstractStrategy):
                     best_operation_for_measure = max(operation_ranking, key=lambda key: operation_ranking[key])
                     measure_ranking[best_operation_for_measure] = measure_weights[operation_name]
 
-            # Print(measure_ranking)
-
             # Merge all rankings
             overall_ranking = merge_ranking(*operation_rankings.values())
 
             # Sort overall ranking
             overall_ranking = dict(sorted(overall_ranking.items(), key=lambda item: item[1], reverse=True))
 
+            # Check if ranking is empty
             if len(overall_ranking) == 0:
                 return operations.end_round()
 
             # Get best overall operation (out of all measures):
-            # This picks a random operations out of the best 12 operations for each measure
+            # This picks a random operation out of the best 12 operations (for each measure)
             best_operation = random.choice(list(measure_ranking.keys()))
 
             # This picks the operation with the max score in the overall merged ranking
             # best_operation = max(overall_ranking, key=lambda key: overall_ranking[key])
 
-            name, *rest = best_operation
-            return operations.get(name, *rest)
+            name, *args = best_operation
+            return operations.get(name, *args)
 
         def rank_operation(*op_tuple, op_score):
             """
             Rank an operation tuple with a score; if it exists already, the score is added up
             :param op_tuple: tuple with params needed for an operation (example: ("deploy_medication", city, pathogen))
             :param op_score: score assigned to tuple
-            :return:
+            :return: None
             """
-
             # Get the ranking corresponding to measure type
             name, *_ = op_tuple
             operation_ranking = operation_rankings[name]
@@ -135,7 +133,7 @@ class Final(AbstractStrategy):
             :return: whether the measure is affordable
             """
             if round_points == 0:
-                return 0
+                return False
             return round_points - operations.PRICES[identifier]["initial"] >= 0
 
         # Used to convert a scale of scores (24 - 4 = 20 where 4 is the minimum points and 20 maximum)
@@ -215,11 +213,11 @@ class Final(AbstractStrategy):
                 pathogens_vaccine_in_development.append(round_global_event["pathogen"])
                 pathogens_vaccine_in_development_names.append(round_global_event["pathogen"]["name"])
 
-            # If round_global_event["type"] == "economicCrisis":
-            # Todo: adjust weight for exert_influence
+            if round_global_event["type"] == "economicCrisis":
+                measure_weights["exert_influence"] *= 1.2
 
-            # If round_global_event["type"] == "largeScalePanic":
-            # Todo: adjust weight for launch_campaign
+            if round_global_event["type"] == "largeScalePanic":
+                measure_weights["launch_campaign"] *= 1.2
 
         # Put cities in a list
         cities = round_cities
@@ -348,17 +346,17 @@ class Final(AbstractStrategy):
         # Rank connections by comparing their outbreaks
         for flight_connection in flight_connections:
             connection = tuple(flight_connection)
-            x, y = connection
+            x, y = tuple(flight_connection)
+
+            x_infected = x in outbreak_city_names
+            y_infected = y in outbreak_city_names
 
             # Check if only one city in the connection is infected
-            only_x_infected = (x in outbreak_city_names) and (y not in outbreak_city_names)
-            only_y_infected = (y in outbreak_city_names) and (x not in outbreak_city_names)
-
-            if only_x_infected or only_y_infected:
+            if x_infected ^ y_infected:
                 flight_connections_one_infected.append(connection)
 
                 # Assign a score to the connection
-                if only_x_infected:
+                if x_infected:
                     infected_city = x
                 else:
                     infected_city = y
@@ -446,9 +444,9 @@ class Final(AbstractStrategy):
                 x, y = connection
                 maximum = affordable_rounds("close_connection")
                 if maximum >= 1:
-                    rank_operation("close_connection", x, y, maximum,
-                                   op_score=round(measure_weights["close_connection"] * (
-                                       flight_connections_one_infected_score[connection]), 5))
+                    rank_operation("close_connection", x, y, maximum, op_score=round(
+                        measure_weights["close_connection"] * (
+                            flight_connections_one_infected_score[connection]), 5))
 
         # Use collected data to make a decision
         return get_best_operation()
