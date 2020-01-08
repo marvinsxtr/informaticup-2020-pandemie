@@ -13,6 +13,8 @@ def weighted_final_strategy(**weights):
     This function executes the final strategy with the given weights for optimization purposes
     :return: None
     """
+    print(weights)
+
     # Get final strategy
     name = "final"
     _module = __import__("pandemie.tester.strategies." + name, fromlist=to_camel_case(name))

@@ -190,7 +190,7 @@ def main():
             if len(arguments) < 2:
                 exit()
         elif currentArgument in ("-o", "--optimize"):
-            print("Optimizing final strategy")
+            print("Optimizing final strategy (see /logs directory)")
             optimization.bayesian_optimization()
             exit()
         elif currentArgument in ("-s", ):
@@ -238,13 +238,12 @@ def main():
 
     # Print stats
     percentage = (my_tester.amount_wins / my_tester.amount_runs) * 100
-    print("\nTotal games: {0}\nTotal games won: {1}\nTotal games loss: {2}\nWin rate: {3}%".format(
+    print("\nTotal games: {0}\nTotal games won: {1}\nTotal games lost: {2}\nWin rate: {3}%\nTotal score: {4}".format(
         my_tester.amount_runs,
         my_tester.amount_wins,
         my_tester.amount_loss,
-        percentage))
-
-    print("Total score: ", result)
+        percentage,
+        result))
 
     if do_output:
         analyse_log.analyse(my_tester.strategy.get_file_path())

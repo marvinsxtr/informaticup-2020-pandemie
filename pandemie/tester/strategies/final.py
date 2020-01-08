@@ -35,27 +35,27 @@ class Final(AbstractStrategy):
         # Assigns a score to each tuple of the best operation for a measure
         measure_ranking = {}
 
-        # These are the weights applied to the measure ranking
-        measure_weights = {
-            "end_round": 1,  # Ends the current round
-            "put_under_quarantine": 1,  # Completely prevent spreading of pathogen
-            "close_airport": 1,  # Shut down connections from and to a city
-            "close_connection": 1,  # Shut down one connection
-
-            "develop_vaccine": 1,  # After 6 rounds a vaccine is ready
-            "deploy_vaccine": 1,  # Deploy vaccine to specific city
-            "develop_medication": 1,  # After 3 rounds a medication is available
-            "deploy_medication": 1,  # Deploy medication to specific city
-
-            "exert_influence": 1,  # Corresponds to economy city stat
-            "call_elections": 1,  # Corresponds to government city stat
-            "apply_hygienic_measures": 1,  # Corresponds to hygiene city stat
-            "launch_campaign": 1,  # Corresponds to awareness city stat
-        }
-
         # Change weights if they are given
         if self.weights:
             measure_weights = self.weights
+        else:
+            # These are the weights applied to the measure ranking
+            measure_weights = {
+                "end_round": 1,  # Ends the current round
+                "put_under_quarantine": 1,  # Completely prevent spreading of pathogen
+                "close_airport": 1,  # Shut down connections from and to a city
+                "close_connection": 1,  # Shut down one connection
+
+                "develop_vaccine": 1,  # After 6 rounds a vaccine is ready
+                "deploy_vaccine": 1,  # Deploy vaccine to specific city
+                "develop_medication": 1,  # After 3 rounds a medication is available
+                "deploy_medication": 1,  # Deploy medication to specific city
+
+                "exert_influence": 1,  # Corresponds to economy city stat
+                "call_elections": 1,  # Corresponds to government city stat
+                "apply_hygienic_measures": 1,  # Corresponds to hygiene city stat
+                "launch_campaign": 1,  # Corresponds to awareness city stat
+            }
 
         # This dict contains the rankings for concrete operations by measure
         operation_rankings = {op: {} for op in operations.OPERATIONS}
@@ -163,6 +163,11 @@ class Final(AbstractStrategy):
         cities_pathogen = {}
         cities_pathogen_name = {}
 
+        cities_awareness_score = {}
+        cities_government_score = {}
+        cities_hygiene_score = {}
+        cities_economy_score = {}
+
         pathogens_count_infected_cities = {}
 
         pathogens_scores = {}
@@ -222,17 +227,17 @@ class Final(AbstractStrategy):
         # Put cities in a list
         cities = round_cities
 
-        # Put the city names in a list
-        for city_name, _ in cities.items():
-            cities_names.append(city_name)
-
-        # Connect pathogens to cities with a dict
+        # Assign score to each city (higher is riskier)
         for city_name, city_stats in cities.items():
-            if "events" in city_stats:
-                for city_event in city_stats["events"]:
-                    if city_event["type"] == "outbreak":
-                        cities_pathogen[city_name] = city_event["pathogen"]
-                        cities_pathogen_name[city_name] = city_event["pathogen"]["name"]
+            city_score = score(city_stats["economy"]) + score(city_stats["hygiene"]) + score(
+                city_stats["government"]) + score(city_stats["awareness"])
+            cities_scores[city_name] = highest_rating - city_score
+
+        # Assign score to each pathogen (higher is more evil)
+        for pathogen in pathogens:
+            pathogen_score = score(pathogen["infectivity"]) + score(pathogen["mobility"]) + \
+                             score(pathogen["duration"]) + score(pathogen["lethality"])
+            pathogens_scores[pathogen["name"]] = pathogen_score
 
         # Count how many cities are affected by each pathogen
         for pathogen_name in pathogens_names:
@@ -243,73 +248,75 @@ class Final(AbstractStrategy):
                         affected_cities += 1
             pathogens_count_infected_cities[pathogen_name] = affected_cities
 
-        # Assign score to each pathogen (higher is more evil)
-        for pathogen in pathogens:
-            pathogen_score = score(pathogen["infectivity"]) + score(pathogen["mobility"]) + \
-                             score(pathogen["duration"]) + score(pathogen["lethality"])
-            pathogens_scores[pathogen["name"]] = pathogen_score
-
-        # Sort critical to uncritical pathogen
-        pathogens_scores = dict(sorted(pathogens_scores.items(), key=lambda item: item[1], reverse=True))
-
-        # Assign score to each city (higher is riskier)
+        # Generate dicts mapping cities to values
         for city_name, city_stats in cities.items():
-            city_score = score(city_stats["economy"]) + score(city_stats["hygiene"]) + \
-                         score(city_stats["government"]) + score(city_stats["awareness"])
-            cities_scores[city_name] = highest_rating - city_score
 
-        # Sort worst to best city
-        cities_scores = dict(sorted(cities_scores.items(), key=lambda item: item[1], reverse=True))
+            # Put the city names in a list
+            cities_names.append(city_name)
 
-        # Assign pathogen score to cities (higher score means higher risk in the city)
-        for city_name in cities_names:
+            # Get scores for city stats
+            cities_hygiene_score[city_name] = city_stats["hygiene"]
+            cities_awareness_score[city_name] = city_stats["awareness"]
+            cities_economy_score[city_name] = city_stats["economy"]
+            cities_government_score[city_name] = city_stats["government"]
+
+            # Assign pathogen score to cities (higher score means higher risk in the city)
             pathogen_score = 0
             if city_name in cities_pathogen_name:
                 pathogen_name = cities_pathogen_name[city_name]
                 pathogen_score = pathogens_scores[pathogen_name]
             cities_pathogen_score[city_name] = pathogen_score
 
-        # Sort by combined pathogens score (higher to lower)
-        cities_pathogen_score = dict(sorted(cities_pathogen_score.items(), key=lambda item: item[1], reverse=True))
-
-        # Count the number of flight connections for each city
-        for city_name, city_stats in cities.items():
+            # Count the number of flight connections for each city
             count_flight_connections = 0
             for _ in city_stats["connections"]:
                 count_flight_connections += 1
             cities_count_flight_connections[city_name] = count_flight_connections
 
-        # Rate the outbreak for each affected city
-        for city_name, city_stats in cities.items():
-            cities_outbreak_scores[city_name] = 0
-            if "events" in city_stats:
-                for city_event in city_stats["events"]:
-                    if city_event["type"] == "outbreak":
-                        outbreak_city_names.append(city_name)
-                        cities_outbreak[city_name] = city_event
-                        # This score is acquired by combining prevalence, duration and pathogen strength
-                        outbreak_score = round((1 + city_event["prevalence"]) *
-                                               (round_number - city_event["sinceRound"] +
-                                               city_stats["population"]) +
-                                               pathogens_scores[city_event["pathogen"]["name"]] +
-                                               pathogens_count_infected_cities[city_event["pathogen"]["name"]], 5)
-                        cities_outbreak_scores[city_name] = outbreak_score
-
-        # Associate connected cities to a city
-        for city_name, city_stats in cities.items():
+            # Associate connected cities to a city
             if "connections" in city_stats:
                 cities_connected_cities_names[city_name] = city_stats["connections"]
 
-        # Combine score of connected cities
-        for city_name in cities_names:
+            # Combine score of connected cities
             combined_score = 0
             for connected_city_name in cities_connected_cities_names[city_name]:
                 combined_score += cities_scores[connected_city_name]
             cities_combined_connected_cities_scores[city_name] = combined_score
 
-        # Sort higher to lower
-        cities_combined_connected_cities_scores = dict(sorted(cities_combined_connected_cities_scores.items(),
-                                                              key=lambda item: item[1], reverse=True))
+            # Rate the outbreak for each affected city
+            cities_outbreak_scores[city_name] = 0
+            if "events" in city_stats:
+                for city_event in city_stats["events"]:
+
+                    # Make a list of closed airport cities
+                    if city_event["type"] == "airportClosed":
+                        cities_airport_closed_names.append(city_name)
+
+                    # Collect closed connections
+                    if city_event["type"] == "connectionClosed":
+                        flight_connections_closed.add(frozenset((city_name, city_event["city"])))
+
+                    # Collect connected cities in a set
+                    connections = city_stats["connections"]
+                    for connected_city_name in connections:
+                        flight_connections.add(frozenset((city_name, connected_city_name)))
+
+                    # Generate outbreak related dicts
+                    if city_event["type"] == "outbreak":
+                        # Assign the name of the pathogen in each city
+                        cities_pathogen[city_name] = city_event["pathogen"]
+                        cities_pathogen_name[city_name] = city_event["pathogen"]["name"]
+
+                        outbreak_city_names.append(city_name)
+                        cities_outbreak[city_name] = city_event
+
+                        # This score is acquired by combining prevalence, duration and pathogen strength
+                        outbreak_score = round((1 + city_event["prevalence"]) *
+                                               (round_number - city_event["sinceRound"] +
+                                                city_stats["population"]) +
+                                               pathogens_scores[city_event["pathogen"]["name"]] +
+                                               pathogens_count_infected_cities[city_event["pathogen"]["name"]], 5)
+                        cities_outbreak_scores[city_name] = outbreak_score
 
         # Calculate difference of city score to its connected cities scores
         for city_name, combined_score in cities_combined_connected_cities_scores.items():
@@ -318,30 +325,6 @@ class Final(AbstractStrategy):
                 difference = round(abs(cities_scores[city_name] - combined_score / len(
                     cities_connected_cities_names[city_name])), 5)
             cities_combined_connected_cities_difference[city_name] = difference
-
-        # Sort higher to lower
-        cities_combined_connected_cities_difference = dict(sorted(cities_combined_connected_cities_difference.items(),
-                                                                  key=lambda item: item[1], reverse=True))
-
-        # Make a list of closed airport cities
-        for city_name, city_stats in cities.items():
-            if "events" in city_stats:
-                for event in city_stats["events"]:
-                    if event["type"] == "airportClosed":
-                        cities_airport_closed_names.append(city_name)
-
-        # Collect closed connections
-        for city_name, city_stats in cities.items():
-            if "events" in city_stats:
-                for event in city_stats["events"]:
-                    if event["type"] == "connectionClosed":
-                        flight_connections_closed.add(frozenset((city_name, event["city"])))
-
-        # Collect connected cities in a set
-        for city_name, city_stats in cities.items():
-            connections = city_stats["connections"]
-            for connected_city_name in connections:
-                flight_connections.add(frozenset((city_name, connected_city_name)))
 
         # Rank connections by comparing their outbreaks
         for flight_connection in flight_connections:
