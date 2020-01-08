@@ -7,6 +7,8 @@ Observations:
 - it might be sufficient to sort by operation and afterwards sort the 12 best possibilities
 - points for an operation are pre-paid for the required round duration
 """
+import random
+
 from pandemie.tester import AbstractStrategy
 from pandemie.util import normalize_ranking, merge_ranking, operations, map_symbol_score
 from pandemie.util import map_symbol_score as score, apply_weight
@@ -33,7 +35,7 @@ class Final(AbstractStrategy):
         # Assigns a score to each tuple of the best operation for a measure
         measure_ranking = {}
 
-        # These are the weights applied to the measure ranking which are in {1, ... ,12}
+        # These are the weights applied to the measure ranking
         measure_weights = {
             "end_round": 1,  # Ends the current round
             "put_under_quarantine": 1,  # Completely prevent spreading of pathogen
@@ -86,9 +88,12 @@ class Final(AbstractStrategy):
             if len(overall_ranking) == 0:
                 return operations.end_round()
 
-            # Get best overall operation (out of all measures)
-            # Best_operation = max(measure_ranking, key=lambda key: measure_ranking[key])
-            best_operation = max(overall_ranking, key=lambda key: overall_ranking[key])
+            # Get best overall operation (out of all measures):
+            # This picks a random operations out of the best 12 operations for each measure
+            best_operation = random.choice(list(measure_ranking.keys()))
+
+            # This picks the operation with the max score in the overall merged ranking
+            # best_operation = max(overall_ranking, key=lambda key: overall_ranking[key])
 
             name, *rest = best_operation
             return operations.get(name, *rest)
