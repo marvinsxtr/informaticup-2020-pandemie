@@ -7,12 +7,17 @@ import getopt
 
 from numpy import exp
 
-import pandemie.tester.optimization as optimization  # We cannot use import from due to circular imports
-import pandemie.util.analyse_log as analyse_log
+try:
+    import pandemie.tester.optimization as optimization  # We cannot use `from * import` due to circular imports
+    import pandemie.util.analyse_log as analyse_log
 
-from pandemie.tester import AbstractStrategy
-from pandemie.web import WebServer
-from pandemie.util import to_camel_case, now
+    from pandemie.tester import AbstractStrategy
+    from pandemie.web import WebServer
+    from pandemie.util import to_camel_case, now
+except ModuleNotFoundError:
+    print("To run execute `python -m pandemie.tester` in the project folder")
+    exit(-1)
+
 
 
 # Consts used to shift the sigmoid curve

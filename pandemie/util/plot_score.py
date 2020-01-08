@@ -4,7 +4,12 @@ This file is a useful to plot the currently used score function.
 
 from numpy import arange
 from matplotlib import pyplot as plt
-from pandemie.tester.tester import Tester, SCORE_HALVED
+
+try:
+    from pandemie.tester.tester import Tester, SCORE_HALVED
+except ModuleNotFoundError:
+    print("To run execute `python -m pandemie.util.plot_score` in the project folder")
+    exit(-1)
 
 def main():
     """
