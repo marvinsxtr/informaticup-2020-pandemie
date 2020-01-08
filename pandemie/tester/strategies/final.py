@@ -56,22 +56,7 @@ class Final(AbstractStrategy):
             measure_weights = self.weights
 
         # This dict contains the rankings for concrete operations by measure
-        operation_rankings = {
-            "end_round": {},
-            "put_under_quarantine": {},
-            "close_airport": {},
-            "close_connection": {},
-
-            "develop_vaccine": {},
-            "deploy_vaccine": {},
-            "develop_medication": {},
-            "deploy_medication": {},
-
-            "exert_influence": {},
-            "call_elections": {},
-            "apply_hygienic_measures": {},
-            "launch_campaign": {},
-        }
+        operation_rankings = {op: {} for op in operations.OPERATIONS}
 
         def get_best_operation():
             """
