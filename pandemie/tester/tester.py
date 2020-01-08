@@ -168,7 +168,7 @@ def main():
     argument_list = full_cmd_arguments[1:]
 
     # define allowed cli arguments
-    unix_options = "hos:lvt:u"
+    unix_options = "hos:lvt:u:"
     gnu_options = ["help", "optimize", "log", "visualization", "user_seed"]
 
     try:
