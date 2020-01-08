@@ -4,6 +4,20 @@ you can give to a game state (initial and per round prices) as well as the funct
 themselves.
 """
 
+# This list contains all possible operation names
+OPERATIONS = ["end_round",
+              "put_under_quarantine",
+              "close_airport",
+              "close_connection",
+              "develop_vaccine",
+              "deploy_vaccine",
+              "develop_medication",
+              "deploy_medication",
+              "exert_influence",
+              "call_elections",
+              "apply_hygienic_measures",
+              "launch_campaign"]
+
 # Dict containing all prices
 PRICES = {
     "end_round": {"initial": 0, "each": 0},
