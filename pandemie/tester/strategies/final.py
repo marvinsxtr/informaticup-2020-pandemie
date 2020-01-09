@@ -124,7 +124,7 @@ class Final(AbstractStrategy):
             if round_points == 0:
                 return 0
             return int((round_points - operations.PRICES[identifier]["initial"]) /
-                       operations.PRICES[identifier]["each"])
+                       operations.PRICES[identifier]["each"]) - 4
 
         def is_affordable(identifier):
             """
