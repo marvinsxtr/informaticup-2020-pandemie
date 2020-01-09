@@ -137,11 +137,14 @@ class Final(AbstractStrategy):
             return round_points - operations.PRICES[identifier]["initial"] >= 0
 
         # Used to convert a scale of scores (24 - 4 = 20 where 4 is the minimum points and 20 maximum)
-        highest_rating = 24
+        highest_overall_score = 24
+        highest_individual_score = 6
 
         """
-        lists or dicts generated in pre-processing in order of generation
+        lists or dicts generated in pre-processing
         """
+        global_events_names = []
+
         pathogens = []
         pathogens_names = []
 
@@ -193,11 +196,12 @@ class Final(AbstractStrategy):
         flight_connections_one_infected_score = {}
 
         """
-        pre-processing (for each list higher means more risk and 0 means none at all!)
+        pre-processing (for each list a higher score usually means more risk)
         """
-
         # Generate lists for pathogen global events
         for round_global_event in round_global_events:
+            global_events_names.append(round_global_event["type"])
+
             if round_global_event["type"] == "pathogenEncountered":
                 pathogens.append(round_global_event["pathogen"])
                 pathogens_names.append(round_global_event["pathogen"]["name"])
@@ -218,12 +222,6 @@ class Final(AbstractStrategy):
                 pathogens_vaccine_in_development.append(round_global_event["pathogen"])
                 pathogens_vaccine_in_development_names.append(round_global_event["pathogen"]["name"])
 
-            if round_global_event["type"] == "economicCrisis":
-                measure_weights["exert_influence"] *= 1.2
-
-            if round_global_event["type"] == "largeScalePanic":
-                measure_weights["launch_campaign"] *= 1.2
-
         # Put cities in a list
         cities = round_cities
 
@@ -231,7 +229,7 @@ class Final(AbstractStrategy):
         for city_name, city_stats in cities.items():
             city_score = score(city_stats["economy"]) + score(city_stats["hygiene"]) + score(
                 city_stats["government"]) + score(city_stats["awareness"])
-            cities_scores[city_name] = highest_rating - city_score
+            cities_scores[city_name] = highest_overall_score - city_score
 
         # Assign score to each pathogen (higher is more evil)
         for pathogen in pathogens:
@@ -254,11 +252,17 @@ class Final(AbstractStrategy):
             # Put the city names in a list
             cities_names.append(city_name)
 
-            # Get scores for city stats
-            cities_hygiene_score[city_name] = city_stats["hygiene"]
-            cities_awareness_score[city_name] = city_stats["awareness"]
-            cities_economy_score[city_name] = city_stats["economy"]
-            cities_government_score[city_name] = city_stats["government"]
+            # Add scores for measures corresponding to city stats
+            cities_awareness_score[city_name] = highest_individual_score - score(city_stats["awareness"])
+            if "largeScalePanic" in global_events_names:
+                cities_awareness_score[city_name] *= 2
+
+            cities_economy_score[city_name] = highest_individual_score - score(city_stats["economy"])
+            if "economicCrisis" in global_events_names:
+                cities_economy_score[city_name] *= 2
+
+            cities_hygiene_score[city_name] = highest_individual_score - score(city_stats["hygiene"])
+            cities_government_score[city_name] = highest_individual_score - score(city_stats["government"])
 
             # Assign pathogen score to cities (higher score means higher risk in the city)
             pathogen_score = 0
@@ -430,6 +434,28 @@ class Final(AbstractStrategy):
                     rank_operation("close_connection", x, y, maximum, op_score=round(
                         measure_weights["close_connection"] * (
                             flight_connections_one_infected_score[connection]), 5))
+
+        # Rank operations corresponding to city stats
+        for city_name in cities_names:
+            if is_affordable("apply_hygienic_measures") and cities_hygiene_score[city_name] >= 5:
+                rank_operation("apply_hygienic_measures", city_name, op_score=round(
+                    measure_weights["apply_hygienic_measures"] * (
+                        cities_hygiene_score[city_name]), 5))
+
+            if is_affordable("launch_campaign") and cities_awareness_score[city_name] >= 5:
+                rank_operation("launch_campaign", city_name, op_score=round(
+                    measure_weights["launch_campaign"] * (
+                        cities_awareness_score[city_name]), 5))
+
+            if is_affordable("exert_influence") and cities_economy_score[city_name] >= 5:
+                rank_operation("exert_influence", city_name, op_score=round(
+                    measure_weights["exert_influence"] * (
+                        cities_economy_score[city_name]), 5))
+
+            if is_affordable("call_elections") and cities_government_score[city_name] >= 5:
+                rank_operation("call_elections", city_name, op_score=round(
+                    measure_weights["call_elections"] * (
+                        cities_government_score[city_name]), 5))
 
         # Use collected data to make a decision
         return get_best_operation()

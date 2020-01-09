@@ -48,3 +48,12 @@ vaccineDeployed	, local
 
 connectionClosed	, local
 {'type': 'connectionClosed', 'city': '', 'sinceRound': 2, 'untilRound': 7}
+
+electionsCalled	, local
+{'type': 'electionsCalled', 'round': 1}
+
+influenceExerted	, local
+{'type': 'influenceExerted', 'round': 1}
+
+campaignLaunched	, local
+{'type': 'campaignLaunched', 'round': 2}
