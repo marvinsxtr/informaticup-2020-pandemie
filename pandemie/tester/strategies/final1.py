@@ -14,7 +14,7 @@ from pandemie.util import normalize_ranking, merge_ranking, operations, map_symb
 from pandemie.util import map_symbol_score as score, apply_weight
 
 
-class Final(AbstractStrategy):
+class Final1(AbstractStrategy):
     def __init__(self, silent=False, visualize=False, weights=None):
         super().__init__(silent=silent, visualize=visualize, weights=weights)
 
@@ -42,13 +42,13 @@ class Final(AbstractStrategy):
             # These are the weights applied to the measure ranking
             measure_weights = {
                 "end_round": 1,  # Ends the current round
-                "put_under_quarantine": 1,  # Completely prevent spreading of pathogen
-                "close_airport": 1,  # Shut down connections from and to a city
-                "close_connection": 1,  # Shut down one connection
+                "put_under_quarantine": 0.05,  # Completely prevent spreading of pathogen
+                "close_airport": 0.1,  # Shut down connections from and to a city
+                "close_connection": 0.1,  # Shut down one connection
 
-                "develop_vaccine": 1,  # After 6 rounds a vaccine is ready
+                "develop_vaccine": 0.8,  # After 6 rounds a vaccine is ready
                 "deploy_vaccine": 1,  # Deploy vaccine to specific city
-                "develop_medication": 1,  # After 3 rounds a medication is available
+                "develop_medication": 0.9,  # After 3 rounds a medication is available
                 "deploy_medication": 1,  # Deploy medication to specific city
 
                 "exert_influence": 1,  # Corresponds to economy city stat
@@ -59,6 +59,16 @@ class Final(AbstractStrategy):
 
         # This dict contains the rankings for concrete operations by measure
         operation_rankings = {op: {} for op in operations.OPERATIONS}
+
+        def is_affordable(identifier):
+            """
+            This function returns whether a measure is affordable
+            :param identifier: operation name
+            :return: whether the measure is affordable
+            """
+            if round_points == 0:
+                return False
+            return round_points - operations.PRICES[identifier]["initial"] >= 0
 
         def get_best_operation():
             """
@@ -83,18 +93,26 @@ class Final(AbstractStrategy):
             # Sort overall ranking
             overall_ranking = dict(sorted(overall_ranking.items(), key=lambda item: item[1], reverse=True))
 
+            # print(list(overall_ranking.items()))
+
             # Check if ranking is empty
             if len(overall_ranking) == 0:
+                print("No Ranking!!!")
                 return operations.end_round()
 
             # Get best overall operation (out of all measures):
             # This picks a random operation out of the best 12 operations (for each measure)
-            best_operation = random.choice(list(measure_ranking.keys()))
+            # best_operation = random.choice(list(measure_ranking.keys()))
 
             # This picks the operation with the max score in the overall merged ranking
-            # best_operation = max(overall_ranking, key=lambda key: overall_ranking[key])
+            best_operation = max(overall_ranking, key=lambda key: overall_ranking[key])
+
+            if not is_affordable(best_operation[0]):
+                # print("Save Money! (%s) %i" % (str(best_operation), int(round_points)))
+                return operations.end_round()
 
             name, *args = best_operation
+            # print(name, round_points)
             return operations.get(name, *args)
 
         def rank_operation(*op_tuple, op_score):
@@ -125,16 +143,6 @@ class Final(AbstractStrategy):
                 return 0
             return int((round_points - operations.PRICES[identifier]["initial"]) /
                        operations.PRICES[identifier]["each"])
-
-        def is_affordable(identifier):
-            """
-            This function returns whether a measure is affordable
-            :param identifier: operation name
-            :return: whether the measure is affordable
-            """
-            if round_points == 0:
-                return False
-            return round_points - operations.PRICES[identifier]["initial"] >= 0
 
         # Used to convert a scale of scores (24 - 4 = 20 where 4 is the minimum points and 20 maximum)
         highest_rating = 24
@@ -360,22 +368,24 @@ class Final(AbstractStrategy):
                             cities_pathogen_score[city_name] +
                             cities_scores[city_name] +
                             cities_outbreak_scores[city_name] +
-                            cities_count_flight_connections[city_name]), 5))
+                            (1 / operations.PRICES["put_under_quarantine"]["initial"]) +
+                            cities_count_flight_connections[city_name] / 100), 5))
 
         # Develop medication for most dangerous pathogens
         for pathogen_name in pathogens_names:
             if pathogen_name not in pathogens_medication_available_names and pathogen_name not in \
                     pathogens_medication_in_development_names:
-                if is_affordable("develop_medication"):
+                # if is_affordable("develop_medication"):
                     rank_operation("develop_medication", pathogen_name, op_score=round(
                         measure_weights["develop_medication"] * (
                                 pathogens_scores[pathogen_name] +
+                                1 / operations.PRICES["develop_medication"]["initial"] * 10 +
                                 pathogens_count_infected_cities[pathogen_name]), 5))
 
         # Deploy medication in cities at most risk
         for city_name, pathogen_name in cities_pathogen_name.items():
             if pathogen_name in pathogens_medication_available_names:
-                if is_affordable("deploy_medication"):
+                # if is_affordable("deploy_medication"):
                     rank_operation("deploy_medication", pathogen_name, city_name, op_score=round(
                         measure_weights["deploy_medication"] * (
                                 cities_pathogen_score[city_name] +
@@ -383,23 +393,25 @@ class Final(AbstractStrategy):
                                 cities_outbreak_scores[city_name] +
                                 cities_count_flight_connections[city_name] +
                                 pathogens_scores[pathogen_name] +
+                                1 / operations.PRICES["deploy_medication"]["initial"] * 10 +
                                 pathogens_count_infected_cities[pathogen_name]), 5))
 
         # Develop vaccine for most dangerous pathogens
         for pathogen in pathogens:
             if pathogen["name"] not in pathogens_vaccine_available_names and pathogen["name"] not in \
                     pathogens_vaccine_in_development_names:
-                if is_affordable("develop_vaccine"):
+                # if is_affordable("develop_vaccine"):
                     rank_operation("develop_vaccine", pathogen["name"], op_score=round(
                         measure_weights["develop_vaccine"] * (
                                 pathogens_scores[pathogen["name"]] +
                                 map_symbol_score(pathogen["lethality"]) * 5 +
+                                1 / operations.PRICES["develop_vaccine"]["initial"] * 10 +
                                 pathogens_count_infected_cities[pathogen["name"]]), 5))
 
         # Deploy vaccine in cities at most risk
         for city_name, pathogen_name in cities_pathogen_name.items():
             if pathogen_name in pathogens_vaccine_available_names:
-                if is_affordable("deploy_vaccine"):
+                # if is_affordable("deploy_vaccine"):
                     rank_operation("deploy_vaccine", pathogen_name, city_name, op_score=round(
                         measure_weights["deploy_vaccine"] * (
                                 cities_pathogen_score[city_name] +
@@ -407,6 +419,7 @@ class Final(AbstractStrategy):
                                 cities_outbreak_scores[city_name] +
                                 cities_count_flight_connections[city_name] +
                                 pathogens_scores[pathogen_name] +
+                                1 / operations.PRICES["deploy_vaccine"]["initial"] * 10 +
                                 pathogens_count_infected_cities[pathogen_name]), 5))
 
         # Close airports with most difference in risk compared to connected cities
@@ -417,9 +430,10 @@ class Final(AbstractStrategy):
                     rank_operation("close_airport", city_name, maximum, op_score=round(
                         measure_weights["close_airport"] * (
                                 cities_combined_connected_cities_difference[city_name] +
-                                cities_combined_connected_cities_scores[city_name]) +
-                        cities_outbreak_scores[city_name] +
-                        cities_pathogen_score[city_name], 5))
+                                cities_combined_connected_cities_scores[city_name] +
+                                cities_outbreak_scores[city_name] +
+                                1 / operations.PRICES["close_airport"]["initial"] * 10 +
+                                cities_pathogen_score[city_name]), 5))
 
         # Close connections based on the difference between two cities
         for connection in flight_connections_one_infected:
@@ -429,6 +443,7 @@ class Final(AbstractStrategy):
                 if maximum >= 1:
                     rank_operation("close_connection", x, y, maximum, op_score=round(
                         measure_weights["close_connection"] * (
+                            1 / operations.PRICES["close_connection"]["initial"] * 10 +
                             flight_connections_one_infected_score[connection]), 5))
 
         # Use collected data to make a decision
