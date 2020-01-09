@@ -42,19 +42,19 @@ class Final(AbstractStrategy):
             # These are the weights applied to the measure ranking
             measure_weights = {
                 "end_round": 1,  # Ends the current round
-                "put_under_quarantine": 1,  # Completely prevent spreading of pathogen
-                "close_airport": 1,  # Shut down connections from and to a city
-                "close_connection": 1,  # Shut down one connection
+                "put_under_quarantine": 8,  # Completely prevent spreading of pathogen
+                "close_airport": 6,  # Shut down connections from and to a city
+                "close_connection": 7,  # Shut down one connection
 
-                "develop_vaccine": 1,  # After 6 rounds a vaccine is ready
-                "deploy_vaccine": 1,  # Deploy vaccine to specific city
-                "develop_medication": 1,  # After 3 rounds a medication is available
-                "deploy_medication": 1,  # Deploy medication to specific city
+                "develop_vaccine": 12,  # After 6 rounds a vaccine is ready
+                "deploy_vaccine": 10,  # Deploy vaccine to specific city
+                "develop_medication": 11,  # After 3 rounds a medication is available
+                "deploy_medication": 9,  # Deploy medication to specific city
 
-                "exert_influence": 1,  # Corresponds to economy city stat
-                "call_elections": 1,  # Corresponds to government city stat
-                "apply_hygienic_measures": 1,  # Corresponds to hygiene city stat
-                "launch_campaign": 1,  # Corresponds to awareness city stat
+                "exert_influence": 2,  # Corresponds to economy city stat
+                "call_elections": 3,  # Corresponds to government city stat
+                "apply_hygienic_measures": 5,  # Corresponds to hygiene city stat
+                "launch_campaign": 4,  # Corresponds to awareness city stat
             }
 
         # This dict contains the rankings for concrete operations by measure
@@ -89,10 +89,13 @@ class Final(AbstractStrategy):
 
             # Get best overall operation (out of all measures):
             # This picks a random operation out of the best 12 operations (for each measure)
-            best_operation = random.choice(list(measure_ranking.keys()))
+            # best_operation = random.choice(list(measure_ranking.keys()))
 
             # This picks the operation with the max score in the overall merged ranking
             # best_operation = max(overall_ranking, key=lambda key: overall_ranking[key])
+
+            # This picks the operation with the highest weight
+            best_operation = max(measure_ranking, key=lambda key: measure_ranking[key])
 
             name, *args = best_operation
             return operations.get(name, *args)
@@ -148,16 +151,9 @@ class Final(AbstractStrategy):
         pathogens = []
         pathogens_names = []
 
-        pathogens_medication_available = []
         pathogens_medication_available_names = []
-
-        pathogens_medication_in_development = []
         pathogens_medication_in_development_names = []
-
-        pathogens_vaccine_in_development = []
         pathogens_vaccine_in_development_names = []
-
-        pathogens_vaccine_available = []
         pathogens_vaccine_available_names = []
 
         cities = []
@@ -207,19 +203,15 @@ class Final(AbstractStrategy):
                 pathogens_names.append(round_global_event["pathogen"]["name"])
 
             if round_global_event["type"] == "medicationAvailable":
-                pathogens_medication_available.append(round_global_event["pathogen"])
                 pathogens_medication_available_names.append(round_global_event["pathogen"]["name"])
 
             if round_global_event["type"] == "medicationInDevelopment":
-                pathogens_medication_in_development.append(round_global_event["pathogen"])
                 pathogens_medication_in_development_names.append(round_global_event["pathogen"]["name"])
 
             if round_global_event["type"] == "vaccineAvailable":
-                pathogens_vaccine_available.append(round_global_event["pathogen"])
                 pathogens_vaccine_available_names.append(round_global_event["pathogen"]["name"])
 
             if round_global_event["type"] == "vaccineInDevelopment":
-                pathogens_vaccine_in_development.append(round_global_event["pathogen"])
                 pathogens_vaccine_in_development_names.append(round_global_event["pathogen"]["name"])
 
         # Put cities in a list
