@@ -121,10 +121,12 @@ class Final(AbstractStrategy):
             :param identifier: operation name
             :return: max duration in rounds
             """
-            if round_points == 0:
+            rounds = int((round_points - operations.PRICES[identifier]["initial"]) /
+                         operations.PRICES[identifier]["each"]) - 4
+            if rounds >= 0:
+                return rounds
+            else:
                 return 0
-            return int((round_points - operations.PRICES[identifier]["initial"]) /
-                       operations.PRICES[identifier]["each"]) - 4
 
         def is_affordable(identifier):
             """
@@ -132,8 +134,6 @@ class Final(AbstractStrategy):
             :param identifier: operation name
             :return: whether the measure is affordable
             """
-            if round_points == 0:
-                return False
             return round_points - operations.PRICES[identifier]["initial"] >= 0
 
         # Used to convert a scale of scores (24 - 4 = 20 where 4 is the minimum points and 20 maximum)
