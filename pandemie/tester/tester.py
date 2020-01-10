@@ -19,7 +19,6 @@ except ModuleNotFoundError:
     exit(-1)
 
 
-
 # Consts used to shift the sigmoid curve
 SCORE_HALVED = 75
 EVALUATION_SLOPE = 0.07

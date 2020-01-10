@@ -162,14 +162,19 @@ Gewichten, bietet es sich an, eine Score Funktion zu erstellen, die es ermöglic
 Um die Score Funktion über mehrere Runden hinweg zu benutzen, geben wir gewonnenen Runden einen positiven Score und 
 verlorenen einen negativen. So kann man den Durchschnitt über alle Spiele als Gesamtscore benutzen.<br>
 Die Idee hinter den Score Funktionen, also die Funktionen die in Abhängigkeit der Spiellänge den Score erstellen, ist,
-dass verlorenene Spiel mit eine längeren Spieldauer besser sind als Spiele die schnell verloren gehen. Bei gewonnenen
+dass verlorenene Spiele mit eine längeren Spieldauer besser sind als Spiele die schnell verloren gehen. Bei gewonnenen
 Spielen ist es umgekehrt, je schneller gewonnen wird, desto besser.<br><br>
 Hier die aktuell genutzen Funktionen. In blau ist die Funktion für die gewonnen Runden dargestellt, in orange die für
 verlorene.<br><br>
-![score function](score.png)<br><br>
-Grundsätzlich gilt, dass 1 ein perfekter Score ist und -1 der schlechteste. Bei 75 Runden ist der jeweilige Score
+![score function](images/score.png)<br><br>
+Grundsätzlich gilt, dass 1 ein perfekter Score ist und -1 der schlechteste. Bei 75 Runden wird der jeweilige Score
 halbiert, also nach 75 gewonnene Runden bekommt das Spiel den Score 0.5 und ein verlorenes -0.5. Dieses Wert ist, 
-genauso wie der Grad der Steigung, nur durch Änderungen im Quellcode anpassbar.<br>
+genauso wie der Grad detr Steigung, nur durch Änderungen im Quellcode anpassbar.<br>
+Die Formeln für die Score Funktionen sind wie folgend, wobei `k=0.07` und `a=75` gilt. Hierbier ist `k` die Konstante,
+die den Grad der Steigung beschreibt, und `a` die Anzahl der Runden nachdenen der Wert halbiert ist.<br>
+Dann sind die Funktionen wie folgend:
+
+
 ### Unsere Strategie
 Unsere Teamstrategie kann in `final.py` gefunden werden. Im Folgenden bezeichnen "Maßnahmen" eine mögliche Aktion zur 
 Veränderung des Spielstandes (bspw.: put_under_quarantine) und "Operationen" konkret angewandte Maßnahmen im Spiel
