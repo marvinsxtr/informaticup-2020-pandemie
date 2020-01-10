@@ -275,7 +275,6 @@ python3.8 -m pydoc -n <hostname> -p <port> pandemie
 Einige Module lassen sich leider nicht automatisch generieren, da sie auf Ornder relativ zum Pfad zugreifen.
 Innerhalb der einzelnen Modulfunktionen sind zusätzlich einzelne Schritte kommentiert, um die Funktionsweise der Module 
 nachvollziehen zu können. Hierbei halten wir uns an die gängigen Standardkonventionen.
-## API
 ## Software Architektur
 Unser Projekt hat die folgende Struktur:
 ```
@@ -294,23 +293,26 @@ project-pandemie-03
 └── test
 ```
 In `/documents` sind alle generierten oder vorhandenen Dokumente gesammelt (z.B. Scorefunktionsgraph). In `deployment`
-ist das Programm für den Web Service implementiert und in `/test` befindet sich das vorgegebene ic20 Tool für alle 
+ist das Modul für den Web Service implementiert und in `/test` befindet sich das vorgegebene ic20 Tool für alle 
 Betriebssysteme. Im Hauptordner `/pandemie` sind die Module [Tester](documentation.md#den-tester-richtig-nutzen), 
 `util`, [Visualization](documentation.md#zusatzfunktion-visualisierung) und [Web](documentation.md#der-web-service). 
 Hierbei ist util ein Modul, das sämtliche Hilfsfunktionen beinhaltet, welche zur Übersichtlichkeit nicht in die anderen 
-Module gehören. Web beinhaltet die Implementierungen für den Server, welcher mit dem ic20 Tool kommuniziert. 
+Module gehören. Web beinhaltet die Implementierungen für den Webserver, welcher mit dem ic20 Tool kommuniziert. 
 ## FAQ
 ### Wie erstellt man eine eigene Strategie?
-Um eigene Strategien zu erstellen, muss die eigene Strategie von der `AbstractStrategy` erben und die Methode 
+Um eigene Strategien zu erstellen, muss die eigene Strategie von der `AbstractStrategy` erben, die Methode 
 `_solve()` implementiert und die Datei im Ordner `/pandemie/tester/strategies` abgelegt werden.
 
 Für genauere Imformationen siehe [Eigene Strategie erstellen](documentation.md#eigene-strategien-entwickeln).
+
 ### Wie kann man das Team kontaktieren?
 Für Fragen stehen die Entwickler gerne zur verfügen. Kontaktdaten sind [hier](documentation.md#autoren) zu finden.
+
 ### Wie ist das Projekt lizensiert?
 Das Projekt ist mit der MIT Lizenz lizensiert und damit eine Open-Source Software. Die Lizenz für dieses Projekt
 befindet sich in der Datei `LICENSE.md`.<br>
 Des Weiteren sind die verwendeten Abhängigkeiten alle der MIT oder BSD Lizenz zugeordnet.
+
 ## Zusatzfunktion: Visualisierung
 Zur Analyse und zum Vergleich verschiedener Strategien ist es sinnvoll, diese zu visualisieren. Dazu werden entweder
 einzelne Runden oder das gesamte Spiel mithilfe von verschiedenen Graphen oder Karten dargestellt. Hiermit können 
@@ -355,16 +357,25 @@ können. Zusätzlich muss in der Funktion `visualize_game` der entsprechende Fun
 hinzugefügt werden. Die Visualisierungen werden entsprechend der Reihenfolge in dieser Liste untereinander angezeigt.
 Für die Visualisierung einzelner Runden kann hierfür analog die Funktion `visualize_round` verwendet werden.
 ## Der Web Service
-### Web Service allgemein
-Als Grundlage für unseren Web Service dient ein `WSGIServer`, welcher auf dem Port 50123 lauscht. Dieses ist auch der
-default-Port des `ic_20`-Tools. Dieser wird als Thread gestartet und am Ende des gesamten Programmaufrufs wieder beendet.
+### Web Service Allgemein
+Als Grundlage für unseren Web Service dient ein [bottle-Framework](https://bottlepy.org/docs/dev/) das auf WSGI aufbaut.
+Um viele Anfragen gleichzeitig bearbeiten zu können, nutzen wir [gevent](http://www.gevent.org/). Damit haben wir eine
+stabile und schnelle asynchrone Bearbeitung der Anfragen.<br>
 
+Standardmäßig läuft der Server auf dem Port `50123`, dieser wird auch vom `ic_20`-Tool genutzt. Damit der 
+[Tester](documentation.md#den-tester-richtig-nutzen) richtig funktionieren kann, ist der Webserver als Thread
+implementiert.<br>
+
+Falls während des Berarbeitens eines Request irgendwo Fehler auftreten, sei es während des Ausführens der Strategie,
+beim Parsen vom JSON, oder beim Webserver direkt, so wird einfach die aktuelle Runde ohne Aktion beendet und eine
+Fehlermeldung ausgegeben. Dies dient dem Aufrechterhalten des Spielflusses, keine Aktion ist immer noch besser als einen
+Timeout zu riskieren.
 ### AWS
 Unser Webservice ist auf Amazon AWS auf dem Elastic Compute Cloud Server (EC2) aufgesetzt. Der Webservice ist dabei
 unsrer Projekt in sehr abgespeckter Version.
 
 Dabei wird unser Service zur Beantwortung von Anfragen des `ic_20`-Tools permanent gestartet. Auf diesem läuft,
-ohne des es beeinflussbar wäre, unser Dienst mit unserer letzen, besten Lösungsstrategie.
+ohne des es beeinflussbar wäre, unser Dienst mit unser letzen, besten Lösungsstrategie.
 
 ## Warum unsere Idee die Beste ist
 In unserem Ansatz zur optimalen Strategie die Menschheit vor dem Untergang zu retten, kombinieren wir die Gewichtung von
