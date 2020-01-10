@@ -6,11 +6,10 @@
 * [Grundlagen](documentation.md#grundlagen)
 * [Installation](documentation.md#installation)
 * [Schnellstart](documentation.md#schnellstart)
-* [Wie benutze ich das Programm](documentation.md#wie-benutze-ich-das-programm)
+* [Benutzung des Programms](documentation.md#benutzung-des-programms)
 * [Lösungsstrategien](documentation.md#lsungsstrategien)
 * [Wissenschaftlicher Hintergrund](documentation.md#wissenschaftlicher-hintergrund)
-* [Erklärung des Programmcodes](documentation.md#erklaerung-des-programmcodes)
-* [API](documentation.md#api)
+* [Code-Dokumentation](documentation.md#code-dokumentation)
 * [Software Architektur](documentation.md#software-architektur)
 * [FAQ](documentation.md#faq)
 * [Zusatzfunktion: Visualisierung](documentation.md#zusatzfunktion:-visualisierung)
@@ -69,7 +68,7 @@ Mit den Standard-Parametern wird das `ic20_linux` Programm in 5 Instanzen ausgef
 entwickelte Strategie getestet. Wie gut die Strategie ist, wird nach Abschluss der Berechnungen auf dem Terminal als
 `win rate` ausgegeben. Zusätzlich kann der `score` zur Bewertung herangezogen werden, welcher neben dem Erfolg der
 Strategie auch die Anzahl der Runden bis zum Sieg bzw. Niederlage des Spiels einbezieht.
-## Wie benutze ich das Programm
+## Benutzung des Programms
 Nach der Installation des Programms und einem einfachen Ausführungsbeispiel wird nun die Verwendung der einzelnen 
 Funktionen des Programms erklärt.
 ### Den Tester richtig nutzen
@@ -248,6 +247,12 @@ Bei der Entwicklung unserer Teamstrategie haben wir einige Beobachtungen gemacht
 zu entwickeln. Diese werden im Folgenden aufgeführt:
  * Jede Stadt kann nur von einem Pathogen gleichzeitig befallen werden
  * Die Punkte für eine Operation werden für die angegebene Rundenzahl im Voraus bezahlt
+#### Strategieoptimierung
+Im Modul `optimization.py` befindet sich eine Implementierung einer sogenannten Bayes'schen Optimierung, welche dazu
+dient die möglichen Maßnahmen in unserer Teamstrategie zu gewichten. Wir betrachten hierzu unsere Strategie als eine
+Blackbox-Funktion, deren Eingaben die Gewichte für die einzelnen Maßnahmen (12 Stück) sind und deren Ausgabe der
+errechnete Score (+ Winrate) ist:
+
 ### Eigene Strategien entwickeln
 Alle Strategien erben von der Klasse `AbstractStrategy` und implementieren die Methode `_solve()`. Diese ist das
 Herzstück jeder Strategie, da in ihr abhängig von dem aktuellen Spielstand im JSON-Format über die Antwort und damit die
@@ -268,7 +273,7 @@ Ereignisse zu verringern. <br>
 [Quelle: Resistente Antibiotika](https://www.br.de/nachrichten/wissen/superkeime-antibiotika-reserven-gehen-aus,RD48aO6)
 <br>
 [Quelle: Pandemie-Simulation](https://www.spiegel.de/wissenschaft/mensch/pandemie-simulation-kranke-isolieren-grenzen-schliessen-a-413300.html)
-## Erklaerung des Programmcodes
+## Code-Dokumentation
 Der gesamte Code ist mit PyDoc dokumentiert. Diese Dokumentation kann wie folgt generiert werden:
 ```bash
 python3.8 -m pydoc -n <hostname> -p <port> pandemie

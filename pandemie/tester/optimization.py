@@ -74,6 +74,24 @@ def bayesian_optimization():
         lazy=True,
     )
 
+    optimizer.probe(
+        params={
+            "apply_hygienic_measures": 0.8,
+            "call_elections": 1.2,
+            "close_airport": 0.8,
+            "close_connection": 1.2,
+            "deploy_medication": 0.8,
+            "deploy_vaccine": 1.2,
+            "develop_medication": 0.8,
+            "develop_vaccine": 0.8,
+            "end_round": 1.2,
+            "exert_influence": 0.8,
+            "launch_campaign": 1.2,
+            "put_under_quarantine": 1.2
+        },
+        lazy=True,
+    )
+
     # Start optimizer
     optimizer.maximize(
         init_points=5,
