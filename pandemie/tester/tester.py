@@ -37,16 +37,6 @@ class Tester:
         if not isinstance(test_strategy, AbstractStrategy):
             raise ValueError("Strategy is not valid.")
 
-        if not test_strategy.silent:
-            strategy_dir = "logs/" + test_strategy.name
-
-            # Create a directory for the strategy if it doesn't exists
-            if not os.path.exists(strategy_dir):
-                os.makedirs(strategy_dir)
-
-            # Create the name for the log file and pass it to the strategy
-            test_strategy.set_file("{0}-{1}.dat".format(test_strategy.name, now()))
-
         self.strategy = test_strategy
         self.seed = seed
         self.amount_wins = 0

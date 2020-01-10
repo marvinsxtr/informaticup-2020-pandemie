@@ -255,6 +255,9 @@ Güte der Strategie entschieden wird. Um die Umsetzung einer eigenen Strategie z
 `operations.py`, welches alle möglichen Operationen im vorgegebenen JSON-Format und deren Preise beinhaltet. Zudem kann
 eine Operation auch mit einem Tupel angegeben werden. Dies kann zum Beispiel nützlich sein, um wie in unserer 
 Teamstrategie bestimmte Operationen zu ranken und auf Basis einer Sortierung eine Auswahl zu treffen.
+
+Es ist wichtig darauf zu achten, dass die Strategie im Ordner `/pandemie/tester/strategies` liegt, um die Kompatibilität 
+mit `tester.py` sicherzustellen.
 ## Wissenschaftlicher Hintergrund
 ## Erklaerung des Programmcodes
 Der gesamte Code ist mit PyDoc dokumentiert. Diese Dokumentation kann wie folgt generiert werden:
@@ -288,11 +291,13 @@ befindet sich das vorgegebene ic20 Tool für alle Betriebssysteme. Im Hauptordne
 util ein Modul, das sämtliche Hilfsfunktionen beinhaltet, welche zur Übersichtlichkeit nicht in die anderen Module 
 gehören. Web beinhaltet die Implementierungen für den Server, welcher mit dem ic20 Tool kommuniziert. 
 ## FAQ
-(Marvin)
 ### Wie erstellt man eine eigene Strategie?
-Siehe [Eigene Strategie erstellen](documentation.md#eigene-strategien-entwickeln).
+Um eigene Strategien zu erstellen, muss die eigene Strategie von der `AbstractStrategy` erben und die Methode 
+`_solve()` implementiert und die Datei im Ordner `/pandemie/tester/strategies` abgelegt werden.
+
+Für genauere Imformationen siehe [Eigene Strategie erstellen](documentation.md#eigene-strategien-entwickeln).
 ### Wie kann man das Team kontaktieren?
-Siehe [Autoren](documentation.md#autoren).
+Für Fragen stehen die Entwickler gerne zur verfügen. Kontaktdaten sind [hier](documentation.md#autoren) zu finden.
 ### Wie ist das Projekt lizensiert?
 Das Projekt ist mit der MIT Lizenz lizensiert und damit eine Open-Source Software. Die Lizenz für dieses Projekt
 befindet sich in der Datei `LICENSE.md`.<br>
