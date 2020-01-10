@@ -216,18 +216,18 @@ Eine Strategie bezeichnet in unserem Kontext eine Implementierung, um auf den ak
 antworten.
 ### Die Scorefunktion
 Im Hinblick auf eine Vergleichbarkeit der verschiedenen Strategien, eventuell später auch in Abhängigkeit von ihren
-Gewichten, bietet es sich an, eine Score Funktion zu erstellen, die es ermöglicht einer Runde einen Score Wert zu geben.
-Um die Score Funktion über mehrere Runden hinweg zu benutzen, geben wir gewonnenen Runden einen positiven Score und 
-verlorenen einen negativen. So kann man den Durchschnitt über alle Spiele als Gesamtscore benutzen.<br>
+Gewichten, bietet es sich an, eine Score Funktion zu erstellen, die es ermöglicht einem Spieldurchlauf einen Score Wert
+zu geben. Um die Score Funktion über mehrere Runden hinweg zu benutzen, geben wir gewonnenen Spielen einen positiven 
+Score und verlorenen einen negativen. So kann man den Durchschnitt über alle Spiele als Gesamtscore benutzen.<br>
 Die Idee hinter den Score Funktionen, also die Funktionen die in Abhängigkeit der Spiellänge den Score erstellen, ist,
-dass verlorenene Spiele mit eine längeren Spieldauer besser sind als Spiele die schnell verloren gehen. Bei gewonnenen
+dass verlorene Spiele mit eine längeren Spieldauer besser sind als Spiele die schneller verloren gehen. Bei gewonnenen
 Spielen ist es umgekehrt, je schneller gewonnen wird, desto besser.<br><br>
-Hier die aktuell genutzen Funktionen. In blau ist die Funktion für die gewonnen Runden dargestellt, in orange die für
-verlorene.<br><br>
+Hier die aktuell genutzen Funktionen. In blau ist die Funktion für die gewonnen Spiele dargestellt, in orange die für
+verlorenen.<br><br>
 ![score function](images/score.png)<br><br>
 Grundsätzlich gilt, dass 1 ein perfekter Score ist und -1 der schlechteste. Bei 75 Runden wird der jeweilige Score
-halbiert, also nach 75 gewonnene Runden bekommt das Spiel den Score 0.5 und ein verlorenes -0.5. Dieses Wert ist, 
-genauso wie der Grad detr Steigung, nur durch Änderungen im Quellcode anpassbar.<br>
+halbiert, also nach 75 gewonnenen Runden bekommt das Spiel den Score 0.5 und ein verlorenes -0.5. Dieses Wert ist, 
+genauso wie der Grad der Steigung, nur durch Änderungen im Quellcode anpassbar.<br>
 Die Formeln für die Score Funktionen sind wie folgend, wobei `k=0.07` und `a=75` gilt. Hierbier ist `k` die Konstante,
 die den Grad der Steigung beschreibt, und `a` die Anzahl der Runden nach denen der Wert halbiert wird.<br>
 Die Funktion für den Win Score ist f1, die für den Loss Score f2.<br><br>
