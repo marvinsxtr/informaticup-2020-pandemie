@@ -259,6 +259,14 @@ Teamstrategie bestimmte Operationen zu ranken und auf Basis einer Sortierung ein
 Es ist wichtig darauf zu achten, dass die Strategie im Ordner `/pandemie/tester/strategies` liegt, um die Kompatibilität 
 mit `tester.py` sicherzustellen.
 ## Wissenschaftlicher Hintergrund
+Über die letzten Jahre sind die Antibiotikareserven stetig zurückgegangen und multiresistente Erreger sind auf dem 
+Vormarsch. Sollte es nicht möglich sein, rechtzeitig neue Antibiotika zu entwickeln, steigt die Gefahr von Epidemien 
+oder im Extremfall einer Pandemie. Um auf den Ernstfall vorbereitet zu sein, kann es sinnvoll sein, Simulationen wie die
+im Rahmen des Informaticups durchzuführen. Auch wenn diese Simualtion auf heuristischen Methoden basiert und stark 
+vereinfacht ist, lassen sich einige Maßnahmen und Strategien ableiten, um auf bestimmte lokale Ereignisse schnell zu
+reagieren, ohne unnötig Zeit zu verlieren.
+[Quelle: Resistente Antibiotika](https://www.br.de/nachrichten/wissen/superkeime-antibiotika-reserven-gehen-aus,RD48aO6)
+[Quelle: Pandemie-Simulation](https://www.spiegel.de/wissenschaft/mensch/pandemie-simulation-kranke-isolieren-grenzen-schliessen-a-413300.html)
 ## Erklaerung des Programmcodes
 Der gesamte Code ist mit PyDoc dokumentiert. Diese Dokumentation kann wie folgt generiert werden:
 ```bash
@@ -271,13 +279,12 @@ nachvollziehen zu können. Hierbei halten wir uns an die gängigen Standardkonve
 ## Software Architektur
 Unser Projekt hat die folgende Struktur:
 ```
-.
+project-pandemie-03
 ├── documents
 ├── pandemie
 │   ├── tester
 │   │   ├── data
 │   │   ├── logs
-│   │   │   └── Final
 │   │   └── strategies
 │   ├── util
 │   ├── visualization
@@ -348,10 +355,8 @@ hinzugefügt werden. Die Visualisierungen werden entsprechend der Reihenfolge in
 Für die Visualisierung einzelner Runden kann hierfür analog die Funktion `visualize_round` verwendet werden.
 ## Der Web Service
 ### Web Service allgemein
-Als Grundlage für unseren Web Service dient ein `WSGIServer`, welcher auf dem Port 50123 luscht. Dieses ist auch der
+Als Grundlage für unseren Web Service dient ein `WSGIServer`, welcher auf dem Port 50123 lauscht. Dieses ist auch der
 default-Port des `ic_20`-Tools. Dieser wird als Thread gestartet und am Ende des gesamten Programmaufrufs wieder beendet.
-
-
 
 ### AWS
 Unser Webservice ist auf Amazon AWS auf dem Elastic Compute Cloud Server (EC2) aufgesetzt. Der Webservice ist dabei
