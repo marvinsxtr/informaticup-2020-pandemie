@@ -20,14 +20,14 @@ def main():
     fig1 = plt.figure()
     ax1 = fig1.add_subplot(111)
 
-    # create data
+    # Create data
     rounds = arange(0, SCORE_HALVED * 2)
 
-    # weight functions are static, no need to create a Tester object
+    # Weight functions are static, no need to create a Tester object
     c1 = Tester.win_weight(rounds)
     c2 = Tester.loss_weight(rounds)
 
-    # plot data
+    # Plot data
     plt.plot(rounds, c1)
     plt.plot(rounds, c2)
 

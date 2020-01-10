@@ -1,3 +1,4 @@
+
 # Pandemie!
 
 ## Inhaltsverzeichnis
@@ -156,8 +157,19 @@ gespeichert.
 Eine Strategie bezeichnet in unserem Kontext eine Implementierung, um auf den aktuellen Spielstand zustandslos zu 
 antworten.
 ### Die Scorefunktion
-Score function:
-![score function](score.png)
+Im Hinblick auf eine Vergleichbarkeit der verschiedenen Strategien, eventuell später auch in Abhängigkeit von ihren
+Gewichten, bietet es sich an, eine Score Funktion zu erstellen, die es ermöglicht einer Runde einen Score Wert zu geben.
+Um die Score Funktion über mehrere Runden hinweg zu benutzen, geben wir gewonnenen Runden einen positiven Score und 
+verlorenen einen negativen. So kann man den Durchschnitt über alle Spiele als Gesamtscore benutzen.<br>
+Die Idee hinter den Score Funktionen, also die Funktionen die in Abhängigkeit der Spiellänge den Score erstellen, ist,
+dass verlorenene Spiel mit eine längeren Spieldauer besser sind als Spiele die schnell verloren gehen. Bei gewonnenen
+Spielen ist es umgekehrt, je schneller gewonnen wird, desto besser.<br><br>
+Hier die aktuell genutzen Funktionen. In blau ist die Funktion für die gewonnen Runden dargestellt, in orange die für
+verlorene.<br><br>
+![score function](score.png)<br><br>
+Grundsätzlich gilt, dass 1 ein perfekter Score ist und -1 der schlechteste. Bei 75 Runden ist der jeweilige Score
+halbiert, also nach 75 gewonnene Runden bekommt das Spiel den Score 0.5 und ein verlorenes -0.5. Dieses Wert ist, 
+genauso wie der Grad der Steigung, nur durch Änderungen im Quellcode anpassbar.<br>
 ### Unsere Strategie
 Unsere Teamstrategie kann in `final.py` gefunden werden. Im Folgenden bezeichnen "Maßnahmen" eine mögliche Aktion zur 
 Veränderung des Spielstandes (bspw.: put_under_quarantine) und "Operationen" konkret angewandte Maßnahmen im Spiel

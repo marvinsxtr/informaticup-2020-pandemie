@@ -21,7 +21,7 @@ raw_json_rounds = []
 #   x_rounds -> range over round numbers }
 game_visualizations = {}
 
-# store a dict for each round
+# Store a dict for each round
 # { lat -> latitude of cities
 #   lon -> longitude of cities
 #   name -> names of cities
@@ -100,7 +100,7 @@ def prepare_round(json_round, number):
                 # Increase pathogen count
                 pathogen_occurrence[event["pathogen"]["name"]] += 1
 
-                # save flight connection
+                # Save flight connection
                 for connection in city[1]["connections"]:
                     flight_connections.add(frozenset((city[0], connection)))
 
