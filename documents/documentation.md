@@ -380,7 +380,7 @@ ohne des es beeinflussbar wäre, unser Dienst mit unserer letzen, besten Lösung
 
 Der Domainname unserer auf AWS genutzen virtuellen Maschine lautet `ec2-52-91-60-156.compute-1.amazonaws.com`.
 Des Weiteren wird der Standardport des `ic20`-Tools genutzt. Dieser lautet `50123`.
-Die VM verfügt über 1 vCore, 1GB RAM und 8 GB Speicher. Das ist mehr als ausreichend für eine schnelle
+Die VM verfügt über 1 vCore, 1GB RAM und 8 GB Speicher. Das ist mehr als ausreichend für eine schnelle und robuste
 Antwort an ein aus der Ferne gestartetes `ic20`-Tool.
 
 ## Warum unsere Idee die Beste ist

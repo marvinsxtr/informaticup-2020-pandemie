@@ -31,5 +31,5 @@ Die Domain lautet: `ec2-52-91-60-156.compute-1.amazonaws.com`
 
 Der Port ist weiterhin `50123`
 ```bash
-./ic20_linx -u http://ec2-52-91-60-156.compute-1.amazonaws.com:50123
+./ic20_linux -u http://ec2-52-91-60-156.compute-1.amazonaws.com:50123
 ```
