@@ -203,7 +203,7 @@ Innerhalb der einzelnen Modulfunktionen sind zusätzlich einzelne Schritte komme
 nachvollziehen zu können. Hierbei halten wir uns an die gängigen Standardkonventionen.
 ## API
 ## Software Architektur
-Our project is divided into several modules:
+Unser Projekt hat die folgende Struktur:
 ```
 .
 ├── documents
@@ -211,7 +211,6 @@ Our project is divided into several modules:
 │   ├── tester
 │   │   ├── data
 │   │   ├── logs
-│   │   │   └── Final
 │   │   └── strategies
 │   ├── util
 │   ├── visualization
@@ -219,6 +218,12 @@ Our project is divided into several modules:
 │   └── web
 └── test
 ```
+In `/documents` sind alle generierten oder vorhandenen Dokumente gesammelt (z.B. Scorefunktionsgraph) und in `/test` 
+befindet sich das vorgegebene ic20 Tool für alle Betriebssysteme. Im Hauptordner `/pandemie` sind die Module 
+[Tester](documentation.md#den-tester-richtig-nutzen), `util`, 
+[Visualization](documentation.md#zusatzfunktion-visualisierung) und [Web](documentation.md#der-web-service). Hierbei ist 
+util ein Modul, das sämtliche Hilfsfunktionen beinhaltet, welche zur Übersichtlichkeit nicht in die anderen Module 
+gehören. Web beinhaltet die Implementierungen für den Server, welcher mit dem ic20 Tool kommuniziert. 
 ## FAQ
 (Marvin)
 ### Wie erstellt man eine eigene Strategie?
@@ -263,7 +268,7 @@ In `visualization.py` kann nun eine Funktion hinzugefügt werden, welche einen
 können. Zusätzlich muss in der Funktion `visualize_game` der entsprechende Funktionsaufruf der zurückgegebenen Liste 
 hinzugefügt werden. Die Visualisierungen werden entsprechend der Reihenfolge in dieser Liste untereinander angezeigt.
 Für die Visualisierung einzelner Runden kann hierfür analog die Funktion `visualize_round` verwendet werden.
-## Der Web Service auf AWS
+## Der Web Service
 Unser Webservice ist auf Amazon AWS auf dem Elastic Compute Cloud Server (EC2) aufgesetzt. Der Webservice ist dabei
 unsrer Projekt in sehr abgespeckter Version.
 
