@@ -1,3 +1,4 @@
+
 # Pandemie!
 
 ## Inhaltsverzeichnis
@@ -156,8 +157,19 @@ gespeichert.
 Eine Strategie bezeichnet in unserem Kontext eine Implementierung, um auf den aktuellen Spielstand zustandslos zu 
 antworten.
 ### Die Scorefunktion
-Score function:
-![score function](score.png)
+Im Hinblick auf eine Vergleichbarkeit der verschiedenen Strategien, eventuell später auch in Abhängigkeit von ihren
+Gewichten, bietet es sich an, eine Score Funktion zu erstellen, die es ermöglicht einer Runde einen Score Wert zu geben.
+Um die Score Funktion über mehrere Runden hinweg zu benutzen, geben wir gewonnenen Runden einen positiven Score und 
+verlorenen einen negativen. So kann man den Durchschnitt über alle Spiele als Gesamtscore benutzen.<br>
+Die Idee hinter den Score Funktionen, also die Funktionen die in Abhängigkeit der Spiellänge den Score erstellen, ist,
+dass verlorenene Spiel mit eine längeren Spieldauer besser sind als Spiele die schnell verloren gehen. Bei gewonnenen
+Spielen ist es umgekehrt, je schneller gewonnen wird, desto besser.<br><br>
+Hier die aktuell genutzen Funktionen. In blau ist die Funktion für die gewonnen Runden dargestellt, in orange die für
+verlorene.<br><br>
+![score function](score.png)<br><br>
+Grundsätzlich gilt, dass 1 ein perfekter Score ist und -1 der schlechteste. Bei 75 Runden ist der jeweilige Score
+halbiert, also nach 75 gewonnene Runden bekommt das Spiel den Score 0.5 und ein verlorenes -0.5. Dieses Wert ist, 
+genauso wie der Grad der Steigung, nur durch Änderungen im Quellcode anpassbar.<br>
 ### Unsere Strategie
 Unsere Teamstrategie kann in `final.py` gefunden werden. Im Folgenden bezeichnen "Maßnahmen" eine mögliche Aktion zur 
 Veränderung des Spielstandes (bspw.: put_under_quarantine) und "Operationen" konkret angewandte Maßnahmen im Spiel
@@ -182,11 +194,19 @@ eine Operation auch mit einem Tupel angegeben werden. Dies kann zum Beispiel nü
 Teamstrategie bestimmte Operationen zu ranken und auf Basis einer Sortierung eine Auswahl zu treffen.
 ## Wissenschaftlicher Hintergrund
 ## Erklaerung des Programmcodes
-Der gesamte Code ist mit PyDoc dokumentiert und kann 
+Der gesamte Code ist mit PyDoc dokumentiert. Diese Dokumentation kann wie folgt generiert werden:
+```bash
+python3.8 -m pydoc -n <hostname> -p <port> pandemie
+```
+Einige Module lassen sich leider nicht automatisch generieren, da sie auf Ornder relativ zum Pfad zugreifen.
+Innerhalb der einzelnen Modulfunktionen sind zusätzlich einzelne Schritte kommentiert, um die Funktionsweise der Module 
+nachvollziehen zu können. Hierbei halten wir uns an die gängigen Standardkonventionen.
 ## API
 ## Software Architektur
 ## FAQ
 (Marvin)
+### Wie kann man das Team kontaktieren?
+Siehe [Autoren](documentation.md#autoren).
 ### Wie ist das Projekt lizensiert?
 Das Projekt ist mit der MIT Lizenz lizensiert und damit eine Open-Source Software. Die Lizenz für dieses Projekt
 befindet sich in der Datei `LICENSE.md`.<br>
@@ -245,3 +265,8 @@ Alles in allem kombinieren wir mit unserer Idee unsere Erfahrung aus den analysi
 gewichtsverteilten Strategie. Damit verfolgen wir zuverlässig unser Ziel, die Menschheit vor den modernen Bedrohungen
 unserer Zeit zu schützen.
 ## Auswertung der Ergebnisse
+## Autoren
+* Nils Langius (nils@langius.de)
+* Ruwen Sadocco (ruwen.sadocco11@gmail.com)
+* Marvin Sextro (marvin.sextro@stud.uni-hannover.de)
+* Alexander Krause (krause@finf.uni-hannover.de)
