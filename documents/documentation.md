@@ -366,6 +366,11 @@ unsrer Projekt in sehr abgespeckter Version.
 Dabei wird unser Service zur Beantwortung von Anfragen des `ic_20`-Tools permanent gestartet. Auf diesem läuft,
 ohne des es beeinflussbar wäre, unser Dienst mit unserer letzten, besten Lösungsstrategie.
 
+Der Domainname unserer auf AWS genutzen virtuellen Maschine lautet `ec2-52-91-60-156.compute-1.amazonaws.com`.
+Des Weiteren wird der Standardport des `ic20`-Tools genutzt. Dieser lautet `50123`.
+Die VM verfügt über 1 vCore, 1GB RAM und 8 GB Speicher. Das ist mehr als ausreichend für eine schnelle
+Antwort an ein aus der Ferne gestartetes `ic20`-Tool.
+
 ## Warum unsere Idee die Beste ist
 In unserem Ansatz zur optimalen Strategie die Menschheit vor dem Untergang zu retten, kombinieren wir die Gewichtung von
 Maßnahmen mit unserem empirischen Erfahrungsschatz über die ausbrechenden Seuchen und Krankheiten.
