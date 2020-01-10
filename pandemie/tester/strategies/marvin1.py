@@ -1,3 +1,7 @@
+"""
+One of the first strategies attempt. This is outdated.
+"""
+
 from pandemie.tester import AbstractStrategy
 from pandemie.util import operations
 
