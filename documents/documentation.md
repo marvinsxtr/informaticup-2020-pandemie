@@ -14,7 +14,7 @@
 * [Software Architektur](documentation.md#software-architektur)
 * [FAQ](documentation.md#faq)
 * [Zusatzfunktion: Visualisierung](documentation.md#zusatzfunktion:-visualisierung)
-* [Der Web service auf AWS](documentation.md#der-web-service-auf-AWS)
+* [Der Web service](documentation.md#der-web-service)
 * [Warum unsere Idee die Beste ist.](documentation.md#warum-unsere-idee-die-beste-ist)
 * [Auswertung der Ergebnisse](documentation.md#auswertung-der-ergebnisse)
 
@@ -261,8 +261,32 @@ Innerhalb der einzelnen Modulfunktionen sind zusätzlich einzelne Schritte komme
 nachvollziehen zu können. Hierbei halten wir uns an die gängigen Standardkonventionen.
 ## API
 ## Software Architektur
+Unser Projekt hat die folgende Struktur:
+```
+.
+├── documents
+├── pandemie
+│   ├── tester
+│   │   ├── data
+│   │   ├── logs
+│   │   │   └── Final
+│   │   └── strategies
+│   ├── util
+│   ├── visualization
+│   │   ├── logs
+│   └── web
+└── test
+```
+In `/documents` sind alle generierten oder vorhandenen Dokumente gesammelt (z.B. Scorefunktionsgraph) und in `/test` 
+befindet sich das vorgegebene ic20 Tool für alle Betriebssysteme. Im Hauptordner `/pandemie` sind die Module 
+[Tester](documentation.md#den-tester-richtig-nutzen), `util`, 
+[Visualization](documentation.md#zusatzfunktion-visualisierung) und [Web](documentation.md#der-web-service). Hierbei ist 
+util ein Modul, das sämtliche Hilfsfunktionen beinhaltet, welche zur Übersichtlichkeit nicht in die anderen Module 
+gehören. Web beinhaltet die Implementierungen für den Server, welcher mit dem ic20 Tool kommuniziert. 
 ## FAQ
 (Marvin)
+### Wie erstellt man eine eigene Strategie?
+Siehe [Eigene Strategie erstellen](documentation.md#eigene-strategien-entwickeln).
 ### Wie kann man das Team kontaktieren?
 Siehe [Autoren](documentation.md#autoren).
 ### Wie ist das Projekt lizensiert?
@@ -303,7 +327,12 @@ In `visualization.py` kann nun eine Funktion hinzugefügt werden, welche einen
 können. Zusätzlich muss in der Funktion `visualize_game` der entsprechende Funktionsaufruf der zurückgegebenen Liste 
 hinzugefügt werden. Die Visualisierungen werden entsprechend der Reihenfolge in dieser Liste untereinander angezeigt.
 Für die Visualisierung einzelner Runden kann hierfür analog die Funktion `visualize_round` verwendet werden.
-## Der Web Service auf AWS
+## Der Web Service
+### Web Service allgemein
+
+
+
+### AWS
 Unser Webservice ist auf Amazon AWS auf dem Elastic Compute Cloud Server (EC2) aufgesetzt. Der Webservice ist dabei
 unsrer Projekt in sehr abgespeckter Version.
 
