@@ -191,8 +191,26 @@ Innerhalb der einzelnen Modulfunktionen sind zusätzlich einzelne Schritte komme
 nachvollziehen zu können. Hierbei halten wir uns an die gängigen Standardkonventionen.
 ## API
 ## Software Architektur
+Our project is divided into several modules:
+```
+.
+├── documents
+├── pandemie
+│   ├── tester
+│   │   ├── data
+│   │   ├── logs
+│   │   │   └── Final
+│   │   └── strategies
+│   ├── util
+│   ├── visualization
+│   │   ├── logs
+│   └── web
+└── test
+```
 ## FAQ
 (Marvin)
+### Wie erstellt man eine eigene Strategie?
+Siehe [Eigene Strategie erstellen](documentation.md#eigene-strategien-entwickeln).
 ### Wie kann man das Team kontaktieren?
 Siehe [Autoren](documentation.md#autoren).
 ### Wie ist das Projekt lizensiert?
