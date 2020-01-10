@@ -45,7 +45,11 @@ app.layout = html.Div(
     dash.dependencies.Output('game-state', 'children'),
     [dash.dependencies.Input('data_dropdown', 'value')])
 def update_output(value):
-    # Add visualizations
+    """
+    Callback for the drop down menu
+    :param value: selected value in the menu
+    :return: graphic to get display
+    """
     if value is None:
         return
     if value == "game":
@@ -66,11 +70,20 @@ def visualize_round(number):
 
 
 def visualize_round_number(number):
-    # Displays the visualized round number
+    """
+    Displays the visualized round number
+    :param number: number
+    :return:
+    """
     return html.Span('Round: {0}'.format(number + 1), style={'padding': '5px', 'fontSize': '16px'})
 
 
 def visualize_round_connections_infected(number):
+    """
+    Plot the flight connections from infected cities to large ones.
+    :param number: round number to plot the data for
+    :return: final graph
+    """
     # City positions
     lon = pre.round_visualizations[number].get("lon", ())
     lat = pre.round_visualizations[number].get("lat", ())
@@ -117,7 +130,12 @@ def visualize_round_connections_infected(number):
 
 
 def visualize_round_pathogens_pie(number):
-    # Displays encountered pathogens by city in percent
+    """
+    Displays encountered pathogens by city in percent.
+    :param number: round number to display data for
+    :return: html code
+    """
+
     counts = pre.round_visualizations[number]["counts"]
     names = pre.round_visualizations[number]["names"]
 
@@ -138,19 +156,29 @@ def visualize_game():
 
 
 def visualize_game_round_count():
-    # Prints round count of a game
+    """
+    Prints round count of a game.
+    :return: html code
+    """
     return html.Span('Rounds: {0}'.format(len(pre.round_names)), style={'padding': '5px', 'fontSize': '16px'})
 
 
 def visualize_game_outcome():
-    # Prints the outcome
+    """
+    Prints the outcome of the game.
+    :return: html code
+    """
     outcome = pre.game_visualizations["outcome"]
 
     return html.Span('Outcome: {0}'.format(outcome), style={'padding': '5px', 'fontSize': '16px'})
 
 
 def visualize_game_population():
-    # Visualizes the population development in a game
+    """
+    Visualizes the population development in a game.
+    :return: html code for the graph
+    """
+
     x_rounds = pre.game_visualizations["x_rounds"]
     y_population = pre.game_visualizations["y_population"]
 
@@ -161,13 +189,20 @@ def visualize_game_population():
 
 
 def visualize_pathogens_in_full_game():
-    # Visualizes a list of all pathogens appeared in the game
+    """
+    Visualizes a list of all pathogens that appeared in the game.
+    :return: html code
+    """
     pathogens = pre.game_visualizations["pathogens"]
 
     return html.Span('All pathogens in game: ' + str(pathogens), style={'padding': '5px', 'fontSize': '16px'})
 
 
 def main():
+    """
+    Main routine to start the visualization..
+    :return: None
+    """
     global visualized_game
     print("Started pre-processing")
     pre.prepare()
