@@ -313,9 +313,9 @@ Gesamte Population im Spielverlauf:
 ![full_game_visualization](images/full_game_visualization.png)<br>
 #### Rundenvisualiserung
 Flugverbindungen ausgehend von den hundert größten infizierten Städten:
-![round_outbreak_visualization](images/round_outbreak_visualization.png)<br>
+![round_outbreak_visualization](images/round_outbreak_visualization.png)<!-- .element height="50%" width="50%" --><br>
 Anteil der infizierten Bevölkerung für jedes Pathogen:
-![round_pathogens_visualization](images/round_pathogens_visualization.png)<br>
+![round_pathogens_visualization](images/round_pathogens_visualization.png)<!-- .element height="50%" width="50%" --><br>
 ### Wie starte ich die Visualisierung
 Um die Visualisierung zu starten muss zunächst mindestens einmal der 
 [Tester](documentation.md#den-tester-richtig-nutzen) mit der Visualisierungs-Option gestartet werden. Dies führt dazu, 
