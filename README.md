@@ -1,5 +1,5 @@
 # README
-Siehe [documentation](documents/documentation.md).
+Die komplette Dokumentation finden Sie hier: [documentation](documents/documentation.md).
 
 ### Schnellstart für debugging Zwecke
 
