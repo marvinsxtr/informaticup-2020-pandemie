@@ -343,6 +343,8 @@ hinzugefügt werden. Die Visualisierungen werden entsprechend der Reihenfolge in
 Für die Visualisierung einzelner Runden kann hierfür analog die Funktion `visualize_round` verwendet werden.
 ## Der Web Service
 ### Web Service allgemein
+Als Grundlage für unseren Web Service dient ein `WSGIServer`, welcher auf dem Port 50123 luscht. Dieses ist auch der
+default-Port des `ic_20`-Tools. Dieser wird als Thread gestartet und am Ende des gesamten Programmaufrufs wieder beendet.
 
 
 
