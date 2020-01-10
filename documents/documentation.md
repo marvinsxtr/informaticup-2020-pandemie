@@ -182,6 +182,7 @@ eine Operation auch mit einem Tupel angegeben werden. Dies kann zum Beispiel nü
 Teamstrategie bestimmte Operationen zu ranken und auf Basis einer Sortierung eine Auswahl zu treffen.
 ## Wissenschaftlicher Hintergrund
 ## Erklaerung des Programmcodes
+Der gesamte Code ist mit PyDoc dokumentiert und kann 
 ## API
 ## Software Architektur
 ## FAQ
