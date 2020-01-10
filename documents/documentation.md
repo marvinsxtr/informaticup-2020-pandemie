@@ -182,11 +182,19 @@ eine Operation auch mit einem Tupel angegeben werden. Dies kann zum Beispiel nü
 Teamstrategie bestimmte Operationen zu ranken und auf Basis einer Sortierung eine Auswahl zu treffen.
 ## Wissenschaftlicher Hintergrund
 ## Erklaerung des Programmcodes
-Der gesamte Code ist mit PyDoc dokumentiert und kann 
+Der gesamte Code ist mit PyDoc dokumentiert. Diese Dokumentation kann wie folgt generiert werden:
+```bash
+python3.8 -m pydoc -n <hostname> -p <port> pandemie
+```
+Einige Module lassen sich leider nicht automatisch generieren, da sie auf Ornder relativ zum Pfad zugreifen.
+Innerhalb der einzelnen Modulfunktionen sind zusätzlich einzelne Schritte kommentiert, um die Funktionsweise der Module 
+nachvollziehen zu können. Hierbei halten wir uns an die gängigen Standardkonventionen.
 ## API
 ## Software Architektur
 ## FAQ
 (Marvin)
+### Wie kann man das Team kontaktieren?
+Siehe [Autoren](documentation.md#autoren).
 ### Wie ist das Projekt lizensiert?
 Das Projekt ist mit der MIT Lizenz lizensiert und damit eine Open-Source Software. Die Lizenz für dieses Projekt
 befindet sich in der Datei `LICENSE.md`.<br>
@@ -240,3 +248,8 @@ Alles in allem kombinieren wir mit unserer Idee unsere Erfahrung aus den analysi
 gewichtsverteilten Strategie. Damit verfolgen wir zuverlässig unser Ziel, die Menschheit vor den modernen Bedrohungen
 unserer Zeit zu schützen.
 ## Auswertung der Ergebnisse
+## Autoren
+* Nils Langius (nils@langius.de)
+* Ruwen Sadocco (ruwen.sadocco11@gmail.com)
+* Marvin Sextro (marvin.sextro@stud.uni-hannover.de)
+* Alexander Krause (krause@finf.uni-hannover.de)
