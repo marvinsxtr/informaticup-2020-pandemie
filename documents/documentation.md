@@ -313,6 +313,7 @@ Gesamte Population im Spielverlauf:
 ![full_game_visualization](images/full_game_visualization.png)<br>
 #### Rundenvisualiserung
 Flugverbindungen ausgehend von den hundert größten infizierten Städten:
+<img src="images/round_outbreak_visualization.png" width="200"/>
 ![round_outbreak_visualization](images/round_outbreak_visualization.png)<br>
 Anteil der infizierten Bevölkerung für jedes Pathogen:
 ![round_pathogens_visualization](images/round_pathogens_visualization.png)<br>
