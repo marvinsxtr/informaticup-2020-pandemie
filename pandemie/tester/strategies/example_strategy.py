@@ -4,9 +4,9 @@ from pandemie.util import operations
 
 class ExampleStrategy(AbstractStrategy):
     """
-     This class is an implementation of strategy.py
-     This strategy is just for demonstration how to create your own strategy, it's only function is to end the currend
-     round.
+    This class is an example implementation of strategy.py
+    This strategy is just for demonstration purposes on how to create your own strategy, it's only function is to end
+    the current round.
     """
     def __init__(self, silent=False, visualize=False):
         super().__init__(silent=silent, visualize=visualize)

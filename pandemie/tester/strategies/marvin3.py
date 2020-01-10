@@ -1,3 +1,7 @@
+"""
+Old strategy. Not maintained!
+"""
+
 from pandemie.tester import AbstractStrategy
 from pandemie.util import operations
 
