@@ -23,3 +23,13 @@ Um den reinen Web Service zu starten führen sie den nachstehenden Befehl aus.
 ```bash
 python3.8 -m pandemie.deployment
 ```
+
+### Schnellstart AWS
+Unser Webservice ist auf AWS deployed und kann mit dem nachstehenden Befehl angesprochen werden.
+
+Die Domain lautet: `ec2-52-91-60-156.compute-1.amazonaws.com`
+
+Der Port ist weiterhin `50123`
+```bash
+./ic20_linx -u http://ec2-52-91-60-156.compute-1.amazonaws.com:50123
+```
