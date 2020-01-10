@@ -45,7 +45,7 @@ class WebServer(threading.Thread):
         self.port = port
         self.log = log
 
-        server = WSGIServer(('127.0.0.1', port), app, log=log)
+        server = WSGIServer(("0.0.0.0", port), app, log=log)
         self.server = server
 
         @app.post("/")
