@@ -1,3 +1,4 @@
+
 # Pandemie!
 
 ## Inhaltsverzeichnis
@@ -21,11 +22,11 @@
 In dieser Dokumentation wird die Verwendung und Funktionsweise unserer Lösung des Problems des Informaticups 2019
 beschrieben.<br>
 Durch das bereitgestellte Programm `ic20_linux`*, welches von den Herausgebern des Informaticups zur Verfügung gestellt 
-wird, wird eine Epedemie der Welt simuliert.
+wird, wird eine Epidemie der Welt simuliert.
 Ziel ist es, dass in möglichst kurzer Zeit, die Menschheit auf dem Planeten Erde überlebt und die Seuchen
 ausgerottet werden. Diese Seuchen haben unterschiedliche Eigenschaften und treten zufällig auf.
 Für die Lösung wurde unsererseits ein Webservice entwickelt, welcher in Kombination mit einer Lösungsstrategie dem
-Programm `ic20_linux` rundenbasiert Antworten schickt, die dazu führen sollen, dass die Simmulation der Epedemie positiv
+Programm `ic20_linux` rundenbasiert Antworten schickt, die dazu führen sollen, dass die Simulation der Epidemie positiv
 entschieden wird.<br>
 Um das Verhalten des Simulationsprogramms zu analysieren und eine effektive Lösungsstrategie zu entwickeln, wurden
 weitere Programme durch die Gruppe entwickelt.<br>
@@ -45,11 +46,11 @@ Der Klonvorgang geschieht mit dem nachstehenden Aufruf.
 ```git
 git clone https://gitlab.projekt.uni-hannover.de/chi-informaticup03/project-pandemie-03.git
 ```
-Als grundlegende Software wird Python in der Version 3.8 vorrausgesetzt(`python3.8`). Dieses ist, je nachdem welches 
+Als grundlegende Software wird Python in der Version 3.8 vorausgesetzt(`python3.8`). Dieses ist, je nachdem welches 
 Betriebssystem verwendet wird, anders zu installieren.<br>
 Des Weiteren sind einige Abhängigkeiten für die korrekte Ausführung des Programmcodes notwendig. Die Abhängigkeiten 
 der Software sind in der Datei `requirements.txt` erfasst. Die Datei wird mit in dem Projektordner mitgeliefert und
-befindet sich auf der höchsten Hirarchieebene. Die Abhängigkeiten können mit der Software `pip3.8` installiert werden.
+befindet sich auf der höchsten Hierarchieebene. Die Abhängigkeiten können mit der Software `pip3.8` installiert werden.
 
 Mit dem Aufruf eines Befehls ist das automatische Installieren möglich.
 ```bash
@@ -61,7 +62,7 @@ Um den Tester für das `ic20_linux` Programm auszuführen, kann in dem Projektor
 ```bash
 python3.8 -m pandemie.tester
 ```
-Für die schnelle Ausführung des Programms sind bereits Standard-Parameter gesetzt. Diese können per aufgefordeter
+Für die schnelle Ausführung des Programms sind bereits Standard-Parameter gesetzt. Diese können per aufgeforderter
 Terminaleingabe auch geändert werden. Dazu mehr in der Sektion 
 [Wie benutze ich das Programm](documentation.md#wie-benutze-ich-das-programm).
 Mit den Standard-Parametern wird das `ic20_linux` Programm in 5 Instanzen ausgeführt und gegen die zuletzt von uns
@@ -78,7 +79,7 @@ Analysieren und Testen eigener Strategien bereitgestellt. Um eigene Strategien z
 ```bash
 python3.8 -m pandemie.tester
 ```
-<br>Der Tester kann mit verschiedenen Optionen über die Kommandozeile konfigurieren werden. Diese kann man sich so 
+<br>Der Tester kann mit verschiedenen Optionen über die Kommandozeile konfiguriert werden. Diese kann man sich so 
 anzeigen lassen:
 ```bash
 > python3.8 -m pandemie.tester -h
@@ -90,15 +91,15 @@ anzeigen lassen:
 -t                   how many simulations should be run simultaneously? (default=5)
 -u --user_seed       uses a predefined seed for all games, if not set a random seed is used
 ```
-Im folgenden werden die einzelnen Optionen erläutert.
+Im Folgenden werden die einzelnen Optionen erläutert.
 Der Tester implementiert die Möglichkeit die Gewichte einer Strategie mittels einer `Bayesian optimization` anzupassen.
 Dazu wird über die Kommandozeile die `-o` bzw. die `--optimize` Option angegeben. Aktuell ist es nur möglich die `final`
 Strategie zu optimieren. Dabei werden alle anderen Parameter verworfen.
 
-Möchte man eine andere Strategie testen so muss man den vollständigen Namen der Strategie der `-s` Option übergeben.
+Möchte man eine andere Strategie testen, so muss man den vollständigen Namen der Strategie der `-s` Option übergeben.
 Die auszuführenden Strategie muss im `/pandemie/tester/strategies` Ordner liegen und von der `AbstractStrategy` erben.
 
-Die `-l` oder `--log` Flag aktiviert das Erstellen eines Log. Das Loggen beinhaltet das Ergebnis und die Anzahl der 
+Die `-l` oder `--log` Flag aktiviert das Erstellen eines Logs. Das Loggen beinhaltet das Ergebnis und die Anzahl der 
 Runden, die bis zu diesem Ergebnis gespielt wurden, für jedes einzelne gespielte Spiel. Außerdem werden für jedes Spiel
 alle aufgetretenen Pathogene inklusive ihrer Eigenschaften geloggt. Am Ende der Log-Datei steht dann der berechnete
 Score der Strategie. Dieser befindet sich immer zwischen 1 und -1, wobei 1 ein perfekter Score wäre.<br>
@@ -145,7 +146,7 @@ Das Modul `event_checker.py` dient dem Sammeln von allgemeinen Daten, die zum Er
 sind. Dabei filtert das Modul die gesamten Rohdaten einer Runde und überprüft diese auf bisher unbekannte Pathogen- und 
 Event-Typen.
 
-Das Modul `analyse_log.py` analysiert wenn Logging aktiviert ist die übergebene Log-Datei. Hierbei wird für jedes
+Das Modul `analyse_log.py` analysiert, wenn Logging aktiviert, ist die übergebene Log-Datei. Hierbei wird für jedes
 bekannte Pathogen analysiert wie viele Spiele gewonnen und verloren wurden, wenn dieses Pathogen aufgetreten ist.
 
 ##### Der Event-Checker
@@ -183,8 +184,8 @@ medicationInDevelopment	, global
 ```
 
 ##### Die Log-Analyse
-Das manuelle Einbinden des Moduls `analyse_log.py` ist nicht notwendig. Das Modul wird standardmäßig ausgeführt wenn
-Logging aktiviert ist. Es ist nicht möglich das Modul zu deaktivieren oder zu entfernen ohne Änderungen an `tester.py`
+Das manuelle Einbinden des Moduls `analyse_log.py` ist nicht notwendig. Das Modul wird standardmäßig ausgeführt, wenn
+Logging aktiviert ist. Es ist nicht möglich das Modul zu deaktivieren oder zu entfernen, ohne Änderungen an `tester.py`
 vorzunehmen. 
 
 Die gesammelten Daten werden zum Ende der übergebenen Log-Datei hinzugefügt. Hierbei werden alle nicht-UTF-8-Zeichen
@@ -215,19 +216,19 @@ Eine Strategie bezeichnet in unserem Kontext eine Implementierung, um auf den ak
 antworten.
 ### Die Scorefunktion
 Im Hinblick auf eine Vergleichbarkeit der verschiedenen Strategien, eventuell später auch in Abhängigkeit von ihren
-Gewichten, bietet es sich an, eine Score Funktion zu erstellen, die es ermöglicht einem Spieldurchlauf einen Score Wert
-zu geben. Um die Score Funktion über mehrere Runden hinweg zu benutzen, geben wir gewonnenen Spielen einen positiven 
+Gewichten, bietet es sich an, eine Scorefunktion zu erstellen, die es ermöglicht einem Spieldurchlauf einen Score Wert
+zu geben. Um die Scorefunktion über mehrere Runden hinweg zu benutzen, geben wir gewonnenen Spielen einen positiven 
 Score und verlorenen einen negativen. So kann man den Durchschnitt über alle Spiele als Gesamtscore benutzen.<br>
-Die Idee hinter den Score Funktionen, also die Funktionen die in Abhängigkeit der Spiellänge den Score erstellen, ist,
-dass verlorene Spiele mit eine längeren Spieldauer besser sind als Spiele die schneller verloren gehen. Bei gewonnenen
+Die Idee hinter den Scorefunktionen, also die Funktionen die in Abhängigkeit der Spiellänge den Score erstellen, ist,
+dass verlorene Spiele mit eine längeren Spieldauer besser sind, als Spiele die schneller verloren gehen. Bei gewonnenen
 Spielen ist es umgekehrt, je schneller gewonnen wird, desto besser.<br><br>
-Hier die aktuell genutzen Funktionen. In blau ist die Funktion für die gewonnen Spiele dargestellt, in orange die für
+Hier die aktuell genutzten Funktionen. In blau ist die Funktion für die gewonnen Spiele dargestellt, in orange die für
 verlorenen.<br><br>
 ![score function](images/score.png)<br><br>
 Grundsätzlich gilt, dass 1 ein perfekter Score ist und -1 der schlechteste. Bei 75 Runden wird der jeweilige Score
-halbiert, also nach 75 gewonnenen Runden bekommt das Spiel den Score 0.5 und ein verlorenes -0.5. Dieses Wert ist, 
+halbiert, also nach 75 gewonnenen Runden bekommt das Spiel den Score 0.5 und ein verlorenes -0.5. Dieser Wert ist, 
 genauso wie der Grad der Steigung, nur durch Änderungen im Quellcode anpassbar.<br>
-Die Formeln für die Score Funktionen sind wie folgend, wobei `k=0.07` und `a=75` gilt. Hierbier ist `k` die Konstante,
+Die Formeln für die Scorefunktionen sind wie folgend, wobei `k=0.07` und `a=75` gilt. Hierbei ist `k` die Konstante,
 die den Grad der Steigung beschreibt, und `a` die Anzahl der Runden nach denen der Wert halbiert wird.<br>
 Die Funktion für den Win Score ist f1, die für den Loss Score f2.<br><br>
 ![score function](images/score_win.png)<br><br>
@@ -236,7 +237,7 @@ Die Funktion für den Win Score ist f1, die für den Loss Score f2.<br><br>
 Unsere Teamstrategie kann in `final.py` gefunden werden. Im Folgenden bezeichnen "Maßnahmen" eine mögliche Aktion zur 
 Veränderung des Spielstandes (bspw.: put_under_quarantine) und "Operationen" konkret angewandte Maßnahmen im Spiel
 (bspw. ("put_under_quarantine", city, pathogen)). Die Strategie besteht grundlegend aus drei Phasen: Preprocessing, 
-Ranking nach Operation und Ranking nach Maßname. Im ersten Schritt wird der Spielzustand analysiert und neu in Listen 
+Ranking nach Operation und Ranking nach Maßnahme. Im ersten Schritt wird der Spielzustand analysiert und neu in Listen 
 bzw. Dicts abgespeichert. Zum Beispiel werden den Städten und Pathogenen einige neue Parameter zugeordnet und nach
 diesen sortiert. Im nächsten Schritt wird innerhalb einer Maßnahme die beste Operation gesucht. Dies führt am Ende dazu,
 dass für jede Maßnahme eine Operation als beste Option auserkoren wird. Im letzten Schritt werden die Operationen in die
@@ -244,7 +245,7 @@ abschließende Reihenfolge gebracht, an deren erster Stelle die Operation steht,
 aufgrund mangelnder Punkte nicht ausgeführt werden, muss die Runde beendet werden.
 #### Beobachtungen bei der Entwicklung
 Bei der Entwicklung unserer Teamstrategie haben wir einige Beobachtungen gemacht, die es erleichtern, eigene Strategien
-zu entwickeln. Diese werden im folgenden aufgeführt:
+zu entwickeln. Diese werden im Folgenden aufgeführt:
  * Jede Stadt kann nur von einem Pathogen gleichzeitig befallen werden
  * Die Punkte für eine Operation werden für die angegebene Rundenzahl im Voraus bezahlt
 ### Eigene Strategien entwickeln
@@ -261,7 +262,7 @@ mit `tester.py` sicherzustellen.
 Über die letzten Jahre sind die Antibiotikareserven stetig zurückgegangen und multiresistente Erreger sind auf dem 
 Vormarsch. Sollte es nicht möglich sein, rechtzeitig neue Antibiotika zu entwickeln, steigt die Gefahr von Epidemien 
 oder im Extremfall einer Pandemie. Um auf den Ernstfall vorbereitet zu sein, kann es sinnvoll sein, Simulationen wie die
-im Rahmen des Informaticups durchzuführen. Auch wenn diese Simualtion auf heuristischen Methoden basiert und stark 
+im Rahmen des Informaticups durchzuführen. Auch wenn diese Simulation auf heuristischen Methoden basiert und stark 
 vereinfacht ist, lassen sich einige Maßnahmen und Strategien ableiten, um die Reaktionszeit auf bestimmte lokale 
 Ereignisse zu verringern. <br>
 [Quelle: Resistente Antibiotika](https://www.br.de/nachrichten/wissen/superkeime-antibiotika-reserven-gehen-aus,RD48aO6)
@@ -272,7 +273,7 @@ Der gesamte Code ist mit PyDoc dokumentiert. Diese Dokumentation kann wie folgt 
 ```bash
 python3.8 -m pydoc -n <hostname> -p <port> pandemie
 ```
-Einige Module lassen sich leider nicht automatisch generieren, da sie auf Ornder relativ zum Pfad zugreifen.
+Einige Module lassen sich leider nicht automatisch generieren, da sie auf Ordner relativ zum Pfad zugreifen.
 Innerhalb der einzelnen Modulfunktionen sind zusätzlich einzelne Schritte kommentiert, um die Funktionsweise der Module 
 nachvollziehen zu können. Hierbei halten wir uns an die gängigen Standardkonventionen.
 ## Software Architektur
@@ -345,7 +346,7 @@ Dropdown-Menü ausgewählt werden, welche Runde oder ob das gesamte Spiel visual
 ### Eigene Visualisierung hinzufügen
 Die Visualisierung wird mithilfe von `Plotly` mit `Dash` als Dashboard Anwendung realisiert. Plotly kann also dazu 
 genutzt werden, eigene Visualisierungen einzubinden. Hierbei soll zwischen Preprocessing und der eigentlichen 
-Darstellung unterschieden werden, wobei ersteres in `preprocessing.py` und letzteres in `visualization.py` stattfindet. 
+Darstellung unterschieden werden, wobei Ersteres in `preprocessing.py` und Letzteres in `visualization.py` stattfindet. 
 <br> Soll eine Visualisierung für das gesamte Spiel hinzugefügt werden, so muss das Preprocessing in der Funktion 
 `preprocess_game` stattfinden. Hier können benötigte Lists/Dicts erstellt und mithilfe der jeweiligen JSON-Datei
 generiert werden. Anschließend sollen generierte Daten in dem Dict `game_visualizations` abgelegt werden, um später auf
@@ -375,7 +376,7 @@ Unser Webservice ist auf Amazon AWS auf dem Elastic Compute Cloud Server (EC2) a
 unsrer Projekt in sehr abgespeckter Version.
 
 Dabei wird unser Service zur Beantwortung von Anfragen des `ic_20`-Tools permanent gestartet. Auf diesem läuft,
-ohne des es beeinflussbar wäre, unser Dienst mit unser letzen, besten Lösungsstrategie.
+ohne des es beeinflussbar wäre, unser Dienst mit unserer letzen, besten Lösungsstrategie.
 
 ## Warum unsere Idee die Beste ist
 In unserem Ansatz zur optimalen Strategie die Menschheit vor dem Untergang zu retten, kombinieren wir die Gewichtung von
@@ -384,7 +385,7 @@ Maßnahmen mit unserem empirischen Erfahrungsschatz über die ausbrechenden Seuc
 Zunächst werden alle Ereignisse einer Runde analysiert und lokal abgespeichert. Anschließend werden, basierend auf der
 Art der Bedrohung, alle möglichen Reaktionen der Menschheit faktorisiert. Diese Faktoren richten sich mitunter nach
 unserer erprobten Erfahrung. Nicht zuletzt wird anhand der verfügbaren Reaktionen die Eine, oder Mehrere Aktionen
-durchgeführt um die Menscheit zu retten.
+durchgeführt, um die Menscheit zu retten.
 
 Alles in allem kombinieren wir mit unserer Idee unsere Erfahrung aus den analysierten Ereignissen mit einer
 gewichtsverteilten Strategie. Damit verfolgen wir zuverlässig unser Ziel, die Menschheit vor den modernen Bedrohungen
