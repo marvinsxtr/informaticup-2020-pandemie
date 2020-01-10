@@ -227,4 +227,6 @@ Für die Visualisierung einzelner Runden kann hierfür analog die Funktion `visu
 ## Der Web Service
 ## Warum unsere Idee die Beste ist
 (Alex)
+In unserem Ansatz zur optimalen Strategie die Menschheit vor dem Untergang zu retten, kombinieren wir die Gewichtung von Maßnahmen
+mit unserem empirischen Erfahrungsschatz über die ausbrechenden Seuchen und Krankheiten.
 ## Auswertung der Ergebnisse
