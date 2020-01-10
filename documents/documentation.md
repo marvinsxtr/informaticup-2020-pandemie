@@ -1,4 +1,3 @@
-
 # Pandemie!
 
 ## Inhaltsverzeichnis
@@ -263,9 +262,10 @@ mit `tester.py` sicherzustellen.
 Vormarsch. Sollte es nicht möglich sein, rechtzeitig neue Antibiotika zu entwickeln, steigt die Gefahr von Epidemien 
 oder im Extremfall einer Pandemie. Um auf den Ernstfall vorbereitet zu sein, kann es sinnvoll sein, Simulationen wie die
 im Rahmen des Informaticups durchzuführen. Auch wenn diese Simualtion auf heuristischen Methoden basiert und stark 
-vereinfacht ist, lassen sich einige Maßnahmen und Strategien ableiten, um auf bestimmte lokale Ereignisse schnell zu
-reagieren, ohne unnötig Zeit zu verlieren.
+vereinfacht ist, lassen sich einige Maßnahmen und Strategien ableiten, um die Reaktionszeit auf bestimmte lokale 
+Ereignisse zu verringern. <br>
 [Quelle: Resistente Antibiotika](https://www.br.de/nachrichten/wissen/superkeime-antibiotika-reserven-gehen-aus,RD48aO6)
+<br>
 [Quelle: Pandemie-Simulation](https://www.spiegel.de/wissenschaft/mensch/pandemie-simulation-kranke-isolieren-grenzen-schliessen-a-413300.html)
 ## Erklaerung des Programmcodes
 Der gesamte Code ist mit PyDoc dokumentiert. Diese Dokumentation kann wie folgt generiert werden:
@@ -282,6 +282,7 @@ Unser Projekt hat die folgende Struktur:
 project-pandemie-03
 ├── documents
 ├── pandemie
+│   ├── deployment
 │   ├── tester
 │   │   ├── data
 │   │   ├── logs
@@ -292,12 +293,12 @@ project-pandemie-03
 │   └── web
 └── test
 ```
-In `/documents` sind alle generierten oder vorhandenen Dokumente gesammelt (z.B. Scorefunktionsgraph) und in `/test` 
-befindet sich das vorgegebene ic20 Tool für alle Betriebssysteme. Im Hauptordner `/pandemie` sind die Module 
-[Tester](documentation.md#den-tester-richtig-nutzen), `util`, 
-[Visualization](documentation.md#zusatzfunktion-visualisierung) und [Web](documentation.md#der-web-service). Hierbei ist 
-util ein Modul, das sämtliche Hilfsfunktionen beinhaltet, welche zur Übersichtlichkeit nicht in die anderen Module 
-gehören. Web beinhaltet die Implementierungen für den Server, welcher mit dem ic20 Tool kommuniziert. 
+In `/documents` sind alle generierten oder vorhandenen Dokumente gesammelt (z.B. Scorefunktionsgraph). In `deployment`
+ist das Programm für den Web Service implementiert und in `/test` befindet sich das vorgegebene ic20 Tool für alle 
+Betriebssysteme. Im Hauptordner `/pandemie` sind die Module [Tester](documentation.md#den-tester-richtig-nutzen), 
+`util`, [Visualization](documentation.md#zusatzfunktion-visualisierung) und [Web](documentation.md#der-web-service). 
+Hierbei ist util ein Modul, das sämtliche Hilfsfunktionen beinhaltet, welche zur Übersichtlichkeit nicht in die anderen 
+Module gehören. Web beinhaltet die Implementierungen für den Server, welcher mit dem ic20 Tool kommuniziert. 
 ## FAQ
 ### Wie erstellt man eine eigene Strategie?
 Um eigene Strategien zu erstellen, muss die eigene Strategie von der `AbstractStrategy` erben und die Methode 
@@ -324,7 +325,7 @@ Erweiterungen realisiert werden können.
 Gesamte Population im Spielverlauf:
 ![full_game_visualization](images/full_game_visualization.png)<br>
 #### Rundenvisualiserung
-Flugverbindungen ausgehend von den hundert größten infizierten Städten:
+Die hundert wichtigsten Flugverbindungen zwischen infizierten Städten:
 <br><img src="images/round_outbreak_visualization.png" width="500"/><br>
 Anteil der infizierten Bevölkerung für jedes Pathogen:
 <br><img src="images/round_pathogens_visualization.png" width="500"/><br>
