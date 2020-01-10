@@ -1,11 +1,5 @@
 """
-This is the strategy our team continuously improves to compete in the InformatiCup. Its basic principle is ranking
-each possible operation and thereby picking the best choice.
-
-Observations:
-- a city can only be affected by one pathogen at a time
-- it might be sufficient to sort by operation and afterwards sort the 12 best possibilities
-- points for an operation are pre-paid for the required round duration
+This is a Variation of final.py for some experimentation
 """
 import random
 
