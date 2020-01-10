@@ -14,7 +14,7 @@
 * [Software Architektur](documentation.md#software-architektur)
 * [FAQ](documentation.md#faq)
 * [Zusatzfunktion: Visualisierung](documentation.md#zusatzfunktion:-visualisierung)
-* [Der Web service auf AWS](documentation.md#der-web-service-auf-AWS)
+* [Der Web service](documentation.md#der-web-service)
 * [Warum unsere Idee die Beste ist.](documentation.md#warum-unsere-idee-die-beste-ist)
 * [Auswertung der Ergebnisse](documentation.md#auswertung-der-ergebnisse)
 
@@ -105,12 +105,12 @@ alle aufgetretenen Pathogene inklusive ihrer Eigenschaften geloggt. Am Ende der 
 Score der Strategie. Dieser befindet sich immer zwischen 1 und -1, wobei 1 ein perfekter Score wäre.<br>
 Hier ein Beispiel für die Strategie `example_strategy.py` mit zwei gespielten Runden:<br>
 ```
-loss:	11
+$loss:	11
 {'name': 'N5-10', 'infectivity': '+', 'mobility': '++', 'duration': 'o', 'lethality': '+'}
 {'name': 'Admiral Trips', 'infectivity': '++', 'mobility': '+', 'duration': '-', 'lethality': '++'}
 {'name': 'Plorps', 'infectivity': 'o', 'mobility': 'o', 'duration': '+', 'lethality': '-'}
 
-win:	26
+$win:	26
 {'name': 'Shanty', 'infectivity': '+', 'mobility': '-', 'duration': 'o', 'lethality': '-'}
 {'name': 'Phagum vidiianum', 'infectivity': 'o', 'mobility': 'o', 'duration': '+', 'lethality': '+'}
 
@@ -139,20 +139,78 @@ Die Standardeinstellungen sind wie folgend:
  * Es werden 5 Spiele gleichzeitig gespielt
  * Für jedes Spiel wird ein zufälliger Seed generiert
 
-#### Event-Checker als Daten-Analyse-Tool
+#### Daten-Analyse-Tools
+Zum Sammeln von Daten über Vieren und Events sind in `tester.py` bereits verschieden Funktionalitäten integriert.
+
 Das Modul `event_checker.py` dient dem Sammeln von allgemeinen Daten, die zum Erstellen einer guten Strategie essenziell 
 sind. Dabei filtert das Modul die gesamten Rohdaten einer Runde und überprüft diese auf bisher unbekannte Pathogen- und 
 Event-Typen.
-##### Einbinden des Event-Checkers
+
+Das Modul `analyse_log.py` analysiert wenn Logging aktiviert ist die übergebene Log-Datei. Hierbei wird für jedes
+bekannte Pathogen analysiert wie viele Spiele gewonnen und verloren wurden, wenn dieses Pathogen aufgetreten ist.
+
+##### Der Event-Checker
 Das manuelle Einbinden des Moduls ist nicht notwendig. Das Modul wird bereits in `strategy.py` eingebunden und ist somit 
 standardmäßig in jeder Strategie beinhaltet und kann nicht ohne Änderungen an `strategy.py` deaktiviert oder entfernt 
 werden.
-##### Die gesammelten Daten
+
+
 Die bekannten Pathogen- und Eventnamen werden in der Datei `pandemie/tester/data/pathogen_names.dat` bzw.
 `pandemie/tester/data/event_names.dat` gespeichert.
 Zusätzlich zu den Namen werden für jedes Pathogen und jedes Event auch ein Beispiel für die Eigenschaften gespeichert. 
 Die Daten werden dann in `pandemie/tester/data/pathogen_data.dat` bzw. `pandemie/tester/data/event_data.dat` 
 gespeichert.
+<br>Beispiel für gesammelte Pathogen-Daten:<br>
+```
+N5-10
+{'name': 'N5-10', 'infectivity': '+', 'mobility': '++', 'duration': 'o', 'lethality': '+'}
+
+Azmodeus
+{'name': 'Azmodeus', 'infectivity': 'o', 'mobility': 'o', 'duration': 'o', 'lethality': 'o'}
+
+Xenomonocythemia
+{'name': 'Xenomonocythemia', 'infectivity': '-', 'mobility': '--', 'duration': 'o', 'lethality': '++'}
+```
+<br>Beispiel für gesammelte Event-Daten:<br>
+```
+outbreak	, local
+{'type': 'outbreak', 'pathogen': {'name': 'Xenomonocythemia', 'infectivity': '-', 'mobility': '--', 'duration': 'o', 'lethality': '++'}, 'prevalence': 0.06321243523316063, 'sinceRound': 1}
+
+pathogenEncountered	, global
+{'type': 'pathogenEncountered', 'pathogen': {'name': 'N5-10', 'infectivity': '+', 'mobility': '++', 'duration': 'o', 'lethality': '+'}, 'round': 1}
+
+medicationInDevelopment	, global
+{'type': 'medicationInDevelopment', 'pathogen': {'name': 'N5-10', 'infectivity': '+', 'mobility': '++', 'duration': 'o', 'lethality': '+'}, 'sinceRound': 1, 'untilRound': 4}
+```
+
+##### Die Log-Analyse
+Das manuelle Einbinden des Moduls `analyse_log.py` ist nicht notwendig. Das Modul wird standardmäßig ausgeführt wenn
+Logging aktiviert ist. Es ist nicht möglich das Modul zu deaktivieren oder zu entfernen ohne Änderungen an `tester.py`
+vorzunehmen. 
+
+Die gesammelten Daten werden zum Ende der übergebenen Log-Datei hinzugefügt. Hierbei werden alle nicht-UTF-8-Zeichen
+entfernt, um mögliche Konflikte zu vermeiden.
+<br>Beispiel für gesammelte Daten:<br>
+```
+Admiral Trips                  	-	wins: 9 - loss: 18
+Azmodeus                       	-	wins: 1 - loss: 8
+Coccus innocuus                	-	wins: 5 - loss: 8
+Endoictus                      	-	wins: 8 - loss: 12
+Hexapox                        	-	wins: 4 - loss: 14
+Influenza iutiubensis          	-	wins: 5 - loss: 8
+Methanobrevibacter colferi     	-	wins: 6 - loss: 9
+Moricillus                     	-	wins: 5 - loss: 20
+N5-10                          	-	wins: 11 - loss: 18
+Neurodermantotitis             	-	wins: 3 - loss: 12
+Phagum vidiianum               	-	wins: 4 - loss: 25
+Plorps                         	-	wins: 2 - loss: 10
+Procrastinalgia                	-	wins: 6 - loss: 5
+Rhinonitis                     	-	wins: 6 - loss: 11
+Saccharomyces cerevisiae mutans	-	wins: 10 - loss: 12
+Shanty                         	-	wins: 5 - loss: 3
+thisis                         	-	wins: 7 - loss: 9
+Xenomonocythemia               	-	wins: 16 - loss: 10
+```
 ## Lösungsstrategien
 Eine Strategie bezeichnet in unserem Kontext eine Implementierung, um auf den aktuellen Spielstand zustandslos zu 
 antworten.
@@ -208,8 +266,32 @@ Innerhalb der einzelnen Modulfunktionen sind zusätzlich einzelne Schritte komme
 nachvollziehen zu können. Hierbei halten wir uns an die gängigen Standardkonventionen.
 ## API
 ## Software Architektur
+Unser Projekt hat die folgende Struktur:
+```
+.
+├── documents
+├── pandemie
+│   ├── tester
+│   │   ├── data
+│   │   ├── logs
+│   │   │   └── Final
+│   │   └── strategies
+│   ├── util
+│   ├── visualization
+│   │   ├── logs
+│   └── web
+└── test
+```
+In `/documents` sind alle generierten oder vorhandenen Dokumente gesammelt (z.B. Scorefunktionsgraph) und in `/test` 
+befindet sich das vorgegebene ic20 Tool für alle Betriebssysteme. Im Hauptordner `/pandemie` sind die Module 
+[Tester](documentation.md#den-tester-richtig-nutzen), `util`, 
+[Visualization](documentation.md#zusatzfunktion-visualisierung) und [Web](documentation.md#der-web-service). Hierbei ist 
+util ein Modul, das sämtliche Hilfsfunktionen beinhaltet, welche zur Übersichtlichkeit nicht in die anderen Module 
+gehören. Web beinhaltet die Implementierungen für den Server, welcher mit dem ic20 Tool kommuniziert. 
 ## FAQ
 (Marvin)
+### Wie erstellt man eine eigene Strategie?
+Siehe [Eigene Strategie erstellen](documentation.md#eigene-strategien-entwickeln).
 ### Wie kann man das Team kontaktieren?
 Siehe [Autoren](documentation.md#autoren).
 ### Wie ist das Projekt lizensiert?
@@ -250,7 +332,12 @@ In `visualization.py` kann nun eine Funktion hinzugefügt werden, welche einen
 können. Zusätzlich muss in der Funktion `visualize_game` der entsprechende Funktionsaufruf der zurückgegebenen Liste 
 hinzugefügt werden. Die Visualisierungen werden entsprechend der Reihenfolge in dieser Liste untereinander angezeigt.
 Für die Visualisierung einzelner Runden kann hierfür analog die Funktion `visualize_round` verwendet werden.
-## Der Web Service auf AWS
+## Der Web Service
+### Web Service allgemein
+
+
+
+### AWS
 Unser Webservice ist auf Amazon AWS auf dem Elastic Compute Cloud Server (EC2) aufgesetzt. Der Webservice ist dabei
 unsrer Projekt in sehr abgespeckter Version.
 

@@ -93,7 +93,7 @@ class Ruwen2(AbstractStrategy):
             # Sort overall ranking
             overall_ranking = dict(sorted(overall_ranking.items(), key=lambda item: item[1], reverse=True))
 
-            # print(list(overall_ranking.items()))
+            # Print(list(overall_ranking.items()))
 
             # Check if ranking is empty
             if len(overall_ranking) == 0:
@@ -102,17 +102,17 @@ class Ruwen2(AbstractStrategy):
 
             # Get best overall operation (out of all measures):
             # This picks a random operation out of the best 12 operations (for each measure)
-            # best_operation = random.choice(list(measure_ranking.keys()))
+            # Best_operation = random.choice(list(measure_ranking.keys()))
 
             # This picks the operation with the max score in the overall merged ranking
             best_operation = max(overall_ranking, key=lambda key: overall_ranking[key])
 
             if not is_affordable(best_operation[0]):
-                # print("Save Money! (%s) %i" % (str(best_operation), int(round_points)))
+                # Print("Save Money! (%s) %i" % (str(best_operation), int(round_points)))
                 return operations.end_round()
 
             name, *args = best_operation
-            # print(name, round_points)
+            # Print(name, round_points)
             return operations.get(name, *args)
 
         def rank_operation(*op_tuple, op_score):
@@ -375,7 +375,7 @@ class Ruwen2(AbstractStrategy):
         for pathogen_name in pathogens_names:
             if pathogen_name not in pathogens_medication_available_names and pathogen_name not in \
                     pathogens_medication_in_development_names:
-                # if is_affordable("develop_medication"):
+                # If is_affordable("develop_medication"):
                     rank_operation("develop_medication", pathogen_name, op_score=round(
                         measure_weights["develop_medication"] * (
                                 pathogens_scores[pathogen_name] +
@@ -385,7 +385,7 @@ class Ruwen2(AbstractStrategy):
         # Deploy medication in cities at most risk
         for city_name, pathogen_name in cities_pathogen_name.items():
             if pathogen_name in pathogens_medication_available_names:
-                # if is_affordable("deploy_medication"):
+                # If is_affordable("deploy_medication"):
                     rank_operation("deploy_medication", pathogen_name, city_name, op_score=round(
                         measure_weights["deploy_medication"] * (
                                 cities_pathogen_score[city_name] +
@@ -400,7 +400,7 @@ class Ruwen2(AbstractStrategy):
         for pathogen in pathogens:
             if pathogen["name"] not in pathogens_vaccine_available_names and pathogen["name"] not in \
                     pathogens_vaccine_in_development_names:
-                # if is_affordable("develop_vaccine"):
+                # If is_affordable("develop_vaccine"):
                     rank_operation("develop_vaccine", pathogen["name"], op_score=round(
                         measure_weights["develop_vaccine"] * (
                                 pathogens_scores[pathogen["name"]] +
@@ -411,7 +411,7 @@ class Ruwen2(AbstractStrategy):
         # Deploy vaccine in cities at most risk
         for city_name, pathogen_name in cities_pathogen_name.items():
             if pathogen_name in pathogens_vaccine_available_names:
-                # if is_affordable("deploy_vaccine"):
+                # If is_affordable("deploy_vaccine"):
                     rank_operation("deploy_vaccine", pathogen_name, city_name, op_score=round(
                         measure_weights["deploy_vaccine"] * (
                                 cities_pathogen_score[city_name] +

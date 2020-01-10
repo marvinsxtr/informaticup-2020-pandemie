@@ -157,32 +157,32 @@ def main():
     Main program flow
     :return: None
     """
-    strategy_name = "final"     # default strategy name
-    do_output = False       # default log value
-    visualize = False       # default value for visualization
-    count = 5       # default value for amount of threads
-    user_seed = 0       # default user seed, will be overwritten when user uses non random seed (0 = randomness)
+    strategy_name = "final"     # Default strategy name
+    do_output = False       # Default log value
+    visualize = False       # Default value for visualization
+    count = 5       # Default value for amount of threads
+    user_seed = 0       # Default user seed, will be overwritten when user uses non random seed (0 = randomness)
     strategy_mod = __import__("pandemie.tester.strategies." + strategy_name, fromlist=to_camel_case(strategy_name))
     strategy = getattr(strategy_mod, to_camel_case(strategy_name))
 
-    # read commandline arguments, first
+    # Read commandline arguments, first
     full_cmd_arguments = sys.argv
 
     # - further arguments
     argument_list = full_cmd_arguments[1:]
 
-    # define allowed cli arguments
+    # Define allowed cli arguments
     unix_options = "hos:lvt:u:"
     gnu_options = ["help", "optimize", "log", "visualization", "user_seed"]
 
     try:
         arguments, values = getopt.getopt(argument_list, unix_options, gnu_options)
     except getopt.error as err:
-        # output error, and return with an error code
+        # Output error, and return with an error code
         print(str(err))
         sys.exit(2)
 
-    # execute commands to chosen arguments
+    # Execute commands to chosen arguments
     for currentArgument, currentValue in arguments:
         if currentArgument in ("-h", "--help"):
             print("-h --help            show the help\n"

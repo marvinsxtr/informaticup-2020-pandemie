@@ -1,5 +1,7 @@
 # README
-Siehe [documentation](documents/documentation.md).
+Die komplette Dokumentation finden Sie hier: [documentation](documents/documentation.md).
+
+Alle im Vorfeld zu installierenden Abhängigkeiten finden sie in hier: [requirements](requirements.txt).
 
 ### Schnellstart für debugging Zwecke
 

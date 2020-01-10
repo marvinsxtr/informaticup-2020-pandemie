@@ -161,10 +161,10 @@ class Final(AbstractStrategy):
 
             # Get best overall operation (out of all measures):
             # This picks a random operation out of the best 12 operations (for each measure)
-            # best_operation = random.choice(list(measure_ranking.keys()))
+            # Best_operation = random.choice(list(measure_ranking.keys()))
 
             # This picks the operation with the max score in the overall merged ranking
-            # best_operation = max(overall_ranking, key=lambda key: overall_ranking[key])
+            # Best_operation = max(overall_ranking, key=lambda key: overall_ranking[key])
 
             # This picks the operation with the highest weight
             best_operation = max(measure_ranking, key=lambda key: measure_ranking[key])
