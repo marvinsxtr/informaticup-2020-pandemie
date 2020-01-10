@@ -1,9 +1,10 @@
+import os
 import threading
 
 from abc import ABC, abstractmethod
 
 from pandemie.util.event_checker import EventChecker
-from pandemie.util import filter_unicode, log_json
+from pandemie.util import filter_unicode, log_json, now
 
 
 class AbstractStrategy(ABC):
@@ -25,6 +26,16 @@ class AbstractStrategy(ABC):
         self.visualize = visualize  # Writes json for every round into file to be visualized
         self.data_gatherer = EventChecker()
         self.lock = threading.Lock()
+
+        if not silent:
+            strategy_dir = "logs/" + self.name
+
+            # Create a directory for the strategy if it doesn't exists
+            if not os.path.exists(strategy_dir):
+                os.makedirs(strategy_dir)
+
+            # Create the name for the log file and pass it to the strategy
+            self.set_file("{0}-{1}.dat".format(self.name, now()))
 
     def set_file(self, file):
         """
