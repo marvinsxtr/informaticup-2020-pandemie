@@ -55,6 +55,25 @@ def bayesian_optimization():
     logger = JSONLogger(path="./logs/bayes_log_{0}.json".format(number_of_logs))
     optimizer.subscribe(Events.OPTMIZATION_STEP, logger)
 
+    optimizer.probe(
+        params={
+            "end_round": 1.0,
+            "put_under_quarantine": 1.6,
+            "close_airport": 1.5,
+            "close_connection": 1.4,
+            "develop_vaccine": 2.0,
+            "deploy_vaccine": 1.8,
+            "develop_medication": 1.9,
+            "deploy_medication": 1.7,
+
+            "exert_influence": 1.0,
+            "call_elections": 1.1,
+            "apply_hygienic_measures": 1.3,
+            "launch_campaign": 1.2
+        },
+        lazy=True,
+    )
+
     # Start optimizer
     optimizer.maximize(
         init_points=5,
