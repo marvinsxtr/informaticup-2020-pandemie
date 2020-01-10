@@ -14,7 +14,7 @@
 * [Software Architektur](documentation.md#software-architektur)
 * [FAQ](documentation.md#faq)
 * [Zusatzfunktion: Visualisierung](documentation.md#zusatzfunktion:-visualisierung)
-* [Der Web service auf AWS](documentation.md#der-web-service-auf-AWS)
+* [Der Web service](documentation.md#der-web-service)
 * [Warum unsere Idee die Beste ist.](documentation.md#warum-unsere-idee-die-beste-ist)
 * [Auswertung der Ergebnisse](documentation.md#auswertung-der-ergebnisse)
 
