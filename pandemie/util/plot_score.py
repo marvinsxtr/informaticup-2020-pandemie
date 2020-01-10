@@ -11,6 +11,7 @@ except ModuleNotFoundError:
     print("To run execute `python -m pandemie.util.plot_score` in the project folder")
     exit(-1)
 
+
 def main():
     """
     Plot score functions and open window
@@ -35,7 +36,6 @@ def main():
 
     plt.grid()
 
-
     # Change spine position and hide top and right ones
     ax1.spines['bottom'].set_position("center")
     ax1.spines['top'].set_color('none')
@@ -45,6 +45,7 @@ def main():
     ax1.yaxis.set_ticks_position('left')
 
     plt.show()
+
 
 if __name__ == "__main__":
     main()
