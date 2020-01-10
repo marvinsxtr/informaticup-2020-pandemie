@@ -225,6 +225,11 @@ können. Zusätzlich muss in der Funktion `visualize_game` der entsprechende Fun
 hinzugefügt werden. Die Visualisierungen werden entsprechend der Reihenfolge in dieser Liste untereinander angezeigt.
 Für die Visualisierung einzelner Runden kann hierfür analog die Funktion `visualize_round` verwendet werden.
 ## Der Web Service auf AWS
+Unser Webservice ist auf Amazon AWS auf dem Elastic Compute Cloud Server (EC2) aufgesetzt. Der Webservice ist dabei
+unsrer Projekt in sehr abgespeckter Version.
+
+Dabei wird unser Service zur Beantwortung von Anfragen des `ic_20`-Tools permanent gestartet. Auf diesem läuft,
+ohne des es beeinflussbar wäre, unser Dienst mit unserer letzen, besten Lösungsstrategie.
 
 ## Warum unsere Idee die Beste ist
 In unserem Ansatz zur optimalen Strategie die Menschheit vor dem Untergang zu retten, kombinieren wir die Gewichtung von
