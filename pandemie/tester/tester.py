@@ -10,9 +10,9 @@ from numpy import exp
 try:
     import pandemie.tester.optimization as optimization  # We cannot use `from * import` due to circular imports
     import pandemie.util.analyse_log as analyse_log
+    import pandemie.web
 
     from pandemie.tester import AbstractStrategy
-    from pandemie.web import WebServer
     from pandemie.util import to_camel_case, now
 except ModuleNotFoundError:
     print("To run execute `python -m pandemie.tester` in the project folder")
@@ -74,7 +74,7 @@ class Tester:
         self.amount_runs = thread_count
 
         threads = [threading.Thread(target=self._start_tester,) for _ in range(thread_count)]
-        server = WebServer(self.strategy)
+        server = pandemie.web.WebServer(self.strategy)
         server.start()
 
         # Store cwd for later usage
