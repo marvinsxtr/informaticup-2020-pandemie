@@ -268,13 +268,12 @@ nachvollziehen zu können. Hierbei halten wir uns an die gängigen Standardkonve
 ## Software Architektur
 Unser Projekt hat die folgende Struktur:
 ```
-.
+project-pandemie-03
 ├── documents
 ├── pandemie
 │   ├── tester
 │   │   ├── data
 │   │   ├── logs
-│   │   │   └── Final
 │   │   └── strategies
 │   ├── util
 │   ├── visualization
@@ -343,10 +342,8 @@ hinzugefügt werden. Die Visualisierungen werden entsprechend der Reihenfolge in
 Für die Visualisierung einzelner Runden kann hierfür analog die Funktion `visualize_round` verwendet werden.
 ## Der Web Service
 ### Web Service allgemein
-Als Grundlage für unseren Web Service dient ein `WSGIServer`, welcher auf dem Port 50123 luscht. Dieses ist auch der
+Als Grundlage für unseren Web Service dient ein `WSGIServer`, welcher auf dem Port 50123 lauscht. Dieses ist auch der
 default-Port des `ic_20`-Tools. Dieser wird als Thread gestartet und am Ende des gesamten Programmaufrufs wieder beendet.
-
-
 
 ### AWS
 Unser Webservice ist auf Amazon AWS auf dem Elastic Compute Cloud Server (EC2) aufgesetzt. Der Webservice ist dabei
