@@ -83,10 +83,11 @@ def launch_campaign(city):
     return {"type": "launchCampaign", "city": city}
 
 
-def get(name, *args):
+def get_operation(op_tuple):
     """
     This function returns an operation by tuple in order to be able to rank these in strategies
     """
+    name, *args = op_tuple
     if len(args) > 0:
         return globals()[name](*args)
     else:

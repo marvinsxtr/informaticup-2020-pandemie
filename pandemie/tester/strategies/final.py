@@ -41,20 +41,20 @@ class Final(AbstractStrategy):
         else:
             # These are the weights applied to the measure ranking
             measure_weights = {
-                "end_round": 1,  # Ends the current round
-                "put_under_quarantine": 8,  # Completely prevent spreading of pathogen
-                "close_airport": 6,  # Shut down connections from and to a city
-                "close_connection": 7,  # Shut down one connection
+                "end_round": 1.0,  # Ends the current round
+                "put_under_quarantine": 1.6,  # Completely prevent spreading of pathogen
+                "close_airport": 1.5,  # Shut down connections from and to a city
+                "close_connection": 1.4,  # Shut down one connection
 
-                "develop_vaccine": 12,  # After 6 rounds a vaccine is ready
-                "deploy_vaccine": 10,  # Deploy vaccine to specific city
-                "develop_medication": 11,  # After 3 rounds a medication is available
-                "deploy_medication": 9,  # Deploy medication to specific city
+                "develop_vaccine": 2.0,  # After 6 rounds a vaccine is ready
+                "deploy_vaccine": 1.8,  # Deploy vaccine to specific city
+                "develop_medication": 1.9,  # After 3 rounds a medication is available
+                "deploy_medication": 1.7,  # Deploy medication to specific city
 
-                "exert_influence": 2,  # Corresponds to economy city stat
-                "call_elections": 3,  # Corresponds to government city stat
-                "apply_hygienic_measures": 5,  # Corresponds to hygiene city stat
-                "launch_campaign": 4,  # Corresponds to awareness city stat
+                "exert_influence": 1.0,  # Corresponds to economy city stat
+                "call_elections": 1.1,  # Corresponds to government city stat
+                "apply_hygienic_measures": 1.3,  # Corresponds to hygiene city stat
+                "launch_campaign": 1.2,  # Corresponds to awareness city stat
             }
 
         # This dict contains the rankings for concrete operations by measure
@@ -89,61 +89,72 @@ class Final(AbstractStrategy):
         cities_economy_score = {}
 
         pathogens_count_infected_cities = {}
-
         pathogens_scores = {}
-        cities_scores = {}
 
+        cities_scores = {}
+        cities_outbreak_scores = {}
         cities_pathogen_score = {}
 
         cities_count_flight_connections = {}
+        cities_outbreak = {}
 
         outbreak_city_names = []
-        cities_outbreak_scores = {}
-        cities_outbreak = {}
+        quarantine_city_names = []
+        cities_airport_closed_names = []
 
         cities_connected_cities_names = {}
         cities_combined_connected_cities_scores = {}
         cities_combined_connected_cities_difference = {}
-
-        cities_airport_closed_names = []
 
         flight_connections = set()
         flight_connections_closed = set()
         flight_connections_one_infected = []
         flight_connections_one_infected_score = {}
 
-        def get_round_number(name, *args):
+        def get_round_number(op_tuple):
             """
             This function determines the duration of the given operation
-            :param name: The operation-name
-            :param args: The arguments for this operation
+            :param op_tuple: The operation tuple
             :return: The new duration
             """
+            # Unpack tuple into name and arguments
+            name, *args = op_tuple
+
+            # Calculate maximum affordable rounds
+            max_rounds = affordable_rounds(name)
+
             # Check if operation has a duration
             if name in ("put_under_quarantine", "close_airport"):
-                if args[0][0] in cities_pathogen:
-                    city_pathogen = cities_pathogen[args[0][0]]
+                city, *_ = args
+                if city in cities_pathogen:
+                    # Get pathogen duration
+                    city_pathogen = cities_pathogen[city]
                     city_duration_score = score(city_pathogen["duration"])
+
                     # Map the duration of the pathogen over 0 to maximal possible duration
-                    city_rounds = round(((city_duration_score - 1) / 4) * args[0][-1])
-                    # Return new duration
+                    city_rounds = round(((city_duration_score - 1) / 4) * max_rounds)
+
+                    # Return calculated duration
                     return city_rounds
             elif name == "close_connection":
+                from_city, to_city, *_ = args
+
                 # Find the infected city
-                if args[0][0] in cities_pathogen:
-                    city_pathogen = cities_pathogen[args[0][0]]
-                elif args[0][1] in cities_pathogen:
-                    city_pathogen = cities_pathogen[args[0][1]]
+                if from_city in cities_pathogen:
+                    city_pathogen = cities_pathogen[from_city]
+                elif to_city in cities_pathogen:
+                    city_pathogen = cities_pathogen[to_city]
                 else:
                     # Theoretically impossible
-                    return args[0][-1]
-                city_duration_score = score(city_pathogen["duration"])
+                    return 0
+
                 # Map duration see above
-                city_rounds = round(((city_duration_score - 1) / 4) * args[0][-1])
+                city_duration_score = score(city_pathogen["duration"])
+                city_rounds = round(((city_duration_score - 1) / 4) * max_rounds)
                 return city_rounds
 
-            # return default
-            return args[0][-1]
+            # return default value
+            return 0
 
         def get_best_operation():
             """
@@ -174,21 +185,25 @@ class Final(AbstractStrategy):
 
             # Get best overall operation (out of all measures):
             # This picks a random operation out of the best 12 operations (for each measure)
-            # Best_operation = random.choice(list(measure_ranking.keys()))
+            # best_operation = random.choice(list(measure_ranking.keys()))
 
             # This picks the operation with the max score in the overall merged ranking
-            # Best_operation = max(overall_ranking, key=lambda key: overall_ranking[key])
+            # best_operation = max(overall_ranking, key=lambda key: overall_ranking[key])
 
             # This picks the operation with the highest weight
             best_operation = max(measure_ranking, key=lambda key: measure_ranking[key])
 
-            name, *args = best_operation
-            new_args = args
+            # Calculate number of rounds for round based measures
+            name, *args, rounds = best_operation
             if name in ("put_under_quarantine", "close_airport", "close_connection"):
-                new_args[-1] = get_round_number(name, args)
-                if new_args[-1] < 1:
+                calculated_rounds = get_round_number(best_operation)
+                if calculated_rounds <= 0:
+                    # End round because action was not affordable
                     return operations.end_round()
-            return operations.get(name, *new_args)
+                else:
+                    # Redefine best operation with adjusted rounds
+                    best_operation = (name, *args, calculated_rounds)
+            return operations.get_operation(best_operation)
 
         def rank_operation(*op_tuple, op_score):
             """
@@ -322,6 +337,10 @@ class Final(AbstractStrategy):
             if "events" in city_stats:
                 for city_event in city_stats["events"]:
 
+                    # Collect cities under quarantine
+                    if city_event["type"] == "quarantine":
+                        quarantine_city_names.append(city_name)
+
                     # Make a list of closed airport cities
                     if city_event["type"] == "airportClosed":
                         cities_airport_closed_names.append(city_name)
@@ -387,9 +406,8 @@ class Final(AbstractStrategy):
         """
         # Put cities most at risk under quarantine
         for city_name in cities_names:
-            maximum = affordable_rounds("put_under_quarantine")
-            if maximum >= 1:
-                rank_operation("put_under_quarantine", city_name, maximum, op_score=round(
+            if city_name not in quarantine_city_names:
+                rank_operation("put_under_quarantine", city_name, 0, op_score=round(
                     measure_weights["put_under_quarantine"] * (
                             cities_pathogen_score[city_name] +
                             cities_scores[city_name] +
@@ -408,7 +426,8 @@ class Final(AbstractStrategy):
 
         # Deploy medication in cities at most risk
         for city_name, pathogen_name in cities_pathogen_name.items():
-            if pathogen_name in pathogens_medication_available_names:
+            if pathogen_name in pathogens_medication_available_names and pathogen_name not in \
+                    pathogens_medication_in_development_names:
                 if is_affordable("deploy_medication"):
                     rank_operation("deploy_medication", pathogen_name, city_name, op_score=round(
                         measure_weights["deploy_medication"] * (
@@ -446,24 +465,20 @@ class Final(AbstractStrategy):
         # Close airports with most difference in risk compared to connected cities
         for city_name in cities_names:
             if city_name not in cities_airport_closed_names and city_name in outbreak_city_names:
-                maximum = affordable_rounds("close_airport")
-                if maximum >= 1:
-                    rank_operation("close_airport", city_name, maximum, op_score=round(
-                        measure_weights["close_airport"] * (
-                                cities_combined_connected_cities_difference[city_name] +
-                                cities_combined_connected_cities_scores[city_name]) +
-                        cities_outbreak_scores[city_name] +
-                        cities_pathogen_score[city_name], 5))
+                rank_operation("close_airport", city_name, 0, op_score=round(
+                    measure_weights["close_airport"] * (
+                            cities_combined_connected_cities_difference[city_name] +
+                            cities_combined_connected_cities_scores[city_name]) +
+                    cities_outbreak_scores[city_name] +
+                    cities_pathogen_score[city_name], 5))
 
         # Close connections based on the difference between two cities
         for connection in flight_connections_one_infected:
             if frozenset(connection) not in flight_connections_closed:
                 x, y = connection
-                maximum = affordable_rounds("close_connection")
-                if maximum >= 1:
-                    rank_operation("close_connection", x, y, maximum, op_score=round(
-                        measure_weights["close_connection"] * (
-                            flight_connections_one_infected_score[connection]), 5))
+                rank_operation("close_connection", x, y, 0, op_score=round(
+                    measure_weights["close_connection"] * (
+                        flight_connections_one_infected_score[connection]), 5))
 
         # Rank operations corresponding to city stats
         for city_name in outbreak_city_names:
