@@ -259,6 +259,14 @@ Teamstrategie bestimmte Operationen zu ranken und auf Basis einer Sortierung ein
 Es ist wichtig darauf zu achten, dass die Strategie im Ordner `/pandemie/tester/strategies` liegt, um die Kompatibilität 
 mit `tester.py` sicherzustellen.
 ## Wissenschaftlicher Hintergrund
+Über die letzten Jahre sind die Antibiotikareserven stetig zurückgegangen und multiresistente Erreger sind auf dem 
+Vormarsch. Sollte es nicht möglich sein, rechtzeitig neue Antibiotika zu entwickeln, steigt die Gefahr von Epidemien 
+oder im Extremfall einer Pandemie. Um auf den Ernstfall vorbereitet zu sein, kann es sinnvoll sein, Simulationen wie die
+im Rahmen des Informaticups durchzuführen. Auch wenn diese Simualtion auf heuristischen Methoden basiert und stark 
+vereinfacht ist, lassen sich einige Maßnahmen und Strategien ableiten, um auf bestimmte lokale Ereignisse schnell zu
+reagieren, ohne unnötig Zeit zu verlieren.
+[Quelle: Resistente Antibiotika](https://www.br.de/nachrichten/wissen/superkeime-antibiotika-reserven-gehen-aus,RD48aO6)
+[Quelle: Pandemie-Simulation](https://www.spiegel.de/wissenschaft/mensch/pandemie-simulation-kranke-isolieren-grenzen-schliessen-a-413300.html)
 ## Erklaerung des Programmcodes
 Der gesamte Code ist mit PyDoc dokumentiert. Diese Dokumentation kann wie folgt generiert werden:
 ```bash
