@@ -117,9 +117,9 @@ class Marvin2(AbstractStrategy):
         for key, value in sorted(ranking.items(), key=lambda item: item[1], reverse=True):
             # Print("took", key, "with", value, "points")
             name, *args = key
-            return operations.get(name, *args)
+            return operations.get_operation(key)
 
-        return operations.get("end_round")
+        return operations.get_operation("end_round")
 
 
 def score(symbols):

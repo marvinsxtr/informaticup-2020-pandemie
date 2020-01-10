@@ -120,10 +120,10 @@ class Marvin3(AbstractStrategy):
             # Print("took", key, "with", value, "points")
             op_name, *op_rest = key
             if operations.PRICES[op_name]["initial"] <= points:
-                return operations.get(op_name, *op_rest)
+                return operations.get_operation(key)
             else:
                 continue
-        return operations.get("end_round")
+        return operations.get_operation("end_round")
 
 
 def score(symbols):
