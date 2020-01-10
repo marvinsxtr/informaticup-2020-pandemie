@@ -307,6 +307,15 @@ Strategie führen kann, welche auf verschiedene Ereignisse angemessen reagiert u
 an den Tag legt. Für den Zweck der Entwicklung unserer Teamstrategie existiert bereits die Implementierung zur 
 Darstellung einiger Graphen und Karten. Im Folgenden wird erklärt, wie auf diese zugegriffen werden kann und wie eigene 
 Erweiterungen realisiert werden können.
+### Beispielvisualisierungen
+#### Spielvisualisierung
+Gesamte Population im Spielverlauf:
+![full_game_visualization](images/full_game_visualization.png)<br>
+#### Rundenvisualiserung
+Flugverbindungen ausgehend von den hundert größten infizierten Städten:
+![round_outbreak_visualization](images/round_outbreak_visualization.png)<br>
+Anteil der infizierten Bevölkerung für jedes Pathogen:
+![round_pathogens_visualization](images/round_pathogens_visualization.png)<br>
 ### Wie starte ich die Visualisierung
 Um die Visualisierung zu starten muss zunächst mindestens einmal der 
 [Tester](documentation.md#den-tester-richtig-nutzen) mit der Visualisierungs-Option gestartet werden. Dies führt dazu, 
