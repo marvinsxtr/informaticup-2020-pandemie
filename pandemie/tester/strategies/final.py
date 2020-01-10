@@ -113,23 +113,36 @@ class Final(AbstractStrategy):
         flight_connections_one_infected_score = {}
 
         def get_round_number(name, *args):
+            """
+            This function determines the duration of the given operation
+            :param name: The operation-name
+            :param args: The arguments for this operation
+            :return: The new duration
+            """
+            # Check if operation has a duration
             if name in ("put_under_quarantine", "close_airport"):
                 if args[0][0] in cities_pathogen:
                     city_pathogen = cities_pathogen[args[0][0]]
                     city_duration_score = score(city_pathogen["duration"])
+                    # Map the duration of the pathogen over 0 to maximal possible duration
                     city_rounds = round(((city_duration_score - 1) / 4) * args[0][-1])
+                    # Return new duration
                     return city_rounds
             elif name == "close_connection":
+                # Find the infected city
                 if args[0][0] in cities_pathogen:
                     city_pathogen = cities_pathogen[args[0][0]]
                 elif args[0][1] in cities_pathogen:
                     city_pathogen = cities_pathogen[args[0][1]]
                 else:
+                    # Theoretically impossible
                     return args[0][-1]
                 city_duration_score = score(city_pathogen["duration"])
+                # Map duration see above
                 city_rounds = round(((city_duration_score - 1) / 4) * args[0][-1])
                 return city_rounds
 
+            # return default
             return args[0][-1]
 
         def get_best_operation():
