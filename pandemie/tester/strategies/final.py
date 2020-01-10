@@ -60,85 +60,6 @@ class Final(AbstractStrategy):
         # This dict contains the rankings for concrete operations by measure
         operation_rankings = {op: {} for op in operations.OPERATIONS}
 
-        def get_best_operation():
-            """
-            This returns the best operation which will be the return value of the solve function
-            :return: operation tuple
-            """
-            # Normalize and weight rankings
-            for operation_name in operation_rankings.keys():
-                operation_rankings[operation_name] = normalize_ranking(operation_rankings[operation_name])
-                operation_rankings[operation_name] = apply_weight(operation_rankings[operation_name],
-                                                                  measure_weights[operation_name])
-
-            # Get best operation for each measure
-            for operation_name, operation_ranking in operation_rankings.items():
-                if len(operation_ranking) > 0:
-                    best_operation_for_measure = max(operation_ranking, key=lambda key: operation_ranking[key])
-                    measure_ranking[best_operation_for_measure] = measure_weights[operation_name]
-
-            # Merge all rankings
-            overall_ranking = merge_ranking(*operation_rankings.values())
-
-            # Sort overall ranking
-            overall_ranking = dict(sorted(overall_ranking.items(), key=lambda item: item[1], reverse=True))
-
-            # Check if ranking is empty
-            if len(overall_ranking) == 0:
-                return operations.end_round()
-
-            # Get best overall operation (out of all measures):
-            # This picks a random operation out of the best 12 operations (for each measure)
-            # best_operation = random.choice(list(measure_ranking.keys()))
-
-            # This picks the operation with the max score in the overall merged ranking
-            # best_operation = max(overall_ranking, key=lambda key: overall_ranking[key])
-
-            # This picks the operation with the highest weight
-            best_operation = max(measure_ranking, key=lambda key: measure_ranking[key])
-
-            name, *args = best_operation
-            return operations.get(name, *args)
-
-        def rank_operation(*op_tuple, op_score):
-            """
-            Rank an operation tuple with a score; if it exists already, the score is added up
-            :param op_tuple: tuple with params needed for an operation (example: ("deploy_medication", city, pathogen))
-            :param op_score: score assigned to tuple
-            :return: None
-            """
-            # Get the ranking corresponding to measure type
-            name, *_ = op_tuple
-            operation_ranking = operation_rankings[name]
-
-            if op_score == 0:
-                return
-            if op_tuple not in operation_ranking:
-                operation_ranking[op_tuple] = op_score
-            else:
-                operation_ranking[op_tuple] += op_score
-
-        def affordable_rounds(identifier):
-            """
-            This function calculates the maximal number of rounds affordable for an operation
-            :param identifier: operation name
-            :return: max duration in rounds
-            """
-            rounds = int((round_points - operations.PRICES[identifier]["initial"]) /
-                         operations.PRICES[identifier]["each"]) - 4
-            if rounds >= 0:
-                return rounds
-            else:
-                return 0
-
-        def is_affordable(identifier):
-            """
-            This function returns whether a measure is affordable
-            :param identifier: operation name
-            :return: whether the measure is affordable
-            """
-            return round_points - operations.PRICES[identifier]["initial"] >= 0
-
         # Used to convert a scale of scores (24 - 4 = 20 where 4 is the minimum points and 20 maximum)
         highest_overall_score = 24
         highest_individual_score = 6
@@ -190,6 +111,110 @@ class Final(AbstractStrategy):
         flight_connections_closed = set()
         flight_connections_one_infected = []
         flight_connections_one_infected_score = {}
+
+        def get_round_number(name, *args):
+            if name in ("put_under_quarantine", "close_airport"):
+                if args[0][0] in cities_pathogen:
+                    city_pathogen = cities_pathogen[args[0][0]]
+                    city_duration_score = score(city_pathogen["duration"])
+                    city_rounds = round(((city_duration_score - 1) / 4) * args[0][-1])
+                    return city_rounds
+            elif name == "close_connection":
+                if args[0][0] in cities_pathogen:
+                    city_pathogen = cities_pathogen[args[0][0]]
+                elif args[0][1] in cities_pathogen:
+                    city_pathogen = cities_pathogen[args[0][1]]
+                else:
+                    return args[0][-1]
+                city_duration_score = score(city_pathogen["duration"])
+                city_rounds = round(((city_duration_score - 1) / 4) * args[0][-1])
+                return city_rounds
+
+            return args[0][-1]
+
+        def get_best_operation():
+            """
+            This returns the best operation which will be the return value of the solve function
+            :return: operation tuple
+            """
+            # Normalize and weight rankings
+            for operation_name in operation_rankings.keys():
+                operation_rankings[operation_name] = normalize_ranking(operation_rankings[operation_name])
+                operation_rankings[operation_name] = apply_weight(operation_rankings[operation_name],
+                                                                  measure_weights[operation_name])
+
+            # Get best operation for each measure
+            for operation_name, operation_ranking in operation_rankings.items():
+                if len(operation_ranking) > 0:
+                    best_operation_for_measure = max(operation_ranking, key=lambda key: operation_ranking[key])
+                    measure_ranking[best_operation_for_measure] = measure_weights[operation_name]
+
+            # Merge all rankings
+            overall_ranking = merge_ranking(*operation_rankings.values())
+
+            # Sort overall ranking
+            overall_ranking = dict(sorted(overall_ranking.items(), key=lambda item: item[1], reverse=True))
+
+            # Check if ranking is empty
+            if len(overall_ranking) == 0:
+                return operations.end_round()
+
+            # Get best overall operation (out of all measures):
+            # This picks a random operation out of the best 12 operations (for each measure)
+            # best_operation = random.choice(list(measure_ranking.keys()))
+
+            # This picks the operation with the max score in the overall merged ranking
+            # best_operation = max(overall_ranking, key=lambda key: overall_ranking[key])
+
+            # This picks the operation with the highest weight
+            best_operation = max(measure_ranking, key=lambda key: measure_ranking[key])
+
+            name, *args = best_operation
+            new_args = args
+            if name in ("put_under_quarantine", "close_airport", "close_connection"):
+                new_args[-1] = get_round_number(name, args)
+                if new_args[-1] < 1:
+                    return operations.end_round()
+            return operations.get(name, *new_args)
+
+        def rank_operation(*op_tuple, op_score):
+            """
+            Rank an operation tuple with a score; if it exists already, the score is added up
+            :param op_tuple: tuple with params needed for an operation (example: ("deploy_medication", city, pathogen))
+            :param op_score: score assigned to tuple
+            :return: None
+            """
+            # Get the ranking corresponding to measure type
+            name, *_ = op_tuple
+            operation_ranking = operation_rankings[name]
+
+            if op_score == 0:
+                return
+            if op_tuple not in operation_ranking:
+                operation_ranking[op_tuple] = op_score
+            else:
+                operation_ranking[op_tuple] += op_score
+
+        def affordable_rounds(identifier):
+            """
+            This function calculates the maximal number of rounds affordable for an operation
+            :param identifier: operation name
+            :return: max duration in rounds
+            """
+            rounds = int((round_points - operations.PRICES[identifier]["initial"]) /
+                         operations.PRICES[identifier]["each"])
+            if rounds >= 0:
+                return rounds
+            else:
+                return 0
+
+        def is_affordable(identifier):
+            """
+            This function returns whether a measure is affordable
+            :param identifier: operation name
+            :return: whether the measure is affordable
+            """
+            return round_points - operations.PRICES[identifier]["initial"] >= 0
 
         """
         pre-processing (for each list a higher score usually means more risk)

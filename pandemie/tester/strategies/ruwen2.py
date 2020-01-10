@@ -14,7 +14,7 @@ from pandemie.util import normalize_ranking, merge_ranking, operations, map_symb
 from pandemie.util import map_symbol_score as score, apply_weight
 
 
-class Final1(AbstractStrategy):
+class Ruwen2(AbstractStrategy):
     def __init__(self, silent=False, visualize=False, weights=None):
         super().__init__(silent=silent, visualize=visualize, weights=weights)
 

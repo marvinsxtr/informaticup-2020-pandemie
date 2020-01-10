@@ -14,7 +14,7 @@
 * [Software Architektur](documentation.md#software-architektur)
 * [FAQ](documentation.md#faq)
 * [Zusatzfunktion: Visualisierung](documentation.md#zusatzfunktion:-visualisierung)
-* [Der Web service](documentation.md#der-web-service)
+* [Der Web service auf AWS](documentation.md#der-web-service-auf-AWS)
 * [Warum unsere Idee die Beste ist.](documentation.md#warum-unsere-idee-die-beste-ist)
 * [Auswertung der Ergebnisse](documentation.md#auswertung-der-ergebnisse)
 
@@ -194,10 +194,19 @@ eine Operation auch mit einem Tupel angegeben werden. Dies kann zum Beispiel nü
 Teamstrategie bestimmte Operationen zu ranken und auf Basis einer Sortierung eine Auswahl zu treffen.
 ## Wissenschaftlicher Hintergrund
 ## Erklaerung des Programmcodes
+Der gesamte Code ist mit PyDoc dokumentiert. Diese Dokumentation kann wie folgt generiert werden:
+```bash
+python3.8 -m pydoc -n <hostname> -p <port> pandemie
+```
+Einige Module lassen sich leider nicht automatisch generieren, da sie auf Ornder relativ zum Pfad zugreifen.
+Innerhalb der einzelnen Modulfunktionen sind zusätzlich einzelne Schritte kommentiert, um die Funktionsweise der Module 
+nachvollziehen zu können. Hierbei halten wir uns an die gängigen Standardkonventionen.
 ## API
 ## Software Architektur
 ## FAQ
 (Marvin)
+### Wie kann man das Team kontaktieren?
+Siehe [Autoren](documentation.md#autoren).
 ### Wie ist das Projekt lizensiert?
 Das Projekt ist mit der MIT Lizenz lizensiert und damit eine Open-Source Software. Die Lizenz für dieses Projekt
 befindet sich in der Datei `LICENSE.md`.<br>
@@ -236,7 +245,28 @@ In `visualization.py` kann nun eine Funktion hinzugefügt werden, welche einen
 können. Zusätzlich muss in der Funktion `visualize_game` der entsprechende Funktionsaufruf der zurückgegebenen Liste 
 hinzugefügt werden. Die Visualisierungen werden entsprechend der Reihenfolge in dieser Liste untereinander angezeigt.
 Für die Visualisierung einzelner Runden kann hierfür analog die Funktion `visualize_round` verwendet werden.
-## Der Web Service
+## Der Web Service auf AWS
+Unser Webservice ist auf Amazon AWS auf dem Elastic Compute Cloud Server (EC2) aufgesetzt. Der Webservice ist dabei
+unsrer Projekt in sehr abgespeckter Version.
+
+Dabei wird unser Service zur Beantwortung von Anfragen des `ic_20`-Tools permanent gestartet. Auf diesem läuft,
+ohne des es beeinflussbar wäre, unser Dienst mit unserer letzen, besten Lösungsstrategie.
+
 ## Warum unsere Idee die Beste ist
-(Alex)
+In unserem Ansatz zur optimalen Strategie die Menschheit vor dem Untergang zu retten, kombinieren wir die Gewichtung von
+Maßnahmen mit unserem empirischen Erfahrungsschatz über die ausbrechenden Seuchen und Krankheiten.
+
+Zunächst werden alle Ereignisse einer Runde analysiert und lokal abgespeichert. Anschließend werden, basierend auf der
+Art der Bedrohung, alle möglichen Reaktionen der Menschheit faktorisiert. Diese Faktoren richten sich mitunter nach
+unserer erprobten Erfahrung. Nicht zuletzt wird anhand der verfügbaren Reaktionen die Eine, oder Mehrere Aktionen
+durchgeführt um die Menscheit zu retten.
+
+Alles in allem kombinieren wir mit unserer Idee unsere Erfahrung aus den analysierten Ereignissen mit einer
+gewichtsverteilten Strategie. Damit verfolgen wir zuverlässig unser Ziel, die Menschheit vor den modernen Bedrohungen
+unserer Zeit zu schützen.
 ## Auswertung der Ergebnisse
+## Autoren
+* Nils Langius (nils@langius.de)
+* Ruwen Sadocco (ruwen.sadocco11@gmail.com)
+* Marvin Sextro (marvin.sextro@stud.uni-hannover.de)
+* Alexander Krause (krause@finf.uni-hannover.de)
