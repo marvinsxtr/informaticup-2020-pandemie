@@ -13,12 +13,11 @@
 * [Software Architektur](documentation.md#software-architektur)
 * [FAQ](documentation.md#faq)
 * [Zusatzfunktion: Visualisierung](documentation.md#zusatzfunktion:-visualisierung)
-* [Der Web service](documentation.md#der-web-service)
+* [Der Web service auf AWS](documentation.md#der-web-service-auf-AWS)
 * [Warum unsere Idee die Beste ist.](documentation.md#warum-unsere-idee-die-beste-ist)
 * [Auswertung der Ergebnisse](documentation.md#auswertung-der-ergebnisse)
 
 ## Einleitung
-(Alex)<br>
 In dieser Dokumentation wird die Verwendung und Funktionsweise unserer Lösung des Problems des Informaticups 2019
 beschrieben.<br>
 Durch das bereitgestellte Programm `ic20_linux`*, welches von den Herausgebern des Informaticups zur Verfügung gestellt 
@@ -35,13 +34,11 @@ abgeschlossenen Simulation.<br>
 
 *Das Programm ist ebenfalls für Windows verfügbar und vom Betriebssystem abhängig implementiert.
 ## Grundlagen
-(Alex, kleine Intro schreiben)<br>
 Zu den Grundlagen gehört zunächst die vollständige und erfolgreiche Installation der Software. Daraufhin gibt es
 einen Schnellstart zum Testen einer Strategie. Im Anschluss wird genauer darauf eingegangen, in welchem Umfang die zur
 Verfügung stehenden Programme genutzt werden können. Dabei wird auch darauf eingegangen, wie eigene Strategien zu 
 unserer Software kompatibel entwickelt und gestaltet werden können.
 ### Installation
-(Alex)<br>
 Zunächst muss das Projekt aus dem Gitlab geklont werden. Dazu wird die Versionskontrollsoftware `git` benötigt.
 
 Der Klonvorgang geschieht mit dem nachstehenden Aufruf.
@@ -60,7 +57,6 @@ pip3.8 install -r requirements.txt
 ```
 
 ### Schnellstart
-(Alex)
 Um den Tester für das `ic20_linux` Programm auszuführen, kann in dem Projektordner folgender Befehl aufgerufen werden.
 ```bash
 python3.8 -m pandemie.tester
@@ -73,7 +69,6 @@ entwickelte Strategie getestet. Wie gut die Strategie ist, wird nach Abschluss d
 `win rate` ausgegeben. Zusätzlich kann der `score` zur Bewertung herangezogen werden, welcher neben dem Erfolg der
 Strategie auch die Anzahl der Runden bis zum Sieg bzw. Niederlage des Spiels einbezieht.
 ## Wie benutze ich das Programm
-(Ruwen)
 Nach der Installation des Programms und einem einfachen Ausführungsbeispiel wird nun die Verwendung der einzelnen 
 Funktionen des Programms erklärt.
 ### Den Tester richtig nutzen
@@ -158,7 +153,6 @@ Zusätzlich zu den Namen werden für jedes Pathogen und jedes Event auch ein Bei
 Die Daten werden dann in `pandemie/tester/data/pathogen_data.dat` bzw. `pandemie/tester/data/event_data.dat` 
 gespeichert.
 ## Lösungsstrategien
-(Marvin)
 Eine Strategie bezeichnet in unserem Kontext eine Implementierung, um auf den aktuellen Spielstand zustandslos zu 
 antworten.
 ### Die Scorefunktion
@@ -180,7 +174,6 @@ zu entwickeln. Diese werden im folgenden aufgeführt:
  * Jede Stadt kann nur von einem Pathogen gleichzeitig befallen werden
  * Die Punkte für eine Operation werden für die angegebene Rundenzahl im Voraus bezahlt
 ### Eigene Strategien entwickeln
-(Marvin)
 Alle Strategien erben von der Klasse `AbstractStrategy` und implementieren die Methode `_solve()`. Diese ist das
 Herzstück jeder Strategie, da in ihr abhängig von dem aktuellen Spielstand im JSON-Format über die Antwort und damit die
 Güte der Strategie entschieden wird. Um die Umsetzung einer eigenen Strategie zu erleichtern, existiert das Modul 
@@ -189,17 +182,16 @@ eine Operation auch mit einem Tupel angegeben werden. Dies kann zum Beispiel nü
 Teamstrategie bestimmte Operationen zu ranken und auf Basis einer Sortierung eine Auswahl zu treffen.
 ## Wissenschaftlicher Hintergrund
 ## Erklaerung des Programmcodes
+Der gesamte Code ist mit PyDoc dokumentiert und kann 
 ## API
 ## Software Architektur
 ## FAQ
 (Marvin)
 ### Wie ist das Projekt lizensiert?
-(Alex)<br>
 Das Projekt ist mit der MIT Lizenz lizensiert und damit eine Open-Source Software. Die Lizenz für dieses Projekt
 befindet sich in der Datei `LICENSE.md`.<br>
 Des Weiteren sind die verwendeten Abhängigkeiten alle der MIT oder BSD Lizenz zugeordnet.
 ## Zusatzfunktion: Visualisierung
-(Marvin)
 Zur Analyse und zum Vergleich verschiedener Strategien ist es sinnvoll, diese zu visualisieren. Dazu werden entweder
 einzelne Runden oder das gesamte Spiel mithilfe von verschiedenen Graphen oder Karten dargestellt. Hiermit können 
 Stärken und Schwächen einer Strategie ausgemacht werden und so eine Verbesserung des Scores erzielt werden. Zudem sollen
@@ -233,7 +225,23 @@ In `visualization.py` kann nun eine Funktion hinzugefügt werden, welche einen
 können. Zusätzlich muss in der Funktion `visualize_game` der entsprechende Funktionsaufruf der zurückgegebenen Liste 
 hinzugefügt werden. Die Visualisierungen werden entsprechend der Reihenfolge in dieser Liste untereinander angezeigt.
 Für die Visualisierung einzelner Runden kann hierfür analog die Funktion `visualize_round` verwendet werden.
-## Der Web Service
+## Der Web Service auf AWS
+Unser Webservice ist auf Amazon AWS auf dem Elastic Compute Cloud Server (EC2) aufgesetzt. Der Webservice ist dabei
+unsrer Projekt in sehr abgespeckter Version.
+
+Dabei wird unser Service zur Beantwortung von Anfragen des `ic_20`-Tools permanent gestartet. Auf diesem läuft,
+ohne des es beeinflussbar wäre, unser Dienst mit unserer letzen, besten Lösungsstrategie.
+
 ## Warum unsere Idee die Beste ist
-(Alex)
+In unserem Ansatz zur optimalen Strategie die Menschheit vor dem Untergang zu retten, kombinieren wir die Gewichtung von
+Maßnahmen mit unserem empirischen Erfahrungsschatz über die ausbrechenden Seuchen und Krankheiten.
+
+Zunächst werden alle Ereignisse einer Runde analysiert und lokal abgespeichert. Anschließend werden, basierend auf der
+Art der Bedrohung, alle möglichen Reaktionen der Menschheit faktorisiert. Diese Faktoren richten sich mitunter nach
+unserer erprobten Erfahrung. Nicht zuletzt wird anhand der verfügbaren Reaktionen die Eine, oder Mehrere Aktionen
+durchgeführt um die Menscheit zu retten.
+
+Alles in allem kombinieren wir mit unserer Idee unsere Erfahrung aus den analysierten Ereignissen mit einer
+gewichtsverteilten Strategie. Damit verfolgen wir zuverlässig unser Ziel, die Menschheit vor den modernen Bedrohungen
+unserer Zeit zu schützen.
 ## Auswertung der Ergebnisse

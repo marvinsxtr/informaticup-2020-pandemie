@@ -10,8 +10,8 @@ Observations:
 import random
 
 from pandemie.tester import AbstractStrategy
-from pandemie.util import normalize_ranking, merge_ranking, operations, map_symbol_score
-from pandemie.util import map_symbol_score as score, apply_weight
+from pandemie.util import normalize_ranking, merge_ranking, operations, apply_weight
+from pandemie.util import map_symbol_score as score
 
 
 class Final(AbstractStrategy):
@@ -414,7 +414,7 @@ class Final(AbstractStrategy):
                     rank_operation("develop_vaccine", pathogen["name"], op_score=round(
                         measure_weights["develop_vaccine"] * (
                                 pathogens_scores[pathogen["name"]] +
-                                map_symbol_score(pathogen["lethality"]) * 5 +
+                                score(pathogen["lethality"]) * 5 +
                                 pathogens_count_infected_cities[pathogen["name"]]), 5))
 
         # Deploy vaccine in cities at most risk
@@ -453,7 +453,7 @@ class Final(AbstractStrategy):
                             flight_connections_one_infected_score[connection]), 5))
 
         # Rank operations corresponding to city stats
-        for city_name in cities_names:
+        for city_name in outbreak_city_names:
             if is_affordable("apply_hygienic_measures") and cities_hygiene_score[city_name] >= 5:
                 rank_operation("apply_hygienic_measures", city_name, op_score=round(
                     measure_weights["apply_hygienic_measures"] * (
