@@ -229,10 +229,10 @@ Grundsätzlich gilt, dass 1 ein perfekter Score ist und -1 der schlechteste. Bei
 halbiert, also nach 75 gewonnene Runden bekommt das Spiel den Score 0.5 und ein verlorenes -0.5. Dieses Wert ist, 
 genauso wie der Grad detr Steigung, nur durch Änderungen im Quellcode anpassbar.<br>
 Die Formeln für die Score Funktionen sind wie folgend, wobei `k=0.07` und `a=75` gilt. Hierbier ist `k` die Konstante,
-die den Grad der Steigung beschreibt, und `a` die Anzahl der Runden nachdenen der Wert halbiert ist.<br>
-Dann sind die Funktionen wie folgend:
-
-
+die den Grad der Steigung beschreibt, und `a` die Anzahl der Runden nach denen der Wert halbiert wird.<br>
+Die Funktion für den Win Score ist f1, die für den Loss Score f2.<br><br>
+![score function](images/score_win.png)<br><br>
+![score function](images/score_loss.png)
 ### Unsere Strategie
 Unsere Teamstrategie kann in `final.py` gefunden werden. Im Folgenden bezeichnen "Maßnahmen" eine mögliche Aktion zur 
 Veränderung des Spielstandes (bspw.: put_under_quarantine) und "Operationen" konkret angewandte Maßnahmen im Spiel
