@@ -16,13 +16,16 @@ MAX_PATHS = 100
 raw_json_rounds = []
 
 # These store the preprocessed values for visualization
+# { outcome -> win / loss
+#   y_population -> population for each round
+#   x_rounds -> range over round numbers }
 game_visualizations = {}
 
 # store a dict for each round
 # { lat -> latitude of cities
 #   lon -> longitude of cities
 #   name -> names of cities
-#   flight_paths ->
+#   flight_paths -> tuple of the coordinates of the connected cities
 #   counts -> pathogen counts
 #   names -> pathogen names }
 round_visualizations = []
@@ -51,7 +54,7 @@ def init_rounds():
             raw_json_rounds.append(json.load(f))
 
 
-def preprocess():
+def prepare():
     """
     Preprocesses the whole json data.
     :return: None
@@ -59,15 +62,15 @@ def preprocess():
     # Read the files from the disk
     init_rounds()
 
-    # Preprocess rounds
+    # Prepare rounds
     for number, json_round in enumerate(raw_json_rounds):
-        preprocess_round(json_round, number)
+        prepare_round(json_round, number)
 
-    # Preprocess game
-    preprocess_game()
+    # Prepare game
+    prepare_game()
 
 
-def preprocess_round(json_round, number):
+def prepare_round(json_round, number):
     """
     Analyze a single round. Coordinates, occurring pathogens and flight connection are analyzed and store for later
     plotting.
@@ -127,7 +130,7 @@ def preprocess_round(json_round, number):
     round_visualizations[number].update({"flight_paths": flight_path})
 
 
-def preprocess_game():
+def prepare_game():
     """
     Adds the occurring pathogens and the world population for each round to the game visualization.
     :return: None

@@ -170,7 +170,7 @@ def visualize_pathogens_in_full_game():
 def main():
     global visualized_game
     print("Started pre-processing")
-    pre.preprocess()
+    pre.prepare()
 
     print("Started generating visualizations")
     for round_number in range(len(pre.round_names)):
