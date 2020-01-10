@@ -6,7 +6,7 @@ def deploy():
     """
     This function starts the Web-Service with the final-strategy
     """
-    my_strategy = final.Final()
+    my_strategy = final.Final(silent=True)
     my_server = pandemie.web.WebServer(my_strategy, log="default")
 
     # Start server
