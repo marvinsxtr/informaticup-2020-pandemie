@@ -1,3 +1,4 @@
+from collections import defaultdict
 import yaml
 from pandemie.util.encoding import filter_unicode
 
@@ -36,28 +37,27 @@ def analyse(file):
 
     # Split different games
     data = raw_data.split("$")
-    for d in data:
+    for game in data:
         # Check if game was lost
-        if "loss" in d[:4]:
-            i = 1
-        else:
-            i = 0
+        result_index = "loss" in game[:4]
+
         # Split the pathogens
-        lines = d.split("\n")
+        lines = game.split("\n")
+
         # Start at 1 -> first pathogen
         for j in range(1, len(lines) - 2):
             # Load the dict from string
             line = yaml.load(lines[j], Loader=yaml.FullLoader)
-            pathogens[filter_unicode(line["name"]).strip()][i] += 1
+            pathogens[filter_unicode(line["name"]).strip()][result_index] += 1
 
-    s = ""
+    pathogen_table = ""
     for p in pathogens:
-        s += p
+        pathogen_table += p
+
         # Add whitespaces for better view
-        for _ in range(len("Saccharomyces cerevisiae mutans") - len(p)):
-            s += " "
-        s += "\t-\twins: %s - loss: %s\n" % (str(pathogens[p][0]), str(pathogens[p][1]))
+        pathogen_table += " " * (31 - len(p))
+        pathogen_table += "\t-\twins: %s - loss: %s\n" % (str(pathogens[p][0]), str(pathogens[p][1]))
 
     # Write the data to the end of the logfile
     with open(file, "a") as f:
-        f.write("\n\n" + s)
+        f.write("\n\n" + pathogen_table)
