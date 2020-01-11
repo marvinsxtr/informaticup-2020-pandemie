@@ -33,11 +33,13 @@ Des Weiteren enthält die von unserer Gruppe bereitgestellte Softwarelösung die
 abgeschlossenen Simulation.<br>
 
 *Das Programm ist ebenfalls für Windows verfügbar und vom Betriebssystem abhängig implementiert.
+
 ## Grundlagen
 Zu den Grundlagen gehört zunächst die vollständige und erfolgreiche Installation der Software. Daraufhin gibt es
 einen Schnellstart zum Testen einer Strategie. Im Anschluss wird genauer darauf eingegangen, in welchem Umfang die zur
 Verfügung stehenden Programme genutzt werden können. Dabei wird auch darauf eingegangen, wie eigene Strategien zu 
 unserer Software kompatibel entwickelt und gestaltet werden können.
+
 ### Installation
 Zunächst muss das Projekt aus dem Gitlab geklont werden. Dazu wird die Versionskontrollsoftware `git` benötigt.
 
@@ -68,9 +70,11 @@ Mit den Standard-Parametern wird das `ic20_linux` Programm in 5 Instanzen ausgef
 entwickelte Strategie getestet. Wie gut die Strategie ist, wird nach Abschluss der Berechnungen auf dem Terminal als
 `win rate` ausgegeben. Zusätzlich kann der `score` zur Bewertung herangezogen werden, welcher neben dem Erfolg der
 Strategie auch die Anzahl der Runden bis zum Sieg bzw. Niederlage des Spiels einbezieht.
+
 ## Benutzung des Programms
 Nach der Installation des Programms und einem einfachen Ausführungsbeispiel wird nun die Verwendung der einzelnen 
 Funktionen des Programms erklärt.
+
 ### Den Tester richtig nutzen
 Zum Testen von Strategien ist das Modul `tester.py` vorgesehen. Hier werden verschiedene Funktionalitäten zum 
 Analysieren und Testen eigener Strategien bereitgestellt. Um eigene Strategien zu testen, muss lediglich das Modul
@@ -210,9 +214,11 @@ Shanty                         	-	wins: 5 - loss: 3
 thisis                         	-	wins: 7 - loss: 9
 Xenomonocythemia               	-	wins: 16 - loss: 10
 ```
+
 ## Lösungsstrategien
 Eine Strategie bezeichnet in unserem Kontext eine Implementierung, um auf den aktuellen Spielstand zustandslos zu 
 antworten.
+
 ### Die Scorefunktion
 Im Hinblick auf eine Vergleichbarkeit der verschiedenen Strategien, eventuell später auch in Abhängigkeit von ihren
 Gewichten, bietet es sich an, eine Scorefunktion zu erstellen, die es ermöglicht einem Spieldurchlauf einen Score Wert
@@ -232,6 +238,7 @@ die den Grad der Steigung beschreibt, und `a` die Anzahl der Runden nach denen d
 Die Funktion für den Win Score ist f1, die für den Loss Score f2.<br><br>
 ![score function](images/score_win.png)<br><br>
 ![score function](images/score_loss.png)
+
 ### Unsere Strategie
 Unsere Teamstrategie kann in `final.py` gefunden werden. Im Folgenden bezeichnen "Maßnahmen" eine mögliche Aktion zur 
 Veränderung des Spielstandes (bspw.: put_under_quarantine) und "Operationen" konkret angewandte Maßnahmen im Spiel
@@ -247,6 +254,7 @@ Bei der Entwicklung unserer Teamstrategie haben wir einige Beobachtungen gemacht
 zu entwickeln. Diese werden im Folgenden aufgeführt:
  * Jede Stadt kann nur von einem Pathogen gleichzeitig befallen werden
  * Die Punkte für eine Operation werden für die angegebene Rundenzahl im Voraus bezahlt
+
 #### Strategieoptimierung
 Im Modul `optimization.py` befindet sich eine Implementierung einer sogenannten Bayes'schen Optimierung, welche dazu
 dient, die möglichen Maßnahmen in unserer Teamstrategie zu gewichten. Wir betrachten hierzu unsere Strategie als eine
@@ -256,6 +264,7 @@ Problem, da diese für das Finden der Extrema von Funktionen gedacht ist, welche
 sind und deren Ableitungen unbekannt sind. Hierbei wird mithilfe des Wissensstandes durch vorherige Explorationen im 
 Suchraum ein Konfidenzintervall zurate gezogen, um Punkte mit möglichst hohen Funktionswerten auszumachen. <br>
 [Quelle: Bayes'sche Optimierung](https://de.wikipedia.org/wiki/Hyperparameteroptimierung#Bayessche_Optimierung)
+
 ### Eigene Strategien entwickeln
 Alle Strategien erben von der Klasse `AbstractStrategy` und implementieren die Methode `_solve()`. Diese ist das
 Herzstück jeder Strategie, da in ihr abhängig von dem aktuellen Spielstand im JSON-Format über die Antwort und damit die
@@ -266,6 +275,7 @@ Teamstrategie bestimmte Operationen zu ranken und auf Basis einer Sortierung ein
 
 Es ist wichtig darauf zu achten, dass die Strategie im Ordner `/pandemie/tester/strategies` liegt, um die Kompatibilität 
 mit `tester.py` sicherzustellen.
+
 ## Wissenschaftlicher Hintergrund
 Über die letzten Jahre sind die Antibiotikareserven stetig zurückgegangen und multiresistente Erreger sind auf dem 
 Vormarsch. Sollte es nicht möglich sein, rechtzeitig neue Antibiotika zu entwickeln, steigt die Gefahr von Epidemien 
@@ -276,6 +286,7 @@ Ereignisse zu verringern. <br>
 [Quelle: Resistente Antibiotika](https://www.br.de/nachrichten/wissen/superkeime-antibiotika-reserven-gehen-aus,RD48aO6)
 <br>
 [Quelle: Pandemie-Simulation](https://www.spiegel.de/wissenschaft/mensch/pandemie-simulation-kranke-isolieren-grenzen-schliessen-a-413300.html)
+
 ## Code-Dokumentation
 Der gesamte Code ist mit PyDoc dokumentiert. Diese Dokumentation kann wie folgt generiert werden:
 ```bash
@@ -284,6 +295,7 @@ python3.8 -m pydoc -n <hostname> -p <port> pandemie
 Einige Module lassen sich leider nicht automatisch generieren, da sie auf Ordner relativ zum Pfad zugreifen.
 Innerhalb der einzelnen Modulfunktionen sind zusätzlich einzelne Schritte kommentiert, um die Funktionsweise der Module 
 nachvollziehen zu können. Hierbei halten wir uns an die gängigen Standardkonventionen.
+
 ## Software Architektur
 Unser Projekt hat die folgende Struktur:
 ```
@@ -301,7 +313,7 @@ project-pandemie-03
 │   └── web
 └── test
 ```
-In `/documents` sind alle generierten oder vorhandenen Dokumente gesammelt (z.B. Scorefunktionsgraph). In `deployment`
+In `/documents` sind alle generierten oder vorhandenen Dokumente gesammelt (z.B. Scorefunktionsgraph). In `/deployment`
 ist das Modul für den Web Service implementiert und in `/test` befindet sich das vorgegebene ic20 Tool für alle 
 Betriebssysteme. Im Hauptordner `/pandemie` sind die Module [Tester](documentation.md#den-tester-richtig-nutzen), 
 `util`, [Visualization](documentation.md#zusatzfunktion-visualisierung) und [Web](documentation.md#der-web-service). 

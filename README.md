@@ -1,11 +1,11 @@
 # README
 Die komplette Dokumentation finden Sie hier: [documentation](documents/documentation.md).
 
-Alle im Vorfeld zu installierenden Abhängigkeiten finden sie in hier: [requirements](requirements.txt).
+Alle im Vorfeld zu installierenden Abhängigkeiten finden sie hier: [requirements](requirements.txt).
 
-### Schnellstart für debugging Zwecke
+### Schnellstart für Debugging-Zwecke
 
-**Die Nachstehenden Schnellstarts sind im Projektordner auszuführen!**
+**Die Nachstehenden Schnellstarts sind im Projektordner auszuführen!**<br>
 Um den Tester für das `ic20_linux` Programm auszuführen, kann auf dem Projektordner folgender Befehl aufgerufen werden.
 ```bash
 python3.8 -m pandemie.tester
