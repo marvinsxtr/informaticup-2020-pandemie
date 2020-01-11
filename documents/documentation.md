@@ -243,9 +243,10 @@ Die Funktion für den Win Score ist f1, die für den Loss Score f2.<br><br>
 Unsere Teamstrategie kann in `final.py` gefunden werden. Im Folgenden bezeichnen "Maßnahmen" eine mögliche Aktion zur 
 Veränderung des Spielstandes (bspw.: put_under_quarantine) und "Operationen" konkret angewandte Maßnahmen im Spiel
 (bspw. ("put_under_quarantine", city, pathogen)). Die Strategie besteht grundlegend aus drei Phasen: Preprocessing, 
-Ranking nach Operation und Ranking nach Maßnahme. Im ersten Schritt wird der Spielzustand analysiert und neu in Listen 
-bzw. Dicts abgespeichert. Zum Beispiel werden den Städten und Pathogenen einige neue Parameter zugeordnet und nach
-diesen sortiert. Im Folgenden sind die wichtigsten generierten Daten aufgelistet:
+Ranking nach Operation und Ranking nach Maßnahme. <br>
+Im ersten Schritt wird der Spielzustand analysiert und neu in Listen bzw. Dicts abgespeichert. Zum Beispiel werden den 
+Städten und Pathogenen einige neue Parameter zugeordnet und nach diesen sortiert. Im Folgenden sind die wichtigsten 
+generierten Daten aufgelistet:
 
 ```python
 global_events_names  # Globale Events
@@ -269,11 +270,28 @@ flight_connections_one_infected  # Flugverbindungen, bei denen nur eine angebund
 flight_connections_one_infected_score  # Score der Flugverbindung
 ```
 
-Im nächsten Schritt wird innerhalb einer Maßnahme die beste Operation gesucht. Dies führt am Ende dazu,
-dass für jede Maßnahme eine Operation als beste Option auserkoren wird. Im letzten Schritt werden die Operationen in die
-abschließende Reihenfolge gebracht, an deren erster Stelle die Operation steht, die ausgeführt wird. Kann die Operation
-aufgrund mangelnder Punkte nicht ausgeführt werden, muss die Runde beendet werden.
+Im nächsten Schritt wird innerhalb einer Maßnahme die beste Operation gesucht. Hierzu werden einzelne Operationen mit 
+einem Score gerankt, welcher je nach Maßnahme unterschiedlich berechnet wird. Bei Maßnahmen mit Rundenzahl wird diese 
+zunächst auf 0 initialisiert, da diese später bestimmt wird. In der Funktion `get_best_operation` wird nun aus den 
+Rankings für die jeweiligen Maßnahmen die beste Operation mit dem höchsten Score ausgewählt und im Dict 
+`measure_ranking` gespeichert. Dies führt dazu, dass für jede Maßnahme eine Operation als beste Operation gilt, sodass 
+insgesamt zwölf übrig bleiben. 
+<br>
+An dieser Stelle wird nun die Operation ausgewählt, welche die höchste Gewichtung hat. Diese Gewichtung kann zuvor 
+festgelegt und mit Hilfe einer [Bayes'schen Optimierung](documentation.md#strategieoptimierung) verbessert werden. Kann 
+die beste Operation aufgrund mangelnder Punkte nicht ausgeführt werden, so muss die Runde zum Sparen beendet werden. 
+Ansonsten wird bei rundenbasierten Operationen nun die Rundenzahl mithilfe anderer Faktoren (z.B. "duration" bei 
+Pathogenen) berechnet.
+<br>
+Während der Entwicklung unserer Teamstrategie haben wir auch andere Möglichkeiten gefunden, um aus den besten zwölf
+Operationen die beste Maßnahme auszuwählen:
 
+* Zufallsprinzip (Dies macht die Strategie nichtdeterministisch, was die Optimierung zusätzlich erschwert)
+* Normalisieren der einzelnen Rankings und anschließendes Zusammenfügen ("Mergen"), sodass ein Gesamtranking über alle 
+möglichen Operationen entsteht.
+
+Letztere Methode produziert jedoch ähnlich Ergebnisse wie die von uns gewählte und ist unverhältnismäßig komplizierter.
+(siehe [Auswertung](documentation.md#auswertung-der-ergebnisse))
 #### Beobachtungen bei der Entwicklung
 Bei der Entwicklung unserer Teamstrategie haben wir einige Beobachtungen gemacht, die es erleichtern, eigene Strategien
 zu entwickeln. Diese werden im Folgenden aufgeführt:
