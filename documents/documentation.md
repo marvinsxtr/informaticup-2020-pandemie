@@ -249,10 +249,13 @@ zu entwickeln. Diese werden im Folgenden aufgeführt:
  * Die Punkte für eine Operation werden für die angegebene Rundenzahl im Voraus bezahlt
 #### Strategieoptimierung
 Im Modul `optimization.py` befindet sich eine Implementierung einer sogenannten Bayes'schen Optimierung, welche dazu
-dient die möglichen Maßnahmen in unserer Teamstrategie zu gewichten. Wir betrachten hierzu unsere Strategie als eine
+dient, die möglichen Maßnahmen in unserer Teamstrategie zu gewichten. Wir betrachten hierzu unsere Strategie als eine
 Blackbox-Funktion, deren Eingaben die Gewichte für die einzelnen Maßnahmen (12 Stück) sind und deren Ausgabe der
-errechnete Score (+ Winrate) ist:
-
+errechnete durchschnittliche Score (+ Winrate) ist. Eine Bayes'sche Optimierung eignet sich besonders gut für dieses
+Problem, da diese für das Finden der Extrema von Funktionen gedacht ist, welche wie unsere Simulation sehr kostspielig
+sind und deren Ableitungen unbekannt sind. Hierbei wird mithilfe des Wissensstandes durch vorherige Explorationen im 
+Suchraum ein Konfidenzintervall zurate gezogen, um Punkte mit möglichst hohen Funktionswerten auszumachen. <br>
+[Quelle: Bayes'sche Optimierung](https://de.wikipedia.org/wiki/Hyperparameteroptimierung#Bayessche_Optimierung)
 ### Eigene Strategien entwickeln
 Alle Strategien erben von der Klasse `AbstractStrategy` und implementieren die Methode `_solve()`. Diese ist das
 Herzstück jeder Strategie, da in ihr abhängig von dem aktuellen Spielstand im JSON-Format über die Antwort und damit die
