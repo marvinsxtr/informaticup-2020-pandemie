@@ -21,6 +21,7 @@ def weighted_choice(seq):
     total_prob = sum(item[1] for item in seq.items())
     chosen = random.uniform(0, total_prob)
     cumulative = 0
+
     for item, probability in seq.items():
         cumulative += probability
         if cumulative > chosen:

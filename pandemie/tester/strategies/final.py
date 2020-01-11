@@ -42,19 +42,19 @@ class Final(AbstractStrategy):
             # These are the weights applied to the measure ranking
             measure_weights = {
                 "end_round": 1,  # Ends the current round
-                "put_under_quarantine": 1,  # Completely prevent spreading of pathogen
-                "close_airport": 1,  # Shut down connections from and to a city
-                "close_connection": 1,  # Shut down one connection
+                "put_under_quarantine": 6,  # Completely prevent spreading of pathogen
+                "close_airport": 6,  # Shut down connections from and to a city
+                "close_connection": 7,  # Shut down one connection
 
-                "develop_vaccine": 1,  # After 6 rounds a vaccine is ready
-                "deploy_vaccine": 1,  # Deploy vaccine to specific city
-                "develop_medication": 1,  # After 3 rounds a medication is available
-                "deploy_medication": 1,  # Deploy medication to specific city
+                "develop_vaccine": 10,  # After 6 rounds a vaccine is ready
+                "deploy_vaccine": 8,  # Deploy vaccine to specific city
+                "develop_medication": 10,  # After 3 rounds a medication is available
+                "deploy_medication": 8,  # Deploy medication to specific city
 
-                "exert_influence": 1,  # Corresponds to economy city stat
-                "call_elections": 1,  # Corresponds to government city stat
-                "apply_hygienic_measures": 1,  # Corresponds to hygiene city stat
-                "launch_campaign": 1,  # Corresponds to awareness city stat
+                "exert_influence": 2,  # Corresponds to economy city stat
+                "call_elections": 2,  # Corresponds to government city stat
+                "apply_hygienic_measures": 2,  # Corresponds to hygiene city stat
+                "launch_campaign": 2,  # Corresponds to awareness city stat
             }
 
         # This dict contains the rankings for concrete operations by measure
@@ -184,6 +184,7 @@ class Final(AbstractStrategy):
                 return operations.end_round()
 
             # Get best overall operation (out of all measures):
+
             # This picks a random operation out of the best 12 operations (for each measure)
             # best_operation = random.choice(list(measure_ranking.keys()))
 
@@ -206,7 +207,6 @@ class Final(AbstractStrategy):
                 else:
                     # Redefine best operation with adjusted rounds
                     best_operation = (name, *args, calculated_rounds)
-            print("took", best_operation)
             return operations.get_operation(best_operation)
 
         def rank_operation(*op_tuple, op_score):
