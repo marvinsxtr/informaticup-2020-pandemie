@@ -245,10 +245,35 @@ Veränderung des Spielstandes (bspw.: put_under_quarantine) und "Operationen" ko
 (bspw. ("put_under_quarantine", city, pathogen)). Die Strategie besteht grundlegend aus drei Phasen: Preprocessing, 
 Ranking nach Operation und Ranking nach Maßnahme. Im ersten Schritt wird der Spielzustand analysiert und neu in Listen 
 bzw. Dicts abgespeichert. Zum Beispiel werden den Städten und Pathogenen einige neue Parameter zugeordnet und nach
-diesen sortiert. Im nächsten Schritt wird innerhalb einer Maßnahme die beste Operation gesucht. Dies führt am Ende dazu,
+diesen sortiert. Im Folgenden sind die wichtigsten generierten Daten aufgelistet:
+
+```python
+global_events_names  # Globale Events
+
+cities_pathogen_name  # Zuordnung der Pathogene zu Städten
+
+pathogens_count_infected_cities  # Anzahl der Städt, die von einem Pathogen infiziert wurden
+pathogens_scores  # Zuordnung eines Scores zu einem Pathogen
+
+cities_scores  # Zuordnung eines Scores zu einer Stadt
+cities_outbreak_scores  # Zuordnung eines Scores zu einem Ausbruch in einer Stadt
+cities_pathogen_score  # Zuordnung des Pathogen Scores zu der befallenen Stadt
+
+cities_count_flight_connections  # Ausgehende Flugverbindungen einer Stadt
+
+cities_combined_connected_cities_scores  # Kombinierter City Score aller zu einer Stadt verbundenen Städte
+cities_combined_connected_cities_difference  # Differenz des Scores einer Stadt zu den verbundenen Städten
+
+flight_connections  # Flugverbindungen (Menge, da ungerichtet)
+flight_connections_one_infected  # Flugverbindungen, bei denen nur eine angebundene Stadt infiziert ist
+flight_connections_one_infected_score  # Score der Flugverbindung
+```
+
+Im nächsten Schritt wird innerhalb einer Maßnahme die beste Operation gesucht. Dies führt am Ende dazu,
 dass für jede Maßnahme eine Operation als beste Option auserkoren wird. Im letzten Schritt werden die Operationen in die
 abschließende Reihenfolge gebracht, an deren erster Stelle die Operation steht, die ausgeführt wird. Kann die Operation
 aufgrund mangelnder Punkte nicht ausgeführt werden, muss die Runde beendet werden.
+
 #### Beobachtungen bei der Entwicklung
 Bei der Entwicklung unserer Teamstrategie haben wir einige Beobachtungen gemacht, die es erleichtern, eigene Strategien
 zu entwickeln. Diese werden im Folgenden aufgeführt:

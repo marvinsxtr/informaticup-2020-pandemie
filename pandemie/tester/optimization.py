@@ -65,7 +65,6 @@ def bayesian_optimization():
             "deploy_vaccine": 1.8,
             "develop_medication": 1.9,
             "deploy_medication": 1.7,
-
             "exert_influence": 1.0,
             "call_elections": 1.1,
             "apply_hygienic_measures": 1.3,
@@ -76,18 +75,18 @@ def bayesian_optimization():
 
     optimizer.probe(
         params={
-            "apply_hygienic_measures": 0.8,
-            "call_elections": 1.2,
+            "apply_hygienic_measures": 1.2,
+            "call_elections": 0.8,
             "close_airport": 0.8,
-            "close_connection": 1.2,
-            "deploy_medication": 0.8,
-            "deploy_vaccine": 1.2,
-            "develop_medication": 0.8,
+            "close_connection": 0.8,
+            "deploy_medication": 1.2,
+            "deploy_vaccine": 0.8,
+            "develop_medication": 1.2,
             "develop_vaccine": 0.8,
-            "end_round": 1.2,
+            "end_round": 0.8,
             "exert_influence": 0.8,
-            "launch_campaign": 1.2,
-            "put_under_quarantine": 1.2
+            "launch_campaign": 0.8,
+            "put_under_quarantine": 0.8
         },
         lazy=True,
     )
