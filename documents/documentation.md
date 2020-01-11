@@ -309,10 +309,37 @@ Module gehören. Web beinhaltet die Implementierungen für den Webserver, welche
 Um eigene Strategien zu erstellen, muss die eigene Strategie von der `AbstractStrategy` erben, die Methode 
 `_solve()` implementiert und die Datei im Ordner `/pandemie/tester/strategies` abgelegt werden.
 
-Für genauere Imformationen siehe [Eigene Strategie erstellen](documentation.md#eigene-strategien-entwickeln).
+Für genauere Informationen siehe [Eigene Strategie erstellen](documentation.md#eigene-strategien-entwickeln).
+
+### Wie wird das Programm unter Windows ausgeführt?
+Das Programm ist unter Windows genauso auszuführen wie unter Linux. Allerdings muss unter Windows 
+sichergestellt sein, dass Python installiert ist (Die neuste Version ist [hier](https://www.python.org/downloads/) zu
+finden). Das Ausführen des Programms wird im Kapitel [Schnellstart](documentation.md#schnellstart) detaillierter 
+erklärt.
+
+### Wie kann ich ein Spiel visualisieren?
+Zum Visualisierten muss der [Tester](documentation.md#den-tester-richtig-nutzen) mit der Flag `-v` bzw. 
+`--visualization` ausgeführt werden:
+```bash
+python3.8 -m pandemie.tester -v
+```
+Anschließend kann das Spiel mithilfe von `visualization.py` Visualisiert werden:
+```bash
+$ python3.8 -m pandemie.visualization
+```
+Eine Ausführlichere Erklärung ist im Kapitel [Wie starte ich die Visualisierung](
+documentation.md#wie-starte-ich-die-visualisierung) zu finden.
+
+### Der Tester startet meine Eigene Strategie nicht.
+Um eigene Strategien mit dem Tester ausführen zu können, muss sich diese im Ordner `/pandemie/tester/strategies` 
+befinden. Es ist auch sicherzustellen, dass die Python-Datei den selben Namen besitz wie die Strategie-Klasse (Groß- und
+Kleinschreibung wird nicht berücksichtigt). 
+<br>Was beim Erstellen einer Strategie zu beachten ist wird im Kapitel [Eigene Strategien entwickeln](
+documentation.md#eigene-strategien-entwickeln) erklärt.
 
 ### Wie kann man das Team kontaktieren?
-Für Fragen stehen die Entwickler gerne zur verfügen. Kontaktdaten sind [hier](documentation.md#autoren) zu finden.
+Für Fragen und Rückmeldungen stehen die Entwickler gerne zur verfügen. Kontaktdaten sind [hier](
+documentation.md#autoren) zu finden.
 
 ### Wie ist das Projekt lizensiert?
 Das Projekt ist mit der MIT Lizenz lizensiert und damit eine Open-Source Software. Die Lizenz für dieses Projekt
