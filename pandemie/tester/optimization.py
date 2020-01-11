@@ -37,8 +37,8 @@ def bayesian_optimization():
     :return: Best parameters and score obtained
     """
     # Bounded region of parameter space
-    minimum = 0.8
-    maximum = 1.2
+    minimum = 0.5
+    maximum = 1.5
 
     # Set the weight bounds for each measure
     p_bounds = {op: (minimum, maximum) for op in operations.OPERATIONS}

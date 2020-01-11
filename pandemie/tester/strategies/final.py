@@ -10,7 +10,7 @@ Observations:
 import random
 
 from pandemie.tester import AbstractStrategy
-from pandemie.util import normalize_ranking, merge_ranking, operations, apply_weight
+from pandemie.util import normalize_ranking, merge_ranking, operations, apply_weight, weighted_choice
 from pandemie.util import map_symbol_score as score
 
 
@@ -41,20 +41,20 @@ class Final(AbstractStrategy):
         else:
             # These are the weights applied to the measure ranking
             measure_weights = {
-                "end_round": 1.0,  # Ends the current round
-                "put_under_quarantine": 1.6,  # Completely prevent spreading of pathogen
-                "close_airport": 1.5,  # Shut down connections from and to a city
-                "close_connection": 1.4,  # Shut down one connection
+                "end_round": 1,  # Ends the current round
+                "put_under_quarantine": 1,  # Completely prevent spreading of pathogen
+                "close_airport": 1,  # Shut down connections from and to a city
+                "close_connection": 1,  # Shut down one connection
 
-                "develop_vaccine": 2.0,  # After 6 rounds a vaccine is ready
-                "deploy_vaccine": 1.8,  # Deploy vaccine to specific city
-                "develop_medication": 1.9,  # After 3 rounds a medication is available
-                "deploy_medication": 1.7,  # Deploy medication to specific city
+                "develop_vaccine": 1,  # After 6 rounds a vaccine is ready
+                "deploy_vaccine": 1,  # Deploy vaccine to specific city
+                "develop_medication": 1,  # After 3 rounds a medication is available
+                "deploy_medication": 1,  # Deploy medication to specific city
 
-                "exert_influence": 1.0,  # Corresponds to economy city stat
-                "call_elections": 1.1,  # Corresponds to government city stat
-                "apply_hygienic_measures": 1.3,  # Corresponds to hygiene city stat
-                "launch_campaign": 1.2,  # Corresponds to awareness city stat
+                "exert_influence": 1,  # Corresponds to economy city stat
+                "call_elections": 1,  # Corresponds to government city stat
+                "apply_hygienic_measures": 1,  # Corresponds to hygiene city stat
+                "launch_campaign": 1,  # Corresponds to awareness city stat
             }
 
         # This dict contains the rankings for concrete operations by measure
@@ -191,7 +191,10 @@ class Final(AbstractStrategy):
             # best_operation = max(overall_ranking, key=lambda key: overall_ranking[key])
 
             # This picks the operation with the highest weight
-            best_operation = max(measure_ranking, key=lambda key: measure_ranking[key])
+            # best_operation = max(measure_ranking, key=lambda key: measure_ranking[key])
+
+            # This picks an operation with a probability based on its weight
+            best_operation = weighted_choice(measure_ranking)
 
             # Calculate number of rounds for round based measures
             name, *args, rounds = best_operation
@@ -203,6 +206,7 @@ class Final(AbstractStrategy):
                 else:
                     # Redefine best operation with adjusted rounds
                     best_operation = (name, *args, calculated_rounds)
+            print("took", best_operation)
             return operations.get_operation(best_operation)
 
         def rank_operation(*op_tuple, op_score):

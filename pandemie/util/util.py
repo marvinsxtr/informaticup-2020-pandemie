@@ -3,11 +3,28 @@ This file contains several useful function.
 """
 import errno
 import json
+import random
 import sys
 import os
 import datetime
 
 TIME_FORMAT = "%Y-%m-%d--%H.%M.%S"
+
+
+def weighted_choice(seq):
+    """
+    This function returns a value from a weighted dictionary where the weight maps to a probability of the corresponding
+    item being chosen
+    :param seq: dictionary which maps options to a weight
+    :return: chosen option
+    """
+    total_prob = sum(item[1] for item in seq.items())
+    chosen = random.uniform(0, total_prob)
+    cumulative = 0
+    for item, probability in seq.items():
+        cumulative += probability
+        if cumulative > chosen:
+            return item
 
 
 def apply_weight(ranking, weight):
