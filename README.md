@@ -1,7 +1,7 @@
 # README
 Die komplette Dokumentation finden Sie hier: [documentation](documents/documentation.md).
 
-Alle im Vorfeld zu installierenden Abhängigkeiten finden sie hier: [requirements](requirements.txt).
+Alle im Vorfeld zu installierenden Abhängigkeiten finden Sie hier: [requirements](requirements.txt).
 
 ### Schnellstart für Debugging-Zwecke
 
@@ -13,13 +13,13 @@ python3.8 -m pandemie.tester
 Für die schnelle Ausführung des Programms sind bereits Standard-Parameter gesetzt. Diese können per aufgefordeter
 Terminaleingabe auch geändert werden.
 <br><br>
-Um die Visualisierung zu starten führen sie den nachstehenden Befehl aus.
+Um die Visualisierung zu starten führen Sie den nachstehenden Befehl aus.
 ```bash
 python3.8 -m pandemie.visualization
 ```
-Öffnen sie danach ihren Webbrowser mit der URL: `localhost:8050`
+Öffnen Sie danach ihren Webbrowser mit der URL: `localhost:8050`
 
-Um den reinen Web Service zu starten führen sie den nachstehenden Befehl aus.
+Um den reinen Web Service zu starten führen Sie den nachstehenden Befehl aus.
 ```bash
 python3.8 -m pandemie.deployment
 ```

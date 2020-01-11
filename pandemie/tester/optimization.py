@@ -22,7 +22,7 @@ def weighted_final_strategy(**weights):
 
     # Run strategy
     block_print()
-    tester = tst.Tester(final_strategy(silent=True, visualize=False, weights=weights))
+    tester = tst.Tester(final_strategy(silent=True, visualize=False, weights=weights), seed=0)
     score = tester.evaluate(thread_count=20)
     enable_print()
 
