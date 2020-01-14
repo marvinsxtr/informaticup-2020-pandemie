@@ -288,6 +288,7 @@ Pathogenen) berechnet.
 Während der Entwicklung unserer Teamstrategie haben wir auch andere Möglichkeiten gefunden, um aus den besten zwölf
 Operationen die beste Maßnahme auszuwählen:
 
+* Wahrscheinlichkeitsverteilung
 * Zufallsprinzip (Dies macht die Strategie nichtdeterministisch, was die Optimierung zusätzlich erschwert)
 * Normalisieren der einzelnen Rankings und anschließendes Zusammenfügen ("Mergen"), sodass ein Gesamtranking über alle 
 möglichen Operationen entsteht.
@@ -374,7 +375,8 @@ Module gehören. Web beinhaltet die Implementierungen für den Webserver, welche
 ## FAQ
 ### Wie erstellt man eine eigene Strategie?
 Um eigene Strategien zu erstellen, muss die eigene Strategie von der `AbstractStrategy` erben, die Methode 
-`_solve()` implementiert und die Datei im Ordner `/pandemie/tester/strategies` abgelegt werden.
+`_solve()` implementiert und die Datei im Ordner `/pandemie/tester/strategies` abgelegt werden. In diesem Ordner ist
+bereits eine Beispiel-Strategie, welche nur die Runden beendet.
 
 Für genauere Informationen siehe [Eigene Strategie erstellen](documentation.md#eigene-strategien-entwickeln).
 
