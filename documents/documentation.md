@@ -375,7 +375,7 @@ project-pandemie-03
 ```
 In `/documents` sind alle generierten oder vorhandenen Dokumente gesammelt (z.B. Scorefunktionsgraph). In `/deployment`
 ist das Modul für den Web Service implementiert und in `/test` befindet sich das vorgegebene ic20 Tool für alle 
-Betriebssysteme. Im Hauptordner `/pandemie` sind die Module [Tester](documentation.md#den-tester-richtig-nutzen), 
+unterstützten Betriebssysteme. Im Hauptordner `/pandemie` sind die Module [Tester](documentation.md#den-tester-richtig-nutzen), 
 `util`, [Visualization](documentation.md#zusatzfunktion-visualisierung) und [Web](documentation.md#der-web-service). 
 Hierbei ist util ein Modul, das sämtliche Hilfsfunktionen beinhaltet, welche zur Übersichtlichkeit nicht in die anderen 
 Module gehören. Web beinhaltet die Implementierungen für den Webserver, welcher mit dem ic20 Tool kommuniziert. 
@@ -433,24 +433,38 @@ Darstellung einiger Graphen und Karten. Im Folgenden wird erklärt, wie auf dies
 Erweiterungen realisiert werden können.
 ### Beispielvisualisierungen
 #### Spielvisualisierung
+Um den gesamten Spielverlauf zu Visualisieren muss die Option `Visualize full game` ausgewählt werden. Hier wird dann
+die Weltbevölkerung über die Runden angezeigt und angezeigt welche Viren aufgetreten sind.
 Gesamte Population im Spielverlauf:
 ![full_game_visualization](images/full_game_visualization.png)<br>
 #### Rundenvisualiserung
+Um einzelne Runden zu visualisieren muss die Option `Visualize roundX.dat` ausgewählt werden, wobei X die Nummer der 
+Runde ist, die visualisiert werden soll.<br>
+Bei der Visualisierung werden alle infizierten Städte und die 100 wichtigsten Flugverbindungen auf einem Globus 
+eingezeichnet. Um die wichtigsten Flugverbindungen zu erhalten werden zunnächst alle Verbindungen herausgefiltert, bei
+denen nicht mindestens eine der beiden verbundenen Städte mit einem Virus infiziert ist. Anschließend werden die 
+Verbindungen in abhängigkeit von der Infiziertenzahl in den Städten und der Stärke des Viruses bewertet. 
+
 Die hundert wichtigsten Flugverbindungen zwischen infizierten Städten:
 <br><img src="images/round_outbreak_visualization.png" width="500"/><br>
 Anteil der infizierten Bevölkerung für jedes Pathogen:
 <br><img src="images/round_pathogens_visualization.png" width="500"/><br>
 ### Wie starte ich die Visualisierung
 Um die Visualisierung zu starten muss zunächst mindestens einmal der 
-[Tester](documentation.md#den-tester-richtig-nutzen) mit der Visualisierungs-Option gestartet werden. Dies führt dazu, 
-dass im Ordner `pandemie/visualization/logs` die JSON-Dateien der einzelnen Runden abgelegt werden. Ist diese 
-Voraussetzung erfüllt, kann die Visualisierung mit dem Modul `visualization.py` gestartet werden: <br>
+[Tester](documentation.md#den-tester-richtig-nutzen) mit der Visualisierungs-Option gestartet werden:
+```bash
+$ python3.8 -m pandemie.tester -v
+```
+ 
+Dies führt dazu, dass im Ordner `pandemie/visualization/logs` die JSON-Dateien der einzelnen Runden abgelegt werden. 
+Ist diese Voraussetzung erfüllt, kann die Visualisierung mit dem Modul `visualization.py` gestartet werden: <br>
 ```bash
 $ python3.8 -m pandemie.visualization
 ```
-Sobald die Visualisierung fertig ist, wird anschließend ein Webserver gestartet, welcher über `localhost:8050`
-aufgerufen werden kann. Im Log wird hierzu auch ein Link angezeigt. Wenn die Seite aufgerufen wird, kann oben im
-Dropdown-Menü ausgewählt werden, welche Runde oder ob das gesamte Spiel visualisiert werden soll.
+Sobald die das verarbeiten der Daten für die Visualisierung fertig ist, wird anschließend ein Webserver gestartet, 
+welcher über `localhost:8050` aufgerufen werden kann. Im Terminal wird hierzu auch ein Link angezeigt. Wenn die Seite 
+aufgerufen wird, kann oben im Dropdown-Menü ausgewählt werden, welche Runde oder ob das gesamte Spiel visualisiert 
+werden soll.
 ### Eigene Visualisierung hinzufügen
 Die Visualisierung wird mithilfe von `Plotly` mit `Dash` als Dashboard Anwendung realisiert. Plotly kann also dazu 
 genutzt werden, eigene Visualisierungen einzubinden. Hierbei soll zwischen Preprocessing und der eigentlichen 
@@ -468,8 +482,8 @@ Für die Visualisierung einzelner Runden kann hierfür analog die Funktion `visu
 ## Der Web Service
 ### Web Service Allgemein
 Als Grundlage für unseren Web Service dient ein [bottle-Framework](https://bottlepy.org/docs/dev/) das auf WSGI aufbaut.
-Um viele Anfragen gleichzeitig bearbeiten zu können, nutzen wir [gevent](http://www.gevent.org/). Damit haben wir eine
-stabile und schnelle asynchrone Bearbeitung der Anfragen.<br>
+Um viele Anfragen gleichzeitig bearbeiten zu können, nutzen wir [gevent](http://www.gevent.org/). Damit wird eine 
+stabile und schnelle asynchrone Bearbeitung der Anfragen erreicht.<br>
 
 Standardmäßig läuft der Server auf dem Port `50123`, dieser wird auch vom `ic_20`-Tool genutzt. Damit der 
 [Tester](documentation.md#den-tester-richtig-nutzen) richtig funktionieren kann, ist der Webserver als Thread
