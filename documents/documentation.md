@@ -66,7 +66,7 @@ python3.8 -m pandemie.tester
 ```
 Für die schnelle Ausführung des Programms sind bereits Standard-Parameter gesetzt. Diese können per aufgeforderter
 Terminaleingabe auch geändert werden. Dazu mehr in der Sektion 
-[Wie benutze ich das Programm](documentation.md#wie-benutze-ich-das-programm).
+[Benutzung das Programm](documentation.md#benutzung-des-programms).
 Mit den Standard-Parametern wird das `ic20_linux` Programm in 5 Instanzen ausgeführt und gegen die zuletzt von uns
 entwickelte Strategie getestet. Wie gut die Strategie ist, wird nach Abschluss der Berechnungen auf dem Terminal als
 `win rate` ausgegeben. Zusätzlich kann der `score` zur Bewertung herangezogen werden, welcher neben dem Erfolg der
@@ -74,17 +74,17 @@ Strategie auch die Anzahl der Runden bis zum Sieg bzw. Niederlage des Spiels ein
 
 ## Benutzung des Programms
 Nach der Installation des Programms und einem einfachen Ausführungsbeispiel wird nun die Verwendung der einzelnen 
-Funktionen des Programms erklärt.
+Funktionen des Programms detailiert erklärt.
 
 ### Den Tester richtig nutzen
-Zum Testen von Strategien ist das Modul `tester.py` vorgesehen. Hier werden verschiedene Funktionalitäten zum 
-Analysieren und Testen eigener Strategien bereitgestellt. Um eigene Strategien zu testen, muss lediglich das Modul
-`tester.py` aus dem Projektordner heraus ausgeführt werden. <br>
+Zum Testen von Strategien ist das Modul `pandemie/tester/tester.py` vorgesehen. Hier werden verschiedene
+Funktionalitäten zum Analysieren und Testen eigener Strategien bereitgestellt. Um eigene Strategien zu testen, muss 
+lediglich das Modul `tester.py` aus dem Projektordner heraus ausgeführt werden. <br>
 ```bash
 python3.8 -m pandemie.tester
 ```
-<br>Der Tester kann mit verschiedenen Optionen über die Kommandozeile konfiguriert werden. Diese kann man sich so 
-anzeigen lassen:
+<br>Der Tester kann mit verschiedenen Optionen über die Kommandozeile aufgerufen werden. Um eine Liste aller Parameter
+zu erhalten muss der Tester mit dem Parameter `-h` bzw. `--help` aufgerufen werden:
 ```bash
 > python3.8 -m pandemie.tester -h
 -h --help            show the help
@@ -97,8 +97,9 @@ anzeigen lassen:
 ```
 Im Folgenden werden die einzelnen Optionen erläutert.
 Der Tester implementiert die Möglichkeit die Gewichte einer Strategie mittels einer `Bayesian optimization` anzupassen.
-Dazu wird über die Kommandozeile die `-o` bzw. die `--optimize` Option angegeben. Aktuell ist es nur möglich die `final`
-Strategie zu optimieren. Dabei werden alle anderen Parameter verworfen.
+Dazu wird über die Kommandozeile die `-o` bzw. die `--optimize` Option angegeben.<br>
+> :warning: **Aktuell ist es nur möglich die `final` Strategie zu optimieren.** Sobald der Parameter `-o` oder `--optimize` 
+übergeben wird, werden alle anderen Parameter verworfen.
 
 Möchte man eine andere Strategie testen, so muss man den vollständigen Namen der Strategie der `-s` Option übergeben.
 Die auszuführenden Strategie muss im `/pandemie/tester/strategies` Ordner liegen und von der `AbstractStrategy` erben.
