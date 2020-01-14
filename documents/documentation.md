@@ -98,17 +98,20 @@ zu erhalten muss der Tester mit dem Parameter `-h` bzw. `--help` aufgerufen werd
 Im Folgenden werden die einzelnen Optionen erläutert.
 Der Tester implementiert die Möglichkeit die Gewichte einer Strategie mittels einer `Bayesian optimization` anzupassen.
 Dazu wird über die Kommandozeile die `-o` bzw. die `--optimize` Option angegeben.<br>
-> :warning: **Aktuell ist es nur möglich die `final` Strategie zu optimieren.** Sobald der Parameter `-o` oder `--optimize` 
-übergeben wird, werden alle anderen Parameter verworfen.
+> :warning: **Aktuell ist es nur möglich die `final` Strategie zu optimieren.** Sobald der Parameter `-o` oder 
+`--optimize` übergeben wird, werden alle anderen Parameter verworfen.
 
 Möchte man eine andere Strategie testen, so muss man den vollständigen Namen der Strategie der `-s` Option übergeben.
-Die auszuführenden Strategie muss im `/pandemie/tester/strategies` Ordner liegen und von der `AbstractStrategy` erben.
+Es ist drauf zu achten, dass die auszuführenden Strategie im `/pandemie/tester/strategies` Ordner liegen. Auch muss die 
+Strategie von der `AbstractStrategy` erben und die Methode `_solve()` implementieren. Wie genau eigene Strategien 
+entwickelt werden können wird im Kapitel [eigene Strategien entwickeln](documentation.md#eigene-strategien-entwickeln)
+erläutert.
 
 Die `-l` oder `--log` Flag aktiviert das Erstellen eines Logs. Das Loggen beinhaltet das Ergebnis und die Anzahl der 
 Runden, die bis zu diesem Ergebnis gespielt wurden, für jedes einzelne gespielte Spiel. Außerdem werden für jedes Spiel
 alle aufgetretenen Pathogene inklusive ihrer Eigenschaften geloggt. Am Ende der Log-Datei steht dann der berechnete
 Score der Strategie. Dieser befindet sich immer zwischen 1 und -1, wobei 1 ein perfekter Score wäre.<br>
-Hier ein Beispiel für die Strategie `example_strategy.py` mit zwei gespielten Runden:<br>
+Hier ein Beispiel für die Strategie `example_strategy.py` mit zwei gespielten Spielen:<br>
 ```
 $loss:	11
 {'name': 'N5-10', 'infectivity': '+', 'mobility': '++', 'duration': 'o', 'lethality': '+'}
