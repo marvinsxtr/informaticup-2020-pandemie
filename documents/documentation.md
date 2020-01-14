@@ -192,11 +192,13 @@ medicationInDevelopment	, global
 
 ##### Die Log-Analyse
 Das manuelle Einbinden des Moduls `analyse_log.py` ist nicht notwendig. Das Modul wird standardmäßig ausgeführt, wenn
-Logging aktiviert ist. Es ist nicht möglich das Modul zu deaktivieren oder zu entfernen, ohne Änderungen an `tester.py`
-vorzunehmen. 
+Logging aktiviert ist. Es ist nicht möglich das Modul zu deaktivieren oder zu entfernen, ohne Änderungen an 
+`pandemie/tester/tester.py` vorzunehmen. 
 
+Das Modul analysiert den erstellten Log. Hierbei wird für jedes Pathogen gezählt wie viele Runden gewonnen und verloren 
+wurden, in denen dieses Pathogen aufgetreten ist. <br>
 Die gesammelten Daten werden zum Ende der übergebenen Log-Datei hinzugefügt. Hierbei werden alle nicht-UTF-8-Zeichen
-entfernt, um mögliche Konflikte zu vermeiden.
+entfernt, um mögliche Konflikte beim Schreiben der Datei zu vermeiden.
 <br>Beispiel für gesammelte Daten:<br>
 ```
 Admiral Trips                  	-	wins: 9 - loss: 18
