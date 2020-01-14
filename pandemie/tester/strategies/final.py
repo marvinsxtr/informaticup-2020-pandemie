@@ -286,15 +286,6 @@ class Final(AbstractStrategy):
                              score(pathogen["duration"]) + score(pathogen["lethality"])
             pathogens_scores[pathogen["name"]] = pathogen_score
 
-        # Count how many cities are affected by each pathogen
-        for pathogen_name in pathogens_names:
-            affected_cities = 0
-            for city_name in cities_names:
-                if city_name in cities_pathogen_name:
-                    if pathogen_name == cities_pathogen_name[city_name]:
-                        affected_cities += 1
-            pathogens_count_infected_cities[pathogen_name] = affected_cities
-
         # Generate dicts mapping cities to values
         for city_name, city_stats in cities.items():
 
@@ -312,13 +303,6 @@ class Final(AbstractStrategy):
 
             cities_hygiene_score[city_name] = highest_individual_score - score(city_stats["hygiene"])
             cities_government_score[city_name] = highest_individual_score - score(city_stats["government"])
-
-            # Assign pathogen score to cities (higher score means higher risk in the city)
-            pathogen_score = 0
-            if city_name in cities_pathogen_name:
-                pathogen_name = cities_pathogen_name[city_name]
-                pathogen_score = pathogens_scores[pathogen_name]
-            cities_pathogen_score[city_name] = pathogen_score
 
             # Count the number of flight connections for each city
             cities_count_flight_connections[city_name] = len(city_stats["connections"])
@@ -361,16 +345,36 @@ class Final(AbstractStrategy):
                         cities_pathogen[city_name] = city_event["pathogen"]
                         cities_pathogen_name[city_name] = city_event["pathogen"]["name"]
 
+                        # Map outbreak (names) to cities
                         outbreak_city_names.append(city_name)
                         cities_outbreak[city_name] = city_event
 
-                        # This score is acquired by combining prevalence, duration and pathogen strength
-                        outbreak_score = round((1 + city_event["prevalence"]) *
-                                               (round_number - city_event["sinceRound"] +
-                                                city_stats["population"]) +
-                                               pathogens_scores[city_event["pathogen"]["name"]] +
-                                               pathogens_count_infected_cities[city_event["pathogen"]["name"]], 5)
-                        cities_outbreak_scores[city_name] = outbreak_score / 1000
+                # Assign pathogen score to cities (higher score means higher risk in the city)
+                pathogen_score = 0
+                if city_name in cities_pathogen_name:
+                    pathogen_name = cities_pathogen_name[city_name]
+                    pathogen_score = pathogens_scores[pathogen_name]
+                cities_pathogen_score[city_name] = pathogen_score
+
+        # Count how many cities are affected by each pathogen
+        for pathogen_name in pathogens_names:
+            affected_cities = 0
+            for city_name in cities_names:
+                if city_name in cities_pathogen_name:
+                    if pathogen_name == cities_pathogen_name[city_name]:
+                        affected_cities += 1
+            pathogens_count_infected_cities[pathogen_name] = affected_cities
+
+        for city_name, city_stats in cities.items():
+            if city_name in outbreak_city_names:
+                city_event = cities_outbreak[city_name]
+                # This score is acquired by combining prevalence, duration and pathogen strength
+                outbreak_score = round((1 + city_event["prevalence"]) *
+                                       (round_number - city_event["sinceRound"] +
+                                        city_stats["population"]) +
+                                       pathogens_scores[city_event["pathogen"]["name"]] +
+                                       pathogens_count_infected_cities[city_event["pathogen"]["name"]], 5)
+                cities_outbreak_scores[city_name] = outbreak_score / 1000
 
         # Calculate difference of city score to its connected cities scores
         for city_name, combined_score in cities_combined_connected_cities_scores.items():
@@ -407,7 +411,7 @@ class Final(AbstractStrategy):
         """
         # Put cities most at risk under quarantine
         for city_name in cities_names:
-            if city_name not in quarantine_city_names:
+            if city_name not in quarantine_city_names and city_name in outbreak_city_names:
                 rank_operation("put_under_quarantine", city_name, 0, op_score=round(
                     measure_weights["put_under_quarantine"] * (
                             cities_pathogen_score[city_name] +
@@ -419,6 +423,7 @@ class Final(AbstractStrategy):
         for pathogen_name in pathogens_names:
             if pathogen_name not in pathogens_medication_available_names and pathogen_name not in \
                     pathogens_medication_in_development_names:
+                print(pathogens_scores[pathogen_name], pathogens_count_infected_cities[pathogen_name])
                 if is_affordable("develop_medication"):
                     rank_operation("develop_medication", pathogen_name, op_score=round(
                         measure_weights["develop_medication"] * (
