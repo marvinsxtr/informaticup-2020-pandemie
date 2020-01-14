@@ -21,11 +21,11 @@
 In dieser Dokumentation wird die Verwendung und Funktionsweise unserer Lösung des Problems des Informaticups 2019
 beschrieben.<br>
 Durch das bereitgestellte Programm `ic20_linux`*, welches von den Herausgebern des Informaticups zur Verfügung gestellt 
-wird, wird eine Epidemie der Welt simuliert.
+wird, wird eine Pandemie simuliert.
 Ziel ist es, dass in möglichst kurzer Zeit, die Menschheit auf dem Planeten Erde überlebt und die Seuchen
 ausgerottet werden. Diese Seuchen haben unterschiedliche Eigenschaften und treten zufällig auf.
 Für die Lösung wurde unsererseits ein Webservice entwickelt, welcher in Kombination mit einer Lösungsstrategie dem
-Programm `ic20_linux` rundenbasiert Antworten schickt, die dazu führen sollen, dass die Simulation der Epidemie positiv
+Programm `ic20_linux` rundenbasiert Antworten schickt, die dazu führen sollen, dass die Simulation der Pandemie positiv
 entschieden wird.<br>
 Um das Verhalten des Simulationsprogramms zu analysieren und eine effektive Lösungsstrategie zu entwickeln, wurden
 weitere Programme durch die Gruppe entwickelt.<br>
@@ -48,12 +48,13 @@ Der Klonvorgang geschieht mit dem nachstehenden Aufruf.
 git clone https://gitlab.projekt.uni-hannover.de/chi-informaticup03/project-pandemie-03.git
 ```
 Als grundlegende Software wird Python in der Version 3.8 vorausgesetzt(`python3.8`). Dieses ist, je nachdem welches 
-Betriebssystem verwendet wird, anders zu installieren.<br>
+Betriebssystem verwendet wird, anders zu installieren. Die Neueste Version von Python 3.8 ist unter  
+[python.org](https://www.python.org/downloads/) zu finden.<br>
 Des Weiteren sind einige Abhängigkeiten für die korrekte Ausführung des Programmcodes notwendig. Die Abhängigkeiten 
 der Software sind in der Datei `requirements.txt` erfasst. Die Datei wird mit in dem Projektordner mitgeliefert und
 befindet sich auf der höchsten Hierarchieebene. Die Abhängigkeiten können mit der Software `pip3.8` installiert werden.
 
-Mit dem Aufruf eines Befehls ist das automatische Installieren möglich.
+Mit dem Aufruf eines Befehls ist das automatische Installieren aller Abhängigkeiten möglich.
 ```bash
 pip3.8 install -r requirements.txt
 ```
@@ -65,7 +66,7 @@ python3.8 -m pandemie.tester
 ```
 Für die schnelle Ausführung des Programms sind bereits Standard-Parameter gesetzt. Diese können per aufgeforderter
 Terminaleingabe auch geändert werden. Dazu mehr in der Sektion 
-[Wie benutze ich das Programm](documentation.md#wie-benutze-ich-das-programm).
+[Benutzung das Programm](documentation.md#benutzung-des-programms).
 Mit den Standard-Parametern wird das `ic20_linux` Programm in 5 Instanzen ausgeführt und gegen die zuletzt von uns
 entwickelte Strategie getestet. Wie gut die Strategie ist, wird nach Abschluss der Berechnungen auf dem Terminal als
 `win rate` ausgegeben. Zusätzlich kann der `score` zur Bewertung herangezogen werden, welcher neben dem Erfolg der
@@ -73,17 +74,17 @@ Strategie auch die Anzahl der Runden bis zum Sieg bzw. Niederlage des Spiels ein
 
 ## Benutzung des Programms
 Nach der Installation des Programms und einem einfachen Ausführungsbeispiel wird nun die Verwendung der einzelnen 
-Funktionen des Programms erklärt.
+Funktionen des Programms detailiert erklärt.
 
 ### Den Tester richtig nutzen
-Zum Testen von Strategien ist das Modul `tester.py` vorgesehen. Hier werden verschiedene Funktionalitäten zum 
-Analysieren und Testen eigener Strategien bereitgestellt. Um eigene Strategien zu testen, muss lediglich das Modul
-`tester.py` aus dem Projektordner heraus ausgeführt werden. <br>
+Zum Testen von Strategien ist das Modul `pandemie/tester/tester.py` vorgesehen. Hier werden verschiedene
+Funktionalitäten zum Analysieren und Testen eigener Strategien bereitgestellt. Um eigene Strategien zu testen, muss 
+lediglich das Modul `tester.py` aus dem Projektordner heraus ausgeführt werden. <br>
 ```bash
 python3.8 -m pandemie.tester
 ```
-<br>Der Tester kann mit verschiedenen Optionen über die Kommandozeile konfiguriert werden. Diese kann man sich so 
-anzeigen lassen:
+<br>Der Tester kann mit verschiedenen Optionen über die Kommandozeile aufgerufen werden. Um eine Liste aller Parameter
+zu erhalten muss der Tester mit dem Parameter `-h` bzw. `--help` aufgerufen werden:
 ```bash
 > python3.8 -m pandemie.tester -h
 -h --help            show the help
@@ -96,8 +97,9 @@ anzeigen lassen:
 ```
 Im Folgenden werden die einzelnen Optionen erläutert.
 Der Tester implementiert die Möglichkeit die Gewichte einer Strategie mittels einer `Bayesian optimization` anzupassen.
-Dazu wird über die Kommandozeile die `-o` bzw. die `--optimize` Option angegeben. Aktuell ist es nur möglich die `final`
-Strategie zu optimieren. Dabei werden alle anderen Parameter verworfen.
+Dazu wird über die Kommandozeile die `-o` bzw. die `--optimize` Option angegeben.<br>
+> :warning: **Aktuell ist es nur möglich die `final` Strategie zu optimieren.** Sobald der Parameter `-o` oder `--optimize` 
+übergeben wird, werden alle anderen Parameter verworfen.
 
 Möchte man eine andere Strategie testen, so muss man den vollständigen Namen der Strategie der `-s` Option übergeben.
 Die auszuführenden Strategie muss im `/pandemie/tester/strategies` Ordner liegen und von der `AbstractStrategy` erben.
@@ -286,6 +288,7 @@ Pathogenen) berechnet.
 Während der Entwicklung unserer Teamstrategie haben wir auch andere Möglichkeiten gefunden, um aus den besten zwölf
 Operationen die beste Maßnahme auszuwählen:
 
+* Wahrscheinlichkeitsverteilung
 * Zufallsprinzip (Dies macht die Strategie nichtdeterministisch, was die Optimierung zusätzlich erschwert)
 * Normalisieren der einzelnen Rankings und anschließendes Zusammenfügen ("Mergen"), sodass ein Gesamtranking über alle 
 möglichen Operationen entsteht.
@@ -311,13 +314,20 @@ Suchraum ein Konfidenzintervall zurate gezogen, um Punkte mit möglichst hohen F
 ### Eigene Strategien entwickeln
 Alle Strategien erben von der Klasse `AbstractStrategy` und implementieren die Methode `_solve()`. Diese ist das
 Herzstück jeder Strategie, da in ihr abhängig von dem aktuellen Spielstand im JSON-Format über die Antwort und damit die
-Güte der Strategie entschieden wird. Um die Umsetzung einer eigenen Strategie zu erleichtern, existiert das Modul 
-`operations.py`, welches alle möglichen Operationen im vorgegebenen JSON-Format und deren Preise beinhaltet. Zudem kann
-eine Operation auch mit einem Tupel angegeben werden. Dies kann zum Beispiel nützlich sein, um wie in unserer 
-Teamstrategie bestimmte Operationen zu ranken und auf Basis einer Sortierung eine Auswahl zu treffen.
+Güte der Strategie entschieden wird. Eine Beispielimplementation für eine Strategie ist in der Datei 
+`pandemie/tester/strategies/example_strategy.py` zu finden, die hier implementierte Strategie beendet immer die Runde. 
+Um die Umsetzung einer eigenen Strategie zu erleichtern, existiert das Modul `operations.py`, welches alle möglichen 
+Operationen im vorgegebenen JSON-Format und deren Preise beinhaltet. Zudem kann eine Operation auch mit einem Tupel 
+angegeben werden. Dies kann zum Beispiel nützlich sein, um wie in unserer Teamstrategie bestimmte Operationen zu ranken 
+und auf Basis einer Sortierung eine Auswahl zu treffen.
 
-Es ist wichtig darauf zu achten, dass die Strategie im Ordner `/pandemie/tester/strategies` liegt, um die Kompatibilität 
-mit `tester.py` sicherzustellen.
+Um eine allgemeines Verständnis über das Spielgeschehen zu erhalten stehen die bereits vorgefertigten Analysetools zur 
+Verfügung. Das Modul [`util/event_checker.py`](documentation.md#der-event-checker) ist immer aktiv und zusätzliche
+analysen mithilfe von Logging und Visualisierung können mithilfe der [Aufrufparameter](
+documentation.md#den-tester-richtig-nutzen) aktiviert werden.
+
+Es ist wichtig beim erstellen einer Strategie darauf zu achten, dass die Strategie im Ordner 
+`/pandemie/tester/strategies` abgelegt ist, um die Kompatibilität mit `tester.py` sicherzustellen.
 
 ## Wissenschaftlicher Hintergrund
 Über die letzten Jahre sind die Antibiotikareserven stetig zurückgegangen und multiresistente Erreger sind auf dem 
@@ -365,7 +375,8 @@ Module gehören. Web beinhaltet die Implementierungen für den Webserver, welche
 ## FAQ
 ### Wie erstellt man eine eigene Strategie?
 Um eigene Strategien zu erstellen, muss die eigene Strategie von der `AbstractStrategy` erben, die Methode 
-`_solve()` implementiert und die Datei im Ordner `/pandemie/tester/strategies` abgelegt werden.
+`_solve()` implementiert und die Datei im Ordner `/pandemie/tester/strategies` abgelegt werden. In diesem Ordner ist
+bereits eine Beispiel-Strategie, welche nur die Runden beendet.
 
 Für genauere Informationen siehe [Eigene Strategie erstellen](documentation.md#eigene-strategien-entwickeln).
 
@@ -379,7 +390,7 @@ erklärt.
 Zum Visualisierten muss der [Tester](documentation.md#den-tester-richtig-nutzen) mit der Flag `-v` bzw. 
 `--visualization` ausgeführt werden:
 ```bash
-python3.8 -m pandemie.tester -v
+$ python3.8 -m pandemie.tester -v
 ```
 Anschließend kann das Spiel mithilfe von `visualization.py` Visualisiert werden:
 ```bash
