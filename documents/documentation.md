@@ -158,10 +158,9 @@ Das Modul `analyse_log.py` analysiert, wenn Logging aktiviert, ist die übergebe
 bekannte Pathogen analysiert wie viele Spiele gewonnen und verloren wurden, wenn dieses Pathogen aufgetreten ist.
 
 ##### Der Event-Checker
-Das manuelle Einbinden des Moduls ist nicht notwendig. Das Modul wird bereits in `strategy.py` eingebunden und ist somit 
-standardmäßig in jeder Strategie beinhaltet und kann nicht ohne Änderungen an `strategy.py` deaktiviert oder entfernt 
-werden.
-
+Das manuelle Einbinden des Moduls ist nicht notwendig. Das Modul wird bereits in `pandemie/tester/strategy.py` 
+eingebunden und ist somit standardmäßig in jeder Strategie beinhaltet und kann nicht ohne Änderungen an 
+`pandemie/tester/strategy.py` deaktiviert oder entfernt werden.
 
 Die bekannten Pathogen- und Eventnamen werden in der Datei `pandemie/tester/data/pathogen_names.dat` bzw.
 `pandemie/tester/data/event_names.dat` gespeichert.
@@ -170,8 +169,8 @@ Die Daten werden dann in `pandemie/tester/data/pathogen_data.dat` bzw. `pandemie
 gespeichert.
 <br>Beispiel für gesammelte Pathogen-Daten:<br>
 ```
-N5-10
-{'name': 'N5-10', 'infectivity': '+', 'mobility': '++', 'duration': 'o', 'lethality': '+'}
+N5-10  # Name des Pathogens
+{'name': 'N5-10', 'infectivity': '+', 'mobility': '++', 'duration': 'o', 'lethality': '+'}  # Eigenschaften des Pathogens
 
 Azmodeus
 {'name': 'Azmodeus', 'infectivity': 'o', 'mobility': 'o', 'duration': 'o', 'lethality': 'o'}
@@ -181,8 +180,8 @@ Xenomonocythemia
 ```
 <br>Beispiel für gesammelte Event-Daten:<br>
 ```
-outbreak	, local
-{'type': 'outbreak', 'pathogen': {'name': 'Xenomonocythemia', 'infectivity': '-', 'mobility': '--', 'duration': 'o', 'lethality': '++'}, 'prevalence': 0.06321243523316063, 'sinceRound': 1}
+outbreak	, local     # Name des Events, globales oder lokales Event
+{'type': 'outbreak', 'pathogen': {'name': 'Xenomonocythemia', 'infectivity': '-', 'mobility': '--', 'duration': 'o', 'lethality': '++'}, 'prevalence': 0.06321243523316063, 'sinceRound': 1}  # Eigenschaften des Events
 
 pathogenEncountered	, global
 {'type': 'pathogenEncountered', 'pathogen': {'name': 'N5-10', 'infectivity': '+', 'mobility': '++', 'duration': 'o', 'lethality': '+'}, 'round': 1}
