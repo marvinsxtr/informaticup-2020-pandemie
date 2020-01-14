@@ -321,10 +321,7 @@ class Final(AbstractStrategy):
             cities_pathogen_score[city_name] = pathogen_score
 
             # Count the number of flight connections for each city
-            count_flight_connections = 0
-            for _ in city_stats["connections"]:
-                count_flight_connections += 1
-            cities_count_flight_connections[city_name] = count_flight_connections
+            cities_count_flight_connections[city_name] = len(city_stats["connections"])
 
             # Associate connected cities to a city
             if "connections" in city_stats:
@@ -373,7 +370,7 @@ class Final(AbstractStrategy):
                                                 city_stats["population"]) +
                                                pathogens_scores[city_event["pathogen"]["name"]] +
                                                pathogens_count_infected_cities[city_event["pathogen"]["name"]], 5)
-                        cities_outbreak_scores[city_name] = outbreak_score
+                        cities_outbreak_scores[city_name] = outbreak_score / 1000
 
         # Calculate difference of city score to its connected cities scores
         for city_name, combined_score in cities_combined_connected_cities_scores.items():
