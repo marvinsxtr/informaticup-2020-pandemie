@@ -247,15 +247,16 @@ Die Funktion für den Win Score ist f1, die für den Loss Score f2.<br><br>
 ![score function](images/score_loss.png)
 
 ### Unsere Strategie
-Unsere Teamstrategie kann in `final.py` gefunden werden. Im Folgenden bezeichnen "Maßnahmen" eine mögliche Aktion zur 
-Veränderung des Spielstandes (bspw.: put_under_quarantine) und "Operationen" konkret angewandte Maßnahmen im Spiel
-(bspw. ("put_under_quarantine", city, pathogen)). Die Strategie besteht grundlegend aus drei Phasen: Preprocessing, 
-Ranking nach Operation und Ranking nach Maßnahme. <br>
-Im ersten Schritt wird der Spielzustand analysiert und neu in Listen bzw. Dicts abgespeichert. Zum Beispiel werden den 
-Städten und Pathogenen einige neue Parameter zugeordnet und nach diesen sortiert. Im Folgenden sind die wichtigsten 
-generierten Daten aufgelistet:
+Unsere Teamstrategie ist die Strategie `pandemie/tester/strategies/final.py`. Im Folgenden bezeichnen "Maßnahmen" eine 
+mögliche Aktion zur Veränderung des Spielstandes (bspw.: put_under_quarantine) und "Operationen" konkret angewandte 
+Maßnahmen im Spiel, also Maßnahmen inklusive ihrer Argumente (bspw. ("put_under_quarantine", city, pathogen)).
+Die Strategie besteht grundlegend aus drei Phasen: Preprocessing, Ranking nach Operation und Ranking nach Maßnahme.<br>
+Im ersten Schritt wird der Spielzustand analysiert und die gesammelten Daten werden in Listen bzw. Dicts abgespeichert. 
+Zum Beispiel werden den Städten und Pathogenen einige neue Parameter zugeordnet und nach diesen sortiert. Im Folgenden 
+sind die wichtigsten generierten Daten aufgelistet:
 
-```python
+#TODO Change back to python
+```bash 
 global_events_names  # Globale Events
 
 cities_pathogen_name  # Zuordnung der Pathogene zu Städten
@@ -282,8 +283,9 @@ einem Score gerankt, welcher je nach Maßnahme unterschiedlich berechnet wird. B
 zunächst auf 0 initialisiert, da diese später bestimmt wird. In der Funktion `get_best_operation` wird nun aus den 
 Rankings für die jeweiligen Maßnahmen die beste Operation mit dem höchsten Score ausgewählt und im Dict 
 `measure_ranking` gespeichert. Dies führt dazu, dass für jede Maßnahme eine Operation als beste Operation gilt, sodass 
-insgesamt zwölf übrig bleiben. 
+insgesamt zwölf Operationen übrig bleiben. 
 <br>
+#TODO (Marvin) -> Wahrscheinlichkeitsverteilung beschreiben
 An dieser Stelle wird nun die Operation ausgewählt, welche die höchste Gewichtung hat. Diese Gewichtung kann zuvor 
 festgelegt und mit Hilfe einer [Bayes'schen Optimierung](documentation.md#strategieoptimierung) verbessert werden. Kann 
 die beste Operation aufgrund mangelnder Punkte nicht ausgeführt werden, so muss die Runde zum Sparen beendet werden. 
