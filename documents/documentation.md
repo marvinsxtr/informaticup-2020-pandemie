@@ -318,8 +318,13 @@ Operationen im vorgegebenen JSON-Format und deren Preise beinhaltet. Zudem kann 
 angegeben werden. Dies kann zum Beispiel nützlich sein, um wie in unserer Teamstrategie bestimmte Operationen zu ranken 
 und auf Basis einer Sortierung eine Auswahl zu treffen.
 
-Es ist wichtig darauf zu achten, dass die Strategie im Ordner `/pandemie/tester/strategies` liegt, um die Kompatibilität 
-mit `tester.py` sicherzustellen.
+Um eine allgemeines Verständnis über das Spielgeschehen zu erhalten stehen die bereits vorgefertigten Analysetools zur 
+Verfügung. Das Modul [`util/event_checker.py`](documentation.md#der-event-checker) ist immer aktiv und zusätzliche
+analysen mithilfe von Logging und Visualisierung können mithilfe der [Aufrufparameter](
+documentation.md#den-tester-richtig-nutzen) aktiviert werden.
+
+Es ist wichtig beim erstellen einer Strategie darauf zu achten, dass die Strategie im Ordner 
+`/pandemie/tester/strategies` abgelegt ist, um die Kompatibilität mit `tester.py` sicherzustellen.
 
 ## Wissenschaftlicher Hintergrund
 Über die letzten Jahre sind die Antibiotikareserven stetig zurückgegangen und multiresistente Erreger sind auf dem 
