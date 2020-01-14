@@ -312,13 +312,20 @@ Suchraum ein Konfidenzintervall zurate gezogen, um Punkte mit möglichst hohen F
 ### Eigene Strategien entwickeln
 Alle Strategien erben von der Klasse `AbstractStrategy` und implementieren die Methode `_solve()`. Diese ist das
 Herzstück jeder Strategie, da in ihr abhängig von dem aktuellen Spielstand im JSON-Format über die Antwort und damit die
-Güte der Strategie entschieden wird. Um die Umsetzung einer eigenen Strategie zu erleichtern, existiert das Modul 
-`operations.py`, welches alle möglichen Operationen im vorgegebenen JSON-Format und deren Preise beinhaltet. Zudem kann
-eine Operation auch mit einem Tupel angegeben werden. Dies kann zum Beispiel nützlich sein, um wie in unserer 
-Teamstrategie bestimmte Operationen zu ranken und auf Basis einer Sortierung eine Auswahl zu treffen.
+Güte der Strategie entschieden wird. Eine Beispielimplementation für eine Strategie ist in der Datei 
+`pandemie/tester/strategies/example_strategy.py` zu finden, die hier implementierte Strategie beendet immer die Runde. 
+Um die Umsetzung einer eigenen Strategie zu erleichtern, existiert das Modul `operations.py`, welches alle möglichen 
+Operationen im vorgegebenen JSON-Format und deren Preise beinhaltet. Zudem kann eine Operation auch mit einem Tupel 
+angegeben werden. Dies kann zum Beispiel nützlich sein, um wie in unserer Teamstrategie bestimmte Operationen zu ranken 
+und auf Basis einer Sortierung eine Auswahl zu treffen.
 
-Es ist wichtig darauf zu achten, dass die Strategie im Ordner `/pandemie/tester/strategies` liegt, um die Kompatibilität 
-mit `tester.py` sicherzustellen.
+Um eine allgemeines Verständnis über das Spielgeschehen zu erhalten stehen die bereits vorgefertigten Analysetools zur 
+Verfügung. Das Modul [`util/event_checker.py`](documentation.md#der-event-checker) ist immer aktiv und zusätzliche
+analysen mithilfe von Logging und Visualisierung können mithilfe der [Aufrufparameter](
+documentation.md#den-tester-richtig-nutzen) aktiviert werden.
+
+Es ist wichtig beim erstellen einer Strategie darauf zu achten, dass die Strategie im Ordner 
+`/pandemie/tester/strategies` abgelegt ist, um die Kompatibilität mit `tester.py` sicherzustellen.
 
 ## Wissenschaftlicher Hintergrund
 Über die letzten Jahre sind die Antibiotikareserven stetig zurückgegangen und multiresistente Erreger sind auf dem 
@@ -381,7 +388,7 @@ erklärt.
 Zum Visualisierten muss der [Tester](documentation.md#den-tester-richtig-nutzen) mit der Flag `-v` bzw. 
 `--visualization` ausgeführt werden:
 ```bash
-python3.8 -m pandemie.tester -v
+$ python3.8 -m pandemie.tester -v
 ```
 Anschließend kann das Spiel mithilfe von `visualization.py` Visualisiert werden:
 ```bash
