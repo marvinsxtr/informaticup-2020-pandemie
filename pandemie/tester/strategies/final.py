@@ -42,19 +42,19 @@ class Final(AbstractStrategy):
             # These are the weights applied to the measure ranking
             measure_weights = {
                 "end_round": 1,  # Ends the current round
-                "put_under_quarantine": 6,  # Completely prevent spreading of pathogen
-                "close_airport": 6,  # Shut down connections from and to a city
-                "close_connection": 7,  # Shut down one connection
+                "put_under_quarantine": 30,  # Completely prevent spreading of pathogen
+                "close_airport": 60,  # Shut down connections from and to a city
+                "close_connection": 25,  # Shut down one connection
 
-                "develop_vaccine": 10,  # After 6 rounds a vaccine is ready
-                "deploy_vaccine": 8,  # Deploy vaccine to specific city
-                "develop_medication": 10,  # After 3 rounds a medication is available
-                "deploy_medication": 8,  # Deploy medication to specific city
+                "develop_vaccine": 100,  # After 6 rounds a vaccine is ready
+                "deploy_vaccine": 50,  # Deploy vaccine to specific city
+                "develop_medication": 90,  # After 3 rounds a medication is available
+                "deploy_medication": 30,  # Deploy medication to specific city
 
-                "exert_influence": 2,  # Corresponds to economy city stat
-                "call_elections": 2,  # Corresponds to government city stat
-                "apply_hygienic_measures": 2,  # Corresponds to hygiene city stat
-                "launch_campaign": 2,  # Corresponds to awareness city stat
+                "exert_influence": 10,  # Corresponds to economy city stat
+                "call_elections": 10,  # Corresponds to government city stat
+                "apply_hygienic_measures": 10,  # Corresponds to hygiene city stat
+                "launch_campaign": 10,  # Corresponds to awareness city stat
             }
 
         # This dict contains the rankings for concrete operations by measure
@@ -207,6 +207,7 @@ class Final(AbstractStrategy):
                 else:
                     # Redefine best operation with adjusted rounds
                     best_operation = (name, *args, calculated_rounds)
+            print(best_operation)
             return operations.get_operation(best_operation)
 
         def rank_operation(*op_tuple, op_score):
@@ -403,7 +404,7 @@ class Final(AbstractStrategy):
                     infected_city = y
 
                 flight_connections_one_infected_score[connection] = \
-                    cities[infected_city]["population"] * cities_outbreak[infected_city]["prevalence"] + \
+                    cities[infected_city]["population"] * cities_outbreak[infected_city]["prevalence"] / 1000 + \
                     cities_pathogen_score[infected_city]
 
         """
@@ -412,6 +413,12 @@ class Final(AbstractStrategy):
         # Put cities most at risk under quarantine
         for city_name in cities_names:
             if city_name not in quarantine_city_names and city_name in outbreak_city_names:
+                """
+                print(cities_pathogen_score[city_name],
+                            cities_scores[city_name],
+                            cities_outbreak_scores[city_name],
+                            cities_count_flight_connections[city_name])
+                """
                 rank_operation("put_under_quarantine", city_name, 0, op_score=round(
                     measure_weights["put_under_quarantine"] * (
                             cities_pathogen_score[city_name] +
@@ -420,35 +427,49 @@ class Final(AbstractStrategy):
                             cities_count_flight_connections[city_name]), 5))
 
         # Develop medication for most dangerous pathogens
-        for pathogen_name in pathogens_names:
-            if pathogen_name not in pathogens_medication_available_names and pathogen_name not in \
+        for pathogen in pathogens:
+            if pathogen["name"] not in pathogens_medication_available_names and pathogen["name"] not in \
                     pathogens_medication_in_development_names:
-                print(pathogens_scores[pathogen_name], pathogens_count_infected_cities[pathogen_name])
                 if is_affordable("develop_medication"):
-                    rank_operation("develop_medication", pathogen_name, op_score=round(
+                    """
+                    print(pathogens_scores[pathogen["name"]],
+                          score(pathogen["lethality"]) * 5,
+                          pathogens_count_infected_cities[pathogen["name"]])
+                    """
+                    rank_operation("develop_medication", pathogen["name"], op_score=round(
                         measure_weights["develop_medication"] * (
-                                pathogens_scores[pathogen_name] +
-                                pathogens_count_infected_cities[pathogen_name]), 5))
+                                pathogens_scores[pathogen["name"]] +
+                                score(pathogen["lethality"]) * 3 +
+                                pathogens_count_infected_cities[pathogen["name"]]), 5))
 
         # Deploy medication in cities at most risk
         for city_name, pathogen_name in cities_pathogen_name.items():
             if pathogen_name in pathogens_medication_available_names and pathogen_name not in \
                     pathogens_medication_in_development_names:
                 if is_affordable("deploy_medication"):
+                    """
+                    print(cities_pathogen_score[city_name],
+                                cities_scores[city_name],
+                                cities_outbreak_scores[city_name] * 5,
+                                pathogens_scores[pathogen_name])
+                    """
                     rank_operation("deploy_medication", pathogen_name, city_name, op_score=round(
                         measure_weights["deploy_medication"] * (
                                 cities_pathogen_score[city_name] +
                                 cities_scores[city_name] +
-                                cities_outbreak_scores[city_name] +
-                                cities_count_flight_connections[city_name] +
-                                pathogens_scores[pathogen_name] +
-                                pathogens_count_infected_cities[pathogen_name]), 5))
+                                cities_outbreak_scores[city_name] * 5 +
+                                pathogens_scores[pathogen_name]), 5))
 
         # Develop vaccine for most dangerous pathogens
         for pathogen in pathogens:
             if pathogen["name"] not in pathogens_vaccine_available_names and pathogen["name"] not in \
                     pathogens_vaccine_in_development_names:
                 if is_affordable("develop_vaccine"):
+                    """
+                    print(pathogens_scores[pathogen["name"]],
+                                score(pathogen["lethality"]) * 5,
+                                pathogens_count_infected_cities[pathogen["name"]])
+                    """
                     rank_operation("develop_vaccine", pathogen["name"], op_score=round(
                         measure_weights["develop_vaccine"] * (
                                 pathogens_scores[pathogen["name"]] +
@@ -459,6 +480,14 @@ class Final(AbstractStrategy):
         for city_name, pathogen_name in cities_pathogen_name.items():
             if pathogen_name in pathogens_vaccine_available_names:
                 if is_affordable("deploy_vaccine"):
+                    """
+                    print(cities_pathogen_score[city_name],
+                                cities_scores[city_name],
+                                cities_outbreak_scores[city_name],
+                                cities_count_flight_connections[city_name],
+                                pathogens_scores[pathogen_name],
+                                pathogens_count_infected_cities[pathogen_name])
+                    """
                     rank_operation("deploy_vaccine", pathogen_name, city_name, op_score=round(
                         measure_weights["deploy_vaccine"] * (
                                 cities_pathogen_score[city_name] +
@@ -471,12 +500,18 @@ class Final(AbstractStrategy):
         # Close airports with most difference in risk compared to connected cities
         for city_name in cities_names:
             if city_name not in cities_airport_closed_names and city_name in outbreak_city_names:
+                """
+                print(cities_combined_connected_cities_difference[city_name],
+                            cities_combined_connected_cities_scores[city_name],
+                            cities_outbreak_scores[city_name],
+                            cities_pathogen_score[city_name])
+                """
                 rank_operation("close_airport", city_name, 0, op_score=round(
                     measure_weights["close_airport"] * (
                             cities_combined_connected_cities_difference[city_name] +
-                            cities_combined_connected_cities_scores[city_name]) +
-                    cities_outbreak_scores[city_name] +
-                    cities_pathogen_score[city_name], 5))
+                            cities_combined_connected_cities_scores[city_name] +
+                            cities_outbreak_scores[city_name] +
+                            cities_pathogen_score[city_name]), 5))
 
         # Close connections based on the difference between two cities
         for connection in flight_connections_one_infected:
