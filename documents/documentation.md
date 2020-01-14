@@ -21,11 +21,11 @@
 In dieser Dokumentation wird die Verwendung und Funktionsweise unserer Lösung des Problems des Informaticups 2019
 beschrieben.<br>
 Durch das bereitgestellte Programm `ic20_linux`*, welches von den Herausgebern des Informaticups zur Verfügung gestellt 
-wird, wird eine Epidemie der Welt simuliert.
+wird, wird eine Pandemie simuliert.
 Ziel ist es, dass in möglichst kurzer Zeit, die Menschheit auf dem Planeten Erde überlebt und die Seuchen
 ausgerottet werden. Diese Seuchen haben unterschiedliche Eigenschaften und treten zufällig auf.
 Für die Lösung wurde unsererseits ein Webservice entwickelt, welcher in Kombination mit einer Lösungsstrategie dem
-Programm `ic20_linux` rundenbasiert Antworten schickt, die dazu führen sollen, dass die Simulation der Epidemie positiv
+Programm `ic20_linux` rundenbasiert Antworten schickt, die dazu führen sollen, dass die Simulation der Pandemie positiv
 entschieden wird.<br>
 Um das Verhalten des Simulationsprogramms zu analysieren und eine effektive Lösungsstrategie zu entwickeln, wurden
 weitere Programme durch die Gruppe entwickelt.<br>
@@ -48,12 +48,13 @@ Der Klonvorgang geschieht mit dem nachstehenden Aufruf.
 git clone https://gitlab.projekt.uni-hannover.de/chi-informaticup03/project-pandemie-03.git
 ```
 Als grundlegende Software wird Python in der Version 3.8 vorausgesetzt(`python3.8`). Dieses ist, je nachdem welches 
-Betriebssystem verwendet wird, anders zu installieren.<br>
+Betriebssystem verwendet wird, anders zu installieren. Die Neueste Version von Python 3.8 ist unter  
+[python.org](https://www.python.org/downloads/) zu finden.<br>
 Des Weiteren sind einige Abhängigkeiten für die korrekte Ausführung des Programmcodes notwendig. Die Abhängigkeiten 
 der Software sind in der Datei `requirements.txt` erfasst. Die Datei wird mit in dem Projektordner mitgeliefert und
 befindet sich auf der höchsten Hierarchieebene. Die Abhängigkeiten können mit der Software `pip3.8` installiert werden.
 
-Mit dem Aufruf eines Befehls ist das automatische Installieren möglich.
+Mit dem Aufruf eines Befehls ist das automatische Installieren aller Abhängigkeiten möglich.
 ```bash
 pip3.8 install -r requirements.txt
 ```
