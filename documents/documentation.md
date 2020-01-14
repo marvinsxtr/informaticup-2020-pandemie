@@ -255,8 +255,7 @@ Im ersten Schritt wird der Spielzustand analysiert und die gesammelten Daten wer
 Zum Beispiel werden den Städten und Pathogenen einige neue Parameter zugeordnet und nach diesen sortiert. Im Folgenden 
 sind die wichtigsten generierten Daten aufgelistet:
 
-#TODO Change back to python
-```bash 
+```python 
 global_events_names  # Globale Events
 
 cities_pathogen_name  # Zuordnung der Pathogene zu Städten
