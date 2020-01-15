@@ -514,10 +514,10 @@ Fehlermeldung ausgegeben. Dies dient dem Aufrechterhalten des Spielflusses, kein
 Timeout zu riskieren.
 ### AWS
 Unser Webservice ist auf Amazon AWS auf dem Elastic Compute Cloud Server (EC2) aufgesetzt. Der Webservice ist dabei
-unsrer Projekt in sehr abgespeckter Version.
+unser Projekt in sehr abgespeckter Version.
 
 Dabei wird unser Service zur Beantwortung von Anfragen des `ic_20`-Tools permanent gestartet. Auf diesem läuft,
-ohne des es beeinflussbar wäre, unser Dienst mit unserer letzen, besten Lösungsstrategie.
+ohne dass es beeinflussbar wäre, unser Dienst mit unserer letzen, besten Lösungsstrategie.
 
 Der Domainname unserer auf AWS genutzen virtuellen Maschine lautet `ec2-52-91-60-156.compute-1.amazonaws.com`.
 Des Weiteren wird der Standardport des `ic20`-Tools genutzt. Dieser lautet `50123`.
