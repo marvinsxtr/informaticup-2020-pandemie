@@ -37,8 +37,8 @@ def bayesian_optimization():
     :return: Best parameters and score obtained
     """
     # Bounded region of parameter space
-    minimum = 0.5
-    maximum = 1.5
+    minimum = 1
+    maximum = 100
 
     # Set the weight bounds for each measure
     p_bounds = {op: (minimum, maximum) for op in operations.OPERATIONS}
@@ -55,47 +55,13 @@ def bayesian_optimization():
     logger = JSONLogger(path="./logs/bayes_log_{0}.json".format(number_of_logs))
     optimizer.subscribe(Events.OPTMIZATION_STEP, logger)
 
-    optimizer.probe(
-        params={
-            "end_round": 1.0,
-            "put_under_quarantine": 1.6,
-            "close_airport": 1.5,
-            "close_connection": 1.4,
-            "develop_vaccine": 2.0,
-            "deploy_vaccine": 1.8,
-            "develop_medication": 1.9,
-            "deploy_medication": 1.7,
-            "exert_influence": 1.0,
-            "call_elections": 1.1,
-            "apply_hygienic_measures": 1.3,
-            "launch_campaign": 1.2
-        },
-        lazy=True,
-    )
-
-    optimizer.probe(
-        params={
-            "apply_hygienic_measures": 1.2,
-            "call_elections": 0.8,
-            "close_airport": 0.8,
-            "close_connection": 0.8,
-            "deploy_medication": 1.2,
-            "deploy_vaccine": 0.8,
-            "develop_medication": 1.2,
-            "develop_vaccine": 0.8,
-            "end_round": 0.8,
-            "exert_influence": 0.8,
-            "launch_campaign": 0.8,
-            "put_under_quarantine": 0.8
-        },
-        lazy=True,
-    )
-
     # Start optimizer
     optimizer.maximize(
-        init_points=5,
-        n_iter=100,
+        init_points=0,  # Number of random explorations
+        n_iter=0,  # Number of optimizing iterations
     )
 
-    print(optimizer.max)
+    # Print results
+    print("Max result:\n", optimizer.max)
+
     return optimizer.max
