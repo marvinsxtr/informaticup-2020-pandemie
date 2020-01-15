@@ -27,8 +27,8 @@ ausgerottet werden. Diese Seuchen haben unterschiedliche Eigenschaften und trete
 Für die Lösung wurde unsererseits ein Webservice entwickelt, welcher in Kombination mit einer Lösungsstrategie dem
 Programm `ic20_linux` rundenbasiert Antworten schickt, die dazu führen sollen, dass die Simulation der Pandemie positiv
 entschieden wird.<br>
-Um das Verhalten des Simulationsprogramms zu analysieren und eine effektive Lösungsstrategie zu entwickeln, wurden
-weitere Programme durch die Gruppe entwickelt.<br>
+Um das Verhalten des Simulationsprogramms zu verstehen und eine effektive Lösungsstrategie zu entwickeln, wurden
+weitere Programme zu Analysezwecken entwickelt.<br>
 Des Weiteren enthält die von unserer Gruppe bereitgestellte Softwarelösung die Möglichkeit zur Visualisierung einer
 abgeschlossenen Simulation.<br>
 
@@ -60,7 +60,7 @@ pip3.8 install -r requirements.txt
 ```
 
 ### Schnellstart
-Um den Tester für das `ic20_linux` Programm auszuführen, kann in dem Projektordner folgender Befehl aufgerufen werden.
+Um den Tester für das `ic20_linux`* Programm auszuführen, kann in dem Projektordner folgender Befehl aufgerufen werden.
 ```bash
 python3.8 -m pandemie.tester
 ```
@@ -69,8 +69,11 @@ Terminaleingabe auch geändert werden. Dazu mehr in der Sektion
 [Benutzung das Programm](documentation.md#benutzung-des-programms).
 Mit den Standard-Parametern wird das `ic20_linux` Programm in 5 Instanzen ausgeführt und gegen die zuletzt von uns
 entwickelte Strategie getestet. Wie gut die Strategie ist, wird nach Abschluss der Berechnungen auf dem Terminal als
-`win rate` ausgegeben. Zusätzlich kann der [`score`](documentation.md#die-scorefunktion) zur Bewertung herangezogen werden, welcher neben dem Erfolg der
-Strategie auch die Anzahl der Runden bis zum Sieg bzw. Niederlage des Spiels einbezieht.
+`win rate` ausgegeben. Zusätzlich kann der [`score`](documentation.md#die-scorefunktion) zur Bewertung herangezogen 
+werden, welcher neben dem Erfolg der Strategie auch die Anzahl der Runden bis zum Sieg bzw. Niederlage des Spiels einbezieht.
+
+*Für Windows genau so ausführbar, das Programm erkennt das genutzte Betriebssystem und führt dementsprechend das 
+richtige tool aus
 
 ## Benutzung des Programms
 Nach der Installation des Programms und einem einfachen Ausführungsbeispiel wird nun die Verwendung der einzelnen 
