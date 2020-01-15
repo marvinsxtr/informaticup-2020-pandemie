@@ -1,11 +1,7 @@
 """
 This is the strategy our team continuously improves to compete in the InformatiCup. Its basic principle is ranking
 each possible operation and thereby picking the best choice.
-
-Observations:
-- a city can only be affected by one pathogen at a time
-- it might be sufficient to sort by operation and afterwards sort the 12 best possibilities
-- points for an operation are pre-paid for the required round duration
+For further information see the documentation
 """
 import random
 
@@ -233,10 +229,12 @@ class Final(AbstractStrategy):
                 calculated_rounds = get_round_number(best_operation)
                 if calculated_rounds <= 0:
                     # End round because action was not affordable
+                    print(operations.end_round())
                     return operations.end_round()
                 else:
                     # Redefine best operation with adjusted rounds
                     best_operation = (name, *args, calculated_rounds)
+            print(best_operation)
             # Returns the best operation json
             return operations.get_operation(best_operation)
 
