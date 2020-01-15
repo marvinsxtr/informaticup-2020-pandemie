@@ -332,19 +332,25 @@ zielführender sein kann, sinnvolle Gewichtungen selbst zu erraten und auszuprob
 Library sogenannte Probes erstellen, welche vor Beginn der eigentlichen Optimierung als Eingabe verwendet werden.
 
 ### Eigene Strategien entwickeln
-Alle Strategien erben von der Klasse `AbstractStrategy` und implementieren die Methode `_solve()`. Diese ist das
-Herzstück jeder Strategie, da in ihr abhängig von dem aktuellen Spielstand im JSON-Format über die Antwort und damit die
-Güte der Strategie entschieden wird. Eine Beispielimplementation für eine Strategie ist in der Datei 
-`pandemie/tester/strategies/example_strategy.py` zu finden, die hier implementierte Strategie beendet immer die Runde. 
-Um die Umsetzung einer eigenen Strategie zu erleichtern, existiert das Modul `operations.py`, welches alle möglichen 
-Operationen im vorgegebenen JSON-Format und deren Preise beinhaltet. Zudem kann eine Operation auch mit einem Tupel 
-angegeben werden. Dies kann zum Beispiel nützlich sein, um wie in unserer Teamstrategie bestimmte Operationen zu ranken 
-und auf Basis einer Sortierung eine Auswahl zu treffen.
+Alle Strategien erben von der Klasse `AbstractStrategy` und implementieren die Methode `_solve()`. Um von der 
+`AbstractStrategy` erben zu können muss die Klasse aus dem Modul `pandemie/tester/strategy.py` importiert werden:
+```python
+from pandemie.tester import AbstractStrategy
+```
+Die Methode `_solve()` ist das Herzstück jeder Strategie, da in ihr abhängig von dem aktuellen Spielstand im JSON-Format 
+über die Antwort und damit die Güte der Strategie entschieden wird. Eine Beispielimplementation für eine Strategie ist 
+in der Datei  `pandemie/tester/strategies/example_strategy.py` zu finden, die hier implementierte Strategie beendet 
+immer die Runde. Die hier verwendete Implementierung kann als Template für eigene Strategien verwendet werden.
+
+Um die Umsetzung einer eigenen Strategie zu erleichtern, existiert das Modul `operations.py`, welches 
+alle möglichen Operationen im vorgegebenen JSON-Format und deren Preise beinhaltet. Zudem kann eine Operation auch mit 
+einem Tupel angegeben werden. Dies kann zum Beispiel nützlich sein, um wie in unserer Teamstrategie bestimmte 
+Operationen zu ranken und auf Basis einer Sortierung eine Auswahl zu treffen.
 
 Um eine allgemeines Verständnis über das Spielgeschehen zu erhalten stehen die bereits vorgefertigten Analysetools zur 
 Verfügung. Das Modul [`util/event_checker.py`](documentation.md#der-event-checker) ist immer aktiv und sammelt Daten 
-über aufgetretene Pathogene. Zur zusätzlichen analysen dienen Logging und Visualisierung. Diese können mithilfe der 
-[Aufrufparameter](documentation.md#den-tester-richtig-nutzen) aktiviert werden.
+über aufgetretene Pathogene und Events. Zur zusätzlichen analysen dienen Logging und Visualisierung. Diese können 
+mithilfe der [Aufrufparameter](documentation.md#den-tester-richtig-nutzen) aktiviert werden.
 
 Es ist wichtig beim erstellen einer Strategie darauf zu achten, dass die Strategie im Ordner 
 `/pandemie/tester/strategies` abgelegt ist, um die Kompatibilität mit `tester.py` sicherzustellen.
