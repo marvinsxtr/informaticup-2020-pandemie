@@ -89,7 +89,7 @@ python3.8 -m pandemie.tester
 <br>Der Tester kann mit verschiedenen Optionen über die Kommandozeile aufgerufen werden. Um eine Liste aller Parameter
 zu erhalten muss der Tester mit dem Parameter `-h` bzw. `--help` aufgerufen werden:
 ```bash
-> python3.8 -m pandemie.tester -h
+$ python3.8 -m pandemie.tester -h
 -h --help            show the help
 -o --optimize        enable optimization for the final strategy
 -s                   add the full name of the strategy you want to test (no .py) (default=final)
@@ -114,7 +114,7 @@ Die `-l` oder `--log` Flag aktiviert das Erstellen eines Logs. Das Loggen beinha
 Runden, die bis zu diesem Ergebnis gespielt wurden, für jedes einzelne gespielte Spiel. Außerdem werden für jedes Spiel
 alle aufgetretenen Pathogene inklusive ihrer Eigenschaften geloggt. Am Ende der Log-Datei steht dann der berechnete
 Score der Strategie. Dieser befindet sich immer zwischen 1 und -1, wobei 1 ein perfekter Score wäre.<br>
-Hier ein Beispiel für die Strategie `example_strategy.py` mit zwei gespielten Spielen:<br>
+Hier ein Beispiel für die Strategie `pandemie/tester/strategies/example_strategy.py` mit zwei gespielten Spielen:<br>
 ```
 $loss:	11
 {'name': 'N5-10', 'infectivity': '+', 'mobility': '++', 'duration': 'o', 'lethality': '+'}
@@ -129,8 +129,8 @@ $win:	26
 ```
 <br>Um die statistische Aussagekraft eines Testdurchlaufes zu erhöhen, kann man mit der `-t` Option die Anzahl der
 parallel durchgeführten Spieldurchläufe festlegen. Die maximale Anzahl der Threads ist auf 500 beschränkt. Bei
-zu hoher Anzahl der Threads können Komplikationen auftreten. Der Webserver kann dann nicht alle Anfragen korrekt
-auswerten und es werden Requests falsch verarbeitet.
+zu hoher Anzahl der Threads können Komplikationen auftreten, sodass der Webserver nicht alle Anfragen korrekt
+auswerten kann und Requests falsch verarbeitet werden.
 
 Um die Testdurchläufe vergleichbar zu machen, kann man einen festen Seed übergeben. Dies geschieht mittels der `-u`
 bzw. der `--user_seed` Option.
