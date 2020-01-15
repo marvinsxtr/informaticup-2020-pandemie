@@ -198,7 +198,7 @@ Das manuelle Einbinden des Moduls `analyse_log.py` ist nicht notwendig. Das Modu
 Logging aktiviert ist. Es ist nicht möglich das Modul zu deaktivieren oder zu entfernen, ohne Änderungen an 
 `pandemie/tester/tester.py` vorzunehmen. 
 
-Das Modul analysiert den erstellten Log. Hierbei wird für jedes Pathogen gezählt wie viele Runden gewonnen und verloren 
+Das Modul analysiert den erstellten Log. Hierbei wird für jedes Pathogen gezählt wie viele Spiele gewonnen und verloren 
 wurden, in denen dieses Pathogen aufgetreten ist. <br>
 Die gesammelten Daten werden zum Ende der übergebenen Log-Datei hinzugefügt. Hierbei werden alle nicht-UTF-8-Zeichen
 entfernt, um mögliche Konflikte beim Schreiben der Datei zu vermeiden.
@@ -242,7 +242,8 @@ Hier die aktuell genutzten Funktionen. In blau ist die Funktion für die gewonne
 verlorenen.<br><br>
 ![score function](images/score.png)<br><br>
 Grundsätzlich gilt, dass 1 ein perfekter Score ist und -1 der schlechteste. Bei 75 Runden erreicht der jeweilige Score
-die hälfte des Maximalwerts, also nach 75 gewonnenen Runden bekommt das Spiel den Score 0.5 und ein verlorenes -0.5. 
+die hälfte des Maximalwerts. Wird also ein Spiel nach 75 gewonnenen Runden bekommt das Spiel den Score 0.5. 
+Wird das Spiel nach 75 Runden verlorenes, so wird dies mit dem Score -0.5 bewertet. 
 Dieser Wert ist, genauso wie der Grad der Steigung, nur durch Änderungen im Quellcode anpassbar.<br>
 Die Formeln für die Scorefunktionen sind wie folgend, wobei `k=0.07` und `a=75` gilt. Hierbei ist `k` die Konstante,
 die den Grad der Steigung beschreibt, und `a` die Anzahl der Runden nach denen der Wert halbiert wird.<br>
