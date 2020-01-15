@@ -229,12 +229,12 @@ class Final(AbstractStrategy):
                 calculated_rounds = get_round_number(best_operation)
                 if calculated_rounds <= 0:
                     # End round because action was not affordable
-                    print(operations.end_round())
+                    #print(operations.end_round())
                     return operations.end_round()
                 else:
                     # Redefine best operation with adjusted rounds
                     best_operation = (name, *args, calculated_rounds)
-            print(best_operation)
+            #print(best_operation)
             # Returns the best operation json
             return operations.get_operation(best_operation)
 

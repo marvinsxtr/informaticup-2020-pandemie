@@ -3,6 +3,7 @@ import random
 import subprocess
 import sys
 import threading
+import time
 import getopt
 
 from numpy import exp
@@ -43,6 +44,9 @@ class Tester:
         self.amount_loss = 0
         self.amount_runs = 0
 
+        self.finished_threads_lock = threading.Lock()
+        self.finished_threads = 0
+
     def _start_tester(self):
         """
         Starts the ica test tool as a subprocess.
@@ -54,6 +58,10 @@ class Tester:
         else:
             subprocess.call(["./ic20_linux", "--random-seed " + str(self.seed)], stdout=DEVNULL, stderr=DEVNULL,
                             shell=True)
+
+        self.finished_threads_lock.acquire()
+        self.finished_threads += 1
+        self.finished_threads_lock.release()
 
     def evaluate(self, thread_count=10):
         """
@@ -82,10 +90,10 @@ class Tester:
         os.chdir(cwd)
 
         # Waiting for threads and the server to be finished
-        for i, thread in enumerate(threads):
-            sys.stdout.write("\r \rWaiting for threads to finish: %d / %d" % (i, thread_count))
+        while self.finished_threads != thread_count:
+            sys.stdout.write("\r \rWaiting for threads to finish: %d / %d" % (self.finished_threads, thread_count))
             sys.stdout.flush()
-            thread.join()
+            time.sleep(0.01)
         sys.stdout.write("\n")
 
         results = self.strategy.get_result()
