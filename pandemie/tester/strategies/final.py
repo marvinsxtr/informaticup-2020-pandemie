@@ -1,11 +1,7 @@
 """
 This is the strategy our team continuously improves to compete in the InformatiCup. Its basic principle is ranking
 each possible operation and thereby picking the best choice.
-
-Observations:
-- a city can only be affected by one pathogen at a time
-- it might be sufficient to sort by operation and afterwards sort the 12 best possibilities
-- points for an operation are pre-paid for the required round duration
+For further information see the documentation
 """
 import random
 
@@ -41,7 +37,7 @@ class Final(AbstractStrategy):
         else:
             # These are the weights applied to the measure ranking
             measure_weights = {
-                "end_round": 1,  # Ends the current round
+                "end_round": 0,  # Ends the current round
                 "put_under_quarantine": 30,  # Completely prevent spreading of pathogen
                 "close_airport": 60,  # Shut down connections from and to a city
                 "close_connection": 25,  # Shut down one connection
@@ -62,20 +58,20 @@ class Final(AbstractStrategy):
 
         # Measure threshold to be considered
         measure_thresholds = {
-            "end_round": 1,  # Ends the current round
-            "put_under_quarantine": 50,  # Completely prevent spreading of pathogen
-            "close_airport": 100,  # Shut down connections from and to a city
-            "close_connection": 16,  # Shut down one connection
+            "end_round": 0,
+            "put_under_quarantine": 50,
+            "close_airport": 100,
+            "close_connection": 16,
 
-            "develop_vaccine": 100,  # After 6 rounds a vaccine is ready
-            "deploy_vaccine": 50,  # Deploy vaccine to specific city
-            "develop_medication": 100,  # After 3 rounds a medication is available
-            "deploy_medication": 30,  # Deploy medication to specific city
+            "develop_vaccine": 100,
+            "deploy_vaccine": 50,
+            "develop_medication": 100,
+            "deploy_medication": 30,
 
-            "exert_influence": 1,  # Corresponds to economy city stat
-            "call_elections": 1,  # Corresponds to government city stat
-            "apply_hygienic_measures": 1,  # Corresponds to hygiene city stat
-            "launch_campaign": 1,  # Corresponds to awareness city stat
+            "exert_influence": 5,
+            "call_elections": 5,
+            "apply_hygienic_measures": 5,
+            "launch_campaign": 5,
         }
 
         # Used to convert a scale of scores (24 - 4 = 20 where 4 is the minimum points and 20 maximum)
@@ -233,10 +229,12 @@ class Final(AbstractStrategy):
                 calculated_rounds = get_round_number(best_operation)
                 if calculated_rounds <= 0:
                     # End round because action was not affordable
+                    # print(operations.end_round())
                     return operations.end_round()
                 else:
                     # Redefine best operation with adjusted rounds
                     best_operation = (name, *args, calculated_rounds)
+            # print(best_operation)
             # Returns the best operation json
             return operations.get_operation(best_operation)
 
@@ -548,34 +546,32 @@ class Final(AbstractStrategy):
             if frozenset(connection) not in flight_connections_closed:
                 x, y = connection
                 overall_score = flight_connections_one_infected_score[connection]
-                if overall_score >= 16:
-                    rank_operation("close_connection", x, y, 0, op_score=round(
-                        measure_weights["close_connection"] * overall_score, 5))
+                rank_operation("close_connection", x, y, 0, op_score=round(
+                    measure_weights["close_connection"] * overall_score, 5))
 
         # TODO: find better scoring function for these actions:
-        """
+
         # Rank operations corresponding to city stats
         for city_name in outbreak_city_names:
-            if is_affordable("apply_hygienic_measures") and cities_hygiene_score[city_name] >= 5:
+            if is_affordable("apply_hygienic_measures"):
+                overall_score = cities_hygiene_score[city_name]
                 rank_operation("apply_hygienic_measures", city_name, op_score=round(
-                    measure_weights["apply_hygienic_measures"] * (
-                        cities_hygiene_score[city_name]), 5))
+                    measure_weights["apply_hygienic_measures"] * overall_score, 5))
 
-            if is_affordable("launch_campaign") and cities_awareness_score[city_name] >= 5:
+            if is_affordable("launch_campaign"):
+                overall_score = cities_awareness_score[city_name]
                 rank_operation("launch_campaign", city_name, op_score=round(
-                    measure_weights["launch_campaign"] * (
-                        cities_awareness_score[city_name]), 5))
+                    measure_weights["launch_campaign"] * overall_score, 5))
 
-            if is_affordable("exert_influence") and cities_economy_score[city_name] >= 5:
+            if is_affordable("exert_influence"):
+                overall_score = cities_economy_score[city_name]
                 rank_operation("exert_influence", city_name, op_score=round(
-                    measure_weights["exert_influence"] * (
-                        cities_economy_score[city_name]), 5))
+                    measure_weights["exert_influence"] * overall_score, 5))
 
-            if is_affordable("call_elections") and cities_government_score[city_name] >= 5:
+            if is_affordable("call_elections"):
+                overall_score = cities_government_score[city_name]
                 rank_operation("call_elections", city_name, op_score=round(
-                    measure_weights["call_elections"] * (
-                        cities_government_score[city_name]), 5))
-        """
+                    measure_weights["call_elections"] * overall_score, 5))
 
         # Use collected data to make a decision
         return get_best_operation()
