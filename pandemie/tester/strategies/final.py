@@ -237,7 +237,7 @@ class Final(AbstractStrategy):
                 else:
                     # Redefine best operation with adjusted rounds
                     best_operation = (name, *args, calculated_rounds)
-            print(best_operation)
+            # Returns the best operation json
             return operations.get_operation(best_operation)
 
         def rank_operation(*op_tuple, op_score):

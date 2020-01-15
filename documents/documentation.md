@@ -284,29 +284,33 @@ Rankings für die jeweiligen Maßnahmen die beste Operation mit dem höchsten Sc
 `measure_ranking` gespeichert. Dies führt dazu, dass für jede Maßnahme eine Operation als beste Operation gilt, sodass 
 insgesamt zwölf Operationen übrig bleiben. 
 <br>
-#TODO (Marvin) -> Wahrscheinlichkeitsverteilung beschreiben
-An dieser Stelle wird nun die Operation ausgewählt, welche die höchste Gewichtung hat. Diese Gewichtung kann zuvor 
-festgelegt und mit Hilfe einer [Bayes'schen Optimierung](documentation.md#strategieoptimierung) verbessert werden. Kann 
-die beste Operation aufgrund mangelnder Punkte nicht ausgeführt werden, so muss die Runde zum Sparen beendet werden. 
-Ansonsten wird bei rundenbasierten Operationen nun die Rundenzahl mithilfe anderer Faktoren (z.B. "duration" bei 
-Pathogenen) berechnet.
+Aus diesen zwölf Operationen muss nun die beste gewählt werden. Hierzu wird für jede Maßnahme eine Gewichtung definiert
+(`measure_weights`). Diese Gewichtung kann zuvor festgelegt und mit Hilfe einer 
+[Bayes'schen Optimierung](documentation.md#strategieoptimierung) verbessert werden. Für jede Maßnahme wird zusätzlich
+eine Untergrenze (`measure_thresholds`) für den Score der Operation im ursprünglichen Ranking angegeben. 
+<br>
+Mithilfe einer Wahrscheinlichkeitsverteilung über die Gewichtungen wird dann eine beste Operation ausgewählt. Falls der 
+Score der Operation die Untergrenze nicht übertrifft oder die beste Operation aufgrund mangelnder Punkte nicht 
+ausgeführt werden kann, so muss eine neue gewählt oder die Runde zum Sparen beendet werden. Ansonsten wird bei 
+rundenbasierten Operationen nun die Rundenzahl mithilfe anderer Faktoren (z.B. "duration" bei Pathogenen) berechnet.
 <br>
 Während der Entwicklung unserer Teamstrategie haben wir auch andere Möglichkeiten gefunden, um aus den besten zwölf
 Operationen die beste Maßnahme auszuwählen:
 
-* Wahrscheinlichkeitsverteilung
-* Zufallsprinzip (Dies macht die Strategie nichtdeterministisch, was die Optimierung zusätzlich erschwert)
+* Zufallsprinzip (Ergebnisse variieren entsprechend stark)
 * Normalisieren der einzelnen Rankings und anschließendes Zusammenfügen ("Mergen"), sodass ein Gesamtranking über alle 
 möglichen Operationen entsteht.
 
 Letztere Methode produziert jedoch ähnlich Ergebnisse wie die von uns gewählte und ist unverhältnismäßig komplizierter.
-(siehe [Auswertung](documentation.md#auswertung-der-ergebnisse))
+
 #### Beobachtungen bei der Entwicklung
 Bei der Entwicklung unserer Teamstrategie haben wir einige Beobachtungen gemacht, die es erleichtern, eigene Strategien
 zu entwickeln. Diese werden im Folgenden aufgeführt:
  * Jede Stadt kann nur von einem Pathogen gleichzeitig befallen werden
  * Die Punkte für eine Operation werden für die angegebene Rundenzahl im Voraus bezahlt
-
+ * Eine Operation, die im Vergleich zu anderen besser ist, muss nicht immer die sinnvollste sein
+ * Die Operationen Develop und Deploy haben den größten Einfluss auf das Spielgeschehen
+ 
 #### Strategieoptimierung
 Im Modul `optimization.py` befindet sich eine Implementierung einer sogenannten Bayes'schen Optimierung, welche dazu
 dient, die möglichen Maßnahmen in unserer Teamstrategie zu gewichten. Wir betrachten hierzu unsere Strategie als eine
@@ -315,7 +319,11 @@ errechnete durchschnittliche Score (+ Winrate) ist. Eine Bayes'sche Optimierung 
 Problem, da diese für das Finden der Extrema von Funktionen gedacht ist, welche wie unsere Simulation sehr kostspielig
 sind und deren Ableitungen unbekannt sind. Hierbei wird mithilfe des Wissensstandes durch vorherige Explorationen im 
 Suchraum ein Konfidenzintervall zurate gezogen, um Punkte mit möglichst hohen Funktionswerten auszumachen. <br>
-[Quelle: Bayes'sche Optimierung](https://de.wikipedia.org/wiki/Hyperparameteroptimierung#Bayessche_Optimierung)
+[Quelle: Bayes'sche Optimierung](https://de.wikipedia.org/wiki/Hyperparameteroptimierung#Bayessche_Optimierung)<br>
+Der Nachteil dieser Art der Optimierung ist, dass sie sehr rechen- und zeitaufwendig ist, da erfahrungsgemäß zunächst 
+die angegebenen Extrema der Eingabeparameter untersucht werden. Dies sind bei zwölf Gewichtungen sehr viele, sodass es
+zielführender sein kann, sinnvolle Gewichtungen selbst zu erraten und auszuprobieren. Hierfür lassen sich mit der
+Library sogenannte Probes erstellen, welche vor Beginn der eigentlichen Optimierung als Eingabe verwendet werden.
 
 ### Eigene Strategien entwickeln
 Alle Strategien erben von der Klasse `AbstractStrategy` und implementieren die Methode `_solve()`. Diese ist das
