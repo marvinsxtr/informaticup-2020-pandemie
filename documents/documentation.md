@@ -231,6 +231,7 @@ Gewichten, bietet es sich an, eine Scorefunktion zu erstellen, die es ermöglich
 zu geben. Um die Scorefunktion über mehrere Runden hinweg zu benutzen, werden gewonnenen Spielen mit einem positiven 
 Score und verlorenen mit einem negativen Score gewertet. So kann man den Durchschnitt über alle Spiele als Gesamtscore 
 berechnen.<br>
+
 Die Idee hinter den Scorefunktionen, also die Funktionen die in Abhängigkeit der Spiellänge den Score erstellen, ist,
 dass verlorene Spiele mit eine längeren Spieldauer besser sind, als Spiele die schneller verloren gehen. Bei gewonnenen
 Spielen ist es umgekehrt, je schneller gewonnen wird, desto besser.<br><br>
@@ -292,7 +293,7 @@ eine Untergrenze (`measure_thresholds`) für den Score der Operation im ursprün
 Mithilfe einer Wahrscheinlichkeitsverteilung über die Gewichtungen wird dann eine beste Operation ausgewählt. Falls der 
 Score der Operation die Untergrenze nicht übertrifft oder die beste Operation aufgrund mangelnder Punkte nicht 
 ausgeführt werden kann, so muss eine neue gewählt oder die Runde zum Sparen beendet werden. Ansonsten wird bei 
-rundenbasierten Operationen nun die Rundenzahl mithilfe anderer Faktoren (z.B. "duration" bei Pathogenen) berechnet.
+rundenbasierten Operationen nun die Rundenzahl mithilfe anderer Faktoren (z.B. "duration" bei Pathogenen) berechnet. 
 <br>
 Während der Entwicklung unserer Teamstrategie haben wir auch andere Möglichkeiten gefunden, um aus den besten zwölf
 Operationen die beste Maßnahme auszuwählen:
@@ -320,6 +321,7 @@ Problem, da diese für das Finden der Extrema von Funktionen gedacht ist, welche
 sind und deren Ableitungen unbekannt sind. Hierbei wird mithilfe des Wissensstandes durch vorherige Explorationen im 
 Suchraum ein Konfidenzintervall zurate gezogen, um Punkte mit möglichst hohen Funktionswerten auszumachen. <br>
 [Quelle: Bayes'sche Optimierung](https://de.wikipedia.org/wiki/Hyperparameteroptimierung#Bayessche_Optimierung)<br>
+
 Der Nachteil dieser Art der Optimierung ist, dass sie sehr rechen- und zeitaufwendig ist, da erfahrungsgemäß zunächst 
 die angegebenen Extrema der Eingabeparameter untersucht werden. Dies sind bei zwölf Gewichtungen sehr viele, sodass es
 zielführender sein kann, sinnvolle Gewichtungen selbst zu erraten und auszuprobieren. Hierfür lassen sich mit der
@@ -386,6 +388,7 @@ unterstützten Betriebssysteme. Im Hauptordner `/pandemie` sind die Module [Test
 `util`, [Visualization](documentation.md#zusatzfunktion-visualisierung) und [Web](documentation.md#der-web-service). 
 Hierbei ist util ein Modul, das sämtliche Hilfsfunktionen beinhaltet, welche zur Übersichtlichkeit nicht in die anderen 
 Module gehören. Web beinhaltet die Implementierungen für den Webserver, welcher mit dem ic20 Tool kommuniziert. 
+
 ## FAQ
 ### Wie erstellt man eine eigene Strategie?
 Um eigene Strategien zu erstellen, muss die eigene Strategie von der `AbstractStrategy` erben, die Methode 
@@ -438,15 +441,18 @@ Strategie führen kann, welche auf verschiedene Ereignisse angemessen reagiert u
 an den Tag legt. Für den Zweck der Entwicklung unserer Teamstrategie existiert bereits die Implementierung zur 
 Darstellung einiger Graphen und Karten. Im Folgenden wird erklärt, wie auf diese zugegriffen werden kann und wie eigene 
 Erweiterungen realisiert werden können.
+
 ### Beispielvisualisierungen
 #### Spielvisualisierung
 Um den gesamten Spielverlauf zu Visualisieren muss die Option `Visualize full game` ausgewählt werden. Hier wird dann
 die Weltbevölkerung über die Runden angezeigt und angezeigt welche Viren aufgetreten sind.
 Gesamte Population im Spielverlauf:
 ![full_game_visualization](images/full_game_visualization.png)<br>
+
 #### Rundenvisualiserung
 Um einzelne Runden zu visualisieren muss die Option `Visualize roundX.dat` ausgewählt werden, wobei X die Nummer der 
 Runde ist, die visualisiert werden soll.<br>
+
 Bei der Visualisierung werden alle infizierten Städte und die 100 wichtigsten Flugverbindungen auf einem Globus 
 eingezeichnet. Um die wichtigsten Flugverbindungen zu erhalten werden zunnächst alle Verbindungen herausgefiltert, bei
 denen nicht mindestens eine der beiden verbundenen Städte mit einem Virus infiziert ist. Anschließend werden die 
@@ -456,6 +462,7 @@ Die hundert wichtigsten Flugverbindungen zwischen infizierten Städten:
 <br><img src="images/round_outbreak_visualization.png" width="500"/><br>
 Anteil der infizierten Bevölkerung für jedes Pathogen:
 <br><img src="images/round_pathogens_visualization.png" width="500"/><br>
+
 ### Wie starte ich die Visualisierung
 Um die Visualisierung zu starten muss zunächst mindestens einmal der 
 [Tester](documentation.md#den-tester-richtig-nutzen) mit der Visualisierungs-Option gestartet werden:
@@ -472,20 +479,24 @@ Sobald die das verarbeiten der Daten für die Visualisierung fertig ist, wird an
 welcher über `localhost:8050` aufgerufen werden kann. Im Terminal wird hierzu auch ein Link angezeigt. Wenn die Seite 
 aufgerufen wird, kann oben im Dropdown-Menü ausgewählt werden, welche Runde oder ob das gesamte Spiel visualisiert 
 werden soll.
+
 ### Eigene Visualisierung hinzufügen
 Die Visualisierung wird mithilfe von `Plotly` mit `Dash` als Dashboard Anwendung realisiert. Plotly kann also dazu 
 genutzt werden, eigene Visualisierungen einzubinden. Hierbei soll zwischen Preprocessing und der eigentlichen 
 Darstellung unterschieden werden, wobei Ersteres in `preprocessing.py` und Letzteres in `visualization.py` stattfindet. 
-<br> Soll eine Visualisierung für das gesamte Spiel hinzugefügt werden, so muss das Preprocessing in der Funktion 
+<br> 
+Soll eine Visualisierung für das gesamte Spiel hinzugefügt werden, so muss das Preprocessing in der Funktion 
 `preprocess_game` stattfinden. Hier können benötigte Lists/Dicts erstellt und mithilfe der jeweiligen JSON-Datei
 generiert werden. Anschließend sollen generierte Daten in dem Dict `game_visualizations` abgelegt werden, um später auf
 sie zuzugreifen. Analog können für einzelne Runden in der Funktion `preprocess_round` Daten gesammelt und in dem Dict 
 `round_visualizations[<Runden-Nummer>]` gespeichert werden.<br>
+
 In `visualization.py` kann nun eine Funktion hinzugefügt werden, welche einen 
 [Dash component](https://dash.plot.ly/dash-core-components) zurückgibt, was ein Graph aber auch andere GUI-Elemente sein
 können. Zusätzlich muss in der Funktion `visualize_game` der entsprechende Funktionsaufruf der zurückgegebenen Liste 
 hinzugefügt werden. Die Visualisierungen werden entsprechend der Reihenfolge in dieser Liste untereinander angezeigt.
 Für die Visualisierung einzelner Runden kann hierfür analog die Funktion `visualize_round` verwendet werden.
+
 ## Der Web Service
 ### Web Service Allgemein
 Als Grundlage für unseren Web Service dient ein [bottle-Framework](https://bottlepy.org/docs/dev/) das auf WSGI aufbaut.
@@ -524,7 +535,13 @@ durchgeführt, um die Menscheit zu retten.
 Alles in allem kombinieren wir mit unserer Idee unsere Erfahrung aus den analysierten Ereignissen mit einer
 gewichtsverteilten Strategie. Damit verfolgen wir zuverlässig unser Ziel, die Menschheit vor den modernen Bedrohungen
 unserer Zeit zu schützen.
+
+Über die eigentliche Strategie hinaus sind unsere Implementierungen durch die modulare Struktur sehr einfach 
+erweiterbar. So lassen sich mehrere Strategien erstellen und mithilfe der Scorefunktion leicht vergleichen. Zudem lässt 
+sich die Teamstrategie durch Variation der Berechnung der Scores schnell verändern und anpassen.
+
 ## Auswertung der Ergebnisse
+
 ## Autoren
 * Nils Langius (nils@langius.de)
 * Ruwen Sadocco (ruwen.sadocco11@gmail.com)
