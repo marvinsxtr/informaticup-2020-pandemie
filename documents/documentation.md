@@ -481,9 +481,10 @@ aufgerufen wird, kann oben im Dropdown-Menü ausgewählt werden, welche Runde od
 werden soll.
 
 ### Eigene Visualisierung hinzufügen
-Die Visualisierung wird mithilfe von `Plotly` mit `Dash` als Dashboard Anwendung realisiert. Plotly kann also dazu 
-genutzt werden, eigene Visualisierungen einzubinden. Hierbei soll zwischen Preprocessing und der eigentlichen 
-Darstellung unterschieden werden, wobei Ersteres in `preprocessing.py` und Letzteres in `visualization.py` stattfindet. 
+Die Visualisierung wird mithilfe von [Plotly](https://plot.ly/python/) mit [Dash](https://dash.plot.ly/) als Dashboard 
+Anwendung realisiert. Plotly kann also dazu genutzt werden, eigene Visualisierungen einzubinden. Hierbei soll zwischen 
+Preprocessing und der eigentlichen Darstellung unterschieden werden, wobei Ersteres in `preprocessing.py` und Letzteres 
+in `visualization.py` stattfindet. 
 <br> 
 Soll eine Visualisierung für das gesamte Spiel hinzugefügt werden, so muss das Preprocessing in der Funktion 
 `preprocess_game` stattfinden. Hier können benötigte Lists/Dicts erstellt und mithilfe der jeweiligen JSON-Datei
@@ -537,8 +538,9 @@ gewichtsverteilten Strategie. Damit verfolgen wir zuverlässig unser Ziel, die M
 unserer Zeit zu schützen.
 
 Über die eigentliche Strategie hinaus sind unsere Implementierungen durch die modulare Struktur sehr einfach 
-erweiterbar. So lassen sich mehrere Strategien erstellen und mithilfe der Scorefunktion leicht vergleichen. Zudem lässt 
-sich die Teamstrategie durch Variation der Berechnung der Scores schnell verändern und anpassen.
+erweiterbar. So lassen sich mehrere Strategien erstellen und mithilfe der Scorefunktion und der Visualisierung leicht 
+vergleichen. Zudem lässt sich die Teamstrategie durch Variation der Berechnung der Scores schnell verändern und 
+anpassen. Zuletzt ist auch die Visualisierung so konzipiert, dass sie jederzeit erweitert werden kann. 
 
 ## Auswertung der Ergebnisse
 
