@@ -62,20 +62,20 @@ class Final(AbstractStrategy):
 
         # Measure threshold to be considered
         measure_thresholds = {
-            "end_round": 1,  # Ends the current round
-            "put_under_quarantine": 50,  # Completely prevent spreading of pathogen
-            "close_airport": 100,  # Shut down connections from and to a city
-            "close_connection": 16,  # Shut down one connection
+            "end_round": 1,
+            "put_under_quarantine": 50,
+            "close_airport": 100,
+            "close_connection": 16,
 
-            "develop_vaccine": 100,  # After 6 rounds a vaccine is ready
-            "deploy_vaccine": 50,  # Deploy vaccine to specific city
-            "develop_medication": 100,  # After 3 rounds a medication is available
-            "deploy_medication": 30,  # Deploy medication to specific city
+            "develop_vaccine": 100,
+            "deploy_vaccine": 50,
+            "develop_medication": 100,
+            "deploy_medication": 30,
 
-            "exert_influence": 1,  # Corresponds to economy city stat
-            "call_elections": 1,  # Corresponds to government city stat
-            "apply_hygienic_measures": 1,  # Corresponds to hygiene city stat
-            "launch_campaign": 1,  # Corresponds to awareness city stat
+            "exert_influence": 1,
+            "call_elections": 1,
+            "apply_hygienic_measures": 1,
+            "launch_campaign": 1,
         }
 
         # Used to convert a scale of scores (24 - 4 = 20 where 4 is the minimum points and 20 maximum)
