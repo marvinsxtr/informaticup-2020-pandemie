@@ -47,8 +47,8 @@ Der Klonvorgang geschieht mit dem nachstehenden Aufruf.
 ```git
 git clone https://gitlab.projekt.uni-hannover.de/chi-informaticup03/project-pandemie-03.git
 ```
-Als grundlegende Software wird Python in der Version 3.8 vorausgesetzt(`python3.8`). Dieses ist, je nachdem welches 
-Betriebssystem verwendet wird, anders zu installieren. Die Neueste Version von Python 3.8 ist unter  
+Als grundlegende Software wird Python in der Version 3.8 vorausgesetzt (`python3.8`). Dieses ist, je nachdem welches 
+Betriebssystem verwendet wird, anders zu installieren. Die Neueste Version von Python 3.8 ist unter 
 [python.org](https://www.python.org/downloads/) zu finden.<br>
 Des Weiteren sind einige Abhängigkeiten für die korrekte Ausführung des Programmcodes notwendig. Die Abhängigkeiten 
 der Software sind in der Datei `requirements.txt` erfasst. Die Datei wird mit in dem Projektordner mitgeliefert und
@@ -69,7 +69,7 @@ Terminaleingabe auch geändert werden. Dazu mehr in der Sektion
 [Benutzung das Programm](documentation.md#benutzung-des-programms).
 Mit den Standard-Parametern wird das `ic20_linux` Programm in 5 Instanzen ausgeführt und gegen die zuletzt von uns
 entwickelte Strategie getestet. Wie gut die Strategie ist, wird nach Abschluss der Berechnungen auf dem Terminal als
-`win rate` ausgegeben. Zusätzlich kann der `score` zur Bewertung herangezogen werden, welcher neben dem Erfolg der
+`win rate` ausgegeben. Zusätzlich kann der [`score`](documentation.md#die-scorefunktion) zur Bewertung herangezogen werden, welcher neben dem Erfolg der
 Strategie auch die Anzahl der Runden bis zum Sieg bzw. Niederlage des Spiels einbezieht.
 
 ## Benutzung des Programms
