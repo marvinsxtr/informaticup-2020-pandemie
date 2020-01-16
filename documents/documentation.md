@@ -428,6 +428,17 @@ $ python3.8 -m pandemie.visualization
 Eine Ausführlichere Erklärung ist im Kapitel [Wie starte ich die Visualisierung](
 documentation.md#wie-starte-ich-die-visualisierung) zu finden.
 
+### Was mache ich wenn beim Auführen tritt ein Import Error auftritt?
+Bevor das Programm benutzt werden kann, müssen alle Schritte unter [Installation](documentation.md#installation)
+durchgeführt werden. Auch muss sichergestellt werden, dass die richtige Python Version (Python3.8) genutzt wird. Dazu
+kann folgender Befehl genutzt werden.
+```bash
+python -c "import sys;print(sys.version)"
+```
+Alle Befehle zum Starten der einzelnen Module müssen desweiteren in dem Projekt Ordner und nicht im dem `pandemie`
+Ordner ausgeführt werden. Ansonsten kann es auf Grund von relativen Imports und Datenpfaden zu Fehlern kommen.
+Bei weiteren Fragen zu Fehlern stehen die [Autoren](documentation.md#autoren) zur Verfügung.
+
 ### Der Tester startet meine Eigene Strategie nicht.
 Um eigene Strategien mit dem Tester ausführen zu können, muss sich diese im Ordner `/pandemie/tester/strategies` 
 befinden. Es ist auch sicherzustellen, dass die Python-Datei den selben Namen besitz wie die Strategie-Klasse (Groß- und
