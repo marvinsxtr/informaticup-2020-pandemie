@@ -7,7 +7,7 @@
 * [Installation](documentation.md#installation)
 * [Schnellstart](documentation.md#schnellstart)
 * [Benutzung des Programms](documentation.md#benutzung-des-programms)
-* [Lösungsstrategien](documentation.md#lsungsstrategien)
+* [Lösungsstrategien](documentation.md#lösungsstrategien)
 * [Wissenschaftlicher Hintergrund](documentation.md#wissenschaftlicher-hintergrund)
 * [Code-Dokumentation](documentation.md#code-dokumentation)
 * [Software Architektur](documentation.md#software-architektur)
@@ -317,6 +317,7 @@ zu entwickeln. Diese werden im Folgenden aufgeführt:
  * Die Operationen Develop und Deploy haben den größten Einfluss auf das Spielgeschehen
  * Unsere Strategie ist noch lange nicht perfekt. Man könnte noch viel Zeit investieren die einzelnen Maßnahmen 
  untereinander zu bewerten, sowie versuchen die Gewichte besser anzupassen.
+ * Pro Runde sind mehrere Operationen möglich.
  
 #### Strategieoptimierung
 Im Modul `optimization.py` befindet sich eine Implementierung einer sogenannten Bayes'schen Optimierung, welche dazu
@@ -351,8 +352,10 @@ Operationen zu ranken und auf Basis einer Sortierung eine Auswahl zu treffen.
 
 Um eine allgemeines Verständnis über das Spielgeschehen zu erhalten stehen die bereits vorgefertigten Analysetools zur 
 Verfügung. Das Modul [`util/event_checker.py`](documentation.md#der-event-checker) ist immer aktiv und sammelt Daten 
-über aufgetretene Pathogene und Events. Zur zusätzlichen analysen dienen Logging und Visualisierung. Diese können 
-mithilfe der [Aufrufparameter](documentation.md#den-tester-richtig-nutzen) aktiviert werden.
+über aufgetretene Pathogene und Events. Zum zusätzlichen Analysieren dienen Logging und Visualisierung. Diese können 
+mithilfe der [Kommandozeilenparamter](documentation.md#den-tester-richtig-nutzen) aktiviert werden. So kann der
+Spielverlauf nachvollzogen werden. In der Logdatei findet sich unter anderem eine Übersicht wie viele Spiele in 
+Abhängigkeit von den auftretenden Pathogenen gewonnen wurden.
 
 Es ist wichtig beim erstellen einer Strategie darauf zu achten, dass die Strategie im Ordner 
 `/pandemie/tester/strategies` abgelegt ist, um die Kompatibilität mit `tester.py` sicherzustellen.
@@ -525,7 +528,7 @@ Für die Visualisierung einzelner Runden kann hierfür analog die Funktion `visu
 ### Web Service Allgemein
 Als Grundlage für unseren Web Service dient ein [bottle-Framework](https://bottlepy.org/docs/dev/) das auf WSGI aufbaut.
 Um viele Anfragen gleichzeitig bearbeiten zu können, nutzen wir [gevent](http://www.gevent.org/). Damit wird eine 
-stabile und schnelle asynchrone Bearbeitung der Anfragen erreicht.<br>
+stabile und schnelle Bearbeitung der Anfragen erreicht.<br>
 
 Standardmäßig läuft der Server auf dem Port `50123`, dieser wird auch vom `ic_20`-Tool genutzt. Damit der 
 [Tester](documentation.md#den-tester-richtig-nutzen) richtig funktionieren kann, ist der Webserver als Thread
