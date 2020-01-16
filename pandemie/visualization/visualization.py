@@ -10,11 +10,7 @@ import dash_html_components as html
 import plotly.graph_objects as go
 from plotly.graph_objs.layout.geo import Projection
 
-try:
-    import pandemie.visualization.preprocessing as pre
-except ModuleNotFoundError:
-    print("To run execute `python -m pandemie.visualization` in the project folder")
-    exit(-1)
+import pandemie.visualization.preprocessing as pre
 
 # Displayed lists of graphs/plots
 visualized_rounds = []

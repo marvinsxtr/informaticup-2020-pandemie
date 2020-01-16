@@ -315,6 +315,8 @@ zu entwickeln. Diese werden im Folgenden aufgeführt:
  * Die Punkte für eine Operation werden für die angegebene Rundenzahl im Voraus bezahlt
  * Eine Operation, die im Vergleich zu anderen besser ist, muss nicht immer die sinnvollste sein
  * Die Operationen Develop und Deploy haben den größten Einfluss auf das Spielgeschehen
+ * Unsere Strategie ist noch lange nicht perfekt. Man könnte noch viel Zeit investieren die einzelnen Maßnahmen 
+ untereinander zu bewerten, sowie versuchen die Gewichte besser anzupassen.
  
 #### Strategieoptimierung
 Im Modul `optimization.py` befindet sich eine Implementierung einer sogenannten Bayes'schen Optimierung, welche dazu
