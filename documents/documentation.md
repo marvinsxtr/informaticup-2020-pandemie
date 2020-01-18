@@ -13,15 +13,15 @@
 * [Software Architektur](documentation.md#software-architektur)
 * [FAQ](documentation.md#faq)
 * [Zusatzfunktion: Visualisierung](documentation.md#zusatzfunktion:-visualisierung)
-* [Der Web service](documentation.md#der-web-service)
+* [Der Webservice](documentation.md#der-webservice)
 * [Warum unsere Idee die Beste ist.](documentation.md#warum-unsere-idee-die-beste-ist)
 * [Auswertung der Ergebnisse](documentation.md#auswertung-der-ergebnisse)
 
 ## Einleitung
 In dieser Dokumentation wird die Verwendung und Funktionsweise unserer Lösung des Problems des Informaticups 2019
 beschrieben.<br>
-Durch das bereitgestellte Programm `ic20_linux`*, welches von den Herausgebern des Informaticups zur Verfügung gestellt 
-wird, wird eine Pandemie simuliert.
+Durch das, von den Herausgebern des Informaticups, zur Verfügung gestellt Programm `ic20_linux`*,
+wird eine Pandemie simuliert.
 Ziel ist es, dass in möglichst kurzer Zeit, die Menschheit auf dem Planeten Erde überlebt und die Seuchen
 ausgerottet werden. Diese Seuchen haben unterschiedliche Eigenschaften und treten zufällig auf.
 Für die Lösung wurde unsererseits ein Webservice entwickelt, welcher in Kombination mit einer Lösungsstrategie dem
@@ -60,14 +60,14 @@ pip3.8 install -r requirements.txt
 ```
 
 ### Schnellstart
-Um den Tester für das `ic20_linux`* Programm auszuführen, kann in dem Projektordner folgender Befehl aufgerufen werden.
+Um den Tester für das `ic20_linux`* Programm auszuführen, kann in dem Projektordner folgender Befehl aufgerufen werden:
 ```bash
 python3.8 -m pandemie.tester
 ```
 Für die schnelle Ausführung des Programms sind bereits Standard-Parameter gesetzt. Diese können per aufgeforderter
 Terminaleingabe auch geändert werden. Dazu mehr in der Sektion 
 [Benutzung das Programm](documentation.md#benutzung-des-programms).
-Mit den Standard-Parametern wird das `ic20_linux` Programm in 5 Instanzen ausgeführt und gegen die zuletzt von uns
+Mit den Standard-Parametern wird das `ic20_linux` Programm in fünf Instanzen ausgeführt und gegen die zuletzt von uns
 entwickelte Strategie getestet. Wie gut die Strategie ist, wird nach Abschluss der Berechnungen auf dem Terminal als
 `win rate` ausgegeben. Zusätzlich kann der [`score`](documentation.md#die-scorefunktion) zur Bewertung herangezogen 
 werden, welcher neben dem Erfolg der Strategie auch die Anzahl der Runden bis zum Sieg bzw. Niederlage des Spiels einbezieht.
@@ -105,7 +105,7 @@ Dazu wird über die Kommandozeile die `-o` bzw. die `--optimize` Option angegebe
 `--optimize` übergeben wird, werden alle anderen Parameter verworfen.
 
 Möchte man eine andere Strategie testen, so muss man den vollständigen Namen der Strategie der `-s` Option übergeben.
-Es ist drauf zu achten, dass die auszuführenden Strategie im `/pandemie/tester/strategies` Ordner liegen. Auch muss die 
+Es ist drauf zu achten, dass die auszuführende Strategie im `/pandemie/tester/strategies` Ordner liegen. Auch muss die 
 Strategie von der `AbstractStrategy` erben und die Methode `_solve()` implementieren. Wie genau eigene Strategien 
 entwickelt werden können wird im Kapitel [eigene Strategien entwickeln](documentation.md#eigene-strategien-entwickeln)
 erläutert.
@@ -151,13 +151,13 @@ Die Standardeinstellungen sind wie folgend:
  * Für jedes Spiel wird ein zufälliger Seed generiert
 
 #### Daten-Analyse-Tools
-Zum Sammeln von Daten über Vieren und Events sind in `tester.py` bereits verschieden Funktionalitäten integriert.
+Zum Sammeln von Daten über Vieren und Events sind in `tester.py` bereits verschiede Funktionalitäten integriert.
 
 Das Modul `event_checker.py` dient dem Sammeln von allgemeinen Daten, die zum Erstellen einer guten Strategie essenziell 
 sind. Dabei filtert das Modul die gesamten Rohdaten einer Runde und überprüft diese auf bisher unbekannte Pathogen- und 
 Event-Typen.
 
-Das Modul `analyse_log.py` analysiert, wenn Logging aktiviert, ist die übergebene Log-Datei. Hierbei wird für jedes
+Das Modul `analyse_log.py` analysiert, wenn Logging aktiviert ist, die übergebene Log-Datei. Hierbei wird für jedes
 bekannte Pathogen analysiert wie viele Spiele gewonnen und verloren wurden, wenn dieses Pathogen aufgetreten ist.
 
 ##### Der Event-Checker
@@ -202,7 +202,7 @@ Das Modul analysiert den erstellten Log. Hierbei wird für jedes Pathogen gezäh
 wurden, in denen dieses Pathogen aufgetreten ist. <br>
 Die gesammelten Daten werden zum Ende der übergebenen Log-Datei hinzugefügt. Hierbei werden alle nicht-UTF-8-Zeichen
 entfernt, um mögliche Konflikte beim Schreiben der Datei zu vermeiden.
-<br>Beispiel für gesammelte Daten:<br>
+<br>Beispiel für gesammelte Daten, bei 100 gespielten Spielen:<br>
 ```
 Admiral Trips                  	-	wins: 9 - loss: 18
 Azmodeus                       	-	wins: 1 - loss: 8
@@ -231,18 +231,18 @@ antworten.
 ### Die Scorefunktion
 Im Hinblick auf eine Vergleichbarkeit der verschiedenen Strategien, eventuell später auch in Abhängigkeit von ihren
 Gewichten, bietet es sich an, eine Scorefunktion zu erstellen, die es ermöglicht einem Spieldurchlauf einen Score Wert
-zu geben. Um die Scorefunktion über mehrere Runden hinweg zu benutzen, werden gewonnenen Spielen mit einem positiven 
-Score und verlorenen mit einem negativen Score gewertet. So kann man den Durchschnitt über alle Spiele als Gesamtscore 
+zu geben. Um die Scorefunktion über mehrere Runden hinweg zu benutzen, werden die gewonnenen Spiele mit einem positiven 
+Score und die verlorenen mit einem negativen Score gewertet. So kann man den Durchschnitt über alle Spiele als Gesamtscore 
 berechnen.<br>
 
 Die Idee hinter den Scorefunktionen, also die Funktionen die in Abhängigkeit der Spiellänge den Score erstellen, ist,
 dass verlorene Spiele mit eine längeren Spieldauer besser sind, als Spiele die schneller verloren gehen. Bei gewonnenen
 Spielen ist es umgekehrt, je schneller gewonnen wird, desto besser.<br><br>
-Hier die aktuell genutzten Funktionen. In blau ist die Funktion für die gewonnen Spiele dargestellt, in orange die für
+Hier die aktuell genutzten Funktionen. In blau ist die Funktion für die gewonnenen Spiele dargestellt, in orange die für
 verlorenen.<br><br>
 ![score function](images/score.png)<br><br>
 Grundsätzlich gilt, dass 1 ein perfekter Score ist und -1 der schlechteste. Bei 75 Runden erreicht der jeweilige Score
-die hälfte des Maximalwerts. Wird also ein Spiel nach 75 gewonnenen Runden bekommt das Spiel den Score 0.5. 
+die hälfte des Maximalwerts. Wird also ein Spiel nach 75 Runden gewonnenen bekommt dieses Spiel den Score 0.5. 
 Wird das Spiel nach 75 Runden verlorenes, so wird dies mit dem Score -0.5 bewertet. 
 Dieser Wert ist, genauso wie der Grad der Steigung, nur durch Änderungen im Quellcode anpassbar.<br>
 Die Formeln für die Scorefunktionen sind wie folgend, wobei `k=0.07` und `a=75` gilt. Hierbei ist `k` die Konstante,
@@ -398,7 +398,7 @@ project-pandemie-03
 └── test
 ```
 In `/documents` sind alle generierten oder vorhandenen Dokumente gesammelt (z.B. Scorefunktionsgraph). In `/deployment`
-ist das Modul für den Web Service implementiert und in `/test` befindet sich das vorgegebene ic20 Tool für alle 
+ist das Modul für den Webservice implementiert und in `/test` befindet sich das vorgegebene ic20 Tool für alle 
 unterstützten Betriebssysteme. Im Hauptordner `/pandemie` sind die Module [Tester](documentation.md#den-tester-richtig-nutzen), 
 `util`, [Visualization](documentation.md#zusatzfunktion-visualisierung) und [Web](documentation.md#der-web-service). 
 Hierbei ist util ein Modul, das sämtliche Hilfsfunktionen beinhaltet, welche zur Übersichtlichkeit nicht in die anderen 
@@ -470,8 +470,8 @@ Erweiterungen realisiert werden können.
 
 ### Beispielvisualisierungen
 #### Spielvisualisierung
-Um den gesamten Spielverlauf zu Visualisieren muss die Option `Visualize full game` ausgewählt werden. Hier wird dann
-die Weltbevölkerung über die Runden angezeigt und angezeigt welche Viren aufgetreten sind.
+Um den gesamten Spielverlauf zu Visualisieren muss die Option `Visualize full game` ausgewählt werden. Hier werden dann
+die Weltbevölkerung über die Runden und die aufgetretenen Viren angezeigt.
 Gesamte Population im Spielverlauf:
 ![full_game_visualization](images/full_game_visualization.png)<br>
 
@@ -484,7 +484,7 @@ eingezeichnet. Um die wichtigsten Flugverbindungen zu erhalten werden zunnächst
 denen nicht mindestens eine der beiden verbundenen Städte mit einem Virus infiziert ist. Anschließend werden die 
 Verbindungen in abhängigkeit von der Infiziertenzahl in den Städten und der Stärke des Viruses bewertet. 
 
-Die hundert wichtigsten Flugverbindungen zwischen infizierten Städten:
+Die 100 wichtigsten Flugverbindungen zwischen infizierten Städten:
 <br><img src="images/round_outbreak_visualization.png" width="500"/><br>
 Anteil der infizierten Bevölkerung für jedes Pathogen:
 <br><img src="images/round_pathogens_visualization.png" width="500"/><br>
@@ -501,7 +501,7 @@ Ist diese Voraussetzung erfüllt, kann die Visualisierung mit dem Modul `visuali
 ```bash
 $ python3.8 -m pandemie.visualization
 ```
-Sobald die das verarbeiten der Daten für die Visualisierung fertig ist, wird anschließend ein Webserver gestartet, 
+Sobald das verarbeiten der Daten für die Visualisierung fertig ist, wird anschließend ein Webserver gestartet, 
 welcher über `localhost:8050` aufgerufen werden kann. Im Terminal wird hierzu auch ein Link angezeigt. Wenn die Seite 
 aufgerufen wird, kann oben im Dropdown-Menü ausgewählt werden, welche Runde oder ob das gesamte Spiel visualisiert 
 werden soll.
@@ -524,9 +524,9 @@ können. Zusätzlich muss in der Funktion `visualize_game` der entsprechende Fun
 hinzugefügt werden. Die Visualisierungen werden entsprechend der Reihenfolge in dieser Liste untereinander angezeigt.
 Für die Visualisierung einzelner Runden kann hierfür analog die Funktion `visualize_round` verwendet werden.
 
-## Der Web Service
-### Web Service Allgemein
-Als Grundlage für unseren Web Service dient ein [bottle-Framework](https://bottlepy.org/docs/dev/) das auf WSGI aufbaut.
+## Der Webservice
+### Webservice Allgemein
+Als Grundlage für unseren Webservice dient ein [bottle-Framework](https://bottlepy.org/docs/dev/) das auf WSGI aufbaut.
 Um viele Anfragen gleichzeitig bearbeiten zu können, nutzen wir [gevent](http://www.gevent.org/). Damit wird eine 
 stabile und schnelle Bearbeitung der Anfragen erreicht.<br>
 
