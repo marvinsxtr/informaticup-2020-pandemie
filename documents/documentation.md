@@ -20,7 +20,7 @@
 ## Einleitung
 In dieser Dokumentation wird die Verwendung und Funktionsweise unserer Lösung des Problems des Informaticups 2019
 beschrieben.<br>
-Durch das, von den Herausgebern des Informaticups, zur Verfügung gestellt Programm `ic20_linux`*,
+Durch das, von den Herausgebern des Informaticups, zur Verfügung gestellte Programm `ic20_linux`*,
 wird eine Pandemie simuliert.
 Ziel ist es, dass in möglichst kurzer Zeit, die Menschheit auf dem Planeten Erde überlebt und die Seuchen
 ausgerottet werden. Diese Seuchen haben unterschiedliche Eigenschaften und treten zufällig auf.
