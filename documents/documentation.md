@@ -569,6 +569,15 @@ vergleichen. Zudem lässt sich die Teamstrategie durch Variation der Berechnung 
 anpassen. Zuletzt ist auch die Visualisierung so konzipiert, dass sie jederzeit erweitert werden kann. 
 
 ## Auswertung der Ergebnisse
+Um die Ergebnisse unserer Strategie besser beurteilen zu können, führten wir im kontinuirlichen Entwicklungsprozess
+dieser, immer wieder größere Testreihen mit bestimmter Zufällligkeit durch. Das bedeutet, wir haben jeweils 100
+Durchläufe auf den Seeds 1 bis 100 evaluiert.
+
+Um unsere finale Lösungsstrategie qualitativ zu bewerten, führten wir abschließend 100 Mal 100 Durchläufe auf unserer
+Srategie durch. Dabei erreichten wir im arithmetischen Mittel eine Gewinnrate von XXXXX%.
+
+Besonders hervorzuheben sind uns aufgefallene Tendenzen unserer Strategie. Besonders [LANGE/KURZE] Durchläufe wurden
+eher mit einer [AUSLÖSCHUNG/NIEDERLAGE] abgeschlossen.
 
 ## Autoren
 * Nils Langius (nils@langius.de)
