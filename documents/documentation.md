@@ -43,12 +43,12 @@ unserer Software kompatibel entwickelt und gestaltet werden können.
 ### Installation
 Zunächst muss das Projekt aus dem Gitlab geklont werden. Dazu wird die Versionskontrollsoftware `git` benötigt.
 
-Der Klonvorgang geschieht mit dem nachstehenden Aufruf.
+Der Klonvorgang geschieht mit dem nachstehenden Aufruf:
 ```git
 git clone https://gitlab.projekt.uni-hannover.de/chi-informaticup03/project-pandemie-03.git
 ```
-Als grundlegende Software wird Python in der Version 3.8 vorausgesetzt (`python3.8`). Dieses ist, je nachdem welches 
-Betriebssystem verwendet wird, anders zu installieren. Die Neueste Version von Python 3.8 ist unter 
+Als grundlegende Software wird Python in der Version 3.8 vorausgesetzt (`python3.8`). Dieses ist, je nach verwendetem
+Betriebssystem, anders zu installieren. Die Neueste Version von Python 3.8 ist unter 
 [python.org](https://www.python.org/downloads/) zu finden.<br>
 Des Weiteren sind einige Abhängigkeiten für die korrekte Ausführung des Programmcodes notwendig. Die Abhängigkeiten 
 der Software sind in der Datei `requirements.txt` erfasst. Die Datei wird mit in dem Projektordner mitgeliefert und
@@ -66,7 +66,7 @@ python3.8 -m pandemie.tester
 ```
 Für die schnelle Ausführung des Programms sind bereits Standard-Parameter gesetzt. Diese können per aufgeforderter
 Terminaleingabe auch geändert werden. Dazu mehr in der Sektion 
-[Benutzung das Programm](documentation.md#benutzung-des-programms).
+[Benutzung das Programms](documentation.md#benutzung-des-programms).
 Mit den Standard-Parametern wird das `ic20_linux` Programm in fünf Instanzen ausgeführt und gegen die zuletzt von uns
 entwickelte Strategie getestet. Wie gut die Strategie ist, wird nach Abschluss der Berechnungen auf dem Terminal als
 `win rate` ausgegeben. Zusätzlich kann der [`score`](documentation.md#die-scorefunktion) zur Bewertung herangezogen 
@@ -105,7 +105,7 @@ Dazu wird über die Kommandozeile die `-o` bzw. die `--optimize` Option angegebe
 `--optimize` übergeben wird, werden alle anderen Parameter verworfen.
 
 Möchte man eine andere Strategie testen, so muss man den vollständigen Namen der Strategie der `-s` Option übergeben.
-Es ist drauf zu achten, dass die auszuführende Strategie im `/pandemie/tester/strategies` Ordner liegen. Auch muss die 
+Es ist drauf zu achten, dass die auszuführende Strategie im `/pandemie/tester/strategies` Ordner liegt. Auch muss die 
 Strategie von der `AbstractStrategy` erben und die Methode `_solve()` implementieren. Wie genau eigene Strategien 
 entwickelt werden können wird im Kapitel [eigene Strategien entwickeln](documentation.md#eigene-strategien-entwickeln)
 erläutert.
@@ -151,7 +151,7 @@ Die Standardeinstellungen sind wie folgend:
  * Für jedes Spiel wird ein zufälliger Seed generiert
 
 #### Daten-Analyse-Tools
-Zum Sammeln von Daten über Vieren und Events sind in `tester.py` bereits verschiedene Funktionalitäten integriert.
+Zum Sammeln von Daten über Pathogene und Events sind in `tester.py` bereits verschiedene Funktionalitäten integriert.
 
 Das Modul `event_checker.py` dient dem Sammeln von allgemeinen Daten, die zum Erstellen einer guten Strategie essenziell 
 sind. Dabei filtert das Modul die gesamten Rohdaten einer Runde und überprüft diese auf bisher unbekannte Pathogen- und 
@@ -239,7 +239,7 @@ Die Idee hinter den Scorefunktionen, also die Funktionen die in Abhängigkeit de
 dass verlorene Spiele mit einer längeren Spieldauer besser sind, als Spiele die schneller verloren gehen. Bei gewonnenen
 Spielen ist es umgekehrt, je schneller gewonnen wird, desto besser.<br><br>
 Hier die aktuell genutzten Funktionen. Die Funktion für die gewonnenen Spiele ist in blau dargestellt, in orange die für
-verlorenen.<br><br>
+verlorene Spiele.<br><br>
 ![score function](images/score.png)<br><br>
 Grundsätzlich gilt, dass 1 ein perfekter Score ist und -1 der schlechteste. Bei 75 Runden erreicht der jeweilige Score
 die hälfte des Maximalwerts. Wird also ein Spiel nach 75 Runden gewonnen, bekommt dieses Spiel den Score 0.5. 
@@ -431,7 +431,7 @@ $ python3.8 -m pandemie.visualization
 Eine Ausführlichere Erklärung ist im Kapitel [Wie starte ich die Visualisierung](
 documentation.md#wie-starte-ich-die-visualisierung) zu finden.
 
-### Was mache ich wenn beim Auführen ein Import Error auftritt?
+### Was mache ich wenn beim Ausführen ein Import Error auftritt?
 Bevor das Programm benutzt werden kann, müssen alle Schritte unter [Installation](documentation.md#installation)
 durchgeführt werden. Auch muss sichergestellt werden, dass die richtige Python Version (Python3.8) genutzt wird. Dazu
 kann folgender Befehl genutzt werden.
@@ -471,7 +471,7 @@ Erweiterungen realisiert werden können.
 ### Beispielvisualisierungen
 #### Spielvisualisierung
 Um den gesamten Spielverlauf zu visualisieren, muss die Option `Visualize full game` ausgewählt werden. Hier werden dann
-die Weltbevölkerung über die Runden und die aufgetretenen Viren angezeigt.
+die Weltbevölkerung über die Runden und die aufgetretenen Viren angezeigt.<br>
 Gesamte Population im Spielverlauf:
 ![full_game_visualization](images/full_game_visualization.png)<br>
 
