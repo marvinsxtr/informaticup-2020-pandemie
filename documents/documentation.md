@@ -579,6 +579,10 @@ unserer Srategie durch. Dabei erreichten wir im arithmetischen Mittel eine Gewin
 Die nachstehenden Grafiken zeigen die Verteilung der Siege und Niederlagen bezogen auf die Anzahl an Runden bis eine
 Simmulation beendet war.
 
+Die längste Niederlage dauerte 134 Runden.
+
+Der längste Sieg dauerte 186 Runden.
+
 ![win_score_n10000](images/win_score_n10000.png)<br>
 
 ![loss_score_n10000](images/loss_score_n10000.png)<br>
