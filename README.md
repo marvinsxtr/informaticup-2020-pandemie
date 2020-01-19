@@ -33,3 +33,16 @@ Der Port ist weiterhin `50123`
 ```bash
 ./ic20_linux -u http://ec2-52-91-60-156.compute-1.amazonaws.com:50123
 ```
+
+### Dokumentation
+Wenn man die Dokumentation als HTML Dokument lesen möchte, das könnte unter anderem zum Ausdrucken
+hilfreich sein, da sonst die Formatierung eventuell zerstört wird, kann man `grip` wie folgend nutzen.
+```bash
+pip install grip
+cd documents
+grip documentation.md --export documentation.html
+```
+`grip` bietet auch die Möglichkeit, das Dokument komfortable direkt im Browser zu betrachten.
+```bash
+grip documentation.md
+```
