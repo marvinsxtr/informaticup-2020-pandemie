@@ -73,11 +73,11 @@ entwickelte Strategie getestet. Wie gut die Strategie ist, wird nach Abschluss d
 werden, welcher neben dem Erfolg der Strategie auch die Anzahl der Runden bis zum Sieg bzw. Niederlage des Spiels einbezieht.
 
 *Für Windows genau so ausführbar, das Programm erkennt das genutzte Betriebssystem und führt dementsprechend das 
-richtige tool aus
+richtige Tool aus.
 
 ## Benutzung des Programms
 Nach der Installation des Programms und einem einfachen Ausführungsbeispiel wird nun die Verwendung der einzelnen 
-Funktionen des Programms detailiert erklärt.
+Funktionen des Programms detailliert  erklärt.
 
 ### Den Tester richtig nutzen
 Zum Testen von Strategien ist das Modul `pandemie/tester/tester.py` vorgesehen. Hier werden verschiedene
@@ -87,7 +87,7 @@ lediglich das Modul `tester.py` aus dem Projektordner heraus ausgeführt werden.
 python3.8 -m pandemie.tester
 ```
 <br>Der Tester kann mit verschiedenen Optionen über die Kommandozeile aufgerufen werden. Um eine Liste aller Parameter
-zu erhalten muss der Tester mit dem Parameter `-h` bzw. `--help` aufgerufen werden:
+zu erhalten, muss der Tester mit dem Parameter `-h` bzw. `--help` aufgerufen werden:
 ```bash
 $ python3.8 -m pandemie.tester -h
 -h --help            show the help
@@ -151,7 +151,7 @@ Die Standardeinstellungen sind wie folgend:
  * Für jedes Spiel wird ein zufälliger Seed generiert
 
 #### Daten-Analyse-Tools
-Zum Sammeln von Daten über Vieren und Events sind in `tester.py` bereits verschiede Funktionalitäten integriert.
+Zum Sammeln von Daten über Vieren und Events sind in `tester.py` bereits verschiedene Funktionalitäten integriert.
 
 Das Modul `event_checker.py` dient dem Sammeln von allgemeinen Daten, die zum Erstellen einer guten Strategie essenziell 
 sind. Dabei filtert das Modul die gesamten Rohdaten einer Runde und überprüft diese auf bisher unbekannte Pathogen- und 
@@ -195,7 +195,7 @@ medicationInDevelopment	, global
 
 ##### Die Log-Analyse
 Das manuelle Einbinden des Moduls `analyse_log.py` ist nicht notwendig. Das Modul wird standardmäßig ausgeführt, wenn
-Logging aktiviert ist. Es ist nicht möglich das Modul zu deaktivieren oder zu entfernen, ohne Änderungen an 
+Logging aktiviert ist. Es ist nicht möglich, das Modul zu deaktivieren oder zu entfernen, ohne Änderungen an 
 `pandemie/tester/tester.py` vorzunehmen. 
 
 Das Modul analysiert den erstellten Log. Hierbei wird für jedes Pathogen gezählt wie viele Spiele gewonnen und verloren 
@@ -236,14 +236,14 @@ Score und die verlorenen mit einem negativen Score gewertet. So kann man den Dur
 berechnen.<br>
 
 Die Idee hinter den Scorefunktionen, also die Funktionen die in Abhängigkeit der Spiellänge den Score erstellen, ist,
-dass verlorene Spiele mit eine längeren Spieldauer besser sind, als Spiele die schneller verloren gehen. Bei gewonnenen
+dass verlorene Spiele mit einer längeren Spieldauer besser sind, als Spiele die schneller verloren gehen. Bei gewonnenen
 Spielen ist es umgekehrt, je schneller gewonnen wird, desto besser.<br><br>
-Hier die aktuell genutzten Funktionen. In blau ist die Funktion für die gewonnenen Spiele dargestellt, in orange die für
+Hier die aktuell genutzten Funktionen. Die Funktion für die gewonnenen Spiele ist in blau dargestellt, in orange die für
 verlorenen.<br><br>
 ![score function](images/score.png)<br><br>
 Grundsätzlich gilt, dass 1 ein perfekter Score ist und -1 der schlechteste. Bei 75 Runden erreicht der jeweilige Score
-die hälfte des Maximalwerts. Wird also ein Spiel nach 75 Runden gewonnenen bekommt dieses Spiel den Score 0.5. 
-Wird das Spiel nach 75 Runden verlorenes, so wird dies mit dem Score -0.5 bewertet. 
+die hälfte des Maximalwerts. Wird also ein Spiel nach 75 Runden gewonnen, bekommt dieses Spiel den Score 0.5. 
+Wird das Spiel nach 75 Runden verloren, so wird dies mit dem Score -0.5 bewertet. 
 Dieser Wert ist, genauso wie der Grad der Steigung, nur durch Änderungen im Quellcode anpassbar.<br>
 Die Formeln für die Scorefunktionen sind wie folgend, wobei `k=0.07` und `a=75` gilt. Hierbei ist `k` die Konstante,
 die den Grad der Steigung beschreibt, und `a` die Anzahl der Runden nach denen der Wert halbiert wird.<br>
@@ -290,14 +290,14 @@ Rankings für die jeweiligen Maßnahmen die beste Operation mit dem höchsten Sc
 insgesamt zwölf Operationen übrig bleiben. 
 <br>
 Aus diesen zwölf Operationen muss nun die beste gewählt werden. Hierzu wird für jede Maßnahme eine Gewichtung definiert
-(`measure_weights`). Diese Gewichtung kann zuvor festgelegt und mit Hilfe einer 
+(`measure_weights`). Diese Gewichtung kann zuvor festgelegt und mithilfe einer 
 [Bayes'schen Optimierung](documentation.md#strategieoptimierung) verbessert werden. Für jede Maßnahme wird zusätzlich
 eine Untergrenze (`measure_thresholds`) für den Score der Operation im ursprünglichen Ranking angegeben. 
 <br>
 Mithilfe einer Wahrscheinlichkeitsverteilung über die Gewichtungen wird dann eine beste Operation ausgewählt. Falls der 
 Score der Operation die Untergrenze nicht übertrifft oder die beste Operation aufgrund mangelnder Punkte nicht 
 ausgeführt werden kann, so muss eine neue gewählt oder die Runde zum Sparen beendet werden. Ansonsten wird bei 
-rundenbasierten Operationen nun die Rundenzahl mithilfe anderer Faktoren (z.B. "duration" bei Pathogenen) berechnet. 
+rundenbasierten Operationen nun die Rundenzahl mithilfe anderer Faktoren (z. B. "duration" bei Pathogenen) berechnet. 
 <br>
 Während der Entwicklung unserer Teamstrategie haben wir auch andere Möglichkeiten gefunden, um aus den besten zwölf
 Operationen die beste Maßnahme auszuwählen:
@@ -336,7 +336,7 @@ Library sogenannte Probes erstellen, welche vor Beginn der eigentlichen Optimier
 
 ### Eigene Strategien entwickeln
 Alle Strategien erben von der Klasse `AbstractStrategy` und implementieren die Methode `_solve()`. Um von der 
-`AbstractStrategy` erben zu können muss die Klasse aus dem Modul `pandemie/tester/strategy.py` importiert werden:
+`AbstractStrategy` erben zu können, muss die Klasse aus dem Modul `pandemie/tester/strategy.py` importiert werden:
 ```python
 from pandemie.tester import AbstractStrategy
 ```
@@ -350,14 +350,14 @@ alle möglichen Operationen im vorgegebenen JSON-Format und deren Preise beinhal
 einem Tupel angegeben werden. Dies kann zum Beispiel nützlich sein, um wie in unserer Teamstrategie bestimmte 
 Operationen zu ranken und auf Basis einer Sortierung eine Auswahl zu treffen.
 
-Um eine allgemeines Verständnis über das Spielgeschehen zu erhalten stehen die bereits vorgefertigten Analysetools zur 
+Um ein allgemeines Verständnis über das Spielgeschehen zu erhalten, stehen die bereits vorgefertigten Analysetools zur 
 Verfügung. Das Modul [`util/event_checker.py`](documentation.md#der-event-checker) ist immer aktiv und sammelt Daten 
 über aufgetretene Pathogene und Events. Zum zusätzlichen Analysieren dienen Logging und Visualisierung. Diese können 
 mithilfe der [Kommandozeilenparamter](documentation.md#den-tester-richtig-nutzen) aktiviert werden. So kann der
 Spielverlauf nachvollzogen werden. In der Logdatei findet sich unter anderem eine Übersicht wie viele Spiele in 
 Abhängigkeit von den auftretenden Pathogenen gewonnen wurden.
 
-Es ist wichtig beim erstellen einer Strategie darauf zu achten, dass die Strategie im Ordner 
+Es ist wichtig beim Erstellen einer Strategie darauf zu achten, dass die Strategie im Ordner 
 `/pandemie/tester/strategies` abgelegt ist, um die Kompatibilität mit `tester.py` sicherzustellen.
 
 ## Wissenschaftlicher Hintergrund
@@ -397,7 +397,7 @@ project-pandemie-03
 │   └── web
 └── test
 ```
-In `/documents` sind alle generierten oder vorhandenen Dokumente gesammelt (z.B. Scorefunktionsgraph). In `/deployment`
+In `/documents` sind alle generierten oder vorhandenen Dokumente gesammelt (z. B. Scorefunktionsgraph). In `/deployment`
 ist das Modul für den Webservice implementiert und in `/test` befindet sich das vorgegebene ic20 Tool für alle 
 unterstützten Betriebssysteme. Im Hauptordner `/pandemie` sind die Module [Tester](documentation.md#den-tester-richtig-nutzen), 
 `util`, [Visualization](documentation.md#zusatzfunktion-visualisierung) und [Web](documentation.md#der-web-service). 
@@ -444,9 +444,9 @@ Bei weiteren Fragen zu Fehlern stehen die [Autoren](documentation.md#autoren) zu
 
 ### Der Tester startet meine Eigene Strategie nicht.
 Um eigene Strategien mit dem Tester ausführen zu können, muss sich diese im Ordner `/pandemie/tester/strategies` 
-befinden. Es ist auch sicherzustellen, dass die Python-Datei den selben Namen besitz wie die Strategie-Klasse (Groß- und
+befinden. Es ist auch sicherzustellen, dass die Python-Datei denselben Namen besitz wie die Strategie-Klasse (Groß- und
 Kleinschreibung wird nicht berücksichtigt). 
-<br>Was beim Erstellen einer Strategie zu beachten ist wird im Kapitel [Eigene Strategien entwickeln](
+<br>Was beim Erstellen einer Strategie zu beachten ist, wird im Kapitel [Eigene Strategien entwickeln](
 documentation.md#eigene-strategien-entwickeln) erklärt.
 
 ### Wie kann man das Team kontaktieren?
@@ -454,7 +454,7 @@ Für Fragen und Rückmeldungen stehen die Entwickler gerne zur verfügen. Kontak
 documentation.md#autoren) zu finden.
 
 ### Wie ist das Projekt lizensiert?
-Das Projekt ist mit der MIT Lizenz lizensiert und damit eine Open-Source Software. Die Lizenz für dieses Projekt
+Das Projekt ist mit der MIT Lizenz lizenziert und damit eine Open-Source Software. Die Lizenz für dieses Projekt
 befindet sich in der Datei `LICENSE.md`.<br>
 Des Weiteren sind die verwendeten Abhängigkeiten alle der MIT oder BSD Lizenz zugeordnet.
 
@@ -470,19 +470,19 @@ Erweiterungen realisiert werden können.
 
 ### Beispielvisualisierungen
 #### Spielvisualisierung
-Um den gesamten Spielverlauf zu Visualisieren muss die Option `Visualize full game` ausgewählt werden. Hier werden dann
+Um den gesamten Spielverlauf zu visualisieren, muss die Option `Visualize full game` ausgewählt werden. Hier werden dann
 die Weltbevölkerung über die Runden und die aufgetretenen Viren angezeigt.
 Gesamte Population im Spielverlauf:
 ![full_game_visualization](images/full_game_visualization.png)<br>
 
 #### Rundenvisualiserung
-Um einzelne Runden zu visualisieren muss die Option `Visualize roundX.dat` ausgewählt werden, wobei X die Nummer der 
+Um einzelne Runden zu visualisieren, muss die Option `Visualize roundX.dat` ausgewählt werden, wobei X die Nummer der 
 Runde ist, die visualisiert werden soll.<br>
 
 Bei der Visualisierung werden alle infizierten Städte und die 100 wichtigsten Flugverbindungen auf einem Globus 
-eingezeichnet. Um die wichtigsten Flugverbindungen zu erhalten werden zunnächst alle Verbindungen herausgefiltert, bei
+eingezeichnet. Um die wichtigsten Flugverbindungen zu erhalten, werden zunächst alle Verbindungen herausgefiltert, bei
 denen nicht mindestens eine der beiden verbundenen Städte mit einem Virus infiziert ist. Anschließend werden die 
-Verbindungen in abhängigkeit von der Infiziertenzahl in den Städten und der Stärke des Viruses bewertet. 
+Verbindungen in Abhängigkeit von der Anzahl der Infizierten in den Städten und der Stärke des Viruses bewertet. 
 
 Die 100 wichtigsten Flugverbindungen zwischen infizierten Städten:
 <br><img src="images/round_outbreak_visualization.png" width="500"/><br>
@@ -490,7 +490,7 @@ Anteil der infizierten Bevölkerung für jedes Pathogen:
 <br><img src="images/round_pathogens_visualization.png" width="500"/><br>
 
 ### Wie starte ich die Visualisierung
-Um die Visualisierung zu starten muss zunächst mindestens einmal der 
+Um die Visualisierung zu starten, muss zunächst mindestens einmal der 
 [Tester](documentation.md#den-tester-richtig-nutzen) mit der Visualisierungs-Option gestartet werden:
 ```bash
 $ python3.8 -m pandemie.tester -v
@@ -501,7 +501,7 @@ Ist diese Voraussetzung erfüllt, kann die Visualisierung mit dem Modul `visuali
 ```bash
 $ python3.8 -m pandemie.visualization
 ```
-Sobald das verarbeiten der Daten für die Visualisierung fertig ist, wird anschließend ein Webserver gestartet, 
+Sobald das Verarbeiten der Daten für die Visualisierung fertig ist, wird anschließend ein Webserver gestartet, 
 welcher über `localhost:8050` aufgerufen werden kann. Im Terminal wird hierzu auch ein Link angezeigt. Wenn die Seite 
 aufgerufen wird, kann oben im Dropdown-Menü ausgewählt werden, welche Runde oder ob das gesamte Spiel visualisiert 
 werden soll.
@@ -527,8 +527,7 @@ Für die Visualisierung einzelner Runden kann hierfür analog die Funktion `visu
 ## Der Webservice
 ### Webservice Allgemein
 Als Grundlage für unseren Webservice dient ein [bottle-Framework](https://bottlepy.org/docs/dev/) das auf WSGI aufbaut.
-Um viele Anfragen gleichzeitig bearbeiten zu können, nutzen wir [gevent](http://www.gevent.org/). Damit wird eine 
-stabile und schnelle Bearbeitung der Anfragen erreicht.<br>
+Um viele Anfragen schnell bearbeiten zu können, nutzen wir [gevent](http://www.gevent.org/).
 
 Standardmäßig läuft der Server auf dem Port `50123`, dieser wird auch vom `ic_20`-Tool genutzt. Damit der 
 [Tester](documentation.md#den-tester-richtig-nutzen) richtig funktionieren kann, ist der Webserver als Thread
@@ -543,10 +542,10 @@ Unser Webservice ist auf Amazon AWS auf dem Elastic Compute Cloud Server (EC2) a
 unser Projekt in sehr abgespeckter Version.
 
 Dabei wird unser Service zur Beantwortung von Anfragen des `ic_20`-Tools permanent gestartet. Auf diesem läuft,
-ohne dass es beeinflussbar wäre, unser Dienst mit unserer letzen, besten Lösungsstrategie.
+ohne dass es beeinflussbar wäre, unser Dienst mit unserer letzten, besten Lösungsstrategie.
 
 Der Domainname unserer auf AWS genutzen virtuellen Maschine lautet `ec2-52-91-60-156.compute-1.amazonaws.com`.
-Des Weiteren wird der Standardport des `ic20`-Tools genutzt. Dieser lautet `50123`.
+Desweiteren wird der Standardport des `ic20`-Tools genutzt. Dieser lautet `50123`.
 Die VM verfügt über 1 vCore, 1GB RAM und 8 GB Speicher. Das ist mehr als ausreichend für eine schnelle und robuste
 Antwort an ein aus der Ferne gestartetes `ic20`-Tool.
 
@@ -556,8 +555,8 @@ Maßnahmen mit unserem empirischen Erfahrungsschatz über die ausbrechenden Seuc
 
 Zunächst werden alle Ereignisse einer Runde analysiert und lokal abgespeichert. Anschließend werden, basierend auf der
 Art der Bedrohung, alle möglichen Reaktionen der Menschheit faktorisiert. Diese Faktoren richten sich mitunter nach
-unserer erprobten Erfahrung. Nicht zuletzt wird anhand der verfügbaren Reaktionen die Eine, oder Mehrere Aktionen
-durchgeführt, um die Menscheit zu retten.
+unserer erprobten Erfahrung. Nicht zuletzt wird anhand der verfügbaren Reaktionen eine oder mehrere Aktionen
+durchgeführt, um die Menschheit zu retten.
 
 Alles in allem kombinieren wir mit unserer Idee unsere Erfahrung aus den analysierten Ereignissen mit einer
 gewichtsverteilten Strategie. Damit verfolgen wir zuverlässig unser Ziel, die Menschheit vor den modernen Bedrohungen
