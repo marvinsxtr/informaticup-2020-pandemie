@@ -569,15 +569,15 @@ vergleichen. Zudem lässt sich die Teamstrategie durch Variation der Berechnung 
 anpassen. Zuletzt ist auch die Visualisierung so konzipiert, dass sie jederzeit erweitert werden kann. 
 
 ## Auswertung der Ergebnisse
-Um die Ergebnisse unserer Strategie besser beurteilen zu können, führten wir im kontinuirlichen Entwicklungsprozess
-dieser, immer wieder größere Testreihen mit bestimmter Zufällligkeit durch. Das bedeutet, wir haben jeweils 100
+Um die Ergebnisse unserer Strategie besser beurteilen zu können, führten wir im kontinuierlichen Entwicklungsprozess
+dieser, immer wieder größere Testreihen mit bestimmter Zufälligkeit durch. Das bedeutet, wir haben jeweils 100
 Durchläufe auf den Seeds 1 bis 100 evaluiert.
 
 Um unsere finale Lösungsstrategie qualitativ zu bewerten, führten wir abschließend 100 Mal 100 Durchläufe (N=10.000) auf
-unserer Srategie durch. Dabei erreichten wir im arithmetischen Mittel eine Gewinnrate von ca. 40%.
+unserer Strategie durch. Dabei erreichten wir im arithmetischen Mittel eine Gewinnrate von ca. 40 %.
 
-Die nachstehenden Grafiken zeigen die Verteilung der Siege und Niederlagen bezogen auf die Anzahl an Runden bis eine
-Simmulation beendet war.
+Die nachstehenden Grafiken zeigen die Verteilung der Siege und Niederlagen bezogen auf die Anzahl an Runden, bis eine
+Simulation beendet war.
 
 ![win_score_n10000](images/win_score_n10000.png)<br>
 
@@ -587,7 +587,7 @@ Simmulation beendet war.
 
 
 Besonders hervorzuheben sind uns aufgefallene Tendenzen unserer Strategie. Besonders nach wenigen Durchläufen wurden
-viele Simmulationen mit einer Niederlage abgeschlossen. Weiter lässt sich beobachten, dass Simmulationen, in denen 
+viele Simulationen mit einer Niederlage abgeschlossen. Weiter lässt sich beobachten, dass Simulationen, in denen 
 nach wenigen Runden die Menschheit bereits fast ausgelöscht wurde, lange dauern können und somit auch nach einer hohen
 Rundenzahl noch verloren werden.
 
