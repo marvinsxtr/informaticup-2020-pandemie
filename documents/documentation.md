@@ -1,4 +1,3 @@
-
 # Pandemie!
 
 ## Inhaltsverzeichnis
@@ -18,7 +17,7 @@
 * [Auswertung der Ergebnisse](documentation.md#auswertung-der-ergebnisse)
 
 ## Einleitung
-In dieser Dokumentation wird die Verwendung und Funktionsweise unserer Lösung des Problems des Informaticups 2019
+In dieser Dokumentation wird die Verwendung und Funktionsweise unserer Lösung des Problems des Informaticups 2020
 beschrieben.<br>
 Durch das, von den Herausgebern des Informaticups, zur Verfügung gestellte Programm `ic20_linux`*,
 wird eine Pandemie simuliert.
